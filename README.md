@@ -1,0 +1,57 @@
+# hands-on-python
+
+面试向 Python 语言机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等 Python 面试高频主题。每个实验都是一个"五件套"目录——README 教程 + 主演示脚本 + 示意图生成脚本 + 图片——读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
+
+## 环境要求
+
+- **Python 3.8+**（推荐 3.10+；使用 `python3 --version` 探测实际版本）
+- **matplotlib**：仅 `scripts/gen_diagram.py`（生成示意图）需要；主演示脚本 `python3 <topic>.py` 不依赖任何第三方库
+- 国内网络环境建议先运行公共脚本安装依赖（优先清华镜像源，失败回退官方源）：
+
+```bash
+bash scripts/setup_env.sh
+```
+
+## 实验列表
+
+| 编号 | 实验名 | 一句话主题 |
+|:---|:---|:---|
+| 01 | [装饰器工厂](interview/01_decorator_factory/README.md) | 三层嵌套实现带参数的装饰器 |
+| 02 | [上下文管理器](interview/02_context_manager/README.md) | with 语句背后的 `__enter__` / `__exit__` 协议 |
+| 03 | [描述符协议](interview/03_descriptor/README.md) | `__get__` / `__set__` / `__delete__` 与属性访问底层机制 |
+| 04 | [生成器与迭代器](interview/04_generator_iterator/README.md) | yield / send / yield from 与迭代器协议 |
+| 05 | [元类](interview/05_metaclass/README.md) | `__new__`、`__init_subclass__` 与类型创建过程 |
+| 06 | [`__slots__` 与内存](interview/06_slots_memory/README.md) | 固定属性集合如何降低实例内存开销 |
+| 07 | [MRO 与 Mixin](interview/07_mro_mixin/README.md) | C3 线性化与 `super()` 的真实语义 |
+| 08 | [GIL 与并发模型](interview/08_gil_concurrency/README.md) | threading / multiprocessing / asyncio 选型 |
+| 09 | [魔术方法](interview/09_magic_methods/README.md) | `__eq__` / `__hash__` / `__repr__` 与运算符重载 |
+| 10 | [ABC 与 Duck Typing](interview/10_abc_duck_typing/README.md) | 抽象基类、鸭子类型与 Protocol |
+| 11 | [`__getattr__` 与代理](interview/11_getattr_proxy/README.md) | 属性查找链与动态代理模式 |
+| 12 | [`__new__` vs `__init__`](interview/12_new_vs_init/README.md) | 对象创建生命周期两步走 |
+| 13 | [`__call__` 与可调用对象](interview/13_callable/README.md) | 让实例像函数一样被调用 |
+| 14 | [copy 与 deepcopy](interview/14_copy_deepcopy/README.md) | 浅拷贝与深拷贝的内存行为差异 |
+| 15 | [`*args` / `**kwargs`](interview/15_args_kwargs/README.md) | `*` / `**` 运算符的四种用途 |
+| 16 | [GC 与 weakref](interview/16_gc_weakref/README.md) | 引用计数、分代 GC 与循环引用 |
+| 17 | [property 深度剖析](interview/17_property/README.md) | 把方法伪装成属性的受控访问 |
+| 18 | [typing 与泛型](interview/18_typing_generic/README.md) | TypeVar / Generic / Protocol 静态类型 |
+| 19 | [collections 与 dataclass](interview/19_collections/README.md) | namedtuple / dataclass / dict 选型 |
+| 20 | [itertools / functools / operator](interview/20_itertools_func/README.md) | 标准库函数式工具三件套 |
+
+## 学习路线
+
+建议按四个阶段推进，每阶段内编号即推荐顺序：
+
+1. **函数与装饰器**（01 → 02 → 15 → 04）：先拿下面试出现频率最高的装饰器与参数传递，再进入生成器协议
+2. **面向对象**（03 → 05 → 07 → 09 → 10 → 13 → 12）：从属性访问底层（描述符）到类创建（元类）、方法解析（MRO）、可调用对象与对象生命周期
+3. **内存与运行时**（06 → 14 → 16 → 11）：`__slots__` 内存优化、拷贝语义、垃圾回收与属性查找链
+4. **并发与标准库**（08 → 18 → 19 → 20）：GIL 与三种并发模型，收尾于 typing 与函数式工具库
+
+## 如何运行一个实验
+
+```bash
+cd interview/01_decorator_factory
+python3 decorator_factory.py      # 主演示：分步打印 demo 输出（无第三方依赖）
+python3 scripts/gen_diagram.py       # 重新生成 images/ 下的示意图（需要 matplotlib）
+```
+
+脚本从任意 cwd 调用都正确（内部通过 `SCRIPT_DIR` 定位输出路径）。每个实验的 README 里有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。
