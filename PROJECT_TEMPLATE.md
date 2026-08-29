@@ -1,10 +1,14 @@
 # hands-on-XXX 项目模版（复刻指南 / 生成提示词）
 
 > 用途：把 `hands-on-kubernetes` 的设计与结构泛化成模版，用于复刻其它领域的
-> hands-on 系列项目（如 hands-on-fintech、hands-on-llm、hands-on-rust 等）。
+> hands-on 系列项目（如 hands-on-fintech、hands-on-llm、hands-on-python 等）。
 > 既可以作为人类开发者的规范文档，也可以整篇作为提示词交给 AI 生成新项目。
 > 使用时把全文中的 `{{DOMAIN}}` 替换为目标领域，`{{TOOLCHAIN}}` 替换为该领域
 > 的核心工具链（如 K8s 之于本模版的 kind/kubectl）。
+>
+> 模版保持领域无关。复刻时有两类自由度：
+> **领域映射**（§八的对应物替换）和**形态适配**（目录名、脚本语言、可选件
+> 取舍），后者见各节"适配"注记。五件套结构与开发工作流是硬约束，不要动。
 
 ---
 
@@ -16,16 +20,16 @@
    的行为（如某功能依赖云厂商驱动），要在 README 里**诚实标注预期结果**
    （"在本环境它会一直 Pending，这正是教学点"），而不是假装成功。
 
-2. **脚本即学习重点**。每个实验的核心是一个分步演示脚本（`xxx.sh`），它把
-   该主题的完整生命周期（创建→观察→破坏→验证→清理）串成可重复执行的步骤。
-   读者逐行读脚本就是在学这个主题。脚本不是辅助材料，是主教材。
+2. **脚本即学习重点**。每个实验的核心是一个分步演示脚本，它把该主题的完整
+   生命周期（创建→观察→破坏→验证→清理，或该领域对应的等价链条）串成可重复
+   执行的步骤。读者逐行读脚本就是在学这个主题。脚本不是辅助材料，是主教材。
 
-3. **每个实验五件套、结构完全一致**。读者做完第 1 个实验后，就知道后面 30 个
+3. **每个实验五件套、结构完全一致**。读者做完第 1 个实验后，就知道后面所有
    实验的目录里有什么、怎么跑、去哪读原理。结构的一致性本身就是学习成本的
    降低。
 
 4. **原理与实操分离但同处一地**。README 讲"为什么"（概念、机制、易错点），
-   manifests 讲"声明什么"，脚本讲"怎么做"，架构图讲"长什么样"。四种视角
+   声明式资产讲"声明什么"，脚本讲"怎么做"，示意图讲"长什么样"。四种视角
    互相印证，但都放在同一个实验目录内，不做跨目录跳转。
 
 ---
@@ -39,33 +43,38 @@ hands-on-{{DOMAIN}}/
 ├── .gitignore               # .DS_Store / __pycache__ / 构建产物 / 工具会话文件
 ├── PROJECT_TEMPLATE.md      # 本模版（可选，复刻下一代项目用）
 ├── scripts/
-│   └── load_resources.sh    # 公共脚本：解决国内网络/镜像源等环境问题（按需）
-└── labs/                    # 所有实验，编号 + 主题命名
-    ├── 00_setup_tools/      #   工具安装（轻量，只装工具不初始化环境）
-    ├── 01_setup_env/        #   环境初始化（创建后续所有实验依赖的沙箱环境）
+│   └── setup_env.sh         # 公共环境脚本：解决国内网络/镜像源等环境阻塞（按需）
+└── labs/                    # 所有实验；目录名可按领域调整（interview/、
+    │                        # experiments/ ...），全系列一致即可
+    ├── 00_setup_tools/      #   可选前置：工具安装（轻量，只装工具不初始化环境）
+    ├── 01_setup_env/        #   可选前置：环境初始化（创建后续实验依赖的沙箱）
     ├── 02_topic_a/          #   每个实验一个目录，结构见下节
     ├── ...
     └── NN_topic_z/
 ```
 
+> 适配：环境依赖很轻的领域（如纯语言系列只需 `pip install matplotlib`）可以
+> **不做 00/01 前置实验**，把环境要求写进根 README，由 `scripts/setup_env.sh`
+> 承担（特征：幂等可重复执行、领域包管理器的国内镜像源优先、失败回退官方源、
+> `bash -n` 可过）。
+
 ### 命名与编号约定
 
-- 实验目录：`NN_short_name/`（两位数字 + 下划线 + 小写主题名，如 `09_hpa`、
-  `22_secrets_vault`）。编号决定学习顺序，**插入新实验只能追加到末尾或整体重排**，
-  不要在中间挖号。
-- 主脚本与实验同名的短名：`labs/09_hpa/hpa.sh`。
+- 实验目录：`NN_short_name/`（两位数字 + 下划线 + 小写主题名）。编号决定学习
+  顺序，**插入新实验只能追加到末尾或整体重排**，不要在中间挖号。
+- 主脚本与实验同名短名：`labs/09_hpa/hpa.sh`（shell 系）或
+  `labs/09_magic_methods/magic_methods.py`（代码系）。
 - 总 README 的实验列表用表格：编号 | 实验名（链接到该实验 README）| 一句话主题。
 
 ### 学习路线设计（决定实验排序）
 
-把 25~35 个实验分成 4~6 个阶段，总 README 里明确标出，例如 K8s 版：
-基础（工作负载/网络/配置）→ 进阶（调度/网络策略/服务网格）→ 专项（存储/安全/
-可观测性）→ 平台工程（包管理/GitOps/扩展开发）。排序原则：
+把 20~35 个实验分成 4~6 个阶段，总 README 里明确标出（小型领域宁可 15~20 个
+做深做实，不凑数）。排序原则：
 
-1. 最小可运行单元最先（如 Pod）；
+1. 最小可运行单元最先（如 K8s 的 Pod、语言系列的最小语法单元）；
 2. 每个实验只引入一个新概念层；
-3. 后面实验可以复用前面实验建的资源，但**清理要干净**（不依赖残留状态）；
-4. 依赖外部重型组件的实验（服务网格、Operator）放在后段。
+3. 后面实验可以复用前面实验建的资源/代码，但**不依赖残留状态**（每实验自包含）；
+4. 依赖外部重型组件的实验放在后段。
 
 ---
 
@@ -74,23 +83,25 @@ hands-on-{{DOMAIN}}/
 ```
 labs/NN_xxx/
 ├── README.md          # 教程文档（原 blog），GitHub 直接渲染
-├── xxx.sh             # 主演示脚本 —— 学习重点，放在实验根目录
-├── manifests/         # 声明式配置（K8s YAML / 配置文件 / chart 等）
-│   └── ...
+├── xxx.{sh,py}        # 主演示脚本 —— 学习重点，放在实验根目录，与实验同名
+├── manifests/         # 领域声明式资产（可选，见下）
 ├── scripts/
-│   └── gen_arch.py    # matplotlib 架构图生成脚本（工程辅助，与主脚本区分）
+│   └── gen_diagram.py # matplotlib 示意图生成脚本（工程辅助，与主脚本区分）
 └── images/
-    └── xxx_arch.png   # 由 gen_arch.py 生成，README 引用
+    └── xxx.png        # 由 gen_diagram.py 生成，README 引用
 ```
+
+> 适配：
+> - `manifests/` 适用于有声明式资产的领域（K8s YAML、合约、流水线定义）。
+>   纯代码/语言类实验没有声明式配置，可省略该目录，真实代码放实验根；
+> - 主脚本语言随领域工具链：基础设施类用 bash，语言/库教学类用该语言本身
+>   （Python 系列即 `<topic>.py`）。
 
 例外情况：
 
 - 实验有**多个平行的声明文件**或**真实代码**（如自定义 controller 的 `.py`），
   代码放实验根、声明文件进 `manifests/`；
-- 纯工具安装类实验（00）可以只有 README + 脚本，没有 manifests/images；
-- 多文档 YAML 需要分步 apply 时，给每个文档打 `tier` 标签
-  （`tier=app` / `tier=policy` / ...），脚本用 `kubectl apply -l tier=x` 分阶段
-  创建——这是"分步演示"的关键手法。
+- 纯工具安装类实验（00）可以只有 README + 脚本，没有 manifests/images。
 
 ### 各文件的设计规范
 
@@ -109,19 +120,19 @@ labs/NN_xxx/
 
 ## 核心概念
    （3~6 个小节，每节一个机制；多用 ASCII 图、表格、对比；
-    术语第一次出现给英文原文；写"易错点/常见误解"小节）
+    术语第一次出现给英文原文；写"易错点/常见误解"小节；
+    面试向系列可把 Q&A 作为本节最后一个子小节）
 
 ## 实操演示
    （按脚本步骤给出关键命令和**真实输出示例**；
     网络相关步骤标注国内环境替代方案）
 
 ## 预期结果与陷阱
-   （诚实写出本环境下会看到什么、不会看到什么、为什么）
+   （诚实写出本环境下会看到什么、不会看到什么、为什么；
+    配图放这里，配文字逐面板解读）
 
 ## 小结
    （3~5 句话收束主线 + 一句"下一篇"引导）
-
-（配一张架构图：![xxx](images/xxx_arch.png)）
 ```
 
 写作风格约定：
@@ -129,11 +140,13 @@ labs/NN_xxx/
 - 中文正文，命令/字段/术语保留英文；
 - 每个结论都给出验证方法（"你可以用 `xxx` 命令亲眼看到"）；
 - 敢写"这不是故障，是预期行为"——诚实预期是这个系列的特色；
+- "实操演示"里的输出必须是**真实粘贴**的运行结果，不凭记忆编造；
 - 长度 80~150 行，超过就拆成两个实验。
 
-#### 主演示脚本 xxx.sh
+#### 主演示脚本 xxx.sh / xxx.py
 
-统一的骨架（所有实验完全一致，只换内容）：
+统一的生命周期骨架：**创建 → 观察 →（破坏）→ 验证 → 清理**，每个环节是一个
+可独立执行的步骤。shell 系实现用"分步 case 分发"：
 
 ```bash
 #!/usr/bin/env bash
@@ -154,12 +167,9 @@ step() { echo; echo "=====> [$1] $2"; }   # 步骤标题打印
 # ---------- Step 1: xxx ----------
 do_apply()   { step "apply" "..."; kubectl apply -f "${MANIFEST}"; ... }
 
-# ---------- Step 2: xxx ----------
-do_observe() { step "observe" "..."; ... }
-
 # ---------- ... 按需增加, 每个函数一个可独立执行的步骤 ----------
 
-# ---------- 清理（必须最后有, 且删干净本实验创建的一切）----------
+# ---------- 清理（产生持久资源的实验必须有, 且删干净）----------
 do_clean()   { step "clean" "删除本演示创建的所有资源"; kubectl delete -f ... ; }
 
 # ---------- 入口: 按参数分发 ----------
@@ -170,20 +180,26 @@ main() {
         observe) do_observe ;;
         clean)   do_clean ;;
         all)     do_apply; do_observe; do_clean ;;
-        *) echo "未知步骤: ${target}" >&2; echo "可用: apply | observe | clean | all" >&2; exit 1 ;;
+        *) echo "未知步骤: ${target}" >&2; exit 1 ;;
     esac
 }
 main "$@"
 ```
 
+> 适配（代码系）：语言教学类实验的主脚本用该语言本身编写，可简化为**无参
+> 全量执行**（`__main__` 顺序跑全部步骤，每步用 `[N]` 编号 + 中文注释分区）。
+> 但两条原则不变：①逐行读脚本就是学习路径；②失败要显式暴露而不是静默继续
+> （预期失败的演示要捕获异常并打印说明）。绘图代码**永远不进主脚本**，
+> 一律放 `scripts/gen_diagram.py`。
+
 脚本质量线：
 
-- `set -euo pipefail`；命令失败要让脚本停而不是静默继续；
-- 等待资源就绪用 `kubectl wait` / `rollout status` 带 timeout，不裸 sleep；
-- 每条命令上有简短中文注释说明"这一步在看什么"；
-- 演示"失败路径"（如预期报错）时用 `|| true` 并在注释里说明为什么预期失败；
+- shell 系 `set -euo pipefail`；等待资源就绪用带 timeout 的探测，不裸 sleep；
+- 每条命令/步骤上有简短中文注释说明"这一步在看什么"；
+- 演示"失败路径"（如预期报错）时显式捕获并在注释里说明为什么预期失败；
 - 涉及大镜像/外网资源时，注释里给出预载命令（指向根 scripts/ 的公共脚本）；
-- `clean` 之后集群应回到实验前状态（`kubectl get all` 无残留）。
+- 有 clean 步骤的实验，clean 之后环境应回到实验前状态；不产生持久资源的
+  实验（如纯语言实验只输出图片）可省略 clean，并在 README 注明不适用。
 
 #### manifests/
 
@@ -192,34 +208,49 @@ main "$@"
 - 演示密码用 `changeme` / `demo-password` 等明显的占位值，并注释
   "生产应使用 Secret/外部密钥管理"。
 
-#### scripts/gen_arch.py + images/
+#### scripts/gen_diagram.py + images/
 
-- matplotlib 脚本，生成 1~2 张架构/流程图，输出到 `images/xxx_arch.png`；
-- 固定头部（从脚本位置定位实验根，保证在任何 cwd 运行都输出正确）：
+- matplotlib 脚本，生成 1~2 张示意图（机制图/流程图/真实数据图表），
+  输出到 `images/<topic>.png`；
+- 固定头部（从脚本位置定位实验根，保证在任何 cwd 运行都输出正确；
+  `sys.path.insert` 使示意图可以 import 主脚本的真实运行数据）：
 
 ```python
 import os
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+LAB_ROOT = os.path.dirname(SCRIPT_DIR)
+os.chdir(LAB_ROOT)
+sys.path.insert(0, LAB_ROOT)
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-os.chdir(os.path.join(SCRIPT_DIR, ".."))
-# ... 画图 ...
-plt.savefig("images/xxx_arch.png", dpi=150, bbox_inches="tight")
+# 中文字体探测 (macOS/Linux/Windows 各取最优先可用者)
+for _f in ["PingFang SC", "Heiti SC", "STHeiti", "SimHei", "Microsoft YaHei"]:
+    if any(_f in f.name for f in fm.fontManager.ttflist):
+        plt.rcParams["font.sans-serif"] = [_f, "DejaVu Sans"]
+        plt.rcParams["axes.unicode_minus"] = False
+        break
+
+# ... 画图 (可用 from <主模块> import xxx 引入真实基准数据) ...
+plt.savefig("images/xxx.png", dpi=150, bbox_inches="tight")
 ```
 
-- 图内容必须与 README 描述的组件/流程一致；中文标注（macOS 用
-  Hiragino Sans GB，注意个别 emoji/特殊符号缺字形）；
+- 图内容必须与 README 描述一致；含中文标注时**必须用探测模式**（不要写死
+  单一字体名，不同 macOS 版本可用字体不同），注意个别 emoji/特殊符号缺字形；
 - 图片入库（~100-300KB/张，总量 10MB 内不需要 LFS）。
 
 ---
 
 ## 四、跨实验的公共设施
 
-- `scripts/load_resources.sh`：集中解决"环境拉不到外部资源"的公共问题
-  （K8s 版是镜像预载：宿主机从镜像源拉取 → save → 灌入所有节点）。
-  特征：无参数时处理默认列表、幂等可重复执行、被多个实验的注释引用。
+- `scripts/setup_env.sh`：集中解决"环境拉不到外部资源"的公共问题。
+  特征：无参数时处理默认列表、幂等可重复执行、被多个实验的注释引用、
+  领域包管理器的国内镜像源优先 + 官方源回退。
 - 根 README 承担"环境要求 + 国内/海外网络说明 + 公共脚本用法"，
   各实验 README 只写自己特有的前置。
 
@@ -228,13 +259,15 @@ plt.savefig("images/xxx_arch.png", dpi=150, bbox_inches="tight")
 ## 五、开发工作流（做一个新实验的顺序）
 
 1. **定主题与预期学习目标**（读者做完能回答的 3 个问题）；
-2. **写 manifests**（声明先行）；
+2. **写声明式资产**（有 manifests 的领域声明先行；纯代码类实验跳过）；
 3. **写脚本**，在真实环境里逐步跑通、边跑边修；
 4. **写 README**，把跑通过程中的真实输出粘进"实操演示"；
-5. **写 gen_arch.py 生成架构图**，README 引用；
+5. **写 gen_diagram.py 生成示意图**，README 引用；
 6. **自检清单**：
-   - [ ] `bash -n` 通过；脚本从任意 cwd 调用都正确
-   - [ ] `./xxx.sh clean` 后无残留资源
+   - [ ] 静态检查通过（shell：`bash -n`；Python：`python3 -m py_compile`）；
+         脚本从任意 cwd 调用都正确
+   - [ ] 有 clean 的实验：`./xxx.sh clean` 后无残留资源；
+         无 clean 的实验已在 README 注明不适用理由
    - [ ] README 文件树与磁盘实际一致；图片链接可解析
    - [ ] 涉及外网资源的步骤有预载/镜像替代说明
    - [ ] "预期结果"章节描述的与实际发生的一致
@@ -246,7 +279,7 @@ plt.savefig("images/xxx_arch.png", dpi=150, bbox_inches="tight")
 - 不引入个人绝对路径、真实凭据；
 - 版本能钉死的钉死（CLI 版本、清单 tag），钉不死但要写"如何探测实际版本"；
 - 已知环境限制（某功能本地沙箱演示不了）在 README 建表说明，不隐藏；
-- 工具会话文件（`.zcode/` 等）、构建产物一律 gitignore。
+- 工具会话文件（`.zcode/` 等）、构建产物、`__pycache__` 一律 gitignore。
 
 ---
 
@@ -256,15 +289,15 @@ plt.savefig("images/xxx_arch.png", dpi=150, bbox_inches="tight")
 你要创建一个名为 hands-on-{{DOMAIN}} 的教学项目。严格遵循随附的
 PROJECT_TEMPLATE.md 中的结构与规范。请按以下步骤工作：
 
-1. 先给出实验列表规划（25~35 个，编号+主题+一句话目标，分 4~6 个学习阶段），
-   00 是工具安装、01 是环境初始化，供我确认；
-2. 我确认后，逐个实验生成五件套：README.md（按模版章节结构，中文，
-   诚实预期）、主演示脚本（分步 case 分发骨架 + set -euo pipefail +
-   完整 clean）、manifests/（带教学注释）、scripts/gen_arch.py、
-   以及运行它生成的 images/xxx_arch.png；
-3. 所有命令必须是你确信在 {{TOOLCHAIN}} 当前稳定版上可执行的；
-   不确定的 API/flag 要先验证再写；
-4. 每生成 5 个实验停下，输出自检清单结果（bash -n / 语法检查 /
+1. 先给出领域适配方案（实验根目录名、主脚本语言、manifests/clean 等
+   可选件取舍）和实验列表规划（20~35 个，编号+主题+一句话目标，
+   分 4~6 个学习阶段；轻环境领域可不做 00/01 前置实验），供我确认；
+2. 我确认后，先做 1 个试点实验走完五件套全流程并验证，再批量生成
+   其余实验：README.md（按模版章节结构，中文，诚实预期）、主演示脚本、
+   scripts/gen_diagram.py、以及运行它生成的 images/*.png；
+3. 所有命令/API 必须是你确信在 {{TOOLCHAIN}} 当前稳定版上可执行的；
+   不确定的要先验证再写；
+4. 每生成 5 个实验停下，输出自检清单结果（静态检查 / 运行验证 /
    清单与文档一致性），等我确认后继续；
 5. 全部完成后生成根 README（实验表格+学习路线）和 .gitignore。
 不要生成 LICENSE 和 git 操作，等我指令。
@@ -276,9 +309,10 @@ PROJECT_TEMPLATE.md 中的结构与规范。请按以下步骤工作：
 
 | 本模版（K8s） | 复刻到其它领域时的对应物 |
 |---|---|
-| kind 集群 | 领域的本地沙箱（fintech：本地账本/区块链测试链；LLM：本地推理运行时） |
-| kubectl | 领域核心 CLI |
-| manifests/*.yaml | 领域的声明式配置（合约、流水线定义、拓扑文件） |
-| 演示脚本串联"创建→观察→破坏→验证→清理" | 保留这个生命周期骨架，换领域动词（如 fintech：开户→记账→对账→冲正→清退） |
-| load_images.sh 解决镜像拉取 | 解决该领域最普遍的环境阻塞（包源、测试数据、模拟服务） |
+| kind 集群 | 领域的本地沙箱（fintech：本地账本/测试链；LLM：本地推理运行时；语言系列：裸解释器即可） |
+| kubectl | 领域核心 CLI（语言系列：python3 本体 + 标准库） |
+| manifests/*.yaml | 领域的声明式配置（合约、流水线定义、拓扑文件）；**纯代码/语言类实验无此目录** |
+| 演示脚本串联"创建→观察→破坏→验证→清理" | 保留这个生命周期骨架，换领域动词（fintech：开户→记账→对账→冲正→清退；语言系列：构造→观察→触发边界→验证行为） |
+| clean 清理资源 | 有持久资源才需要；纯输出类实验可省略并注明 |
+| load/setup 脚本解决镜像拉取 | 解决该领域最普遍的环境阻塞（包源镜像、测试数据、模拟服务） |
 | "诚实预期"章节 | 保留：任何本地环境演示不了的生产行为都明说 |
