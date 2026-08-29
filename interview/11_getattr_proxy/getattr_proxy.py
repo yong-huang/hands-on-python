@@ -56,7 +56,7 @@ class AccessLogger:
         log.append(("get", name))
         if name in data:
             return data[name]
-        # Call public methods via __getattribute__
+        # 不在 _data 中的公开属性(如方法): 走基类查找取回(绕过本重写, 避免递归)
         method = object.__getattribute__(self, name)
         return method
 
@@ -158,7 +158,8 @@ def run_demo():
     try:
         _ = logger.z
     except AttributeError:
-        pass
+        # 失败的访问同样被 __getattribute__ 记录为 ('get', 'z')
+        print("  logger.z -> AttributeError (logged as ('get', 'z'))")
     print(f"  Access log: {logger.get_log()}")
 
     # 3) Proxy

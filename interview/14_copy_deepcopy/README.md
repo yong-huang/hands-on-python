@@ -161,6 +161,12 @@ python3 scripts/gen_diagram.py # 重新生成 images/copy_deepcopy.png
     b[2] = [3, 4, 5]  (shared inner list!)
     c[2] = [3, 4]  (independent)
 
+[3] Custom __copy__ (Node):
+  Original: 1 -> 2 -> 3 -> None
+  Copy:     1 -> 2 -> 3 -> None
+  n3 is n3_copy: False
+  n3.next is n3_copy.next: True  (shared!)
+
 [4] Cyclic reference:
   a = [1, 2, a]  (cyclic)
   a[2] is a: True

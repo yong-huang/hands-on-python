@@ -2,15 +2,17 @@
 __slots__ 与内存优化
 面试高频题: __slots__ 原理、内存节省、动态属性限制、weakref
 
-Python 默认用 __dict__ 存储实例属性（哈希表），每个对象开销约 200+ bytes。
-__slots__ 声明固定属性集合，Python 改用数组存储，每个实例节省 40-60% 内存。
+Python 默认用 __dict__ 存储实例属性（哈希表），两属性对象每个实例约 136~152 bytes
+（对象本体 + 实例字典）。__slots__ 声明固定属性集合，Python 改用数组存储，
+每个实例降到约 48 bytes，万级实例总内存节省 60%~70%。
 
 核心概念:
 - __slots__: 声明允许的属性名，禁用 __dict__
 - 内存原理: __dict__ 是哈希表（灵活但开销大），slots 是描述符数组（固定但紧凑）
 - weakref: slots 中加 "__weakref__" 才支持弱引用
 - 继承: 父类的 slots 仍生效，但子类若不声明自己的 __slots__ 就会额外获得 __dict__
-- 属性访问速度: slots 描述符比 __dict__ 查找快约 20-30%
+- 属性访问速度: 3.10 及以前 slots 快 10~40%; 3.11+ 属性访问优化后基本持平——
+  今天用 slots 主要为省内存，不为提速
 
 示意图: python3 scripts/gen_diagram.py 生成 images/slots_memory.png
 """
@@ -44,7 +46,7 @@ class SlotPoint:
 # ============================================================
 
 class SlotWithDefault:
-    """slots 属性可以设默认值"""
+    """默认值来自 __init__ 形参默认值——slots 本身不存储默认值"""
     __slots__ = ("x", "y", "z")
 
     def __init__(self, x, y, z=0):
@@ -151,6 +153,9 @@ def run_demo():
     print(f"  SlotPoint:     {sys.getsizeof(s)} bytes, has __dict__: {hasattr(s, '__dict__')}")
     if hasattr(r, "__dict__"):
         print(f"  RegularPoint.__dict__: {r.__dict__}")
+
+    d = SlotWithDefault(1, 2)
+    print(f"  SlotWithDefault(1, 2): z={d.z}  (default comes from __init__, not slots)")
 
     # 2) Bulk memory
     print("\n[2] Bulk memory (10,000 instances):")

@@ -140,10 +140,20 @@ def run_demo():
     cpu_results = bench_cpu(n=5000, workers=4)
     for name, t in cpu_results.items():
         print(f"  {name:>20s}: {t:.3f}s")
-    print(f"\n  Threading vs Serial:  {cpu_results['threading']/cpu_results['serial']:.2f}x")
-    print(f"  Multiprocessing vs Serial: {cpu_results['multiprocessing']/cpu_results['serial']:.2f}x")
-    print("  → Threading SLOWER (GIL contention)")
-    print("  → Multiprocessing FASTER (parallel execution)")
+    # 比值 >1 表示比串行更慢（耗时比）；结论按实测动态判断, 不硬编码
+    t_ratio = cpu_results["threading"] / cpu_results["serial"]
+    p_ratio = cpu_results["multiprocessing"] / cpu_results["serial"]
+    print(f"\n  Threading/Serial time ratio:       {t_ratio:.2f}  (>1 = slower)")
+    print(f"  Multiprocessing/Serial time ratio: {p_ratio:.2f}  (>1 = slower)")
+    if t_ratio > 1.05:
+        print("  → Threading SLOWER (GIL contention)")
+    else:
+        print("  → Threading ≈ Serial (GIL: no CPU parallel gain)")
+    if p_ratio < 0.75:
+        print("  → Multiprocessing FASTER (parallel execution)")
+    else:
+        print("  → Multiprocessing looks SLOWER at n=5000: process startup cost")
+        print("    dominates this tiny workload (try bench_cpu(n=200000) for real speedup)")
 
     # 3) I/O-bound benchmark
     print("\n[3] I/O-bound (8 x 100ms sleep):")
@@ -160,9 +170,9 @@ def run_demo():
         ("time.sleep()", True, "I/O wait"),
         ("socket.recv()", True, "Network I/O"),
         ("open().read()", True, "File I/O"),
-        ("for x in range(1e9)", False, "Pure Python"),
-        ("numpy.sum(arr)", True, "C extension"),
-        ("re.match(pattern, text)", True, "C extension"),
+        ("for x in range(10**9)", False, "Pure Python"),
+        ("numpy.sum(arr)", True, "C ext, explicit release"),
+        ("re.match(pattern, text)", False, "C ext, no release"),
     ]
     print(f"  {'Operation':<30} {'GIL Released':<14} {'Why'}")
     print(f"  {'-'*30} {'-'*14} {'-'*20}")

@@ -78,10 +78,10 @@ def generate_visualization():
     ax.add_patch(box)
     ax.text(2.5, 8.5, "def fn(x):", ha="center",
             fontsize=11, fontweight="bold", color="#4C72B0")
-    items = ["Can be called: fn(5)", "No internal state", "No methods attached",
-             "Lightweight", "Simple syntax"]
-    for i, item in enumerate(items):
-        prefix = "+" if i < 1 else "-"
+    items = [("+", "Can be called: fn(5)"), ("-", "No internal state"),
+             ("-", "No methods attached"), ("+", "Lightweight"),
+             ("+", "Simple syntax")]
+    for i, (prefix, item) in enumerate(items):
         ax.text(2.5, 7.6 - i*0.5, f"{prefix} {item}", ha="center",
                 fontsize=8, color="#55A868" if prefix == "+" else "#C44E52")
 
@@ -93,10 +93,10 @@ def generate_visualization():
     ax.add_patch(box)
     ax.text(7.5, 8.5, "class Callable:", ha="center",
             fontsize=11, fontweight="bold", color="#55A868")
-    items = ["Can be called: obj(5)", "Has internal state", "Can add attributes",
-             "Slightly heavier", "More flexible"]
-    for i, item in enumerate(items):
-        prefix = "+" if i < 3 else "-"
+    items = [("+", "Can be called: obj(5)"), ("+", "Has internal state"),
+             ("+", "Can add attributes"), ("-", "Slightly heavier"),
+             ("+", "More flexible")]
+    for i, (prefix, item) in enumerate(items):
         ax.text(7.5, 7.6 - i*0.5, f"{prefix} {item}", ha="center",
                 fontsize=8, color="#55A868" if prefix == "+" else "#C44E52")
 

@@ -125,17 +125,6 @@ def benchmark(label):
         print(f"  [bench:{label}] {elapsed:.4f}s [{status}]")
 
 
-@contextmanager
-def switch_working_dir(path):
-    """临时切换工作目录"""
-    old = os.getcwd()
-    try:
-        os.chdir(path)
-        yield os.getcwd()
-    finally:
-        os.chdir(old)
-
-
 # ============================================================
 # 3. contextlib 工具 — suppress / redirect_stdout
 # ============================================================

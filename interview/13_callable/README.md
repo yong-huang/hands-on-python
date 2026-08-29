@@ -31,12 +31,9 @@ callable.py
 ├── 1. Multiplier          # 可调用对象：封装倍数
 ├── 2. Accumulator         # 有状态的可调用对象：累加器
 ├── 3. Formatter           # 策略模式：可互换的格式化策略
-│   ├── format_json()      # JSON 格式化
-│   ├── format_csv()       # CSV 格式化
-│   └── format_table()     # 表格格式化
-├── 4. Validator           # 可组合的验证器
-│   └── validate_all()     # 验证器链
-└── 5. run_demo()          # 完整演示
+├── 4. format_json / format_csv / format_table  # 模块级策略函数
+├── 5. Validator + validate_all  # 可组合验证器与验证器链
+└── 6. run_demo()          # 完整演示
 ```
 
 ## 3. 核心概念
@@ -79,7 +76,7 @@ acc(5)    # 135
 acc.total  # 135
 ```
 
-`Accumulator` 演示了可调用对象的核心优势——**跨调用的内部状态**。普通函数无法做到这一点（除非用闭包或 global 变量），而可调用对象天然支持。
+`Accumulator` 演示了可调用对象的核心优势——**跨调用的内部状态**。普通函数无法优雅地做到这一点（闭包、global 变量或函数属性是替代手段），而可调用对象天然支持。
 
 ### 3.3 策略模式
 
@@ -149,7 +146,7 @@ errors = validate_all(validators, 17)   # ['parity: must be even']
 
 **Q2: `callable()` 检查的是什么？**
 
-`callable(x)` 返回 `True` 当且仅当 `x` 具有 `__call__` 属性。以下都是 `True`：
+`callable(x)` 返回 `True` 当且仅当 **x 的类型**（或其 MRO）定义了 `__call__`——检查的是类型层面的调用支持，不是实例属性：给实例挂 `a.__call__ = lambda: None` 不会让 `callable(a)` 变 `True`，`a()` 也不会走它。以下都是 `True`：
 - 函数、lambda、内置函数（`len`、`str`）
 - 定义了 `__call__` 的类的实例
 - 类本身（`callable(int)` — 类的 `__call__` 用于创建实例）
@@ -168,10 +165,12 @@ class Retry:
     def __call__(self, func):          # @Retry(times=3) 时调用
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            for _ in range(self.times):
+            for i in range(1, self.times + 1):
                 try:
                     return func(*args, **kwargs)
-                except: pass
+                except Exception:
+                    if i == self.times:
+                        raise
         return wrapper
 ```
 
@@ -215,6 +214,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/callable.png
 [1] Multiplier (callable object):
   double(5) = 10
   triple(5) = 15
+  isinstance(double, Multiplier): True
   callable(double): True
 
 [2] Accumulator (stateful callable):
@@ -224,10 +224,25 @@ python3 scripts/gen_diagram.py # 重新生成 images/callable.png
   acc.total = 135
 
 [3] Strategy pattern (callable):
+  JSON:
+  [
+  {
+    "name": "Alice",
+    "age": 30
+  },
+  {
+    "name": "Bob",
+    "age": 25
+  }
+]
   CSV:
   name,age
 Alice,30
 Bob,25
+  Table:
+  name  | age
+Alice | 30
+Bob   | 25
 
 [4] Validator chain (composable):
   42: OK
@@ -240,6 +255,14 @@ Bob,25
   callable(Multiplier(2)): True
   callable(42): False
   callable(None): False
+
+[6] __call__ enables function-like + object-like:
+  Objects can have BOTH methods AND be called
+  Functions can hold attributes too (they have __dict__)
+  def fn(): pass
+  fn.custom = 1  # actually OK (functions have __dict__)
+  obj = Multiplier(2)
+  obj.custom = 1  # OK!
 ```
 
 ## 5. 预期结果与陷阱

@@ -70,7 +70,7 @@ def generate_visualization():
     ax.text(3.55, 6.3, "x -> 1", ha="center", fontsize=8, color="#666")
     ax.text(3.55, 5.7, "y -> 2", ha="center", fontsize=8, color="#666")
 
-    ax.text(2.5, 4.5, "~200+ bytes", ha="center", fontsize=10,
+    ax.text(2.5, 4.5, "~48 B + __dict__ (~88-104 B)", ha="center", fontsize=10,
             fontweight="bold", color="#C44E52")
 
     # slots 对象
@@ -101,7 +101,7 @@ def generate_visualization():
     lines = [
         ("__dict__: hash table", "#C44E52"),
         ("  Flexible: add/remove attrs at runtime", "#666"),
-        ("  Cost: ~200 bytes per instance (dict overhead)", "#666"),
+        ("  Cost: ~136-152 B per instance (obj + dict, varies by version)", "#666"),
         ("__slots__: descriptor array", "#55A868"),
         ("  Fixed: only declared attrs allowed", "#666"),
         ("  Cost: ~48 bytes per instance (offset lookup, py3.10)", "#666"),

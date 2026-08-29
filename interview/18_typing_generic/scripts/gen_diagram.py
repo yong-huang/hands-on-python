@@ -108,7 +108,7 @@ def generate_visualization():
     ax.annotate("", xy=(7.5, 5.1), xytext=(7.5, 6.4),
                 arrowprops=dict(arrowstyle="->", color="#666", lw=1,
                                 connectionstyle="arc3,rad=-0.3"))
-    ax.text(5, 2.0, "Readable(Writable, Protocol): multiple inheritance",
+    ax.text(5, 2.0, "Readable(Writable, Protocol): protocol composition",
             ha="center", fontsize=8, color="#666")
 
     # ---- 3) 常用类型注解 ----

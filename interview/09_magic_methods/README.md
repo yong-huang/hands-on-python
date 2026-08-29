@@ -63,7 +63,8 @@ class Version:
     def __lt__(self, other): ...
     # 自动生成: __le__, __gt__, __ge__（__ne__ 默认由 __eq__ 派生，不靠该装饰器）
 
-# 自动生成 __init__, __repr__, __eq__, __hash__, __lt__
+# 自动生成 __init__, __repr__, __eq__
+# order=True 再加 __lt__/__le__/__gt__/__ge__ 全套; frozen=True 保留 __hash__
 @dataclass(order=True, frozen=True)
 class Point:
     x: float
@@ -120,7 +121,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/magic_methods.png
 
 诚实预期（本机实测）：
 
-- 除了 `hash()` 的具体数值**每次运行都不同**（Python 的 str/对象哈希默认加盐随机化），其余输出全部确定性可复现
+- 本 demo 的哈希全部基于**数值元组**（`hash((self.x, self.y))` 等）——数值类型的哈希不受 `PYTHONHASHSEED` 影响，具体数值**跨运行也稳定**；str/bytes 哈希与默认对象 id 哈希才会因加盐随机化而每次运行不同。其余输出全部确定性可复现
 - `Point(3, 4) + "hello"` 抛 `TypeError` 是 `__add__` 返回 `NotImplemented` 后两个操作数都试过的结果，不是异常直接抛出——这是协议回退机制
 - 陷阱：只定义 `__eq__` 不定义 `__hash__` 的类会静默失去可哈希性（`__hash__ = None`），`d[obj]` 直接 `TypeError`，本 demo 的 `Point`/`Version` 因此都配套实现了 `__hash__`
 

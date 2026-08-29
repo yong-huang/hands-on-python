@@ -126,11 +126,11 @@ def generate_visualization():
     ax.text(5, 8.6, "User (business)", ha="center",
             fontsize=10, fontweight="bold", color="#55A868")
 
-    # Mixins
+    # Mixins (ValidateMixin 属于 Product, 与 User 的两个 Mixin 同一模式)
     mixins = [
         (2.0, 5.5, "JSONMixin\nto_json()", "#4C72B0"),
         (5.0, 5.5, "ReprMixin\n__repr__()", "#DD8452"),
-        (8.0, 5.5, "ValidateMixin\nvalidate()", "#E8A838"),
+        (8.0, 5.5, "ValidateMixin\nvalidate()\n(Product's mixin)", "#E8A838"),
     ]
     for x, y, text, color in mixins:
         box = FancyBboxPatch((x-1.3, y-0.7), 2.6, 1.4,

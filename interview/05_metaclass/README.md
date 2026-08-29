@@ -109,6 +109,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/metaclass.png
 
 ```
 [1] type() class creation:
+  1) type() creates a class:
     Dog.kingdom  = Animalia
     Dog.species = Canine
     type(Dog)    = type
@@ -121,16 +122,26 @@ python3 scripts/gen_diagram.py # 重新生成 images/metaclass.png
 [3] SingletonMeta:
   db1 is db2: True
   db1.host: localhost  (first creation wins)
+  db1.query('SELECT 1'): [localhost] executing: SELECT 1
 
 [4] Simple ORM (metaclass field mapping):
   User._table: user
   User._fields: ['id', 'name', 'email']
   CREATE: CREATE TABLE user (id int PRIMARY KEY, name str, email str)
+  SELECT: SELECT id, name, email FROM user
   INSERT: INSERT INTO user (id, name, email) VALUES (1, 'Alice', 'alice@example.com')
 
 [5] __init_subclass__ (no metaclass needed):
   Registered handlers: ['click', 'key']
+  click handler: handling click
   All subclasses: ['ClickEvent', 'KeyEvent']
+
+[6] Type hierarchy:
+  int is instance of type: True
+  type is instance of type: True
+  type(42): int
+  type(int): type
+  type(type): type
 ```
 
 ## 5. 预期结果与陷阱
@@ -138,7 +149,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/metaclass.png
 ![Metaclass](images/metaclass.png)
 
 上图三面板展示元类的核心机制：
-- **左图 — class 创建流程**：`class Foo(Base):` 触发元类的 `__new__`，然后 `Foo()` 触发 `__new__` → `__init__`。元类控制的是"类创建"这一步
+- **左图 — class 创建流程**：`class Foo(Base):` 触发 `type.__call__` → 元类 `__new__`（创建类）→ 逐个调用 `__set_name__` → 父类的 `__init_subclass__`（本 lab 的 `Field` 与 `EventRegistry` 就挂在这两个钩子上）→ 元类 `__init__`。之后 `Foo()` 才触发实例的 `__new__` → `__init__`。元类控制的是"类创建"这一步
 - **中图 — 单例模式**：`SingletonMeta.__call__` 在每次 `Database()` 时检查是否已有实例，有则返回已有实例
 - **右图 — 元类 vs `__init_subclass__`**：两者的优缺点对比和选择建议
 

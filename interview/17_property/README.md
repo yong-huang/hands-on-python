@@ -206,6 +206,12 @@ python3 scripts/gen_diagram.py # 重新生成 images/property.png
 [4] property is a data descriptor:
   property is descriptor: has __get__=True, __set__=True, __delete__=True
   type(property): <class 'type'>
+
+[5] property vs method:
+  @property: c.area        (attribute access)
+  @method:   c.calc_area()  (method call)
+  Rule: simple data -> property
+        computation with params -> method
 ```
 
 ## 5. 预期结果与陷阱
@@ -221,7 +227,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/property.png
 
 - demo 全部输出为**确定性结果**（验证异常、只读异常、温度换算、描述符探测），任何 CPython 版本运行结果一致
 - `[4]` 中 `type(property)` 显示 `<class 'type'>` —— property 本身是个类，`@property` 语法等价于调用其构造函数
-- 一个本 demo 没有展示的行为：property 是数据描述符，**优先级高于实例 `__dict__`**。想验证可以执行 `c.__dict__["radius"] = 999` 后再读 `c.radius`，会发现仍走 getter（对应右图对比表 "优先级" 一行）
+- 一个本 demo 没有展示的行为：property 是数据描述符，**优先级高于实例 `__dict__`**。想验证可以执行 `c.__dict__["radius"] = 999` 后再读 `c.radius`，会发现仍走 getter（对应 §3.4 高频追问 Q1 的优先级结论）
 
 ## 6. 小结
 

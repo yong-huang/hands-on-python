@@ -44,7 +44,7 @@ class Tracked:
         print(f"  __init__ called")        # 初始化属性，返回 None
 ```
 
-- `__new__(cls, ...)` 是**类方法**，负责创建实例并返回它
+- `__new__(cls, ...)` 按**静态方法**处理（数据模型的特殊约定，无需装饰器；惯例第一个参数是 `cls` 且显式传入），负责创建实例并返回它
 - `__init__(self, ...)` 是**实例方法**，负责设置属性
 - 调用顺序：`MyClass()` -> `__new__` -> 返回 instance -> `__init__`
 - `__new__` 必须返回实例，`__init__` 返回值被忽略（通常返回 `None`）
@@ -113,7 +113,7 @@ class Factory:
 | 职责 | 创建实例（分配内存） | 初始化实例（设置属性） |
 | 第一个参数 | `cls`（类） | `self`（实例） |
 | 返回值 | 必须返回实例 | 返回 `None`（被忽略） |
-| 是类方法还是实例方法 | 类方法（隐式） | 实例方法 |
+| 是静态方法还是实例方法 | 静态方法（隐式，按惯例首参为 cls） | 实例方法 |
 
 **Q2: `__new__` 返回非 `cls` 实例时会发生什么？**
 
@@ -159,17 +159,30 @@ python3 scripts/gen_diagram.py # 重新生成 images/new_vs_init.png
   __new__: returning cached instance for 'a'
   __init__: initializing with key='a'
   a1 is a2: True
+  CachedInstance('b'):
+  __new__: created new instance for 'b'
+  __init__: initializing with key='b'
   a1 is b: False
 
 [3] Immutable subclass (must use __new__):
   UpperStr('hello world'): 'HELLO WORLD' (type: UpperStr)
   s.original: hello world
+  isinstance(s, str): True
+  s + ' python': HELLO WORLD python
   LimitedInt(150, 0, 100): 100
   isinstance(n, int): True
 
 [4] __new__ returns different types:
   Factory('list'): [] (type: list)
   Factory('dict'): {} (type: dict)
+
+[5] Key rules:
+  1. __new__ allocates memory, __init__ initializes
+  2. __new__ returns instance, __init__ returns None
+  3. __new__ can return existing instance (caching)
+  4. __new__ can return different type (factory)
+  5. Immutable types: must override __new__, not __init__
+  6. __new__ returns non-cls instance -> __init__ NOT called
 ```
 
 ## 5. 预期结果与陷阱

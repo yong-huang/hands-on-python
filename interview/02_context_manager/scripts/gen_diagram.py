@@ -143,8 +143,6 @@ def generate_visualization():
     # No branch (left)
     ax.annotate("No", xy=(1.8, cy), xytext=(cx - 1.5, cy),
                 arrowprops=dict(arrowstyle="->", color="#55A868", lw=1.5))
-    ax.text(1.8, 6.5, "Normal cleanup", ha="center", fontsize=9,
-            color="#55A868", fontweight="bold")
     box = FancyBboxPatch((0.5, 5.8), 2.6, 0.6,
                          boxstyle="round,pad=0.08",
                          facecolor="#55A868", alpha=0.12,

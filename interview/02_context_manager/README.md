@@ -114,7 +114,7 @@ captured = buf.getvalue()
 
 **Q1: with 语句和 try/finally 有什么区别？**
 
-`with` 是 `try/finally` 的语法糖，但更语义化：
+`with` 可近似看作 `try/finally` 的语法糖（更完整的展开还会把异常信息传给 `__exit__`，由其返回值决定是否抑制），且更语义化：
 
 ```python
 # with 语句
@@ -204,6 +204,8 @@ python3 scripts/gen_diagram.py # 重新生成 images/context_manager.png
   [bench:failing_op] 0.0094s [FAIL]
   errors captured: ['oops']
 
+...  # [5] contextlib utilities 与 [6] Nested contexts 两段省略
+
 [7] __exit__ return value:
   [1] swallow=True (异常被吞):
     [swallower] swallowed: ZeroDivisionError: division by zero
@@ -232,7 +234,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/context_manager.png
 1. **with 语句 = 异常安全的 try/finally**，保证资源释放
 2. **类式用 `__enter__`/`__exit__`**，函数式用 `@contextmanager` + `yield`
 3. **`__exit__` 返回 True 吞异常**，返回 False/None 传播异常
-4. **`@contextmanager` 更简洁**，但无法控制异常传播
+4. **`@contextmanager` 更简洁**，默认异常会传播；要吞异常需手动把 `yield` 包进 `try/except`（见 `benchmark()`）
 5. **`contextlib.suppress`** 是替代 `try/except pass` 的优雅写法
 
 下一篇进入 03_descriptor：看描述符协议如何成为 property、方法绑定背后的底层机制。

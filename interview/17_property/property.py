@@ -1,6 +1,6 @@
 """
-property 深度剖析 —— getter / setter / cached_property
-面试高频题: property 本质、setter 验证、cached_property、property vs descriptor
+property 深度剖析 —— getter / setter / deleter
+面试高频题: property 本质、setter 验证、只读属性、property vs descriptor
 
 @property 是 Python 中实现"受控属性访问"的语法糖。
 本质是一个数据描述符（同时定义 __get__ + __set__）。
@@ -9,8 +9,8 @@ property 深度剖析 —— getter / setter / cached_property
 - @property: 将方法变为属性访问 (obj.x 而非 obj.x())
 - @x.setter: 控制 x 的赋值（验证/触发副作用）
 - @x.deleter: 控制 del obj.x
-- functools.cached_property: 惰性计算 + 缓存
 - property 本质就是 data descriptor
+- 缓存场景可用 functools.cached_property (非数据描述符, 见 README Q5)
 
 示意图: python3 scripts/gen_diagram.py 生成 images/property.png
 """

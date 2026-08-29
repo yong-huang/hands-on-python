@@ -181,9 +181,10 @@ def run_demo():
 
     # 5) __del__ warnings
     print("\n[5] __del__ warnings:")
-    print("  - __del__ may NOT be called for cyclic references")
+    print("  - since 3.4 (PEP 442) cyclic garbage WITH __del__ is")
+    print("    collected AND finalized (order unspecified)")
+    print("  - interpreter exit does NOT guarantee __del__ runs")
     print("  - __del__ exceptions are ignored (only warned)")
-    print("  - __del__ runs in unpredictable order")
     print("  - Prefer context managers for cleanup")
 
     # 6) GC generations

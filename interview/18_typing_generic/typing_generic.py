@@ -11,12 +11,11 @@ Python 的类型注解（PEP 484）用于静态类型检查（mypy/pyright），
 - Protocol: 结构化子类型（PEP 544）
 - Union / Optional: 联合类型
 - typing.cast: 类型转换提示（运行时是 no-op）
-- @overload: 同一函数的多种签名
 
 示意图: python3 scripts/gen_diagram.py 生成 images/typing_generic.png
 """
 
-from typing import TypeVar, Generic, Union, Optional, List, Dict, Protocol, runtime_checkable
+from typing import TypeVar, Generic, Union, Optional, List, Protocol, runtime_checkable
 
 
 # ============================================================
@@ -110,6 +109,7 @@ def run_demo():
     str_stack: Stack[str] = Stack()
     int_stack.push(1)
     int_stack.push(2)
+    # int_stack.push('wrong')  # mypy error, but runs fine (no runtime check)
     str_stack.push("hello")
     str_stack.push("world")
     print(f"  int_stack: {int_stack}")

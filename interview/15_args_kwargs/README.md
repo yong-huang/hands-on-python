@@ -151,7 +151,7 @@ merged = {**d1, **d2}  # {'a': 1, 'b': 99, 'c': 3}  — d2 的 b 覆盖 d1 的 b
 def f(a, b, /, c, d, *args, key=val, **kwargs)
 ```
 
-顺序为：仅位置 → 位置或关键字 → *args → 仅关键字（有默认值）→ **kwargs。违反顺序会直接 `SyntaxError`。
+顺序为：仅位置 → 位置或关键字 → *args → 仅关键字（默认值可有可无）→ **kwargs。违反顺序会直接 `SyntaxError`。
 
 **Q3: `*` 和 `**` 还有哪些用法？**
 
@@ -198,6 +198,10 @@ python3 scripts/gen_diagram.py # 重新生成 images/args_kwargs.png
   add(*[1, 2, 3]) = 6
   greet(**{'name': 'Alice', 'age': 30, 'city': 'Shanghai'}) = Alice, 30, from Shanghai
 
+[3] Mixed: *args + explicit + **kwargs:
+  args:   (1, 3, 4)  (type: tuple)
+  kwargs: {'x': 10, 'y': 20, 'z': 30}  (type: dict)
+
 [4] Keyword-only (* separator):
   kw_only(1, 2, c=3, d=4): a=1, b=2, c=3, d=4
   kw_only(1, 2, 3, 4): TypeError: kw_only() takes 2 positional arguments but 4 were given
@@ -205,6 +209,18 @@ python3 scripts/gen_diagram.py # 重新生成 images/args_kwargs.png
 [5] Position-only (/ separator):
   pos_only(1, 2, 3, 4, e=5): a=1, b=2, c=3, d=4, e=5
   pos_only(a=1, b=2, ...): TypeError: pos_only() got some positional-only arguments passed as keyword arguments: 'a, b'
+
+[6] Practical patterns:
+  log: [ERROR] disk full | tags: server, storage | meta: host=node1, pid=1234
+  calling add((1, 2, 3), {})
+  wrapper: 6
+  calling greet((), {'name': 'Alice', 'age': 30, 'city': 'Shanghai'})
+  wrapper: Alice, 30, from Shanghai
+
+[7] Literal unpacking:
+  first, *rest = [1,2,3,4,5] -> first=1, rest=[2, 3, 4, 5]
+  *init, last = [1,2,3,4,5] -> init=[1, 2, 3, 4], last=5
+  head, *mid, tail -> head=1, mid=[2, 3, 4], tail=5
 
 [8] Dict merging (** unpacking):
   {**d1, **d2} = {'a': 1, 'b': 99, 'c': 3}  (d2.b overrides d1.b)
@@ -223,7 +239,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/args_kwargs.png
 诚实预期（本机实测）：
 
 - demo 输出是**确定性的**，每次运行完全一致
-- TypeError 的报错文案因 Python 版本而异：`/` 分隔符的报错（`got some positional-only arguments passed as keyword arguments: 'a, b'`）需要 Python 3.8+；3.10 之前（不含 3.10 的更老版本）文案略有不同
+- TypeError 的报错文案自 3.8（`/` 语法引入）起保持一致；唯一的版本差异是 3.10 起报错里的函数名改用限定名（qualname），只影响嵌套函数/方法的显示，本 demo 的模块级函数在 3.8~3.13 输出相同
 - `dict` 的打印顺序在 Python 3.7+ 保持插入序，本 demo 的输出依赖此保证
 
 ## 6. 小结

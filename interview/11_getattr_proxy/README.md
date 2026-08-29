@@ -140,6 +140,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/getattr_proxy.png
   obj.email -> AttributeError: 'DynamicAttributes' has no attribute 'email'
 
 [2] __getattribute__ (every access):
+  logger.z -> AttributeError (logged as ('get', 'z'))
   Access log: [('set', 'x'), ('set', 'y'), ('get', 'x'), ('get', 'y'), ('get', 'z'), ('get', 'get_log')]
 
 [3] Proxy (attribute forwarding):

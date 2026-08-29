@@ -104,10 +104,11 @@ def expensive(n):
 expensive(1)   # 计算并缓存
 expensive(2)   # 计算并缓存
 expensive(1)   # 缓存命中，不重新计算
-expensive(4)   # 缓存已满，淘汰最早未使用的条目
+expensive(3)   # 计算并缓存（{1, 2, 3} 已满）
+expensive(4)   # 缓存已满，按 LRU 淘汰最近最少使用的 2
 
 print(expensive.cache_info())
-# CacheInfo(hits=1, misses=3, maxsize=3, currsize=3)
+# CacheInfo(hits=1, misses=4, maxsize=3, currsize=3)
 ```
 
 **关键点**：
@@ -127,8 +128,8 @@ def power(base, exp):
 square = partial(power, 2)
 cube = partial(power, 3)
 
-square(5)  # 25 → 等价于 power(2, 5)
-cube(2)    # 8  → 等价于 power(3, 2)
+square(5)  # 32 → 等价于 power(2, 5)，固定的第一个参数是 base
+cube(2)    # 9  → 等价于 power(3, 2)
 ```
 
 固定函数的部分参数，生成新函数。减少重复代码，常用于回调、排序等需要函数参数的场景。
@@ -141,7 +142,7 @@ from functools import reduce
 reduce(lambda a, b: a + b, [1, 2, 3, 4, 5])  # 15
 ```
 
-将序列归约为单个值：`f(f(f(1, 2), 3), 4), 5)`。Python 3 中已移至 functools（不再是内建函数）。
+将序列归约为单个值：`f(f(f(f(1, 2), 3), 4), 5)`。Python 3 中已移至 functools（不再是内建函数）。
 
 **singledispatch —— 单分派泛型函数**
 
@@ -252,6 +253,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/itertools_func.png
   partial(power, 3)(2) = 9
   reduce(lambda a, b: a + b, [1..5]): 15
   singledispatch(42): Int: 84
+  singledispatch('hi'): Str: 'hi' (len=2)
   singledispatch(3.14): Default: 3.14
 
 [3] operator:
@@ -267,7 +269,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/itertools_func.png
 上图三面板展示了三大模块的核心 API：
 - **左图 — itertools Essentials**：`chain`（合并迭代器）、`islice`（惰性切片）、`accumulate`（累积运算）、`groupby`（连续分组）、`combinations`（组合生成）
 - **中图 — functools Essentials**：`lru_cache`（LRU 缓存）、`partial`（偏函数）、`wraps`（元信息保留）、`reduce`（归约）、`singledispatch`（类型分派）
-- **右图 — operator vs lambda**：`itemgetter`/`attrgetter`/`methodcaller` 与 lambda 的对照，operator 用 C 实现，性能更优
+- **右图 — operator vs lambda**：`itemgetter`/`attrgetter`/`methodcaller`/`add`/`lt` 与 lambda 的对照，operator 用 C 实现，性能更优
 
 诚实预期（本机实测）：
 

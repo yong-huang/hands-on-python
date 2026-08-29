@@ -43,7 +43,7 @@ def generate_visualization():
     ax.axis("off")
 
     steps = [
-        (5, 9.0, "MyClass.__call__(MyClass, ...)", "#8172B2"),
+        (5, 9.0, "type.__call__(MyClass, ...)", "#8172B2"),
         (5, 7.5, "MyClass.__new__(cls, ...)", "#DD8452"),
         (5, 6.0, "  Allocate memory", "#DD8452"),
         (5, 4.5, "  Return instance", "#55A868"),
@@ -135,7 +135,7 @@ def generate_visualization():
          "init cannot modify immutable values"),
         ("Singleton / Cache", "#55A868",
          "Return existing instance from cache",
-         "init only called on first creation"),
+         "init still runs (careful: re-init!)"),
         ("Factory pattern", "#4C72B0",
          "Return different type based on args",
          "Type() constructor pattern"),

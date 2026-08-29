@@ -83,13 +83,13 @@ isinstance(Duck(), Speakable)    # True (有 speak 方法)
 isinstance(Person(), Speakable)  # False (没有 speak 方法)
 ```
 
-Protocol = 结构化子类型：只检查方法签名，不要求继承。
+Protocol = 结构化子类型：运行时 `isinstance` 只按结构匹配（检查方法**是否存在**），不要求继承；签名级的类型检查只在 mypy 等静态检查器中生效。
 
 ### 3.5 高频追问
 
 **Q1: ABC 的 `@abstractmethod` 和直接 raise NotImplementedError 有什么区别？**
 
-`@abstractmethod` 在**类实例化时**检查（import 时就能发现），`NotImplementedError` 在**方法调用时**才检查（运行时才发现）。
+`@abstractmethod` 在**类实例化时**就失败（第一次 `Transport()` 即 TypeError，失败点更早），`NotImplementedError` 在**方法调用时**才检查（可能潜伏很久才暴露）。
 
 **Q2: Protocol 和 ABC 怎么选？**
 
@@ -119,6 +119,8 @@ python3 scripts/gen_diagram.py # 重新生成 images/abc_duck_typing.png
 
 [3] register() — virtual subclass:
   isinstance(ExternalLogistics(), Transport): True
+  issubclass(ExternalLogistics, Transport): True
+  Ship: External delivery to Port C with 'Package'
 
 [7] Protocol (PEP 544, Python 3.8+):
   isinstance(Duck(), Speakable): True
@@ -136,7 +138,8 @@ python3 scripts/gen_diagram.py # 重新生成 images/abc_duck_typing.png
 
 诚实预期（本机实测）：
 
-- 全部输出确定性可复现（isinstance 结果、TypeError 消息逐字一致）
+- 全部输出确定性可复现（isinstance 结果、TypeError 消息在同版本内逐字一致）
+- `[2]` 的 TypeError 文案随版本变化：3.10/3.11 为 `Can't instantiate abstract class Transport with abstract methods deliver, max_capacity`；3.12+ 改为 `Can't instantiate abstract class Transport without an implementation for abstract methods 'deliver', 'max_capacity'`——语义相同，措辞更明确
 - 陷阱提示：`Transport.__subclasses__()` 只返回真实子类 `['Truck', 'Drone']`——register 的虚拟子类不在其中，但 `issubclass` 检查为 True。两种"子类"的可见性不同，排查继承问题时容易踩坑
 - `@runtime_checkable` 的 isinstance 只检查方法**是否存在**，不检查签名；Protocol 的完整类型检查只在静态类型检查器（mypy）里生效
 

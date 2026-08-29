@@ -15,7 +15,6 @@
 """
 
 import time
-import functools
 
 
 # ============================================================
@@ -39,23 +38,6 @@ class TypedField:
         return obj.__dict__.get(self.name)
 
     def __set__(self, obj, value):
-
-        # 20260814:
-
-        # 使用：
-        # class User:
-        #     """用户模型 — 用 TypedField 做数据验证"""
-        #     name = TypedField(type_=str)
-        #     age = TypedField(type_=int, min_val=0, max_val=150)
-        #     email = TypedField(type_=str)
-
-        # 效果：
-        # Type validation:
-        #     TypeError: age: expected int, got str
-        # Range validation:
-        #     ValueError: age: must >= 0
-        #     ValueError: age: must <= 150
-
         if self.type_ is not None and not isinstance(value, self.type_):
             raise TypeError(
                 f"{self.name}: expected {self.type_.__name__}, "
@@ -76,29 +58,6 @@ class TypedField:
 
 class CachedProperty:
     """模拟 functools.cached_property（非数据描述符）"""
-
-    # 20260814:
-
-    # 使用：
-    # @CachedProperty
-    # def stats(self):
-    #     """计算密集型属性，只计算一次"""
-    #     self._compute_count += 1
-    #     time.sleep(0.001)  # 模拟耗时
-    #     return {
-    #         "sum": sum(self.data),
-    #         "mean": sum(self.data) / len(self.data),
-    #         "min": min(self.data),
-    #         "max": max(self.data),
-    #     }
-
-    # 效果：
-    # Access stats 1st time (computes): {'sum': 4950, 'mean': 49.5, 'min': 0, 'max': 99}
-    # Access stats 2nd time (cached):   {'sum': 4950, 'mean': 49.5, 'min': 0, 'max': 99}
-    # Compute count: 1 (should be 1)
-    # Access sorted_data 1st: [0, 1, 2, 3, 4]...
-    # Access sorted_data 2nd: [0, 1, 2, 3, 4]... (cached)
-    # After override: {'hacked': True} (non-data: instance dict wins)
 
     def __init__(self, func):
         self.func = func
@@ -308,6 +267,8 @@ def demo_priority():
     print(f"    obj.__dict__['d'] = 'instance_value'")
     val = obj.d  # 数据描述符优先
     print(f"    obj.d = {val}  (descriptor wins)")
+    obj.d = 999  # 赋值同样被数据描述符拦截, 不会写进实例 __dict__
+    print(f"    after obj.d = 999, obj.__dict__ = {obj.__dict__}")
 
     print("\n  [2] Non-data descriptor vs __dict__:")
     obj.__dict__["nd"] = "instance_value"

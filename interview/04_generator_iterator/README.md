@@ -76,10 +76,10 @@ def accumulator():
 ```
 
 **执行流程**：
-1. `next(gen)` — 首次必须用 `next()` "启动"生成器，执行到 `yield total`
+1. `next(gen)` — 首次必须先"启动"（priming）生成器，执行到 `yield total`（`gen.send(None)` 等价于 `next(gen)`；但 `send(非 None)` 在启动前会报 TypeError）
 2. `gen.send(10)` — 将 10 赋给 `received`，恢复执行，计算新 total，到下一个 `yield` 暂停并返回
 
-`send()` 是 Python 协程的早期实现方式。`async/await` 本质上是生成器协议的语法糖。
+`send()` 是 Python 协程的早期实现方式（生成器协程）。`async/await`（3.5+）概念上沿用了这一暂停/恢复机制，但已是原生协程，不再基于生成器实现。
 
 ### 3.4 yield from — 委托子生成器
 
@@ -92,9 +92,10 @@ def flatten(items):
             yield item
 ```
 
-`yield from` 做了两件事：
+`yield from` 做了三件事：
 1. **值的透传**：子生成器 yield 的值直接透传给调用方
 2. **异常的透传**：send() / throw() / close() 直接传递给子生成器
+3. **返回值的捕获**：子生成器 `return` 的值成为 `yield from` 表达式的值（通过 `StopIteration.value` 传递——[3] 中 accumulator 的返回值就是这样拿到的）
 
 ### 3.5 惰性管道
 
@@ -141,7 +142,7 @@ list(gen)  # []  (已耗尽)
 
 **Q4: 生成器和协程的关系？**
 
-Python 的协程经历了三代演进：生成器协程（`yield` + `send()`）→ `@coroutine` + `yield from` → `async/await`。底层都是基于生成器的暂停/恢复机制，`await` 本质上是 `yield from` 的异步版本。
+Python 的协程经历了三代演进：生成器协程（`yield` + `send()`）→ `@coroutine` + `yield from` → `async/await`。三代都建立在"暂停/恢复"这一机制之上；3.5+ 的 `await` 语义上可类比为 `yield from` 的异步版本，但已是原生协程对象。
 
 ## 4. 实操演示
 
@@ -174,7 +175,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/generator_iterator.png
 
 [6] Generator vs List — memory:
   List comprehension:  ~3,516 KB
-  Generator expression: 104 bytes (104)
+  Generator expression: 104 bytes
   Ratio: ~34,621x smaller
 
 [7] Log processing pipeline:
@@ -186,6 +187,8 @@ python3 scripts/gen_diagram.py # 重新生成 images/generator_iterator.png
 
 [8] Generator state inspection:
   type: generator
+  gi_running: False
+  gi_frame: True
   after next(): gi_frame=True
   after exhaust: gi_frame=None
 ```

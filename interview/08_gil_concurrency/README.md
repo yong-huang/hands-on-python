@@ -52,17 +52,18 @@ Thread 3:                        [==GIL==]
 |:---|:---|:---|
 | `time.sleep()` | Yes | I/O 等待 |
 | `socket.recv()` | Yes | 网络 I/O |
-| `numpy.sum()` | Yes | C 扩展 |
-| `for x in range(1e9)` | No | 纯 Python |
+| `numpy.sum()` | Yes | C 扩展显式释放 GIL |
+| `for x in range(10**9)` | No | 纯 Python |
 | `str.join()` | No | 纯 Python |
+| `re.match()` / `json.dumps()` | No | C 扩展但未释放 GIL |
 
-C 扩展（numpy、re、json）可以在 C 层释放 GIL，实现真正的并行。
+C 扩展**可以**在 C 层释放 GIL（如 numpy 的许多循环），但**不是自动的**——扩展必须显式使用 `Py_BEGIN_ALLOW_THREADS`。"是 C 扩展"≠"释放 GIL"：`re`、`json` 这类直接操作 Python 对象的 C 实现并不释放 GIL。
 
 ### 3.4 高频追问
 
 **Q1: 为什么不直接去掉 GIL？**
 
-GIL 保护 CPython 的引用计数内存管理。去掉 GIL 需要改为更复杂的垃圾回收机制，会降低单线程性能。Python 3.13 实验了 `--disable-gil`（free-threading），但尚不成熟。
+GIL 保护 CPython 的引用计数内存管理。去掉 GIL 需要改为更复杂的垃圾回收机制，会降低单线程性能。Python 3.13 起提供实验性 free-threading（无 GIL）构建；按 PEP 779 的划分，3.14 起 free-threading 升级为官方支持的构建（phase II，仍在分阶段完善）。传统 GIL 构建仍是默认。
 
 **Q2: asyncio 和 threading 怎么选？**
 
@@ -87,16 +88,22 @@ python3 scripts/gen_diagram.py # 重新生成 images/gil_concurrency.png
   Switch interval: 5ms
 
 [2] CPU-bound (prime counting, 5000, 4 workers):
-                serial: 0.005s
-             threading: 0.005s
-       multiprocessing: 0.048s
-  → Threading SLOWER (GIL contention)
-  → Multiprocessing FASTER (parallel execution)
+              serial: 0.005s
+           threading: 0.005s
+     multiprocessing: 0.046s
+
+  Threading/Serial time ratio:       1.01  (>1 = slower)
+  Multiprocessing/Serial time ratio: 8.49  (>1 = slower)
+  → Threading ≈ Serial (GIL: no CPU parallel gain)
+  → Multiprocessing looks SLOWER at n=5000: process startup cost
+    dominates this tiny workload (try bench_cpu(n=200000) for real speedup)
 
 [3] I/O-bound (8 x 100ms sleep):
-                serial: 0.830s
-             threading: 0.105s
-               asyncio: 0.102s
+              serial: 0.827s
+           threading: 0.106s
+             asyncio: 0.102s
+  Threading vs Serial: 7.82x speedup
+  asyncio vs Serial:   8.12x speedup
   → Both FASTER (GIL released during I/O)
 ```
 
@@ -107,7 +114,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/gil_concurrency.png
 上图三面板展示并发模型的核心机制和基准测试结果：
 
 - **左图 — GIL 工作模型**：同一时刻只有一个线程持有 GIL，线程交替执行。每个线程持有 GIL 约 5ms 后释放
-- **中图 — CPU 密集基准测试**：threading 因 GIL 争用不会比串行更快；multiprocessing 能真正并行
+- **中图 — CPU 密集基准测试**：threading 因 GIL 争用不会比串行更快；multiprocessing 理论上能真正并行，但注意默认 n=5000 粒度太小，进程启动开销反而让它更慢（见下方诚实预期）
 - **右图 — I/O 密集基准测试**：threading 和 asyncio 都接近理论最优（8x 加速），因为 GIL 在 I/O 等待时自动释放
 
 诚实预期（本机实测）：
@@ -120,7 +127,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/gil_concurrency.png
 
 1. **GIL 限制多线程 CPU 并行**，但不影响 I/O 并发
 2. **CPU 密集用 multiprocessing**，I/O 密集用 threading/asyncio
-3. **C 扩展可以释放 GIL**（numpy、re 等）
+3. **部分 C 扩展显式释放 GIL**（如 numpy 的许多操作）；`re`/`json` 等 C 实现并不释放
 4. **asyncio 是单线程事件循环**，用协程实现并发
 
 下一篇进入 09_magic_methods：看 `__repr__` / `__add__` 等魔术方法如何让自定义类获得内建行为。

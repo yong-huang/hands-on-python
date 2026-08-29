@@ -19,7 +19,7 @@ Python 提供多种数据容器，各有适用场景:
 
 from collections import namedtuple
 from dataclasses import dataclass, field, asdict, astuple
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 
 # ============================================================
@@ -84,7 +84,7 @@ class Address:
 class Employee:
     name: str
     age: int
-    address: Address = None
+    address: Optional[Address] = None
 
 
 # ============================================================

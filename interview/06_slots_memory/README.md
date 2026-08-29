@@ -2,7 +2,7 @@
 
 ## 1. 引言
 
-Python 默认用 `__dict__`（哈希表）存储实例属性，每个实例约 200+ bytes 的基础开销。`__slots__` 声明固定属性集合后，Python 改用描述符数组存储，将每个实例的内存开销降低 40-60%。同时禁用动态属性添加，属性访问速度提升约 20-30%。
+Python 默认用 `__dict__`（哈希表）存储实例属性，两属性对象每个实例约 136~152 bytes（对象本体 48 B + 实例字典，随版本浮动）。`__slots__` 声明固定属性集合后，Python 改用描述符数组存储，每个实例降到约 48 bytes，万级实例总内存节省 60%~70%。同时禁用动态属性添加。历史上（约 3.10 及以前）属性访问也有 10%~40% 提速，但 3.11+ 的属性访问优化后两者已基本持平——**今天用 slots 的主要理由是内存，不是速度**。
 
 适合创建大量轻量对象（如坐标点、配置项、ORM 模型）的场景。
 
@@ -23,7 +23,7 @@ Python 默认用 `__dict__`（哈希表）存储实例属性，每个实例约 2
 ```
 slots_memory.py
 ├── 1. RegularPoint / SlotPoint        # 基础对比
-├── 2. SlotWithDefault                  # slots 属性默认值
+├── 2. SlotWithDefault                  # 默认值来自 __init__ 形参（slots 本身无默认值）
 ├── 3. Slot3D / NoSlotChild            # 继承中的 slots
 ├── 4. SlotWithWeakref                  # weakref 支持
 └── 5. benchmark_access()               # 访问速度基准测试
@@ -36,11 +36,11 @@ slots_memory.py
 ```
 RegularPoint (no slots):
   obj_header + __dict__ pointer + __dict__ hash table
-  ~200+ bytes per instance
+  ~136-152 bytes per instance (48 B 对象本体 + 实例字典, 随版本浮动)
 
 SlotPoint (with __slots__):
   obj_header + fixed-size array [x, y]
-  ~48 bytes per instance (CPython 3.10 实测)
+  ~48 bytes per instance (CPython 3.10/3.13 实测)
 ```
 
 `__dict__` 是哈希表（动态、灵活、开销大），`__slots__` 是描述符数组（固定、紧凑、开销小）。
@@ -102,22 +102,23 @@ python3 scripts/gen_diagram.py # 重新生成 images/slots_memory.png
 ![Slots Memory](images/slots_memory.png)
 
 上图三面板展示 `__slots__` 的效果：
-- **左图 — 实例内存布局**：`RegularPoint` 使用 `__dict__` 哈希表（~200 bytes），`SlotPoint` 使用固定数组（~48 bytes，CPython 3.10 实测）
-- **中图 — 大规模内存对比**：随实例数量增长，slots 的内存优势愈发明显（10000 实例节省 ~50%+）
-- **右图 — 属性访问速度**：slots 的描述符查找比 `__dict__` 哈希查找更快
+- **左图 — 实例内存布局**：`RegularPoint` 使用 `__dict__` 哈希表（对象本体 48 B + 实例字典 ~88-104 B），`SlotPoint` 使用固定数组（~48 bytes，CPython 3.10/3.13 实测）
+- **中图 — 大规模内存对比**：随实例数量增长，slots 的内存优势愈发明显（10000 实例节省 ~65%）
+- **右图 — 属性访问速度**：使用真实基准数据。3.10 及以前 slots 的描述符访问普遍快于 `__dict__` 查找；3.11+ 属性访问优化后两者基本持平——速度比值随版本与负载浮动，看量级即可
 
 诚实预期（本机实测）：
 
-- **内存节省稳定可复现**（10000 实例节省 ~68%），但单个对象的 `sys.getsizeof` 只算对象本体——本机 3.10 中 `RegularPoint` 与 `SlotPoint` 的 getsizeof 同为 48 bytes，差异全部来自 `__dict__`（需把 `getsizeof(p.__dict__)` 加上才看得到），这是 `getsizeof` 只计浅层大小的预期陷阱
-- **速度提升幅度波动大**（本机 1.1x~1.3x，且每次运行不同）："slots 快 20-30%" 是量级估计，不是稳定值；在部分版本/负载下差距更小
+- **内存节省稳定可复现**，但百分比随版本浮动：10000 实例节省 64%~68%（3.10 实测 68.4%，3.13 实测 64.7%——两版实例字典大小不同所致）。单个对象的 `sys.getsizeof` 只算对象本体——本机 3.10 中 `RegularPoint` 与 `SlotPoint` 的 getsizeof 同为 48 bytes，差异全部来自 `__dict__`（需把 `getsizeof(p.__dict__)` 加上才看得到），这是 `getsizeof` 只计浅层大小的预期陷阱
+- **速度比值随版本差异巨大**：本机 3.10 实测 write 1.38x / read 1.08x，3.13 实测 write 0.97x / read 1.04x——3.11+ 的属性访问优化让 slots 的速度优势基本消失，个别运行甚至持平或反超。"slots 快 20-30%" 是旧版本的经验值，别当成普适结论
+- `[3]` 的 `AttributeError` 文案随版本变化：3.10 为 `'SlotPoint' object has no attribute 'z'`；3.11+ 追加后缀 ` and no __dict__ for setting new attributes`
 - `weakref.ref(SlotPoint(...))` 抛 `TypeError` 是预期行为，除非 slots 中声明了 `__weakref__`
 
 ## 6. 小结
 
-1. **`__slots__` 用描述符数组替代 `__dict__`**，内存节省 40-60%
+1. **`__slots__` 用描述符数组替代 `__dict__`**，万级实例总内存节省 60%~70%
 2. **禁用动态属性**，属性必须在 slots 中声明
 3. **父类的 slots 仍生效**，但子类不声明自己的 `__slots__` 就会额外获得 `__dict__`
-4. **属性访问更快**（描述符直接偏移 vs 哈希查找）
+4. **属性访问不慢于普通属性**（3.10 及以前更快，3.11+ 基本持平）——别把速度当作用 slots 的主要理由
 5. **需要 `__weakref__` 才支持弱引用**
 
 下一篇进入 07_mro_mixin：看多继承下 C3 线性化如何决定 `super()` 的去向。

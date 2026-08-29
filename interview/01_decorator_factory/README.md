@@ -147,7 +147,7 @@ def func(): pass
 
 **调用时**：先执行 decorator_a 的 wrapper，内部调用 decorator_b 的 wrapper，最后调用 func。
 
-**Q2: 类装饰器怎么写？**
+**Q2: 用类怎么实现装饰器？**
 
 ```python
 class Retry:
@@ -157,12 +157,16 @@ class Retry:
     def __call__(self, func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            for i in range(self.times):
+            for i in range(1, self.times + 1):
                 try:
                     return func(*args, **kwargs)
-                except: pass
+                except Exception:
+                    if i == self.times:
+                        raise  # 最后一次失败必须抛出, 不能静默返回 None
         return wrapper
 ```
+
+（注意：用 `except Exception` 而不是裸 `except:`，后者会把 `KeyboardInterrupt` 也吞掉；行为与 §3.3 的函数版 `@retry` 对齐。）
 
 **Q3: 装饰器能装饰类吗？**
 
@@ -171,7 +175,6 @@ class Retry:
 ```python
 def singleton(cls):
     instances = {}
-    @functools.wraps(cls)
     def wrapper(*args, **kwargs):
         if cls not in instances:
             instances[cls] = cls(*args, **kwargs)
@@ -211,7 +214,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/ 下两张图
 
 ![装饰器调用链图](images/decorator_arch.png)
 
-调用链图展示装饰器的嵌套关系：调用从上到下（Client → @retry → @cache → @log_call → 原函数），返回从下到上。
+调用链图展示装饰器的嵌套关系：调用从上到下（Client → @retry → @cache → @log_call → 原函数），返回从下到上。这条链是**概念示意**——demo 中三个装饰器分别独立装饰 `fetch` / `compute` / `add`，并未叠加在同一条链上；当多个装饰器真的叠加时，就形成图中这样的嵌套结构。
 
 ![运行时行为](images/decorator_runtime.png)
 

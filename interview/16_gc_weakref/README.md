@@ -58,9 +58,7 @@ del a; del b  → 外部引用消失，但 a 和 b 仍互相持有
 → refcount 永远不为 0 → 内存泄漏！
 ```
 
-CPython 的分代 GC 通过**可达性分析**解决这个问题：
-1. 从根集合（stack、globals）出发，标记所有可达对象
-2. 不可达的对象组成循环引用 → 回收
+CPython 的分代 GC 负责收集循环垃圾：它只遍历被 GC 跟踪的容器对象（通过 `tp_traverse` 建立容器间引用图），用"试探性扣除内部引用计数"找出从外部不可达的引用环并回收——教学上常概括为**可达性分析**。
 
 调用 `gc.collect()` 可手动触发一轮完整回收。代码中的 `Node` 类演示了 `del a; del b` 后节点仍然存活；且由于 demo 里 `Node.all_nodes`（类属性列表）持有强引用，`gc.collect()` 也无法回收它们（见"预期结果与陷阱"）。
 
@@ -108,10 +106,11 @@ gc.collect()
 
 | 问题 | 说明 |
 |:---|:---|
-| 循环引用中可能不被调用 | GC 回收循环引用时，不保证 `__del__` 执行 |
+| 解释器退出时不保证执行 | 程序结束时 `__del__` 可能被跳过（3.4 之前更糟：循环垃圾里带 `__del__` 的对象直接进 `gc.garbage` 不回收） |
 | 异常被忽略 | `__del__` 中的异常只会打印警告，不会抛出 |
 | 执行顺序不可预测 | 多个对象的 `__del__` 调用顺序不确定 |
-| 无法保证执行 | `gc.collect()` 清理循环引用时可能跳过有 `__del__` 的对象 |
+
+自 3.4（PEP 442）起，`gc.collect()` 会先终结（调用 `__del__`）再回收带 `__del__` 的循环垃圾，"循环引用导致 `__del__` 永远不执行"已是旧版本的行为了；但**解释器退出时不保证执行**这一点至今成立。
 
 **建议**：优先使用上下文管理器（`with` 语句）做资源清理，而不是依赖 `__del__`。
 
@@ -124,7 +123,7 @@ Gen 0 → Gen 1 → Gen 2
 (频繁扫描) → (中等) → (低频)
 ```
 
-默认阈值 `(700, 10, 10)`：Gen 0 分配 700 次后触发一次扫描，存活对象晋升到 Gen 1。可以用 `gc.get_threshold()` 查看，`gc.set_threshold()` 调整。
+默认阈值：3.12 及以前为 `(700, 10, 10)`，3.13 起改为 `(2000, 10, 10)`（配合增量 GC 的调整）。含义是 Gen 0 分配超过阈值次后触发一次扫描，存活对象晋升到 Gen 1。可以用 `gc.get_threshold()` 查看，`gc.set_threshold()` 调整。
 
 ### 3.7 高频追问
 
@@ -138,7 +137,7 @@ Gen 0 → Gen 1 → Gen 2
 
 **Q3: `__del__` 为什么不推荐使用？**
 
-在循环引用场景下 `__del__` 可能不被调用；`__del__` 中的异常被静默忽略；执行时机不可控。建议用 `with` 上下文管理器或 `atexit` 做资源清理。
+解释器退出时不保证调用；多个 `__del__` 之间的调用顺序不确定；`__del__` 中的异常被静默忽略。建议用 `with` 上下文管理器或 `atexit` 做资源清理。
 
 **Q4: weakref 有什么实际用途？**
 
@@ -169,6 +168,8 @@ python3 scripts/gen_diagram.py # 重新生成 images/gc_weakref.png
   After GC: 2 nodes
 
 [3] weakref (non-blocking reference):
+  obj: CacheEntry('user:123')
+  ref(): CacheEntry('user:123')
   ref() is obj: True
   After del obj:
   ref(): None  (dead!)
@@ -177,9 +178,19 @@ python3 scripts/gen_diagram.py # 重新生成 images/gc_weakref.png
 
 [4] WeakKeyDictionary (auto-cleanup):
   cache has 1 entries
+  cache[obj]: cached result
   After del + GC: cache has 0 entries
 
+[5] __del__ warnings:
+  - since 3.4 (PEP 442) cyclic garbage WITH __del__ is
+    collected AND finalized (order unspecified)
+  - interpreter exit does NOT guarantee __del__ runs
+  - __del__ exceptions are ignored (only warned)
+  - Prefer context managers for cleanup
+
 [6] GC generations:
+  Gen 0: 1 objects
+  Gen 1: 0 objects
   Gen 2: 8007 objects
   gc.get_threshold(): (700, 10, 10)
 ```
@@ -190,7 +201,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/gc_weakref.png
 
 上图三面板展示 Python 内存管理的核心机制：
 - **左图 — 引用计数**：从创建到删除的引用计数变化，`refcount=0` 时立即回收
-- **中图 — 循环引用**：A.next=B / B.next=A 形成死锁，引用计数永远不为 0，需要 `gc.collect()` 通过可达性分析发现并回收
+- **中图 — 循环引用**：A.next=B / B.next=A 形成引用环，引用计数永远不为 0，需要 `gc.collect()` 通过可达性分析发现并回收
 - **右图 — 强引用 vs 弱引用**：强引用 `refcount += 1` 阻止 GC，弱引用不影响引用计数、允许 GC；下方列出 weakref 的 4 种典型使用场景
 
 诚实预期（本机实测）：
@@ -198,6 +209,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/gc_weakref.png
 - **`getrefcount` 读数偏 1**：demo 中 `object()` 显示 refcount=2 而不是 1 —— `sys.getrefcount(obj)` 的实参传递本身临时持有一次引用，这是文档明示的行为，不是 bug
 - **`gc.collect()` 后 `After GC: 2 nodes`**：Node 并没有被这轮 GC 回收，因为 `Node.all_nodes` 类属性（列表）对每个节点持有**强引用**，循环对 GC 来说是"可达"的。两个节点的 `[__del__] destroyed` 日志出现在 demo 全部结束之后（解释器退出时才销毁）—— 这恰好是"隐式强引用导致对象延迟回收"的活例子
 - **`gc.collect(): 22 objects`、各代对象数（Gen 2: 8007）每次运行都会波动**：回收数量取决于解释器启动以来分配过的对象，属于预期，不要和固定值对比
+- **`gc.get_threshold()` 的值随版本不同**：3.12 及以前为 `(700, 10, 10)`，3.13 起为 `(2000, 10, 10)`——本示例为 3.10 输出，在 3.13 上会看到 2000
 - weakref 失效（`ref(): None`）、finalize 回调、`WeakKeyDictionary` 自动清空在 CPython 中稳定可复现
 
 ## 6. 小结

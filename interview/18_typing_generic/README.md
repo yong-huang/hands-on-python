@@ -126,7 +126,7 @@ Protocol vs ABC vs Duck Typing 的对比：
 | ABC | 实例化时 | 是 | 框架设计 |
 | Protocol | 静态检查 + 运行时（`@runtime_checkable`） | 否 | 库 API 设计 |
 
-`Readable` 继承了 `Writable`（Protocol），体现了 Protocol 支持多重继承，可以组合多个协议。
+`Readable(Writable, Protocol)` 演示了 Protocol 之间的继承组合——一个协议可以继承另一个协议，组合出更复杂的接口。
 
 ### 3.4 Union / Optional
 
@@ -214,6 +214,10 @@ python3 scripts/gen_diagram.py # 重新生成 images/typing_generic.png
   int_stack.pop(): 2
   TypeVar T: ~T
 
+[2] Constrained TypeVar (int | float):
+  N = TypeVar('N', int, float)
+  N can only be int or float (type checker enforces)
+
 [3] Protocol (structural typing):
   isinstance(File(), Sized): True
   isinstance(File(), Closeable): True
@@ -230,6 +234,15 @@ python3 scripts/gen_diagram.py # 重新生成 images/typing_generic.png
 [5] Type checking in Python:
   Python does NOT enforce type hints at runtime!
   They are hints for static checkers (mypy / pyright)
+  int_stack.push('wrong')  # mypy error, but runs fine!
+
+[6] Common typing constructs:
+  List[int]                           -> list of ints
+  Dict[str, int]                      -> dict with str keys, int values
+  Optional[str]                       -> str or None
+  Union[int, str]                     -> int or str
+  Tuple[int, ...]                     -> tuple of ints (variable length)
+  Callable[[int, str], bool]          -> function(int, str) -> bool
 ```
 
 ## 5. 预期结果与陷阱

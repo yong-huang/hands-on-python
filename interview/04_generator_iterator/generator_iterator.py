@@ -158,7 +158,7 @@ def demo_memory():
     gen_size = sys.getsizeof(gen_expr)
 
     print(f"  List comprehension:  ~{list_size // 1024:,d} KB")
-    print(f"  Generator expression: {gen_size} bytes ({gen_size})")
+    print(f"  Generator expression: {gen_size} bytes")
     print(f"  Ratio: ~{int(list_size / max(gen_size, 1)):,d}x smaller")
 
     # 实际使用

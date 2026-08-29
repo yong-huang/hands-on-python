@@ -102,9 +102,10 @@ def generate_visualization():
         ("outer[0][0] = 99", "Shared!", "Independent"),
         ("outer.append(x)", "Independent", "Independent"),
     ]
+    # 行颜色: Independent=绿(安全), Shared!=红(危险); 与表格文字一一对应
     colors = [("#4C72B0", "#4C72B0", "#4C72B0"),
-              ("#333", "#55A868", "#C44E52"),
-              ("#C44E52", "#55A868", "#55A868"),
+              ("#333", "#55A868", "#55A868"),
+              ("#C44E52", "#C44E52", "#55A868"),
               ("#55A868", "#55A868", "#55A868")]
 
     for i, row in enumerate(table):

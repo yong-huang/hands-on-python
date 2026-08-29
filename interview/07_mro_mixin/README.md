@@ -63,7 +63,7 @@ class MyService(MixinLog, MixinValidate, Base):
 
 **Q1: 钻石问题（Diamond Problem）？**
 
-B 和 C 都继承 A，D 继承 B 和 C。A 的方法被调用几次？答案：**恰好一次**。C3 线性化保证 A 在 MRO 中只出现一次。
+B 和 C 都继承 A，D 继承 B 和 C。A 的方法被调用几次？答案：**恰好一次**——C3 线性化保证 A 在 MRO 中只出现一次（查找只命中一次）。注意这依赖 B、C 都用协作式 `super()` 转发：若 B、C 直接写 `A.greet(self)`，A 的代码就会执行两次。
 
 **Q2: `super()` 和 `ClassName.__init__()` 的区别？**
 
@@ -113,13 +113,13 @@ python3 scripts/gen_diagram.py # 重新生成 images/mro_mixin.png
 上图三面板展示 MRO 和 Mixin 的核心机制：
 - **左图 — 钻石继承**：`D(B, C)` 的继承图和 MRO 序列 `D → B → C → A → object`，A 只出现一次
 - **中图 — super() 调用链**：`MyService(MixinLog, MixinValidate, Base)` 的 `__init__` 调用链，每次 `super()` 转到 MRO 中的下一个
-- **右图 — Mixin 组合模式**：`User(JSONMixin, ReprMixin)` 通过组合获得 JSON 序列化和自定义 repr 能力
+- **右图 — Mixin 组合模式**：`User(JSONMixin, ReprMixin)` 通过组合获得 JSON 序列化和自定义 repr 能力（图中 `ValidateMixin` 是 `Product` 使用的第三个 Mixin，同一组合模式）
 
 诚实预期（本机实测）：
 
 - 全部输出**确定性可复现**：MRO 序列、`A.greet()` 恰好调用一次、super() 链顺序每次运行完全一致
 - 陷阱提示：如果 Mixin 的 `__init__` 里不调 `super().__init__()`，链条会在该 Mixin 处中断，后面的 `MixinValidate`/`Base` 都不会被初始化——这是多继承最常见的静默 bug，本 demo 的三个 Mixin 都正确转发
-- `object.__init__()` 在链条末尾被隐式调用，demo 输出中没有单独打印它，属预期
+- `object.__init__()` 在链条末尾经由 `Base` 的 `super().__init__()` 调到，只是不打印，demo 输出看不到它，属预期
 
 ## 6. 小结
 

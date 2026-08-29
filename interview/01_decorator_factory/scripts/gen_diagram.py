@@ -69,9 +69,9 @@ def plot_arch():
 def plot_runtime():
     fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 
-    # retry 行为
+    # retry 行为: 三段调用 (1,2,3 次尝试后成功 / 一次成功 / 两次后成功)
     ax = axes[0]
-    attempts = [1, 2, 3, 1, 2, 1]
+    attempts = [1, 2, 3, 1, 1, 2]
     ok = [False, False, True, True, False, True]
     colors = ["#C44E52" if not v else "#55A868" for v in ok]
     ax.bar(range(len(attempts)), attempts, color=colors, edgecolor="#333")

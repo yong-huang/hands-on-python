@@ -2,7 +2,7 @@
 
 ## 1. 引言
 
-描述符是 Python 属性访问的底层机制。当你写 `obj.attr` 时，Python 不是简单地查 `obj.__dict__`——它会先检查 `type(obj).__dict__` 中对应的值是否是描述符。如果是，就调用描述符的 `__get__`/`__set__` 方法。这就是 `property`、`classmethod`、`staticmethod` 等内置装饰器的实现原理。
+描述符是 Python 属性访问的底层机制。当你写 `obj.attr` 时，Python 不是简单地查 `obj.__dict__`——它会先看 `type(obj)` 上的 `attr` 是否是**数据描述符**（定义了 `__set__` 或 `__delete__`）：是则直接走描述符协议；否则实例 `__dict__` 优先，未命中才调用非数据描述符的 `__get__`。这就是 `property`、`classmethod`、`staticmethod` 等内置装饰器的实现原理。
 
 描述符分两类：
 - **数据描述符**（data descriptor）：定义 `__set__` 或 `__delete__`（即使没有 `__get__`），优先级高于实例 `__dict__`
@@ -134,10 +134,10 @@ def __get__(self, obj, objtype=None):
 
 **Q4: 描述符和装饰器有什么关系？**
 
-两者都基于高阶函数和协议：
-- 装饰器拦截**函数调用**（`__call__`）
-- 描述符拦截**属性访问**（`__get__`/`__set__`）
-- `property`、`classmethod`、`staticmethod` 都是描述符，语法上看像装饰器
+两者都是在"不修改调用方代码"的前提下改写行为，但拦截的层面不同：
+- 装饰器在**函数对象层面**包装（`f = deco(f)`），调用函数时生效
+- 描述符在**属性访问协议层面**拦截，读写属性时生效（`__get__`/`__set__`）
+- `property`、`classmethod`、`staticmethod` 本质是描述符，只是借装饰器语法挂到类属性上
 
 ## 4. 实操演示
 
@@ -152,6 +152,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/descriptor.png
 ```
 [1] TypedField (data descriptor with validation):
   User('Alice', age=30, email='alice@example.com')
+  User('Bob', age=25, email='bob@example.com')
 
   Type validation:
     TypeError: age: expected int, got str
@@ -163,6 +164,8 @@ python3 scripts/gen_diagram.py # 重新生成 images/descriptor.png
   Access stats 1st time (computes): {'sum': 4950, 'mean': 49.5, 'min': 0, 'max': 99}
   Access stats 2nd time (cached):   {'sum': 4950, 'mean': 49.5, 'min': 0, 'max': 99}
   Compute count: 1 (should be 1)
+  Access sorted_data 1st: [0, 1, 2, 3, 4]...
+  Access sorted_data 2nd: [0, 1, 2, 3, 4]... (cached)
   After override: {'hacked': True} (non-data: instance dict wins)
 
 [3] LazyField (lazy initialization):
@@ -172,12 +175,21 @@ python3 scripts/gen_diagram.py # 重新生成 images/descriptor.png
     -> {'connected': True, 'db': 'mydb'}
   Accessing database again (cached):
     -> {'connected': True, 'db': 'mydb'} (same object: True)
+  Accessing cache_pool:
+    [LazyField] Initializing cache pool...
+    -> {'size': 256}
+
+...  # [4] LoggedField 与 [5] Descriptor nature 两段省略
 
 [6] Attribute lookup priority:
   [1] Data descriptor vs __dict__:
+    obj.__dict__['d'] = 'instance_value'
     [DataDesc.__get__] descriptor wins
     obj.d = 100  (descriptor wins)
+    [DataDesc.__set__] descriptor wins
+    after obj.d = 999, obj.__dict__ = {'d': 'instance_value'}
   [2] Non-data descriptor vs __dict__:
+    obj.__dict__['nd'] = 'instance_value'
     obj.nd = instance_value  (instance dict wins)
 ```
 
@@ -187,7 +199,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/descriptor.png
 
 上图三面板展示描述符协议的核心机制：
 - **左图 — obj.attr Lookup Flow**：Python 属性访问的完整决策链。从 `obj.attr` 出发，依次检查类字典中的数据描述符 → 实例字典 → 类字典中的非数据描述符 → 抛出 `AttributeError`
-- **中图 — Data vs Non-Data Descriptor**：两类描述符的对比。数据描述符定义 `__get__+__set__+__delete__`，优先级高于实例字典；非数据描述符只定义 `__get__`，实例字典优先。`property` / `TypedField` 是数据描述符，`classmethod` / `CachedProperty` 是非数据描述符
+- **中图 — Data vs Non-Data Descriptor**：两类描述符的对比。数据描述符定义 `__set__` 或 `__delete__`（`__get__` 可选），优先级高于实例字典；非数据描述符只定义 `__get__`，实例字典优先。`property` / `TypedField` 是数据描述符，`classmethod` / `CachedProperty` 是非数据描述符
 - **右图 — Four Descriptor Patterns**：四种实战模式。TypedField 做类型验证、CachedProperty 做计算缓存、LazyField 做惰性初始化、LoggedField 做读写审计。底部标注 `__set_name__` 的自动命名机制
 
 诚实预期（本机实测）：
@@ -199,7 +211,7 @@ python3 scripts/gen_diagram.py # 重新生成 images/descriptor.png
 ## 6. 小结
 
 1. **描述符是 `obj.attr` 的底层机制**，property/classmethod/staticmethod 都是描述符
-2. **数据描述符**（`__get__` + `__set__`）优先级高于实例字典
+2. **数据描述符**（定义 `__set__` 或 `__delete__`，`__get__` 可选）优先级高于实例字典
 3. **非数据描述符**（仅 `__get__`）优先级低于实例字典
 4. **`__set_name__`** 自动获取属性名，无需硬编码
 5. **四大实战模式**：TypedField（验证）、CachedProperty（缓存）、LazyField（惰性）、LoggedField（审计）

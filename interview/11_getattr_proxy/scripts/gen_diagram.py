@@ -62,9 +62,13 @@ def generate_visualization():
                 fontsize=9, fontweight="bold", color=color)
         if i < len(steps) - 1:
             ny = steps[i+1][1]
-            label = "Found" if i in [1, 2, 3] else "Not found"
-            if i in [0]:
-                label = ""
+            # 向下走 = 本层未命中(miss); 只有 __getattr__ 也失败才 raise
+            if i == 0:
+                label = ""          # 入口, 必经
+            elif i == len(steps) - 2:
+                label = "raise"
+            else:
+                label = "miss"
             ax.text(x + w/2 + 0.1, (y + ny)/2, label, fontsize=7, color="#55A868")
             ax.annotate("", xy=(5, ny + h/2 + 0.05),
                         xytext=(5, y - h/2 - 0.05),

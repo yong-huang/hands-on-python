@@ -50,7 +50,7 @@ def generate_visualization():
           "__abs__  → abs()"]),
         (7.5, 4.5, "Container", "#8172B2",
          ["__len__    → len()", "__getitem__ → obj[i]", "__iter__  → for x in",
-          "__bool__  → if obj:"]),
+          "__contains__ → in"]),
     ]
 
     for x, y, title, color, methods in categories:
@@ -81,7 +81,7 @@ def generate_visualization():
         (5, 6.2, "p1 == p2 ?", "#DD8452"),
         (5, 5.2, "→ __eq__: (3,4) == (3,4) → True", "#55A868"),
         (5, 3.8, "hash(p1) == hash(p2) ?", "#DD8452"),
-        (5, 2.8, "→ __hash__: hash((3,4)) → True", "#55A868"),
+        (5, 2.8, "→ __hash__: hash(p1) == hash(p2) → True", "#55A868"),
         (5, 1.5, "→ p1 and p2 can be dict keys", "#8172B2"),
     ]
     w, h = 7.0, 0.7

@@ -149,7 +149,7 @@ asdict(emp)  # {'name': 'Alice', 'age': 30, 'address': {'city': 'Shanghai', 'str
 
 **Q2: dataclass 的 `field(default_factory=list)` 和 `field(default=[])` 有什么区别？**
 
-`default=[]` 是致命错误——所有实例共享同一个 list 对象（Python 默认参数在函数定义时求值）。`default_factory=list` 确保每次 `__init__` 调用时创建新的 list。同理适用于 `dict`、`set` 等可变类型。
+`field(default=[])` 会在类定义时直接抛 `ValueError: mutable default <class 'list'> for field ... is not allowed: use default_factory`——dataclass 自 3.7 起就拒绝 list/dict/set 字面默认值，从根上挡住了"所有实例共享同一个 list"的坑。`default_factory=list` 则在每次 `__init__` 调用时执行 `list()` 创建新对象。真正会踩共享陷阱的是普通函数默认参数 `def f(items=[])`，那里没有这层保护。
 
 **Q3: frozen dataclass 能做字典键吗？**
 
@@ -181,19 +181,37 @@ python3 scripts/gen_diagram.py # 重新生成 images/collections.png
   Point(3, 4): x=3, y=4
   repr: Point(x=3, y=4)
   hashable: 1079245023883434373 (can be dict key)
-  Color: Color(r=255, 0, b=0, name='red')
+  dict key: [Point(x=3, y=4)]
+  Color: Color(r=255, g=0, b=0, name='red')
+
+[2] Typed NamedTuple:
+  TypedPoint(3.5, 4.5): TypedPoint(x=3.5, y=4.5)
+  __annotations__: {'x': <class 'float'>, 'y': <class 'float'>}
 
 [3] dataclass (mutable):
   Product(name='Laptop', price=999.99, in_stock=True, tags=['electronics'])
-  After modify: Product(name='Laptop', price=899.99, ..., tags=['electronics', 'sale'])
+  After modify: Product(name='Laptop', price=899.99, in_stock=True, tags=['electronics', 'sale'])
   Product('Free', -1): price=0.0 (clamped to 0)
 
 [4] dataclass (frozen=True, order=True):
   Sorted: [Version(major=1, minor=10, patch=0), Version(major=2, minor=0, patch=0), Version(major=2, minor=0, patch=1)]
+  Hashable: 7853416581674910768
   versions[0].major = 3 -> AttributeError: frozen
 
 [5] Nested dataclass:
+  Employee(name='Alice', age=30, address=Address(city='Shanghai', street='Nanjing Rd'))
   asdict: {'name': 'Alice', 'age': 30, 'address': {'city': 'Shanghai', 'street': 'Nanjing Rd'}}
+
+[6] Conversion utilities:
+  asdict(prod): ['name', 'price', 'in_stock', 'tags']
+  tuple(Point(3,4)): (3, 4)
+
+[7] Comparison guide:
+  dict:      mutable, no field access, no defaults
+  namedtuple: immutable, field access, lightweight
+  dataclass: mutable/frozen, auto methods, flexible
+  Rule: simple data transfer -> namedtuple
+        need mutation/validation -> dataclass
 ```
 
 ## 5. 预期结果与陷阱
@@ -203,14 +221,13 @@ python3 scripts/gen_diagram.py # 重新生成 images/collections.png
 上图三面板展示了数据容器的核心对比：
 
 - **左图 — 容器对比表**：dict、namedtuple、dataclass 在可变性、字段访问、`__repr__`/`__eq__`/`__hash__`、默认值、类型注解等方面的差异一目了然
-- **中图 — dataclass 配置项**：`frozen=True`（不可变）、`order=True`（排序）、`slots=True`（内存优化，3.10+）、`kw_only=True`（强制关键字参数）、`repr=False`（自定义 repr）、`field(default)`（可变默认值工厂）
+- **中图 — dataclass 配置项**：`frozen=True`（不可变）、`order=True`（排序）、`slots=True`（内存优化，3.10+）、`kw_only=True`（强制关键字参数）、`repr=False`（自定义 repr）、`field(default_factory=...)`（为可变默认值生成新对象）
 - **右图 — 常用模式**：数据传输用 namedtuple、配置用 frozen dataclass、领域模型用 dataclass、字典键用 frozen dataclass
 
 诚实预期（本机实测）：
 
 - demo 行为全部**确定性**：排序结果、frozen 的 `AttributeError`、`asdict` 递归转换在任何 CPython 3.7+ 上一致
 - **`hash()` 的数值是否稳定取决于内容**：demo 里 `hash(Point(3, 4))` 基于纯 int 元组，同一版本内**可复现**；只有 str/bytes 参与哈希时才受 PYTHONHASHSEED 随机化影响。无论哪种情况都只比较"能否哈希"，不要依赖具体数值
-- 上文输出示例中的 `Color(r=255, 0, b=0, ...)` 为节选缩写，实际输出是完整的 `Color(r=255, g=0, b=0, name='red')`
 
 ## 6. 小结
 

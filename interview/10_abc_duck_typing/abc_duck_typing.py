@@ -157,10 +157,10 @@ class RedisCache(CacheInterface):
 def ship_item(transport, destination: str, item: str):
     """统一接口: 任何有 deliver() 的对象都能用"""
     method = transport.deliver(destination)
-    label = ""
+    result = f"{method} with '{item}'"
     if hasattr(transport, "shipping_label"):
-        label = transport.shipping_label(destination)
-    return f"{method} with '{item}'\n  {label}"
+        result += f"\n  {transport.shipping_label(destination)}"
+    return result
 
 
 def cache_demo(cache: CacheInterface):
