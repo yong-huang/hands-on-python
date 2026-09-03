@@ -1,40 +1,80 @@
 # 02 · 上下文管理器：with 语句背后的 `__enter__` / `__exit__` 协议
 
-## 1. 引言
+> 上一实验的装饰器在函数前后插逻辑，可一旦函数体中途抛异常，"调用后"的清理代码就被跳过了
+> ——手写 `try/finally` 能救，但每个资源处都写一遍既啰嗦又容易漏。
+> Python 把这个模式固化成了 `with` 语句：背后的 `__enter__` / `__exit__` 协议保证无论成败，释放逻辑都会执行。
+> 本实验拆开这个协议，并对照 `@contextmanager` 的函数式写法。
 
-上下文管理器是 Python 中保证资源正确获取和释放的机制。`with` 语句背后的核心协议是 `__enter__` 和 `__exit__` 两个魔法方法——无论代码块是否抛出异常，`__exit__` 都会被调用，从而实现"异常安全"的资源管理。
+## 1. 为什么需要它
+
+上下文管理器是 Python 中保证资源正确获取和释放的机制。文件句柄、锁、数据库事务这类资源必须"谁获取谁释放"，靠手写 `try/finally` 分散在各个调用点，异常路径一漏就是句柄泄漏、锁不释放、事务悬挂。`with` 语句背后的核心协议是 `__enter__` 和 `__exit__` 两个魔法方法——无论代码块是否抛出异常，`__exit__` 都会被调用，从而实现"异常安全"的资源管理。
 
 Python 提供两种实现方式：**类式**（定义 `__enter__`/`__exit__`）和**函数式**（`@contextmanager` + `yield`）。两者功能等价，选择取决于代码复杂度——简单场景用函数式更简洁，需要维护状态的复杂场景用类式更清晰。
 
-## 2. 文件结构
+## 2. 总览：核心机制一图看懂
 
-```
-02_context_manager/
-├── README.md              # 本教程文档
-├── context_manager.py     # 主演示脚本：类式/函数式上下文管理器 + contextlib 工具
-└── images/
-    ├── context_manager.archify.html  # 交互示意图（浏览器打开）
-    └── context_manager.archify.json  # 图源（typed JSON）
-```
+![with 语句：__enter__ / __exit__ 协议](images/context_manager.archify.svg)
 
-主脚本内容：
+一句话心智模型：**`with obj` = `__enter__()` 取资源 → 执行 with 块 → `__exit__()` 无论是否抛异常都被调用**。看图时先顺着主路径走一遍正常流程；再看异常分支——`__exit__` 收到异常三元组后，返回 `True` 抑制异常，返回 `False`/`None` 则继续传播。
 
-```
-context_manager.py
-├── 1. Timer               # 计时器（类式，自动打印耗时）
-├── 2. FileLock            # 文件锁（类式，threading.Lock）
-├── 3. Transaction         # 数据库事务（类式，自动 commit/rollback）
-├── 4. temporary_file()    # 临时文件（@contextmanager，自动删除）
-├── 5. benchmark()         # 性能计时（@contextmanager，异常安全）
-├── 6. demo_suppress()     # contextlib.suppress 示例
-├── 7. demo_redirect()     # redirect_stdout 示例
-├── 8. demo_nested()       # 嵌套上下文管理器
-└── 9. demo_exit_return()  # __exit__ 返回值对异常传播的影响
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/02_context_manager/images/context_manager.archify.html)
+> （或本地打开 [`images/context_manager.archify.html`](images/context_manager.archify.html)）。
+
+## 3. 快速开始
+
+```bash
+cd interview/02_context_manager
+python3 context_manager.py     # 运行全部 demo（Timer/事务/临时文件/异常传播）
 ```
 
-## 3. 核心概念
+真实输出示例（macOS, CPython 3.10，节选）：
 
-### 3.1 类式上下文管理器协议
+```
+[1] Timer:
+  [sort_10k] 0.0001s
+  [sort_100k] 0.0011s
+
+[2] Transaction (class-based):
+  [TX:insert_user] BEGIN
+  [TX:insert_user] COMMIT (2 ops)
+  committed=True
+
+  Transaction with error:
+  [TX:fail] BEGIN
+  [TX:fail] ROLLBACK (RuntimeError: connection lost)
+  committed=False, rolled_back=True
+
+[3] Temporary file (@contextmanager):
+  [tempfile] created: .../_tmp_ctx_96528.txt
+  content: Hello, context!
+  file exists: True
+  [tempfile] deleted: .../_tmp_ctx_96528.txt
+  after with, file exists: False
+
+[4] Benchmark (@contextmanager):
+  [bench:list_comp] 0.0091s [OK]
+  [bench:failing_op] 0.0094s [FAIL]
+  errors captured: ['oops']
+
+...  # [5] contextlib utilities 与 [6] Nested contexts 两段省略
+
+[7] __exit__ return value:
+  [1] swallow=True (异常被吞):
+    [swallower] swallowed: ZeroDivisionError: division by zero
+    code after with: reached (exception swallowed)
+  [2] swallow=False (异常传播):
+    ZeroDivisionError propagated (as expected)
+```
+
+诚实预期（本机实测）：
+
+- **Timer / benchmark 的耗时数值每次运行都会波动**（受机器负载影响），量级（10k 排序 ~0.0001s、100k ~0.001s）才是关注点
+- commit/rollback、临时文件删除、异常吞/传播等行为是确定性的，每次运行结果一致
+- `FileLock` 只是演示类，本机没有真实的多进程文件锁竞争场景可观察
+
+## 4. 核心概念
+
+### 4.1 类式上下文管理器协议
 
 ```python
 class MyResource:
@@ -67,7 +107,7 @@ class Transaction:
         return True  # 事务回滚后不再传播异常
 ```
 
-### 3.2 函数式：@contextmanager 原理
+### 4.2 函数式：@contextmanager 原理
 
 ```python
 @contextmanager
@@ -83,7 +123,7 @@ def my_resource():
 
 `yield` 之前的部分相当于 `__enter__`，`yield` 的值绑定到 `as` 变量，`finally` 块相当于 `__exit__`。
 
-### 3.3 类式 vs 函数式对比
+### 4.3 类式 vs 函数式对比
 
 | 维度 | 类式 | 函数式 |
 |:---|:---|:---|
@@ -94,7 +134,7 @@ def my_resource():
 
 **关键差异**：类式用 `__exit__` 的返回值直观地控制异常传播；函数式默认异常会传播，需要手动把 `yield` 包进 `try/except` 才能吞掉（见脚本 `benchmark()` 的写法）。
 
-### 3.4 contextlib 工具
+### 4.4 contextlib 工具
 
 ```python
 # suppress: 优雅地忽略特定异常
@@ -109,7 +149,44 @@ with redirect_stdout(buf):
 captured = buf.getvalue()
 ```
 
-### 3.5 高频追问
+## 5. 关键代码解析
+
+整个协议最核心的一处是 **`__exit__` 对异常的分支处理**（`Transaction`）：
+
+```python
+def __exit__(self, exc_type, exc_val, exc_tb):
+    if exc_type is None:             # 无异常 → 正常路径，commit
+        self.committed = True
+    else:                            # 有异常 → 补救路径，rollback
+        self.rolled_back = True
+    return True                      # 为什么 return True：回滚已完成补救，
+                                     # 再向上抛只会让调用方多处理一次已知异常
+```
+
+函数式的等价陷阱在 `benchmark()`：`yield` 必须包进 `try/except` 才能吞异常，`finally` 负责无论如何都收尾。
+
+坑清单：
+
+- **`__exit__` 忘写 `return True`**：默认返回 `None` 等于不吞异常——想吞必须显式返回 `True`，这是面试手写题最常见的丢分点
+- **`@contextmanager` 靠 `finally` 吞不掉异常**：必须在 `yield` 处用 `try/except` 捕获；但这会隐藏 `with` 块内的 bug，实际中应谨慎使用
+- **`return True` 滥用**：`__exit__` 返回 `True` 会吞掉一切异常，"代码没报错但行为不对"往往源于此
+- **示意图中的执行时序是示意数据**（展示行为模式），不是某次运行的实录
+
+## 6. 文件结构
+
+```
+02_context_manager/
+├── README.md                          # 本教程文档
+├── context_manager.py                 # 主演示脚本：类式/函数式上下文管理器 + contextlib 工具
+└── images/
+    ├── context_manager.archify.json   # 图源（typed JSON IR，可编辑重渲染）
+    ├── context_manager.archify.html   # 交互示意图（浏览器打开）
+    └── context_manager.archify.svg    # 双主题矢量图（本 README §2 内嵌）
+```
+
+`context_manager.py` 内容：`1. Timer` 计时器（类式，自动打印耗时）/ `2. FileLock` 文件锁（类式，threading.Lock）/ `3. Transaction` 数据库事务（类式，自动 commit/rollback）/ `4. temporary_file()` 临时文件（@contextmanager，自动删除）/ `5. benchmark()` 性能计时（@contextmanager，异常安全）/ `6. demo_suppress()` contextlib.suppress 示例 / `7. demo_redirect()` redirect_stdout 示例 / `8. demo_nested()` 嵌套上下文管理器 / `9. demo_exit_return()` `__exit__` 返回值对异常传播的影响。
+
+## 7. 面试要点
 
 **Q1: with 语句和 try/finally 有什么区别？**
 
@@ -166,66 +243,11 @@ def __exit__(self, exc_type, exc_val, exc_tb):
     # 如果无异常，三者都为 None
 ```
 
-## 4. 实操演示
+**Q5: 如何用上下文管理器实现自动 commit/rollback 的事务？**
 
-```bash
-cd interview/02_context_manager
-python3 context_manager.py     # 运行全部 demo（Timer/事务/临时文件/异常传播）
-# 交互示意图: 浏览器打开 images/context_manager.archify.html
-```
+在 `__exit__` 里判 `exc_type`：为 `None` 说明正常退出则 commit，不为 `None` 则 rollback；事务回滚后 `return True` 不再向上传播异常。异常发生时 `__exit__` 依旧被调用，正是这个保证让"失败自动回滚"成为可能。
 
-真实输出示例（macOS, CPython 3.10，节选）：
-
-```
-[1] Timer:
-  [sort_10k] 0.0001s
-  [sort_100k] 0.0011s
-
-[2] Transaction (class-based):
-  [TX:insert_user] BEGIN
-  [TX:insert_user] COMMIT (2 ops)
-  committed=True
-
-  Transaction with error:
-  [TX:fail] BEGIN
-  [TX:fail] ROLLBACK (RuntimeError: connection lost)
-  committed=False, rolled_back=True
-
-[3] Temporary file (@contextmanager):
-  [tempfile] created: .../_tmp_ctx_96528.txt
-  content: Hello, context!
-  file exists: True
-  [tempfile] deleted: .../_tmp_ctx_96528.txt
-  after with, file exists: False
-
-[4] Benchmark (@contextmanager):
-  [bench:list_comp] 0.0091s [OK]
-  [bench:failing_op] 0.0094s [FAIL]
-  errors captured: ['oops']
-
-...  # [5] contextlib utilities 与 [6] Nested contexts 两段省略
-
-[7] __exit__ return value:
-  [1] swallow=True (异常被吞):
-    [swallower] swallowed: ZeroDivisionError: division by zero
-    code after with: reached (exception swallowed)
-  [2] swallow=False (异常传播):
-    ZeroDivisionError propagated (as expected)
-```
-
-## 5. 预期结果与陷阱
-
-**交互示意图**：[浏览器打开](images/context_manager.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/context_manager.archify.json`）。
-
-with 语句的执行流：`__enter__()` 取资源 → 执行 with 块 → `__exit__()` **无论是否抛异常都被调用** → 返回 `True` 抑制异常，返回 `False`/`None` 则继续传播。
-
-诚实预期（本机实测）：
-
-- **Timer / benchmark 的耗时数值每次运行都会波动**（受机器负载影响），量级（10k 排序 ~0.0001s、100k ~0.001s）才是关注点
-- commit/rollback、临时文件删除、异常吞/传播等行为是确定性的，每次运行结果一致
-- `FileLock` 只是演示类，本机没有真实的多进程文件锁竞争场景可观察
-
-## 6. 小结
+## 8. 总结
 
 1. **with 语句 = 异常安全的 try/finally**，保证资源释放
 2. **类式用 `__enter__`/`__exit__`**，函数式用 `@contextmanager` + `yield`
@@ -233,4 +255,4 @@ with 语句的执行流：`__enter__()` 取资源 → 执行 with 块 → `__exi
 4. **`@contextmanager` 更简洁**，默认异常会传播；要吞异常需手动把 `yield` 包进 `try/except`（见 `benchmark()`）
 5. **`contextlib.suppress`** 是替代 `try/except pass` 的优雅写法
 
-下一篇进入 03_descriptor：看描述符协议如何成为 property、方法绑定背后的底层机制。
+下一篇进入 [03_descriptor](../03_descriptor/README.md)：看描述符协议如何成为 property、方法绑定背后的底层机制。

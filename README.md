@@ -1,12 +1,29 @@
 # hands-on-python
 
-面试向 Python 语言机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等 Python 面试高频主题。每个实验都是一个"五件套"目录——README 教程 + 主演示脚本 + 交互示意图（HTML + JSON 图源）——读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
+面试向 Python 语言机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等 Python 面试高频主题。每个实验都是一个"五件套"目录——README 教程 + 主演示脚本 + 图三件套（图源 JSON / 交互 HTML / 内嵌 SVG）——读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
 
 ## 环境要求
 
 - **Python 3.8+**（推荐 3.10+；使用 `python3 --version` 探测实际版本）
 - 主演示脚本 `python3 <topic>.py` **零第三方依赖**
-- 交互示意图是自包含 HTML，用浏览器打开即可（trace 动画、深/浅主题、节点检索）
+- 每篇 README §2 内嵌双主题架构图（SVG，GitHub 深/浅色模式自适应），并附**交互版**链接（GitHub Pages 在线打开，或本地浏览器打开自包含 HTML：trace 动画、深/浅主题、节点检索）
+
+## 目录结构
+
+```
+hands-on-python/
+├── README.md                  # 本总目录：实验表格 + 学习路线
+├── LICENSE                    # MIT
+├── CLAUDE.md                  # 仓库约定（面向 AI 协作工具）
+└── interview/
+    └── NN_short_name/         # 两位编号 + 小写主题名，共 20 个实验
+        ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 面试要点 → 总结
+        ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
+        └── images/
+            ├── <topic>.archify.json  # 图源（typed JSON IR，可编辑重渲染）
+            ├── <topic>.archify.html  # 交互示意图（自包含单文件）
+            └── <topic>.archify.svg   # 双主题矢量图（README §2 内嵌）
+```
 
 ## 实验列表
 
@@ -50,4 +67,4 @@ python3 decorator_factory.py      # 主演示：分步打印 demo 输出（零�
 open images/decorator_factory.archify.html   # 交互示意图（浏览器打开；Linux 用 xdg-open）
 ```
 
-主演示脚本从任意 cwd 调用都正确。每个实验的 README 里有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。
+主演示脚本从任意 cwd 调用都正确。每个实验的 README §3「快速开始」里有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常；§2 有内嵌架构图与交互版链接。
