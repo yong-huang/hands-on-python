@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="generator" content="archify 2.17.0-dev.0">
+  <meta name="generator" content="archify 2.17.0-dev.1">
   <title>GIL：线程在 I/O 等待时释放锁</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
@@ -5033,68 +5033,68 @@
 
 
         <!-- Lifelines -->
-        <path d="M 62 142 L 62 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
-        <path d="M 170 142 L 170 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
-        <path d="M 278 142 L 278 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
-        <path d="M 386 142 L 386 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
+        <path d="M 129.5 142 L 129.5 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
+        <path d="M 303.83333333333337 142 L 303.83333333333337 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
+        <path d="M 478.1666666666667 142 L 478.1666666666667 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
+        <path d="M 652.5 142 L 652.5 415" class="a-default" stroke-width="0.8" stroke-dasharray="3,7"/>
 
         <!-- Activations -->
 
 
         <!-- Messages -->
         <g data-edge-from="t1" data-edge-to="gil" data-edge-label="acquire()" data-edge-key="0" data-edge-id="m1">
-          <path data-composition-edge-from="t1" data-composition-edge-to="gil" data-composition-edge-id="m1" data-composition-points="69,165;163,165" d="M 69 165 L 163 165" class="a-emphasis" data-animate="edge" style="--step:0" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-composition-edge-from="t1" data-composition-edge-to="gil" data-composition-edge-id="m1" data-composition-points="136.5,165;296.83333333333337,165" d="M 136.5 165 L 296.83333333333337 165" class="a-emphasis" data-animate="edge" style="--step:0" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <g data-detail="context">
-          <rect x="86.6" y="145" width="58.800000000000004" height="16" rx="3" class="c-mask"/>
-          <text x="116" y="155" class="t-backend" font-size="9" text-anchor="middle">acquire()</text>
+          <rect x="187.26666666666668" y="145" width="58.800000000000004" height="16" rx="3" class="c-mask"/>
+          <text x="216.66666666666669" y="155" class="t-backend" font-size="9" text-anchor="middle">acquire()</text>
         </g>
         </g>
 
         <g data-edge-from="t1" data-edge-to="os" data-edge-label="socket.recv()" data-edge-key="1" data-edge-id="m2">
-          <path data-composition-edge-from="t1" data-composition-edge-to="os" data-composition-edge-id="m2" data-composition-points="69,200;379,200" d="M 69 200 L 379 200" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+          <path data-composition-edge-from="t1" data-composition-edge-to="os" data-composition-edge-id="m2" data-composition-points="136.5,200;645.5,200" d="M 136.5 200 L 645.5 200" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.4" marker-end="url(#arrowhead)"/>
         <g data-detail="context">
-          <rect x="184.2" y="180" width="79.60000000000001" height="16" rx="3" class="c-mask"/>
-          <text x="224" y="190" class="t-backend" font-size="9" text-anchor="middle">socket.recv()</text>
+          <rect x="351.2" y="180" width="79.60000000000001" height="16" rx="3" class="c-mask"/>
+          <text x="391" y="190" class="t-backend" font-size="9" text-anchor="middle">socket.recv()</text>
         </g>
         </g>
 
         <g data-edge-from="os" data-edge-to="t1" data-edge-label="阻塞等待" data-edge-key="2" data-edge-id="m3">
-          <path data-composition-edge-from="os" data-composition-edge-to="t1" data-composition-edge-id="m3" data-composition-points="379,235;69,235" d="M 379 235 L 69 235" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.4" stroke-dasharray="3,5" marker-end="url(#arrowhead)"/>
+          <path data-composition-edge-from="os" data-composition-edge-to="t1" data-composition-edge-id="m3" data-composition-points="645.5,235;136.5,235" d="M 645.5 235 L 136.5 235" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.4" stroke-dasharray="3,5" marker-end="url(#arrowhead)"/>
         <g data-detail="context">
-          <rect x="197.2" y="215" width="53.6" height="16" rx="3" class="c-mask"/>
-          <text x="224" y="225" class="t-muted" font-size="9" text-anchor="middle">阻塞等待</text>
+          <rect x="364.2" y="215" width="53.6" height="16" rx="3" class="c-mask"/>
+          <text x="391" y="225" class="t-muted" font-size="9" text-anchor="middle">阻塞等待</text>
         </g>
         </g>
 
         <g data-edge-from="t1" data-edge-to="gil" data-edge-label="I/O 等待，释放 GIL" data-edge-key="3" data-edge-id="m4">
-          <path data-composition-edge-from="t1" data-composition-edge-to="gil" data-composition-edge-id="m4" data-composition-points="69,270;163,270" d="M 69 270 L 163 270" class="a-security" data-animate="edge" style="--step:3" stroke-width="1.4" marker-end="url(#arrowhead-security)"/>
+          <path data-composition-edge-from="t1" data-composition-edge-to="gil" data-composition-edge-id="m4" data-composition-points="136.5,270;296.83333333333337,270" d="M 136.5 270 L 296.83333333333337 270" class="a-security" data-animate="edge" style="--step:3" stroke-width="1.4" marker-end="url(#arrowhead-security)"/>
         <g data-detail="context">
-          <rect x="63.199999999999996" y="250" width="105.60000000000001" height="16" rx="3" class="c-mask"/>
-          <text x="116" y="260" class="t-security" font-size="9" text-anchor="middle">I/O 等待，释放 GIL</text>
+          <rect x="163.86666666666667" y="250" width="105.60000000000001" height="16" rx="3" class="c-mask"/>
+          <text x="216.66666666666669" y="260" class="t-security" font-size="9" text-anchor="middle">I/O 等待，释放 GIL</text>
         </g>
         </g>
 
         <g data-edge-from="t2" data-edge-to="gil" data-edge-label="acquire() 成功" data-edge-key="4" data-edge-id="m5">
-          <path data-composition-edge-from="t2" data-composition-edge-to="gil" data-composition-edge-id="m5" data-composition-points="271,305;177,305" d="M 271 305 L 177 305" class="a-emphasis" data-animate="edge" style="--step:4" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-composition-edge-from="t2" data-composition-edge-to="gil" data-composition-edge-id="m5" data-composition-points="471.1666666666667,305;310.83333333333337,305" d="M 471.1666666666667 305 L 310.83333333333337 305" class="a-emphasis" data-animate="edge" style="--step:4" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <g data-detail="context">
-          <rect x="181.6" y="285" width="84.8" height="16" rx="3" class="c-mask"/>
-          <text x="224" y="295" class="t-backend" font-size="9" text-anchor="middle">acquire() 成功</text>
+          <rect x="348.6" y="285" width="84.8" height="16" rx="3" class="c-mask"/>
+          <text x="391" y="295" class="t-backend" font-size="9" text-anchor="middle">acquire() 成功</text>
         </g>
         </g>
 
         <g data-edge-from="t2" data-edge-to="gil" data-edge-label="执行字节码 ~5ms" data-edge-key="5" data-edge-id="m6">
-          <path data-composition-edge-from="t2" data-composition-edge-to="gil" data-composition-edge-id="m6" data-composition-points="271,340;177,340" d="M 271 340 L 177 340" class="a-default" data-animate="edge" style="--step:5" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+          <path data-composition-edge-from="t2" data-composition-edge-to="gil" data-composition-edge-id="m6" data-composition-points="471.1666666666667,340;310.83333333333337,340" d="M 471.1666666666667 340 L 310.83333333333337 340" class="a-default" data-animate="edge" style="--step:5" stroke-width="1.4" marker-end="url(#arrowhead)"/>
         <g data-detail="context">
-          <rect x="179" y="320" width="90" height="16" rx="3" class="c-mask"/>
-          <text x="224" y="330" class="t-backend" font-size="9" text-anchor="middle">执行字节码 ~5ms</text>
+          <rect x="346" y="320" width="90" height="16" rx="3" class="c-mask"/>
+          <text x="391" y="330" class="t-backend" font-size="9" text-anchor="middle">执行字节码 ~5ms</text>
         </g>
         </g>
 
         <g data-edge-from="gil" data-edge-to="t1" data-edge-label="I/O 完成后重新竞争" data-edge-key="6" data-edge-id="m7">
-          <path data-composition-edge-from="gil" data-composition-edge-to="t1" data-composition-edge-id="m7" data-composition-points="163,375;69,375" d="M 163 375 L 69 375" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.4" stroke-dasharray="3,5" marker-end="url(#arrowhead)"/>
+          <path data-composition-edge-from="gil" data-composition-edge-to="t1" data-composition-edge-id="m7" data-composition-points="296.83333333333337,375;136.5,375" d="M 296.83333333333337 375 L 136.5 375" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.4" stroke-dasharray="3,5" marker-end="url(#arrowhead)"/>
         <g data-detail="context">
-          <rect x="63.199999999999996" y="355" width="105.60000000000001" height="16" rx="3" class="c-mask"/>
-          <text x="116" y="365" class="t-muted" font-size="9" text-anchor="middle">I/O 完成后重新竞争</text>
+          <rect x="163.86666666666667" y="355" width="105.60000000000001" height="16" rx="3" class="c-mask"/>
+          <text x="216.66666666666669" y="365" class="t-muted" font-size="9" text-anchor="middle">I/O 完成后重新竞争</text>
         </g>
         </g>
 
@@ -5104,50 +5104,50 @@
         <!-- Participants -->
         <g id="node-t1" data-node-id="t1" data-node-label="线程1（I/O）" tabindex="0" role="button" aria-label="聚焦线程1（I/O），时序参与者" aria-pressed="false" data-node-kind="messagebus" data-node-context="时序参与者">
           <title>线程1（I/O） · 时序参与者</title>
-          <rect x="19" y="72" width="86" height="54" rx="6" class="c-mask"/>
-          <rect x="19" y="72" width="86" height="54" rx="6" class="c-messagebus" data-animate="node" style="--step:0" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(25 78) scale(0.6875)">
+          <rect x="62" y="72" width="135" height="54" rx="6" class="c-mask"/>
+          <rect x="62" y="72" width="135" height="54" rx="6" class="c-messagebus" data-animate="node" style="--step:0" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(68 78) scale(0.6875)">
             <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
             <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
             <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
-          <text data-node-label="" x="62" y="94" class="t-primary" font-size="10.8" font-weight="600" text-anchor="middle">线程1（I/O）</text>
+          <text data-node-label="" x="129.5" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">线程1（I/O）</text>
         </g>
 
         <g id="node-gil" data-node-id="gil" data-node-label="GIL" tabindex="0" role="button" aria-label="聚焦GIL，时序参与者" aria-pressed="false" data-node-kind="security" data-node-context="时序参与者">
           <title>GIL · 时序参与者</title>
-          <rect x="127" y="72" width="86" height="54" rx="6" class="c-mask"/>
-          <rect x="127" y="72" width="86" height="54" rx="6" class="c-security" data-animate="node" style="--step:1" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(133 78) scale(0.6875)">
+          <rect x="236.33333333333337" y="72" width="135" height="54" rx="6" class="c-mask"/>
+          <rect x="236.33333333333337" y="72" width="135" height="54" rx="6" class="c-security" data-animate="node" style="--step:1" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(242.33333333333337 78) scale(0.6875)">
             <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
-          <text data-node-label="" x="170" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">GIL</text>
+          <text data-node-label="" x="303.83333333333337" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">GIL</text>
         </g>
 
         <g id="node-t2" data-node-id="t2" data-node-label="线程2（CPU）" tabindex="0" role="button" aria-label="聚焦线程2（CPU），时序参与者" aria-pressed="false" data-node-kind="messagebus" data-node-context="时序参与者">
           <title>线程2（CPU） · 时序参与者</title>
-          <rect x="235" y="72" width="86" height="54" rx="6" class="c-mask"/>
-          <rect x="235" y="72" width="86" height="54" rx="6" class="c-messagebus" data-animate="node" style="--step:2" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(241 78) scale(0.6875)">
+          <rect x="410.6666666666667" y="72" width="135" height="54" rx="6" class="c-mask"/>
+          <rect x="410.6666666666667" y="72" width="135" height="54" rx="6" class="c-messagebus" data-animate="node" style="--step:2" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(416.6666666666667 78) scale(0.6875)">
             <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
             <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
             <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
-          <text data-node-label="" x="278" y="94" class="t-primary" font-size="10.8" font-weight="600" text-anchor="middle">线程2（CPU）</text>
+          <text data-node-label="" x="478.1666666666667" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">线程2（CPU）</text>
         </g>
 
         <g id="node-os" data-node-id="os" data-node-label="OS I/O" tabindex="0" role="button" aria-label="聚焦OS I/O，时序参与者" aria-pressed="false" data-node-kind="external" data-node-context="时序参与者">
           <title>OS I/O · 时序参与者</title>
-          <rect x="343" y="72" width="86" height="54" rx="6" class="c-mask"/>
-          <rect x="343" y="72" width="86" height="54" rx="6" class="c-external" data-animate="node" style="--step:3" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(349 78) scale(0.6875)">
+          <rect x="585" y="72" width="135" height="54" rx="6" class="c-mask"/>
+          <rect x="585" y="72" width="135" height="54" rx="6" class="c-external" data-animate="node" style="--step:3" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(591 78) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" x="386" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">OS I/O</text>
+          <text data-node-label="" x="652.5" y="94" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">OS I/O</text>
         </g>
 
         <!-- Legend -->
