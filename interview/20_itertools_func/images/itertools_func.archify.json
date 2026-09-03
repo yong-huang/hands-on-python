@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "itertools 惰性管道：逐元素流动，零中间列表",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1250,
+      600
+    ]
+  },
+  "stages": [
+    {
+      "label": "数据源"
+    },
+    {
+      "label": "组合"
+    },
+    {
+      "label": "加工"
+    },
+    {
+      "label": "物化"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "src1",
+      "type": "external",
+      "label": "iterable A",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "src2",
+      "type": "external",
+      "label": "iterable B",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "chain",
+      "type": "messagebus",
+      "label": "chain / islice",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "accum",
+      "type": "backend",
+      "label": "accumulate / groupby",
+      "stage": 2,
+      "row": 0,
+      "width": 145
+    },
+    {
+      "id": "consume",
+      "type": "backend",
+      "label": "next() 驱动，逐个产出",
+      "stage": 2,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "out",
+      "type": "database",
+      "label": "list() / dict()",
+      "stage": 3,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "src1",
+      "to": "chain",
+      "label": "元素 1",
+      "classification": "transform",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelDy": -24
+    },
+    {
+      "id": "f2",
+      "from": "src2",
+      "to": "chain",
+      "label": "元素 2",
+      "classification": "transform",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          235,
+          271
+        ],
+        [
+          235,
+          157
+        ]
+      ],
+      "labelDx": -40
+    },
+    {
+      "id": "f3",
+      "from": "chain",
+      "to": "accum",
+      "label": "每次只推一个",
+      "classification": "transform"
+    },
+    {
+      "id": "f4",
+      "from": "accum",
+      "to": "consume",
+      "label": "惰性求值",
+      "classification": "transform",
+      "labelDy": 40
+    },
+    {
+      "id": "f5",
+      "from": "consume",
+      "to": "out",
+      "label": "消费时才物化",
+      "classification": "store"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "itertools vs 列表操作",
+      "items": [
+        "itertools 惰性：内存 O(1)，适合大数据/无限流",
+        "列表推导会立刻构建中间列表：内存 O(n)"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "functools 侧写",
+      "items": [
+        "lru_cache：demo 实测 hits=1, misses=4——called 4 次即真实执行次数",
+        "partial 固定参数、singledispatch 按类型分派、operator 替代 lambda"
+      ]
+    }
+  ]
+}

@@ -10,10 +10,9 @@ Python 创建对象时实际经历两步：`__new__` 负责分配内存并返回
 12_new_vs_init/
 ├── README.md              # 本教程文档
 ├── new_vs_init.py         # 主演示脚本：调用顺序 / 实例缓存 / 不可变子类 / 工厂
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── new_vs_init.png    # 三面板可视化（由 gen_diagram.py 生成）
+    ├── new_vs_init.archify.html  # 交互示意图（浏览器打开）
+    └── new_vs_init.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -140,7 +139,7 @@ class Factory:
 ```bash
 cd interview/12_new_vs_init
 python3 new_vs_init.py          # 运行 demo（无需 matplotlib）
-python3 scripts/gen_diagram.py # 重新生成 images/new_vs_init.png
+# 交互示意图: 浏览器打开 images/new_vs_init.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -187,13 +186,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/new_vs_init.png
 
 ## 5. 预期结果与陷阱
 
-![new_vs_init](images/new_vs_init.png)
+**交互示意图**：[浏览器打开](images/new_vs_init.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/new_vs_init.archify.json`）。
 
-上图三面板展示了 `__new__` 与 `__init__` 的完整机制：
-
-- **左图 — 创建流程**：`MyClass()` 调用 `__call__` -> `__new__` 分配内存并返回实例 -> `__init__` 设置属性，形成完整的对象创建链
-- **中图 — 缓存模式**：`__new__` 先检查缓存字典，命中则直接返回已有实例（跳过创建），未命中则创建新实例并存入缓存，适用于单例和连接池场景
-- **右图 — 使用场景**：四大场景对比 -- 不可变类型子类化（必须在 `__new__` 中修改值）、单例/缓存（返回已有实例）、工厂模式（返回不同类型）、连接池（复用资源）
+对象创建两步走：`__new__(cls, ...)` 先查缓存——命中返回旧实例（注意 `__init__` 仍会重新执行），未命中 `super().__new__(cls)` 分配新实例 → `__init__` 初始化。
 
 诚实预期（本机实测）：
 

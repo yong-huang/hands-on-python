@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "对象的一生：引用计数 + 分代 GC",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1200,
+      660
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "引用计数"
+    },
+    {
+      "id": "terminal",
+      "label": "回收路径"
+    }
+  ],
+  "states": [
+    {
+      "id": "born",
+      "type": "start",
+      "label": "obj = Node()",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "tag": "entry"
+    },
+    {
+      "id": "shared",
+      "type": "active",
+      "label": "a = b = obj",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "tag": "alive"
+    },
+    {
+      "id": "drop",
+      "type": "decision",
+      "label": "del 最后引用",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "tag": "check"
+    },
+    {
+      "id": "freed",
+      "type": "success",
+      "label": "__del__ → 释放",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "tag": "done"
+    },
+    {
+      "id": "cycle",
+      "type": "failure",
+      "label": "循环引用 a↔b",
+      "lane": "terminal",
+      "col": 0,
+      "tag": "leak"
+    },
+    {
+      "id": "gcfreed",
+      "type": "success",
+      "label": "gc.collect() 回收",
+      "lane": "terminal",
+      "col": 1,
+      "tag": "terminal"
+    },
+    {
+      "id": "weakdead",
+      "type": "neutral",
+      "label": "weakref.ref() → None",
+      "lane": "terminal",
+      "col": 2,
+      "tag": "observer"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t1",
+      "from": "born",
+      "to": "shared",
+      "label": "引用 +1",
+      "labelDy": 75
+    },
+    {
+      "id": "t2",
+      "from": "shared",
+      "to": "drop",
+      "label": "逐个 del",
+      "labelDy": 75
+    },
+    {
+      "id": "t3",
+      "from": "drop",
+      "to": "freed",
+      "label": "计数归 0",
+      "labelDy": 75
+    },
+    {
+      "id": "t4",
+      "from": "shared",
+      "to": "cycle",
+      "label": "obj.a = b; obj.b = a",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "t5",
+      "from": "cycle",
+      "to": "gcfreed",
+      "label": "分代 GC",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelDy": -25
+    },
+    {
+      "id": "t6",
+      "from": "shared",
+      "to": "weakdead",
+      "label": "weakref.ref(obj)",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "多态三条路线：Duck Typing / ABC / Protocol",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "统一入口"
+    },
+    {
+      "id": "duck",
+      "label": "Duck Typing"
+    },
+    {
+      "id": "types",
+      "label": "ABC / Protocol 约束",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "call",
+    "dispatch",
+    "duckcall"
+  ],
+  "nodes": [
+    {
+      "id": "call",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "ship_item(t, dest)",
+      "width": 150
+    },
+    {
+      "id": "dispatch",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "对象有什么方法？",
+      "width": 150
+    },
+    {
+      "id": "duckcall",
+      "lane": "duck",
+      "col": 2,
+      "type": "backend",
+      "label": "t.deliver(dest)",
+      "width": 150
+    },
+    {
+      "id": "duckerr",
+      "lane": "duck",
+      "col": 3,
+      "type": "security",
+      "label": "AttributeError"
+    },
+    {
+      "id": "abstype",
+      "lane": "types",
+      "col": 2,
+      "type": "security",
+      "label": "抽象类 → TypeError",
+      "width": 140
+    },
+    {
+      "id": "register",
+      "lane": "types",
+      "col": 3,
+      "type": "messagebus",
+      "label": "register() 虚拟子类",
+      "width": 150
+    },
+    {
+      "id": "proto",
+      "lane": "types",
+      "col": 4,
+      "type": "backend",
+      "label": "isinstance 结构检查",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "call",
+      "to": "dispatch",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "dispatch",
+      "to": "duckcall",
+      "label": "只看行为"
+    },
+    {
+      "id": "e3",
+      "from": "duckcall",
+      "to": "duckerr",
+      "label": "缺方法时"
+    },
+    {
+      "id": "e4",
+      "from": "dispatch",
+      "to": "abstype",
+      "label": "未实现抽象方法"
+    },
+    {
+      "id": "e5",
+      "from": "dispatch",
+      "to": "register",
+      "label": "第三方类"
+    },
+    {
+      "id": "e6",
+      "from": "dispatch",
+      "to": "proto",
+      "label": "运行时结构检查"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "三条路线怎么选",
+      "items": [
+        "需要强制实现 → ABC @abstractmethod（实例化时即失败）",
+        "第三方类不可改 → Transport.register(Cls)",
+        "只查方法是否存在 → @runtime_checkable Protocol",
+        "签名级检查只在 mypy 等静态检查器生效"
+      ]
+    }
+  ]
+}

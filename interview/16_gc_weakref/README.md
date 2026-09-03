@@ -10,10 +10,9 @@ Python 的内存管理采用**引用计数为主、分代 GC 为辅**的双轨�
 16_gc_weakref/
 ├── README.md              # 本教程文档
 ├── gc_weakref.py          # 主演示脚本：引用计数 / 循环引用 / weakref / 分代 GC
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── gc_weakref.png     # 三面板可视化（由 gen_diagram.py 生成）
+    ├── gc_weakref.archify.html  # 交互示意图（浏览器打开）
+    └── gc_weakref.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -148,7 +147,7 @@ Gen 0 → Gen 1 → Gen 2
 ```bash
 cd interview/16_gc_weakref
 python3 gc_weakref.py          # 运行 GC / weakref demo
-python3 scripts/gen_diagram.py # 重新生成 images/gc_weakref.png
+# 交互示意图: 浏览器打开 images/gc_weakref.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -197,12 +196,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/gc_weakref.png
 
 ## 5. 预期结果与陷阱
 
-![gc_weakref](images/gc_weakref.png)
+**交互示意图**：[浏览器打开](images/gc_weakref.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/gc_weakref.archify.json`）。
 
-上图三面板展示 Python 内存管理的核心机制：
-- **左图 — 引用计数**：从创建到删除的引用计数变化，`refcount=0` 时立即回收
-- **中图 — 循环引用**：A.next=B / B.next=A 形成引用环，引用计数永远不为 0，需要 `gc.collect()` 通过可达性分析发现并回收
-- **右图 — 强引用 vs 弱引用**：强引用 `refcount += 1` 阻止 GC，弱引用不影响引用计数、允许 GC；下方列出 weakref 的 4 种典型使用场景
+对象的一生：引用计数随引用增减，`del` 最后一个引用计数归 0 立即回收（`__del__`）；循环引用 `a↔b` 计数永不归 0，由 `gc.collect()` 分代扫描兜底；`weakref.ref(obj)` 不参与计数，对象回收后返回 `None`。
 
 诚实预期（本机实测）：
 

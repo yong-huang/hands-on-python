@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Stack[int]：静态检查与运行时行为分道而行",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "运行时（CPython）"
+    },
+    {
+      "id": "static",
+      "label": "静态检查（mypy）",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "ann",
+    "push",
+    "runtime"
+  ],
+  "nodes": [
+    {
+      "id": "ann",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "s: Stack[int] = Stack()",
+      "width": 175
+    },
+    {
+      "id": "push",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "s.push('wrong')",
+      "width": 125
+    },
+    {
+      "id": "mypy",
+      "lane": "static",
+      "col": 2,
+      "type": "security",
+      "label": "mypy 报类型错误",
+      "width": 130
+    },
+    {
+      "id": "runtime",
+      "lane": "main",
+      "col": 2,
+      "type": "database",
+      "label": "照常入栈，无任何检查",
+      "width": 155
+    },
+    {
+      "id": "iso",
+      "lane": "main",
+      "col": 3,
+      "type": "backend",
+      "label": "isinstance 手动检查",
+      "width": 150
+    },
+    {
+      "id": "proto",
+      "lane": "main",
+      "col": 4,
+      "type": "messagebus",
+      "label": "Protocol 结构检查",
+      "width": 145
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "ann",
+      "to": "push",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "push",
+      "to": "mypy",
+      "label": "类型不符 → error"
+    },
+    {
+      "id": "e3",
+      "from": "push",
+      "to": "runtime",
+      "label": "注解运行时被忽略"
+    },
+    {
+      "id": "e4",
+      "from": "runtime",
+      "to": "iso",
+      "label": "要运行时保证时"
+    },
+    {
+      "id": "e5",
+      "from": "iso",
+      "to": "proto",
+      "label": "按结构而非继承"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Generic / TypeVar 的边界",
+      "items": [
+        "Stack[int] 只是注解：运行时 Stack[int]() 得到的就是普通 Stack",
+        "TypeVar T 约束的是类型检查器的推断，不改变任何执行行为"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "demo 现象",
+      "items": [
+        "process_id(42) → 'ID-000042'：类型正确时一切正常",
+        "find_user(999) → None：Optional 返回值要显式判空"
+      ]
+    }
+  ]
+}

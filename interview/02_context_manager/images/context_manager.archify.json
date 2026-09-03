@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "with 语句：__enter__ / __exit__ 协议",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "with 执行流"
+    },
+    {
+      "id": "exitpath",
+      "label": "异常处理路径",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "w",
+    "enter",
+    "body",
+    "exitm",
+    "swallow"
+  ],
+  "nodes": [
+    {
+      "id": "w",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "with ctx as obj:",
+      "width": 150
+    },
+    {
+      "id": "enter",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "obj = __enter__()",
+      "width": 150
+    },
+    {
+      "id": "body",
+      "lane": "main",
+      "col": 2,
+      "type": "backend",
+      "label": "执行 with 块"
+    },
+    {
+      "id": "exitm",
+      "lane": "main",
+      "col": 3,
+      "type": "messagebus",
+      "label": "__exit__() 必被调用",
+      "width": 150
+    },
+    {
+      "id": "swallow",
+      "lane": "exitpath",
+      "col": 4,
+      "type": "database",
+      "label": "返回 True → 抑制",
+      "width": 150
+    },
+    {
+      "id": "propagate",
+      "lane": "exitpath",
+      "col": 5,
+      "type": "security",
+      "label": "False/None → 传播",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "w",
+      "to": "enter",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "enter",
+      "to": "body"
+    },
+    {
+      "id": "e3",
+      "from": "body",
+      "to": "exitm",
+      "label": "无论是否抛异常"
+    },
+    {
+      "id": "e4",
+      "from": "exitm",
+      "to": "swallow",
+      "label": "无异常，或返回 True"
+    },
+    {
+      "id": "e5",
+      "from": "exitm",
+      "to": "propagate",
+      "label": "有异常且未吞"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "两种实现等价",
+      "items": [
+        "类式：__enter__ / __exit__ 方法，适合维护状态",
+        "函数式 @contextmanager：yield 前后各是 enter/exit；吞异常需 try/except 包住 yield"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "异常安全的来源",
+      "items": [
+        "__exit__ 在块正常结束和异常时都会执行——这正是资源确定性释放的机制",
+        "Transaction demo：异常时自动 ROLLBACK；Timer demo：__exit__ 里计时收尾"
+      ]
+    }
+  ]
+}

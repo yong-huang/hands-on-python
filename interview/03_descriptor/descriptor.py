@@ -11,7 +11,7 @@
 - property / classmethod / staticmethod 本质都是描述符
 - __set_name__: Python 3.6+，描述符创建时自动接收属性名
 
-示意图: python3 scripts/gen_diagram.py 生成 images/descriptor.png
+交互示意图: 用浏览器打开 images/descriptor.archify.html
 """
 
 import time
@@ -367,4 +367,4 @@ def run_demo():
 
 if __name__ == "__main__":
     run_demo()
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/descriptor.archify.html

@@ -14,7 +14,7 @@ Python 提供多种数据容器，各有适用场景:
 - typing.NamedTuple: 类型注解版 namedtuple (Python 3.6+)
 - 字段顺序: dataclass 用 __post_init__ 处理初始化依赖
 
-示意图: python3 scripts/gen_diagram.py 生成 images/collections.png
+交互示意图: 用浏览器打开 images/collections.archify.html
 """
 
 from collections import namedtuple
@@ -157,5 +157,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/collections.archify.html
     run_demo()

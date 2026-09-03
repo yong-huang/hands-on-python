@@ -12,10 +12,9 @@ Python 提供多种数据容器来组织结构化数据：`dict` 是最通用的
 19_collections/
 ├── README.md              # 本教程文档
 ├── collections.py         # 主演示脚本：namedtuple / NamedTuple / dataclass
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板对比图）
 └── images/
-    └── collections.png    # 三面板可视化（由 gen_diagram.py 生成）
+    ├── collections.archify.html  # 交互示意图（浏览器打开）
+    └── collections.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -171,7 +170,7 @@ asdict(emp)  # {'name': 'Alice', 'age': 30, 'address': {'city': 'Shanghai', 'str
 ```bash
 cd interview/19_collections
 python3 collections.py        # 运行容器 demo
-python3 scripts/gen_diagram.py # 重新生成 images/collections.png
+# 交互示意图: 浏览器打开 images/collections.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -216,13 +215,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/collections.png
 
 ## 5. 预期结果与陷阱
 
-![collections](images/collections.png)
+**交互示意图**：[浏览器打开](images/collections.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/collections.archify.json`）。
 
-上图三面板展示了数据容器的核心对比：
-
-- **左图 — 容器对比表**：dict、namedtuple、dataclass 在可变性、字段访问、`__repr__`/`__eq__`/`__hash__`、默认值、类型注解等方面的差异一目了然
-- **中图 — dataclass 配置项**：`frozen=True`（不可变）、`order=True`（排序）、`slots=True`（内存优化，3.10+）、`kw_only=True`（强制关键字参数）、`repr=False`（自定义 repr）、`field(default_factory=...)`（为可变默认值生成新对象）
-- **右图 — 常用模式**：数据传输用 namedtuple、配置用 frozen dataclass、领域模型用 dataclass、字典键用 frozen dataclass
+@dataclass 生成流水线：读 `__annotations__` 字段 → 生成 `__init__`/`__repr__`/`__eq__` → 实例化时 `__post_init__` 校验（非法值钳到 0.0）→ 实例就绪；`frozen=True` 时字段赋值 → `AttributeError`。
 
 诚实预期（本机实测）：
 

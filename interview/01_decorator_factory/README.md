@@ -14,11 +14,9 @@
 01_decorator_factory/
 ├── README.md              # 本教程文档
 ├── decorator_factory.py   # 主演示脚本：@retry / @cache / @log_call 三个带参装饰器
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（调用链图 + 运行时行为图）
 └── images/
-    ├── decorator_arch.png     # 装饰器调用链图（由 gen_diagram.py 生成）
-    └── decorator_runtime.png  # 运行时行为可视化（由 gen_diagram.py 生成）
+    ├── decorator_factory.archify.html  # 交互示意图（浏览器打开）
+    └── decorator_factory.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -187,7 +185,7 @@ def singleton(cls):
 ```bash
 cd interview/01_decorator_factory
 python3 decorator_factory.py      # 运行三个装饰器的 demo
-python3 scripts/gen_diagram.py # 重新生成 images/ 下两张图
+# 交互示意图: 浏览器打开 images/decorator_factory.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -212,22 +210,15 @@ python3 scripts/gen_diagram.py # 重新生成 images/ 下两张图
 
 ## 5. 预期结果与陷阱
 
-![装饰器调用链图](images/decorator_arch.png)
+**交互示意图**：[浏览器打开](images/decorator_factory.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/decorator_factory.archify.json`）。
 
-调用链图展示装饰器的嵌套关系：调用从上到下（Client → @retry → @cache → @log_call → 原函数），返回从下到上。这条链是**概念示意**——demo 中三个装饰器分别独立装饰 `fetch` / `compute` / `add`，并未叠加在同一条链上；当多个装饰器真的叠加时，就形成图中这样的嵌套结构。
-
-![运行时行为](images/decorator_runtime.png)
-
-运行时行为图三面板：
-- **左图**：@retry 的重试行为（红色=失败，绿色=成功）
-- **中图**：@cache 的命中/未命中（绿色=命中，红色=未命中）
-- **右图**：@cache 首次调用 ~0.30s vs 缓存命中 ~0.00s 的耗时对比
+装饰器工厂的完整时序：**定义期** `@retry(times=3)` 先返回 `decorator`，再装饰 `fetch` 得到 `wrapper` 闭包（`times` 已被捕获）；**调用期** `wrapper` 内 `func(*args)` 失败自动重试、成功后把结果透传给调用方。
 
 诚实预期（本机实测）：
 
 - **@retry 的输出每次都不一样**：demo 里 `fetch` 用 `random.random() < 0.6` 模拟 60% 失败率，所以每次运行的重试次数、甚至是否成功都是随机的——两次调用都直接成功也属正常
 - **@cache 的加速稳定可复现**：首次调用因 `time.sleep(0.3)` 约 0.30s，缓存命中约 0.00s
-- 两张图中的重试/命中序列是**示意数据**（展示行为模式），不是本次运行的实录
+- 示意图中的重试/命中时序是**示意数据**（展示行为模式），不是某次运行的实录
 
 ## 6. 小结
 

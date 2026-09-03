@@ -2,7 +2,7 @@
 装饰器工厂 —— 带参数的装饰器
 面试高频题: 装饰器、闭包、functools.wraps
 
-示意图: python3 scripts/gen_diagram.py 生成 images/decorator_arch.png 和 images/decorator_runtime.png
+交互示意图: 用浏览器打开 images/decorator_factory.archify.html
 """
 
 import time
@@ -102,7 +102,7 @@ def main():
 
     print("\n3. @log_call:")
     add(3, 4)
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/decorator_factory.archify.html
 
 
 if __name__ == "__main__":

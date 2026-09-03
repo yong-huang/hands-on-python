@@ -14,7 +14,7 @@
 - 位置参数必须写在 *args 之前
 - *args 之后的参数必须是 keyword-only
 
-示意图: python3 scripts/gen_diagram.py 生成 images/args_kwargs.png
+交互示意图: 用浏览器打开 images/args_kwargs.archify.html
 """
 
 
@@ -151,4 +151,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    run_demo()  # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/args_kwargs.archify.html
+    run_demo()

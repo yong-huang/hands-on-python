@@ -16,10 +16,9 @@
 03_descriptor/
 ├── README.md              # 本教程文档
 ├── descriptor.py          # 主演示脚本：四种描述符模式 + 查找优先级演示
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制图）
 └── images/
-    └── descriptor.png     # 三面板可视化（由 gen_diagram.py 生成）
+    ├── descriptor.archify.html  # 交互示意图（浏览器打开）
+    └── descriptor.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -144,7 +143,7 @@ def __get__(self, obj, objtype=None):
 ```bash
 cd interview/03_descriptor
 python3 descriptor.py          # 运行全部 demo（验证/缓存/惰性/审计/优先级）
-python3 scripts/gen_diagram.py # 重新生成 images/descriptor.png
+# 交互示意图: 浏览器打开 images/descriptor.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -195,12 +194,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/descriptor.png
 
 ## 5. 预期结果与陷阱
 
-![Descriptor](images/descriptor.png)
+**交互示意图**：[浏览器打开](images/descriptor.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/descriptor.archify.json`）。
 
-上图三面板展示描述符协议的核心机制：
-- **左图 — obj.attr Lookup Flow**：Python 属性访问的完整决策链。从 `obj.attr` 出发，依次检查类字典中的数据描述符 → 实例字典 → 类字典中的非数据描述符 → 抛出 `AttributeError`
-- **中图 — Data vs Non-Data Descriptor**：两类描述符的对比。数据描述符定义 `__set__` 或 `__delete__`（`__get__` 可选），优先级高于实例字典；非数据描述符只定义 `__get__`，实例字典优先。`property` / `TypedField` 是数据描述符，`classmethod` / `CachedProperty` 是非数据描述符
-- **右图 — Four Descriptor Patterns**：四种实战模式。TypedField 做类型验证、CachedProperty 做计算缓存、LazyField 做惰性初始化、LoggedField 做读写审计。底部标注 `__set_name__` 的自动命名机制
+`obj.attr` 的查找优先级：`__getattribute__`（每次访问）→ 数据描述符 `__get__` → 实例 `__dict__` → 非数据描述符/类属性 → `__getattr__` 兜底 → 仍没有则 `AttributeError`。
 
 诚实预期（本机实测）：
 

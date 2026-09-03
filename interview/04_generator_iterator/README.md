@@ -12,10 +12,9 @@
 04_generator_iterator/
 ├── README.md                 # 本教程文档
 ├── generator_iterator.py     # 主演示脚本：yield / send / yield from / 惰性管道
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（四面板机制图）
 └── images/
-    └── generator_iterator.png  # 四面板可视化（由 gen_diagram.py 生成）
+    ├── generator_iterator.archify.html  # 交互示意图（浏览器打开）
+    └── generator_iterator.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -149,7 +148,7 @@ Python 的协程经历了三代演进：生成器协程（`yield` + `send()`）�
 ```bash
 cd interview/04_generator_iterator
 python3 generator_iterator.py     # 运行全部 demo（send/yield from/惰性管道/内存对比）
-python3 scripts/gen_diagram.py # 重新生成 images/generator_iterator.png
+# 交互示意图: 浏览器打开 images/generator_iterator.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -195,13 +194,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/generator_iterator.png
 
 ## 5. 预期结果与陷阱
 
-![Generator & Iterator](images/generator_iterator.png)
+**交互示意图**：[浏览器打开](images/generator_iterator.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/generator_iterator.archify.json`）。
 
-上图 2x2 布局展示生成器的核心机制：
-- **左上 — yield Execution Flow**：从 `gen = fib()` 创建生成器（不执行），到 `next(gen)` 推进到第一个 yield 暂停，再到继续 `next()` 恢复执行，最终函数结束抛出 `StopIteration`
-- **右上 — send() Bidirectional**：调用方和生成器之间的双向数据流。`next(gen)` / `gen.send(value)` 向生成器发送数据，`yield expr` 向调用方返回数据
-- **左下 — Lazy Pipeline**：惰性管道的链式结构。`integers()` → `map_gen(x**2)` → `filter_gen(even)` → `take(10)` → `list()`，每个环节每次只拉取一个元素，零中间存储
-- **右下 — yield from Delegation**：`flatten([1, [2, 3], 4])` 的递归委托过程。外层生成器遇到子列表时通过 `yield from` 委托给递归的子生成器
+生成器生命周期状态机：已创建（调用不执行函数体）→ 运行中 ⇄ 已暂停（`yield` 产出值）→ 函数返回 → `StopIteration`；`close()` 在暂停处触发 `GeneratorExit`；对已耗尽的生成器再 `send(v)` 同样抛 `StopIteration`。
 
 诚实预期（本机实测）：
 

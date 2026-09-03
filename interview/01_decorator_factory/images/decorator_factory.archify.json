@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "装饰器工厂：定义期套壳 + 调用期重试",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      920,
+      520
+    ]
+  },
+  "participants": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "调用方"
+    },
+    {
+      "id": "factory",
+      "type": "security",
+      "label": "retry(3)"
+    },
+    {
+      "id": "wrapper",
+      "type": "backend",
+      "label": "wrapper 闭包"
+    },
+    {
+      "id": "fetch",
+      "type": "backend",
+      "label": "fetch()"
+    }
+  ],
+  "messages": [
+    {
+      "id": "d1",
+      "from": "client",
+      "to": "factory",
+      "y": 160,
+      "label": "@retry(times=3)（定义期）",
+      "variant": "emphasis"
+    },
+    {
+      "id": "d2",
+      "from": "factory",
+      "to": "client",
+      "y": 189,
+      "label": "返回 decorator",
+      "variant": "return"
+    },
+    {
+      "id": "d3",
+      "from": "client",
+      "to": "factory",
+      "y": 218,
+      "label": "decorator(fetch)"
+    },
+    {
+      "id": "d4",
+      "from": "factory",
+      "to": "client",
+      "y": 247,
+      "label": "返回 wrapper（times 已捕获）",
+      "variant": "return"
+    },
+    {
+      "id": "c1",
+      "from": "client",
+      "to": "wrapper",
+      "y": 276,
+      "label": "fetch('/api')（调用期）",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c2",
+      "from": "wrapper",
+      "to": "fetch",
+      "y": 305,
+      "label": "func(*args)"
+    },
+    {
+      "id": "c3",
+      "from": "fetch",
+      "to": "wrapper",
+      "y": 334,
+      "label": "抛出异常"
+    },
+    {
+      "id": "c4",
+      "from": "wrapper",
+      "to": "fetch",
+      "y": 363,
+      "label": "重试（times 之内）"
+    },
+    {
+      "id": "c5",
+      "from": "fetch",
+      "to": "wrapper",
+      "y": 392,
+      "label": "return 200",
+      "variant": "return"
+    },
+    {
+      "id": "c6",
+      "from": "wrapper",
+      "to": "client",
+      "y": 420,
+      "label": "透传结果",
+      "variant": "return"
+    }
+  ]
+}

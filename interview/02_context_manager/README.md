@@ -12,10 +12,9 @@ Python 提供两种实现方式：**类式**（定义 `__enter__`/`__exit__`）�
 02_context_manager/
 ├── README.md              # 本教程文档
 ├── context_manager.py     # 主演示脚本：类式/函数式上下文管理器 + contextlib 工具
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制图）
 └── images/
-    └── context_manager.png  # 三面板可视化（由 gen_diagram.py 生成）
+    ├── context_manager.archify.html  # 交互示意图（浏览器打开）
+    └── context_manager.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -172,7 +171,7 @@ def __exit__(self, exc_type, exc_val, exc_tb):
 ```bash
 cd interview/02_context_manager
 python3 context_manager.py     # 运行全部 demo（Timer/事务/临时文件/异常传播）
-python3 scripts/gen_diagram.py # 重新生成 images/context_manager.png
+# 交互示意图: 浏览器打开 images/context_manager.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -216,12 +215,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/context_manager.png
 
 ## 5. 预期结果与陷阱
 
-![Context Manager](images/context_manager.png)
+**交互示意图**：[浏览器打开](images/context_manager.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/context_manager.archify.json`）。
 
-上图三面板展示上下文管理器的核心机制：
-- **左图 — with Statement Flow**：`with` 语句的执行流程。从 `with Timer() as t` 开始，依次调用 `__enter__` 获取资源 → 执行 `try` 块内代码 → `finally` 调用 `__exit__` 清理 → 根据 `__exit__` 返回值决定异常是否传播
-- **中图 — Class vs Generator**：类式和函数式两种实现的对比。类式用 `__enter__`/`__exit__` 方法，适合需要维护状态的复杂场景；函数式用 `yield` 分隔 enter/exit 逻辑，代码更简洁，但吞异常需要手动把 `yield` 包进 `try/except`
-- **右图 — Exception Flow**：`__exit__` 的异常传播决策树。如果代码块无异常，直接 cleanup；有异常时根据 `__exit__` 返回值决定：`True` = 抑制异常（代码继续），`False/None` = 传播异常（触发 traceback）
+with 语句的执行流：`__enter__()` 取资源 → 执行 with 块 → `__exit__()` **无论是否抛异常都被调用** → 返回 `True` 抑制异常，返回 `False`/`None` 则继续传播。
 
 诚实预期（本机实测）：
 

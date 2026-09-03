@@ -10,10 +10,9 @@ GIL（Global Interpreter Lock）是 CPython 的全局解释器锁，同一时刻
 08_gil_concurrency/
 ├── README.md              # 本教程文档
 ├── gil_concurrency.py     # 主演示脚本：基准测试 + GIL 释放场景 + 选型指南
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（含真实基准数据柱状图）
 └── images/
-    └── gil_concurrency.png  # 三面板可视化（由 gen_diagram.py 生成）
+    ├── gil_concurrency.archify.html  # 交互示意图（浏览器打开）
+    └── gil_concurrency.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -76,7 +75,7 @@ GIL 保护 CPython 的引用计数内存管理。去掉 GIL 需要改为更复�
 ```bash
 cd interview/08_gil_concurrency
 python3 gil_concurrency.py          # 运行全部基准测试 demo
-python3 scripts/gen_diagram.py # 重新生成 images/gil_concurrency.png
+# 交互示意图: 浏览器打开 images/gil_concurrency.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10, 18 核）：
@@ -109,13 +108,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/gil_concurrency.png
 
 ## 5. 预期结果与陷阱
 
-![GIL & Concurrency](images/gil_concurrency.png)
+**交互示意图**：[浏览器打开](images/gil_concurrency.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/gil_concurrency.archify.json`）。
 
-上图三面板展示并发模型的核心机制和基准测试结果：
-
-- **左图 — GIL 工作模型**：同一时刻只有一个线程持有 GIL，线程交替执行。每个线程持有 GIL 约 5ms 后释放
-- **中图 — CPU 密集基准测试**：threading 因 GIL 争用不会比串行更快；multiprocessing 理论上能真正并行，但注意默认 n=5000 粒度太小，进程启动开销反而让它更慢（见下方诚实预期）
-- **右图 — I/O 密集基准测试**：threading 和 asyncio 都接近理论最优（8x 加速），因为 GIL 在 I/O 等待时自动释放
+GIL 的释放时机：线程1 `acquire()` 后发起 `socket.recv()`，**I/O 等待期间释放 GIL** → 线程2 获得锁执行字节码 ~5ms → I/O 完成后线程1 重新竞争。
 
 诚实预期（本机实测）：
 

@@ -10,10 +10,9 @@ Python 的多态基于 **Duck Typing**（"走起来像鸭子就是鸭子"）—�
 10_abc_duck_typing/
 ├── README.md              # 本教程文档
 ├── abc_duck_typing.py     # 主演示脚本：Duck Typing / ABC / register / Protocol
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制图）
 └── images/
-    └── abc_duck_typing.png  # 三面板可视化（由 gen_diagram.py 生成）
+    ├── abc_duck_typing.archify.html  # 交互示意图（浏览器打开）
+    └── abc_duck_typing.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -102,7 +101,7 @@ Protocol = 结构化子类型：运行时 `isinstance` 只按结构匹配（检�
 ```bash
 cd interview/10_abc_duck_typing
 python3 abc_duck_typing.py        # 运行全部 demo
-python3 scripts/gen_diagram.py # 重新生成 images/abc_duck_typing.png
+# 交互示意图: 浏览器打开 images/abc_duck_typing.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -129,12 +128,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/abc_duck_typing.png
 
 ## 5. 预期结果与陷阱
 
-![ABC & Duck Typing](images/abc_duck_typing.png)
+**交互示意图**：[浏览器打开](images/abc_duck_typing.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/abc_duck_typing.archify.json`）。
 
-上图三面板展示多态的三种实现方式：
-- **左图 — Duck Typing vs ABC**：Duck Typing 直接调用方法（有就调，没有就 AttributeError），ABC 通过 `isinstance` 检查
-- **中图 — ABC 继承与 register()**：`Truck`/`Drone` 是真实子类（继承），`ExternalLogistics` 是虚拟子类（register）。两者都通过 isinstance 检查
-- **右图 — Protocol (PEP 544)**：结构化子类型，`Duck`/`Robot` 有 `speak()` 方法所以通过检查，`Person` 只有 `talk()` 所以不通过
+多态三条路线的统一入口：Duck Typing 直接 `t.deliver(dest)`（缺方法 → `AttributeError`）；ABC 未实现抽象方法在实例化时即 `TypeError`，`register()` 虚拟子类可通过 isinstance；`@runtime_checkable` Protocol 按结构匹配。
 
 诚实预期（本机实测）：
 

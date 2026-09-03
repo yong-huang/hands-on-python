@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "三种复制的内存传播：= / copy / deepcopy",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1350,
+      640
+    ]
+  },
+  "stages": [
+    {
+      "label": "源对象"
+    },
+    {
+      "label": "复制操作"
+    },
+    {
+      "label": "新名字"
+    },
+    {
+      "label": "内层对象"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "orig",
+      "type": "database",
+      "label": "original = [[1,2],[3,4]]",
+      "stage": 0,
+      "row": 0,
+      "width": 145
+    },
+    {
+      "id": "assign",
+      "type": "backend",
+      "label": "assigned = original",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "shallow",
+      "type": "backend",
+      "label": "copy.copy(original)",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "deep",
+      "type": "backend",
+      "label": "copy.deepcopy(original)",
+      "stage": 1,
+      "row": 2,
+      "width": 150
+    },
+    {
+      "id": "aname",
+      "type": "messagebus",
+      "label": "assigned（同一对象）",
+      "stage": 2,
+      "row": 0,
+      "width": 145
+    },
+    {
+      "id": "sname",
+      "type": "messagebus",
+      "label": "shallow（新外壳）",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "dname",
+      "type": "messagebus",
+      "label": "deep（完全独立）",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "inner",
+      "type": "database",
+      "label": "共享的内层 [1, 2]",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "dinner",
+      "type": "database",
+      "label": "独立副本 [1, 2]",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "orig",
+      "to": "assign",
+      "label": "绑定新名字",
+      "classification": "reference",
+      "route": "straight",
+      "labelDy": -24
+    },
+    {
+      "id": "f2",
+      "from": "orig",
+      "to": "shallow",
+      "label": "外层",
+      "classification": "copy",
+      "labelSegment": 0,
+      "labelAt": [
+        192,
+        182
+      ]
+    },
+    {
+      "id": "f3",
+      "from": "orig",
+      "to": "deep",
+      "label": "递归复制",
+      "classification": "copy",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          100,
+          385
+        ]
+      ]
+    },
+    {
+      "id": "f4",
+      "from": "assign",
+      "to": "aname",
+      "classification": "reference",
+      "label": "绑定"
+    },
+    {
+      "id": "f5",
+      "from": "shallow",
+      "to": "sname",
+      "classification": "copy",
+      "label": "新外壳"
+    },
+    {
+      "id": "f6",
+      "from": "deep",
+      "to": "dname",
+      "classification": "copy",
+      "label": "独立副本"
+    },
+    {
+      "id": "f7",
+      "from": "aname",
+      "to": "inner",
+      "label": "同一内层",
+      "classification": "reference",
+      "route": "straight",
+      "labelDy": -20
+    },
+    {
+      "id": "f8",
+      "from": "sname",
+      "to": "inner",
+      "label": "浅拷贝共享",
+      "classification": "reference",
+      "labelDy": 18
+    },
+    {
+      "id": "f9",
+      "from": "dname",
+      "to": "dinner",
+      "label": "深拷贝独立",
+      "classification": "copy"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "demo 的传播实验",
+      "items": [
+        "original[0][0] = 99 后：assigned 和 shallow 都变 99，deep 保持 1",
+        "元组不可变时浅拷贝直接返回原对象",
+        "id() 值每次运行不同，甚至可能复用已回收地址——判断同一性用 is"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "深拷贝的补充",
+      "items": [
+        "deepcopy 用 memo 字典处理循环引用（b[2] is b 成立且不死循环）",
+        "自定义对象可实现 __copy__ / __deepcopy__ 控制行为"
+      ]
+    }
+  ]
+}

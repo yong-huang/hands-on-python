@@ -14,7 +14,7 @@ Python 默认用 __dict__ 存储实例属性（哈希表），两属性对象每
 - 属性访问速度: 3.10 及以前 slots 快 10~40%; 3.11+ 属性访问优化后基本持平——
   今天用 slots 主要为省内存，不为提速
 
-示意图: python3 scripts/gen_diagram.py 生成 images/slots_memory.png
+交互示意图: 用浏览器打开 images/slots_memory.archify.html
 """
 
 import time
@@ -227,5 +227,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/slots_memory.archify.html
     run_demo()

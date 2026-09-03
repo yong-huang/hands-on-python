@@ -10,10 +10,9 @@ Python 的属性访问背后有一条完整的查找链：`__getattribute__` -> 
 11_getattr_proxy/
 ├── README.md              # 本教程文档
 ├── getattr_proxy.py       # 主演示脚本：动态属性 / 访问日志 / 代理 / 懒加载
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── getattr_proxy.png  # 三面板可视化（由 gen_diagram.py 生成）
+    ├── getattr_proxy.archify.html  # 交互示意图（浏览器打开）
+    └── getattr_proxy.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -128,7 +127,7 @@ class LazyConfig:
 ```bash
 cd interview/11_getattr_proxy
 python3 getattr_proxy.py          # 运行 demo（无需 matplotlib）
-python3 scripts/gen_diagram.py # 重新生成 images/getattr_proxy.png
+# 交互示意图: 浏览器打开 images/getattr_proxy.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -156,13 +155,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/getattr_proxy.png
 
 ## 5. 预期结果与陷阱
 
-![getattr_proxy](images/getattr_proxy.png)
+**交互示意图**：[浏览器打开](images/getattr_proxy.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/getattr_proxy.archify.json`）。
 
-上图三面板展示了属性访问的完整机制：
-
-- **左图 — 属性查找链**：`obj.attr` -> `__getattribute__` -> 数据描述符 -> `obj.__dict__` -> 非数据描述符 -> `__getattr__` -> `AttributeError`，逐步查找直到找到属性或抛出异常
-- **中图 — `__getattr__` vs `__getattribute__`**：前者仅在查找失败时调用（适合动态属性/懒加载），后者每次访问都触发（适合日志/校验），下方警告在 `__getattribute__` 中不能使用 `self.xxx`，必须用 `object.__getattribute__(self, 'xxx')`
-- **右图 — 代理模式**：客户端调用 `proxy.attr`，Proxy 的 `__getattr__` 转发到真实对象的属性，适用于 API wrapper、懒加载、访问控制等场景
+`__getattr__` 动态代理：实例/类里都没有的属性才触发 `__getattr__` → 转发给真实对象 → 懒加载首次访问才 `load()`；目标对象也没有 → `AttributeError`。
 
 诚实预期（本机实测）：
 

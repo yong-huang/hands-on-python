@@ -12,7 +12,7 @@
 - 单例模式: 元类确保一个类只有一个实例
 - ORM 映射: 元类自动将类属性映射为数据库字段
 
-示意图: python3 scripts/gen_diagram.py 生成 images/metaclass.png
+交互示意图: 用浏览器打开 images/metaclass.archify.html
 """
 
 
@@ -242,4 +242,4 @@ def run_demo():
 
 if __name__ == "__main__":
     run_demo()
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/metaclass.archify.html

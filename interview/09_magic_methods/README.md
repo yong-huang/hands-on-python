@@ -10,10 +10,9 @@ Python 的运算符和内置函数背后都是魔术方法（dunder methods）�
 09_magic_methods/
 ├── README.md           # 本教程文档
 ├── magic_methods.py    # 主演示脚本：repr/str、eq/hash、运算符、容器协议
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制图）
 └── images/
-    └── magic_methods.png  # 三面板可视化（由 gen_diagram.py 生成）
+    ├── magic_methods.archify.html  # 交互示意图（浏览器打开）
+    └── magic_methods.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -87,7 +86,7 @@ class Point:
 ```bash
 cd interview/09_magic_methods
 python3 magic_methods.py          # 运行全部 demo
-python3 scripts/gen_diagram.py # 重新生成 images/magic_methods.png
+# 交互示意图: 浏览器打开 images/magic_methods.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -112,12 +111,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/magic_methods.png
 
 ## 5. 预期结果与陷阱
 
-![Magic Methods](images/magic_methods.png)
+**交互示意图**：[浏览器打开](images/magic_methods.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/magic_methods.archify.json`）。
 
-上图三面板展示魔术方法的分类和使用：
-- **左图 — 魔术方法分类**：字符串（`__str__`/`__repr__`）、比较（`__eq__`/`__hash__`）、算术（`__add__`/`__mul__`）、容器（`__len__`/`__getitem__`）
-- **中图 — 相等与哈希**：`p1 == p2` 调用 `__eq__`，`hash(p1) == hash(p2)` 调用 `__hash__`，两者配合使对象可做 dict key
-- **右图 — `@total_ordering` 与 `@dataclass`**：两种减少样板代码的装饰器对比，以及 `__eq__`/`__hash__` 契约的 5 条规则
+`a + b` 背后的分发：`type(p).__add__` 认识右操作数直接返回结果；不认识则返回 `NotImplemented` 哨兵 → 解释器改试 `type("hello").__radd__` → 也没有 → `TypeError`。
 
 诚实预期（本机实测）：
 

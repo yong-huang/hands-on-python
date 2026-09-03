@@ -14,10 +14,9 @@
 17_property/
 ├── README.md              # 本教程文档
 ├── property.py            # 主演示脚本：验证 / 只读计算 / 联动属性 / 描述符本质
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── property.png       # 三面板可视化（由 gen_diagram.py 生成）
+    ├── property.archify.html  # 交互示意图（浏览器打开）
+    └── property.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -179,7 +178,7 @@ print(hasattr(p, '__delete__'))  # True
 ```bash
 cd interview/17_property
 python3 property.py           # 运行 property demo
-python3 scripts/gen_diagram.py # 重新生成 images/property.png
+# 交互示意图: 浏览器打开 images/property.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -216,12 +215,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/property.png
 
 ## 5. 预期结果与陷阱
 
-![property](images/property.png)
+**交互示意图**：[浏览器打开](images/property.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/property.archify.json`）。
 
-上图三面板展示 `property` 的核心机制：
-- **左图 — property Workflow**：READ 和 WRITE 两条路径。`obj.x` 调用 `__get__` 返回值；`obj.x = 10` 调用 `__set__` 执行验证后赋值。箭头表示调用链
-- **中图 — Three property Patterns**：三种典型用法。Getter + Setter + Deleter（验证 + 副作用）、Read-Only Computed（无 setter 的派生属性）、Synced Properties（共享内部状态的双向同步）
-- **右图 — property vs attribute vs method**：三者对比表。property 在访问方式上与 attribute 一致（`obj.x`），但具备验证和计算能力；与 method 的区别在于 property 不需要括号调用，也不接受额外参数
+property 的读写分发：读路径经 getter `__get__` 返回存储/计算值；写路径经 setter `__set__` 校验——`value > 0` 合法写入，非法值 `ValueError`；无 setter 的只读属性赋值 → `AttributeError`。
 
 诚实预期（本机实测）：
 

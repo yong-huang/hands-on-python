@@ -1,0 +1,134 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "对象创建两步走：__new__ 分配，__init__ 初始化",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "创建流程"
+    },
+    {
+      "id": "branch",
+      "label": "特殊分支",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "call",
+    "new",
+    "hit",
+    "create",
+    "init"
+  ],
+  "nodes": [
+    {
+      "id": "call",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "CachedInstance(key)",
+      "width": 150
+    },
+    {
+      "id": "new",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "__new__(cls, ...)",
+      "width": 130
+    },
+    {
+      "id": "hit",
+      "lane": "main",
+      "col": 2,
+      "type": "security",
+      "label": "缓存已有 key？",
+      "width": 130
+    },
+    {
+      "id": "old",
+      "lane": "branch",
+      "col": 3,
+      "type": "database",
+      "label": "返回旧实例",
+      "width": 130
+    },
+    {
+      "id": "create",
+      "lane": "main",
+      "col": 3,
+      "type": "backend",
+      "label": "super().__new__(cls)",
+      "width": 150
+    },
+    {
+      "id": "init",
+      "lane": "main",
+      "col": 4,
+      "type": "messagebus",
+      "label": "__init__ 仍会执行",
+      "width": 130
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "call",
+      "to": "new",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "new",
+      "to": "hit"
+    },
+    {
+      "id": "e3",
+      "from": "hit",
+      "to": "old",
+      "label": "命中"
+    },
+    {
+      "id": "e4",
+      "from": "hit",
+      "to": "create",
+      "label": "未命中"
+    },
+    {
+      "id": "e5",
+      "from": "old",
+      "to": "init",
+      "label": "返回 cls 实例 → 照常初始化"
+    },
+    {
+      "id": "e6",
+      "from": "create",
+      "to": "init",
+      "label": "新实例 → 初始化"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "不可变类型",
+      "items": [
+        "子类化 str / int / tuple 必须在 __new__ 里设值（demo 的 UpperStr）",
+        "__init__ 拿到的已是不可变对象，改不动了"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "demo 现象",
+      "items": [
+        "a1 is a2 → True：第二次创建返回缓存实例",
+        "命中缓存时 __init__ 仍会重新执行一遍——单例实现常在这里踩坑",
+        "LimitedInt(150, 0, 100) → 100：钳制逻辑放 __new__"
+      ]
+    }
+  ]
+}

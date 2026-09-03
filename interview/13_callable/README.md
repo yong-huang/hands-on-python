@@ -18,10 +18,9 @@ Python 中一切皆对象，函数也不例外。当你写下 `obj(42)` 时，Py
 13_callable/
 ├── README.md              # 本教程文档
 ├── callable.py            # 主演示脚本：可调用对象 / 策略模式 / 验证器链
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── callable.png       # 三面板可视化（由 gen_diagram.py 生成）
+    ├── callable.archify.html  # 交互示意图（浏览器打开）
+    └── callable.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -205,7 +204,7 @@ foo(5)   # 15，触发 foo.__call__(5)
 ```bash
 cd interview/13_callable
 python3 callable.py             # 运行 demo（无需 matplotlib）
-python3 scripts/gen_diagram.py # 重新生成 images/callable.png
+# 交互示意图: 浏览器打开 images/callable.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -267,13 +266,9 @@ Bob   | 25
 
 ## 5. 预期结果与陷阱
 
-![callable](images/callable.png)
+**交互示意图**：[浏览器打开](images/callable.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/callable.archify.json`）。
 
-上图三面板展示 `__call__` 的核心机制：
-
-- **左图 — `__call__` Mechanism**：调用 `obj(42)` 的完整流程。Python 将 `obj(42)` 转为 `obj.__call__(42)`，`self` 绑定到实例，方法内部可以访问 `self.factor` 等实例状态
-- **中图 — Function vs Callable Object**：普通函数和可调用对象的对比。函数轻量但无状态；可调用对象有状态、有方法、可添加属性，适合需要跨调用保持数据的场景。底部列出三大适用场景：跨调用状态、策略模式、类装饰器
-- **右图 — Strategy with `__call__`**：`Formatter` 作为策略容器，运行时接收不同的格式化策略（JSON / CSV / Table），通过 `__call__` 委托执行。箭头表示 `Formatter` 可以在运行时切换到任意策略
+`acc(10)` 的分发时序：解释器定位 `type(acc).__call__` 并调用 → 读 `self.total` → `total += 10` → 返回——实例状态跨调用保留，这是可调用对象相对普通函数的核心差异。
 
 诚实预期（本机实测）：
 

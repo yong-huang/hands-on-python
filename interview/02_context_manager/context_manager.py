@@ -12,7 +12,7 @@ with 语句的背后是 __enter__ 和 __exit__ 的协议。
 - 嵌套: with A(), B(): 等价于嵌套调用
 - suppress: 上下文管理器替代 try/except 的简洁写法
 
-示意图: python3 scripts/gen_diagram.py 生成 images/context_manager.png
+交互示意图: 用浏览器打开 images/context_manager.archify.html
 """
 
 import time
@@ -284,4 +284,4 @@ def run_demo():
 
 if __name__ == "__main__":
     run_demo()
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/context_manager.archify.html

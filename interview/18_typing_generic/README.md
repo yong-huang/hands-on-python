@@ -19,10 +19,9 @@ typing 模块提供的核心工具：
 18_typing_generic/
 ├── README.md              # 本教程文档
 ├── typing_generic.py      # 主演示脚本：TypeVar / Generic / Protocol / Union
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── typing_generic.png # 三面板可视化（由 gen_diagram.py 生成）
+    ├── typing_generic.archify.html  # 交互示意图（浏览器打开）
+    └── typing_generic.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -202,7 +201,7 @@ Python 3.9 支持直接用内置类型做注解（`list[int]` 代替 `List[int]`
 ```bash
 cd interview/18_typing_generic
 python3 typing_generic.py      # 运行 typing demo
-python3 scripts/gen_diagram.py # 重新生成 images/typing_generic.png
+# 交互示意图: 浏览器打开 images/typing_generic.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -247,12 +246,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/typing_generic.png
 
 ## 5. 预期结果与陷阱
 
-![typing_generic](images/typing_generic.png)
+**交互示意图**：[浏览器打开](images/typing_generic.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/typing_generic.archify.json`）。
 
-上图三面板展示了 Python 类型系统的核心工具：
-- **左图 — TypeVar & Generic[T]**：`Stack[int]` 和 `Stack[str]` 是同一泛型类的两种类型化实例，底部的约束 TypeVar 限制了类型参数只能为 int 或 float
-- **中图 — Protocol (PEP 544)**：四个协议的定义及其方法签名。`Readable` 继承 `Writable`，形成协议组合。`@runtime_checkable` 使得 `isinstance()` 检查可用
-- **右图 — Common Type Annotations**：常用类型注解速查，从 `Optional` 到 `TypeAlias`，每种注解与其含义一一对应
+静态检查与运行时分道而行：`s.push('wrong')`——mypy/pyright 报类型错误，CPython 注解被忽略、照常入栈；运行时唯一的类型保障是手写 `isinstance` 或 `@runtime_checkable` Protocol 结构检查。
 
 诚实预期（本机实测）：
 

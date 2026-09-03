@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "__slots__：属性写入的两条路径",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "access",
+      "label": "属性访问路径"
+    },
+    {
+      "id": "storage",
+      "label": "存储形态"
+    },
+    {
+      "id": "pitfall",
+      "label": "陷阱",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "access",
+    "lookup",
+    "descriptor",
+    "slotarray"
+  ],
+  "nodes": [
+    {
+      "id": "access",
+      "lane": "access",
+      "col": 0,
+      "type": "external",
+      "label": "p.x = 1",
+      "sublabel": "属性写入"
+    },
+    {
+      "id": "lookup",
+      "lane": "access",
+      "col": 1,
+      "type": "backend",
+      "label": "type(p) 查找 x"
+    },
+    {
+      "id": "descriptor",
+      "lane": "access",
+      "col": 2,
+      "type": "messagebus",
+      "label": "描述符"
+    },
+    {
+      "id": "slotarray",
+      "lane": "storage",
+      "col": 3,
+      "type": "database",
+      "label": "固定槽位数组"
+    },
+    {
+      "id": "dictstore",
+      "lane": "storage",
+      "col": 2,
+      "type": "database",
+      "label": "实例字典"
+    },
+    {
+      "id": "attrerror",
+      "lane": "pitfall",
+      "col": 3,
+      "type": "security",
+      "label": "AttributeError"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "access",
+      "to": "lookup"
+    },
+    {
+      "id": "e2",
+      "from": "lookup",
+      "to": "descriptor",
+      "label": "类定义了 __slots__",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e3",
+      "from": "descriptor",
+      "to": "slotarray",
+      "label": "偏移定位"
+    },
+    {
+      "id": "e4",
+      "from": "lookup",
+      "to": "dictstore",
+      "label": "无 __slots__（默认）"
+    },
+    {
+      "id": "e5",
+      "from": "lookup",
+      "to": "attrerror",
+      "label": "新增未声明属性"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "继承与 weakref",
+      "items": [
+        "父类的 slots 仍生效；子类不声明自己的 __slots__ 会额外获得 __dict__",
+        "支持弱引用需在 __slots__ 中声明 __weakref__"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "内存结论",
+      "items": [
+        "两属性实例：__dict__ 约 136-152 B，slots 约 48 B",
+        "万级实例总内存节省 60%~70%（3.10 实测 68.4%）",
+        "3.11+ 属性访问速度与普通属性基本持平，省内存才是主要理由"
+      ]
+    }
+  ]
+}

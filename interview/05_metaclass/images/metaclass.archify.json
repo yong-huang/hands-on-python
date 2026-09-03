@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "元类流水线：从 class 语句到 ORM 模型",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1250,
+      600
+    ]
+  },
+  "stages": [
+    {
+      "label": "类定义"
+    },
+    {
+      "label": "元类拦截"
+    },
+    {
+      "label": "加工后的类"
+    },
+    {
+      "label": "运行期"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "src",
+      "type": "external",
+      "label": "class User(Model)",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "ns",
+      "type": "database",
+      "label": "name/bases/namespace",
+      "stage": 1,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "meta",
+      "type": "backend",
+      "label": "OrmMeta.__new__",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "fields",
+      "type": "database",
+      "label": "cls._fields / _table",
+      "stage": 2,
+      "row": 1,
+      "width": 140
+    },
+    {
+      "id": "sql",
+      "type": "backend",
+      "label": "create_table_sql()",
+      "stage": 3,
+      "row": 1,
+      "width": 135
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "src",
+      "to": "ns",
+      "label": "class 语句委托给 type",
+      "classification": "transform",
+      "labelDy": 50
+    },
+    {
+      "id": "f2",
+      "from": "ns",
+      "to": "meta",
+      "label": "Metaclass=OrmMeta",
+      "classification": "transform",
+      "labelDy": 24
+    },
+    {
+      "id": "f3",
+      "from": "meta",
+      "to": "fields",
+      "label": "扫描 Field → _fields/_table",
+      "classification": "store",
+      "labelDy": 55
+    },
+    {
+      "id": "f5",
+      "from": "fields",
+      "to": "sql",
+      "label": "按字段生成 SQL",
+      "classification": "transform"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "三层职责",
+      "items": [
+        "type：所有类的默认元类，class 语句是 type() 的语法糖",
+        "元类 __new__：加工类命名空间（ORM 字段映射）",
+        "元类 __call__：拦截实例化（单例首次创建胜出）"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "轻量替代",
+      "items": [
+        "SingletonMeta.__call__ 拦截实例创建：demo 的单例 db1 is db2 为 True",
+        "只需子类注册/校验时用 __init_subclass__，不必上元类",
+        "demo 的 ORM 只生成 SQL 字符串，没有真实数据库连接"
+      ]
+    }
+  ]
+}

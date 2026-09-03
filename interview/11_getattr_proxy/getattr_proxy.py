@@ -11,7 +11,7 @@ Python 属性查找链: __getattribute__ -> 数据描述符 -> 实例 __dict__ -
 - 动态属性: 根据访问模式生成/计算属性
 - 代理模式: 将属性访问转发到内部对象
 
-示意图: python3 scripts/gen_diagram.py 生成 images/getattr_proxy.png
+交互示意图: 用浏览器打开 images/getattr_proxy.archify.html
 """
 
 import time
@@ -198,4 +198,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    run_demo()  # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/getattr_proxy.archify.html
+    run_demo()

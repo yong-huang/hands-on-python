@@ -11,7 +11,7 @@ obj(args) 实际调用的是 obj.__call__(args)。
 - 装饰器原理: @decorator 返回一个带 __call__ 的对象
 - 策略模式: 用 __call__ 实现可互换的算法
 
-示意图: python3 scripts/gen_diagram.py 生成 images/callable.png
+交互示意图: 用浏览器打开 images/callable.archify.html
 """
 
 
@@ -169,4 +169,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    run_demo()  # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/callable.archify.html
+    run_demo()

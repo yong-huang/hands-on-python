@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "*args / **kwargs：调用侧解包，定义侧收集",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "参数绑定"
+    },
+    {
+      "id": "err",
+      "label": "不匹配",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "call",
+    "unpack",
+    "bind",
+    "args"
+  ],
+  "nodes": [
+    {
+      "id": "call",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "f(*seq, **mapping)",
+      "width": 145
+    },
+    {
+      "id": "unpack",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "* / ** 解包实参",
+      "width": 130
+    },
+    {
+      "id": "bind",
+      "lane": "main",
+      "col": 2,
+      "type": "backend",
+      "label": "形参绑定",
+      "width": 130
+    },
+    {
+      "id": "args",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "*args 元组"
+    },
+    {
+      "id": "kwargs",
+      "lane": "main",
+      "col": 4,
+      "type": "database",
+      "label": "**kwargs 字典"
+    },
+    {
+      "id": "terr",
+      "lane": "err",
+      "col": 3,
+      "type": "security",
+      "label": "TypeError"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "call",
+      "to": "unpack",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "unpack",
+      "to": "bind",
+      "label": "进入函数体"
+    },
+    {
+      "id": "e3",
+      "from": "bind",
+      "to": "args",
+      "label": "剩余位置参数收集"
+    },
+    {
+      "id": "e4",
+      "from": "bind",
+      "to": "kwargs",
+      "label": "剩余关键字参数收集"
+    },
+    {
+      "id": "e5",
+      "from": "bind",
+      "to": "terr",
+      "label": "多传/少传/重名"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "同一对符号的四个用途",
+      "items": [
+        "定义时收集：def f(*args, **kwargs)",
+        "调用时解包：f(*[1, 2], **{'x': 9})",
+        "字面量合并：[*a, *b] 与 {**d1, **d2}",
+        "包装器转发：def wrapper(*a, **k): return f(*a, **k)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "demo 现象",
+      "items": [
+        "kw_only(1, 2, 3, 4) → TypeError：* 之后的参数只能按关键字传",
+        "{**d1, **d2} 后值覆盖：b 的值是 99 不是 1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "生成器生命周期：yield 暂停与恢复",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1200,
+      660
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "生成器状态"
+    },
+    {
+      "id": "terminal",
+      "label": "终止与关闭"
+    }
+  ],
+  "states": [
+    {
+      "id": "created",
+      "type": "start",
+      "label": "已创建",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "tag": "entry"
+    },
+    {
+      "id": "running",
+      "type": "active",
+      "label": "运行中",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "tag": "execute"
+    },
+    {
+      "id": "suspended",
+      "type": "waiting",
+      "label": "已暂停",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "tag": "yield"
+    },
+    {
+      "id": "exhausted",
+      "type": "decision",
+      "label": "函数返回",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "tag": "check"
+    },
+    {
+      "id": "stop_iteration",
+      "type": "success",
+      "label": "StopIteration",
+      "lane": "terminal",
+      "col": 1,
+      "tag": "terminal"
+    },
+    {
+      "id": "generator_exit",
+      "type": "failure",
+      "label": "GeneratorExit",
+      "lane": "terminal",
+      "col": 0,
+      "tag": "terminal"
+    },
+    {
+      "id": "send_error",
+      "type": "failure",
+      "label": "StopIteration",
+      "lane": "terminal",
+      "col": 2,
+      "tag": "error"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "first-next",
+      "from": "created",
+      "to": "running",
+      "label": "next()",
+      "labelDy": 75
+    },
+    {
+      "id": "hit-yield",
+      "from": "running",
+      "to": "suspended",
+      "label": "yield 产出",
+      "labelDy": 75
+    },
+    {
+      "id": "resume",
+      "from": "suspended",
+      "to": "running",
+      "label": "send(v) 恢复",
+      "labelDy": -35
+    },
+    {
+      "id": "return",
+      "from": "suspended",
+      "to": "exhausted",
+      "label": "执行到末尾",
+      "labelDy": 75
+    },
+    {
+      "id": "raise-stop",
+      "from": "exhausted",
+      "to": "stop_iteration",
+      "label": "抛出 StopIteration",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "channelX": 536,
+      "labelDy": 30,
+      "labelDx": -60
+    },
+    {
+      "id": "close",
+      "from": "suspended",
+      "to": "generator_exit",
+      "label": "close()",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 30
+    },
+    {
+      "id": "send-after-end",
+      "from": "exhausted",
+      "to": "send_error",
+      "label": "再 send(v)",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ]
+}

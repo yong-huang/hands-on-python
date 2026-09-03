@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "__getattr__ 动态代理：未声明的属性去哪找",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "代理分发"
+    },
+    {
+      "id": "fallback",
+      "label": "兜底",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "access",
+    "check",
+    "forward"
+  ],
+  "nodes": [
+    {
+      "id": "access",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "proxy.config"
+    },
+    {
+      "id": "check",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "proxy 有 config 吗",
+      "width": 145
+    },
+    {
+      "id": "forward",
+      "lane": "main",
+      "col": 2,
+      "type": "messagebus",
+      "label": "__getattr__ → 转发",
+      "width": 145
+    },
+    {
+      "id": "target",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "getattr(self._target)",
+      "width": 170
+    },
+    {
+      "id": "lazy",
+      "lane": "main",
+      "col": 4,
+      "type": "backend",
+      "label": "懒加载：首次访问才 load()",
+      "width": 200
+    },
+    {
+      "id": "ae",
+      "lane": "fallback",
+      "col": 3,
+      "type": "security",
+      "label": "AttributeError"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "access",
+      "to": "check",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "check",
+      "to": "forward",
+      "label": "实例/类里都没有"
+    },
+    {
+      "id": "e3",
+      "from": "forward",
+      "to": "target",
+      "label": "代理到真实对象"
+    },
+    {
+      "id": "e4",
+      "from": "target",
+      "to": "lazy",
+      "label": "需要时初始化"
+    },
+    {
+      "id": "e5",
+      "from": "target",
+      "to": "ae",
+      "label": "目标也没有"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "两个方法的触发时机",
+      "items": [
+        "__getattribute__：每次属性访问都触发（重写极易递归，需走 object.__getattribute__）",
+        "__getattr__：只在常规查找失败后触发——代理/懒加载的安全钩子"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "demo 现象",
+      "items": [
+        "访问日志里 ('get','z') 走了 __getattr__，('get','x') 走常规查找",
+        "LazyConfig.loaded 从 False 翻到 True：首次访问触发加载"
+      ]
+    }
+  ]
+}

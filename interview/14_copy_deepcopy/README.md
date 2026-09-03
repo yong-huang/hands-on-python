@@ -12,10 +12,9 @@ Python 中"复制一个对象"看似简单，实则暗藏玄机。`=` 赋值只�
 14_copy_deepcopy/
 ├── README.md              # 本教程文档
 ├── copy_deepcopy.py       # 主演示脚本：= vs copy vs deepcopy 全场景对比
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── copy_deepcopy.png  # 三面板可视化（由 gen_diagram.py 生成）
+    ├── copy_deepcopy.archify.html  # 交互示意图（浏览器打开）
+    └── copy_deepcopy.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -138,7 +137,7 @@ b = copy.deepcopy(a)  # 正确处理！b[2] is b == True
 ```bash
 cd interview/14_copy_deepcopy
 python3 copy_deepcopy.py       # 运行 demo（无需 matplotlib）
-python3 scripts/gen_diagram.py # 重新生成 images/copy_deepcopy.png
+# 交互示意图: 浏览器打开 images/copy_deepcopy.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -176,13 +175,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/copy_deepcopy.png
 
 ## 5. 预期结果与陷阱
 
-![copy_deepcopy](images/copy_deepcopy.png)
+**交互示意图**：[浏览器打开](images/copy_deepcopy.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/copy_deepcopy.archify.json`）。
 
-上图三面板展示了 `copy` 与 `deepcopy` 的核心差异：
-
-- **左图 — 内存模型**：赋值（红色）指向同一对象；浅拷贝（绿色）外层新容器、内层共享；深拷贝（蓝色）所有层级都独立
-- **中图 — 修改传播表**：列出不同修改操作对浅拷贝和深拷贝的影响，`outer[0][0] = 99` 是浅拷贝的陷阱
-- **右图 — 使用指南**：赋值创建别名、浅拷贝适合扁平结构、深拷贝适合嵌套结构
+三种复制的内存传播：`=` 只绑定新名字（同一对象）；`copy.copy()` 只复制外层（新外壳 + 共享内层）；`copy.deepcopy()` 递归复制所有层（完全独立）。
 
 诚实预期（本机实测）：
 

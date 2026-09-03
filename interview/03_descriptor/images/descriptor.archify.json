@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "obj.attr 的查找优先级",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "查找链"
+    },
+    {
+      "id": "fallback",
+      "label": "兜底",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "attr",
+    "ga",
+    "dd"
+  ],
+  "nodes": [
+    {
+      "id": "attr",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "obj.attr"
+    },
+    {
+      "id": "ga",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "__getattribute__",
+      "width": 135
+    },
+    {
+      "id": "dd",
+      "lane": "main",
+      "col": 2,
+      "type": "database",
+      "label": "数据描述符 __get__",
+      "width": 160
+    },
+    {
+      "id": "inst",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "实例 __dict__"
+    },
+    {
+      "id": "nd",
+      "lane": "main",
+      "col": 4,
+      "type": "messagebus",
+      "label": "非数据描述符"
+    },
+    {
+      "id": "gf",
+      "lane": "fallback",
+      "col": 3,
+      "type": "backend",
+      "label": "__getattr__"
+    },
+    {
+      "id": "ae",
+      "lane": "fallback",
+      "col": 4,
+      "type": "security",
+      "label": "AttributeError"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "attr",
+      "to": "ga",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "ga",
+      "to": "dd",
+      "label": "1. 类上有数据描述符"
+    },
+    {
+      "id": "e3",
+      "from": "ga",
+      "to": "inst",
+      "label": "2. 实例字典"
+    },
+    {
+      "id": "e4",
+      "from": "ga",
+      "to": "nd",
+      "label": "3. 类属性"
+    },
+    {
+      "id": "e5",
+      "from": "ga",
+      "to": "gf",
+      "label": "全部未命中"
+    },
+    {
+      "id": "e6",
+      "from": "gf",
+      "to": "ae",
+      "label": "也没有 → 抛出"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "优先级口诀",
+      "items": [
+        "数据描述符（定义 __set__ 或 __delete__）> 实例 __dict__ > 非数据描述符 > __getattr__",
+        "__getattribute__ 每次访问都触发；__getattr__ 只在常规查找失败后触发"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "demo 里的覆盖现象",
+      "items": [
+        "obj.d = 100 后数据描述符仍赢——实例赋值绕不过它",
+        "obj.nd = v 后实例字典赢——非数据描述符可被实例属性覆盖",
+        "CachedProperty 首次访问后写入实例字典，之后的访问走第 2 级"
+      ]
+    }
+  ]
+}

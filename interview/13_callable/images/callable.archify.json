@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "acc(10) 背后：type(obj).__call__ 分发",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      760,
+      480
+    ]
+  },
+  "participants": [
+    {
+      "id": "caller",
+      "type": "external",
+      "label": "调用方"
+    },
+    {
+      "id": "interp",
+      "type": "backend",
+      "label": "解释器分派"
+    },
+    {
+      "id": "objcall",
+      "type": "backend",
+      "label": "acc.__call__"
+    },
+    {
+      "id": "state",
+      "type": "database",
+      "label": "self.total"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "caller",
+      "to": "interp",
+      "y": 170,
+      "label": "acc(10)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "interp",
+      "to": "objcall",
+      "y": 205,
+      "label": "定位 __call__ 并调用"
+    },
+    {
+      "id": "m3",
+      "from": "objcall",
+      "to": "state",
+      "y": 240,
+      "label": "读 self.total = 100"
+    },
+    {
+      "id": "m4",
+      "from": "state",
+      "to": "objcall",
+      "y": 275,
+      "label": "total = 100",
+      "variant": "return"
+    },
+    {
+      "id": "m5",
+      "from": "objcall",
+      "to": "state",
+      "y": 310,
+      "label": "total += 10 → 130"
+    },
+    {
+      "id": "m6",
+      "from": "objcall",
+      "to": "caller",
+      "y": 345,
+      "label": "return 130",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "caller",
+      "to": "interp",
+      "y": 380,
+      "label": "callable(acc) → True"
+    }
+  ]
+}

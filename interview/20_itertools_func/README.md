@@ -12,10 +12,9 @@ Python 标准库中三大函数式工具模块是面试中的常客：**itertool
 20_itertools_func/
 ├── README.md              # 本教程文档
 ├── itertools_func.py      # 主演示脚本：itertools / functools / operator
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板 API 速查图）
 └── images/
-    └── itertools_func.png # 三面板可视化（由 gen_diagram.py 生成）
+    ├── itertools_func.archify.html  # 交互示意图（浏览器打开）
+    └── itertools_func.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -233,7 +232,7 @@ itertools 是惰性的，不预生成全部元素，内存占用 O(1)。列表�
 ```bash
 cd interview/20_itertools_func
 python3 itertools_func.py     # 运行三大模块 demo
-python3 scripts/gen_diagram.py # 重新生成 images/itertools_func.png
+# 交互示意图: 浏览器打开 images/itertools_func.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -264,12 +263,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/itertools_func.png
 
 ## 5. 预期结果与陷阱
 
-![itertools_func](images/itertools_func.png)
+**交互示意图**：[浏览器打开](images/itertools_func.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/itertools_func.archify.json`）。
 
-上图三面板展示了三大模块的核心 API：
-- **左图 — itertools Essentials**：`chain`（合并迭代器）、`islice`（惰性切片）、`accumulate`（累积运算）、`groupby`（连续分组）、`combinations`（组合生成）
-- **中图 — functools Essentials**：`lru_cache`（LRU 缓存）、`partial`（偏函数）、`wraps`（元信息保留）、`reduce`（归约）、`singledispatch`（类型分派）
-- **右图 — operator vs lambda**：`itemgetter`/`attrgetter`/`methodcaller`/`add`/`lt` 与 lambda 的对照，operator 用 C 实现，性能更优
+itertools 惰性管道：两个 iterable → `chain`/`islice` 组合 → `accumulate`/`groupby` 加工 → `next()` 驱动逐个产出 → `list()`/`dict()` 消费时才物化，全程零中间列表。
 
 诚实预期（本机实测）：
 

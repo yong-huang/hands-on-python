@@ -12,7 +12,7 @@ Python 标准库中的三大函数式工具:
 - functools: lru_cache / partial / wraps / reduce / singledispatch
 - operator: itemgetter / attrgetter / methodcaller
 
-示意图: python3 scripts/gen_diagram.py 生成 images/itertools_func.png
+交互示意图: 用浏览器打开 images/itertools_func.archify.html
 """
 
 from itertools import chain, islice, groupby, accumulate, combinations
@@ -154,5 +154,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/itertools_func.archify.html
     run_demo()

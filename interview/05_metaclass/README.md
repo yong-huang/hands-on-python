@@ -12,10 +12,9 @@
 05_metaclass/
 ├── README.md              # 本教程文档
 ├── metaclass.py           # 主演示脚本：type() 创建类 / 单例 / ORM / 子类注册
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制图）
 └── images/
-    └── metaclass.png      # 三面板可视化（由 gen_diagram.py 生成）
+    ├── metaclass.archify.html  # 交互示意图（浏览器打开）
+    └── metaclass.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -102,7 +101,7 @@ isinstance(int, type)  # True
 ```bash
 cd interview/05_metaclass
 python3 metaclass.py          # 运行全部 demo（type/单例/ORM/子类注册）
-python3 scripts/gen_diagram.py # 重新生成 images/metaclass.png
+# 交互示意图: 浏览器打开 images/metaclass.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -146,12 +145,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/metaclass.png
 
 ## 5. 预期结果与陷阱
 
-![Metaclass](images/metaclass.png)
+**交互示意图**：[浏览器打开](images/metaclass.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/metaclass.archify.json`）。
 
-上图三面板展示元类的核心机制：
-- **左图 — class 创建流程**：`class Foo(Base):` 触发 `type.__call__` → 元类 `__new__`（创建类）→ 逐个调用 `__set_name__` → 父类的 `__init_subclass__`（本 lab 的 `Field` 与 `EventRegistry` 就挂在这两个钩子上）→ 元类 `__init__`。之后 `Foo()` 才触发实例的 `__new__` → `__init__`。元类控制的是"类创建"这一步
-- **中图 — 单例模式**：`SingletonMeta.__call__` 在每次 `Database()` 时检查是否已有实例，有则返回已有实例
-- **右图 — 元类 vs `__init_subclass__`**：两者的优缺点对比和选择建议
+元类流水线：`class User(Model)` 语句委托给 `type` → name/bases/namespace 三要素 → `OrmMeta.__new__` 扫描 Field 属性生成 `cls._fields`/`cls._table` → `create_table_sql()` 按字段生成 SQL。
 
 诚实预期（本机实测）：
 

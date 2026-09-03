@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "GIL：线程在 I/O 等待时释放锁",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      760,
+      480
+    ]
+  },
+  "participants": [
+    {
+      "id": "t1",
+      "type": "messagebus",
+      "label": "线程1（I/O）"
+    },
+    {
+      "id": "gil",
+      "type": "security",
+      "label": "GIL"
+    },
+    {
+      "id": "t2",
+      "type": "messagebus",
+      "label": "线程2（CPU）"
+    },
+    {
+      "id": "os",
+      "type": "external",
+      "label": "OS I/O"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "t1",
+      "to": "gil",
+      "y": 165,
+      "label": "acquire()",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "t1",
+      "to": "os",
+      "y": 200,
+      "label": "socket.recv()"
+    },
+    {
+      "id": "m3",
+      "from": "os",
+      "to": "t1",
+      "y": 235,
+      "label": "阻塞等待",
+      "variant": "return"
+    },
+    {
+      "id": "m4",
+      "from": "t1",
+      "to": "gil",
+      "y": 270,
+      "label": "I/O 等待，释放 GIL",
+      "variant": "security"
+    },
+    {
+      "id": "m5",
+      "from": "t2",
+      "to": "gil",
+      "y": 305,
+      "label": "acquire() 成功",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m6",
+      "from": "t2",
+      "to": "gil",
+      "y": 340,
+      "label": "执行字节码 ~5ms"
+    },
+    {
+      "id": "m7",
+      "from": "gil",
+      "to": "t1",
+      "y": 375,
+      "label": "I/O 完成后重新竞争",
+      "variant": "return"
+    }
+  ]
+}

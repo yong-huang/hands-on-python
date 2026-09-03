@@ -1,0 +1,140 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "@dataclass：从字段注解到可用实例",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "生成流水线"
+    },
+    {
+      "id": "frozen",
+      "label": "frozen 分支",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "dec",
+    "gen",
+    "init",
+    "post",
+    "done"
+  ],
+  "nodes": [
+    {
+      "id": "dec",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "@dataclass"
+    },
+    {
+      "id": "gen",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "读 __annotations__",
+      "width": 140
+    },
+    {
+      "id": "init",
+      "lane": "main",
+      "col": 2,
+      "type": "backend",
+      "label": "生成 __init__/__repr__",
+      "width": 170
+    },
+    {
+      "id": "post",
+      "lane": "main",
+      "col": 3,
+      "type": "backend",
+      "label": "__post_init__ 校验",
+      "width": 140
+    },
+    {
+      "id": "done",
+      "lane": "main",
+      "col": 4,
+      "type": "database",
+      "label": "实例就绪"
+    },
+    {
+      "id": "clamp",
+      "lane": "frozen",
+      "col": 4,
+      "type": "messagebus",
+      "label": "price<0 → 钳到 0.0",
+      "width": 140
+    },
+    {
+      "id": "fro",
+      "lane": "frozen",
+      "col": 3,
+      "type": "security",
+      "label": "frozen → AttributeError",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "dec",
+      "to": "gen",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "gen",
+      "to": "init"
+    },
+    {
+      "id": "e3",
+      "from": "init",
+      "to": "post",
+      "label": "实例化时"
+    },
+    {
+      "id": "e4",
+      "from": "post",
+      "to": "done",
+      "label": "校验通过"
+    },
+    {
+      "id": "e5",
+      "from": "post",
+      "to": "clamp",
+      "label": "非法值修正"
+    },
+    {
+      "id": "e6",
+      "from": "init",
+      "to": "fro",
+      "label": "frozen=True 时"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "namedtuple vs dataclass",
+      "items": [
+        "namedtuple：不可变、轻量、可解包、有 defaults（3.7+）",
+        "dataclass：字段类型注解、默认值、方法、frozen/order 开关",
+        "frozen dataclass 有 __hash__，可做 dict key / set 成员"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "demo 现象",
+      "items": [
+        "Point(x=3, y=4) 可哈希可比较，能做字典键",
+        "嵌套结构 asdict() 递归转字典"
+      ]
+    }
+  ]
+}

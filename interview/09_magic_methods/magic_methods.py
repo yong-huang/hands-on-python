@@ -14,7 +14,7 @@ Python 的运算符和内置函数背后都是魔术方法。
 - dataclass: 自动生成 __init__/__repr__/__eq__
 - @total_ordering: 只需 __eq__ + 一个比较即可
 
-示意图: python3 scripts/gen_diagram.py 生成 images/magic_methods.png
+交互示意图: 用浏览器打开 images/magic_methods.archify.html
 """
 
 from functools import total_ordering
@@ -226,5 +226,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/magic_methods.archify.html
     run_demo()

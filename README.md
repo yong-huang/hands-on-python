@@ -1,16 +1,12 @@
 # hands-on-python
 
-面试向 Python 语言机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等 Python 面试高频主题。每个实验都是一个"五件套"目录——README 教程 + 主演示脚本 + 示意图生成脚本 + 图片——读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
+面试向 Python 语言机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等 Python 面试高频主题。每个实验都是一个"五件套"目录——README 教程 + 主演示脚本 + 交互示意图（HTML + JSON 图源）——读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
 
 ## 环境要求
 
 - **Python 3.8+**（推荐 3.10+；使用 `python3 --version` 探测实际版本）
-- **matplotlib**：仅 `scripts/gen_diagram.py`（生成示意图）需要；主演示脚本 `python3 <topic>.py` 不依赖任何第三方库
-- 国内网络环境建议先运行公共脚本安装依赖（优先清华镜像源，失败回退官方源）：
-
-```bash
-bash scripts/setup_env.sh
-```
+- 主演示脚本 `python3 <topic>.py` **零第三方依赖**
+- 交互示意图是自包含 HTML，用浏览器打开即可（trace 动画、深/浅主题、节点检索）
 
 ## 实验列表
 
@@ -50,8 +46,8 @@ bash scripts/setup_env.sh
 
 ```bash
 cd interview/01_decorator_factory
-python3 decorator_factory.py      # 主演示：分步打印 demo 输出（无第三方依赖）
-python3 scripts/gen_diagram.py       # 重新生成 images/ 下的示意图（需要 matplotlib）
+python3 decorator_factory.py      # 主演示：分步打印 demo 输出（零第三方依赖）
+open images/decorator_factory.archify.html   # 交互示意图（浏览器打开；Linux 用 xdg-open）
 ```
 
-脚本从任意 cwd 调用都正确（内部通过 `SCRIPT_DIR` 定位输出路径）。每个实验的 README 里有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。
+主演示脚本从任意 cwd 调用都正确。每个实验的 README 里有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。

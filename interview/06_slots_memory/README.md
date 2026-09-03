@@ -12,10 +12,9 @@ Python 默认用 `__dict__`（哈希表）存储实例属性，两属性对象�
 06_slots_memory/
 ├── README.md            # 本教程文档
 ├── slots_memory.py      # 主演示脚本：内存对比 / 继承 / weakref / 速度基准
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（含真实内存与速度测量数据）
 └── images/
-    └── slots_memory.png # 三面板可视化（由 gen_diagram.py 生成）
+    ├── slots_memory.archify.html  # 交互示意图（浏览器打开）
+    └── slots_memory.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -72,7 +71,7 @@ SlotPoint (with __slots__):
 ```bash
 cd interview/06_slots_memory
 python3 slots_memory.py          # 运行全部 demo
-python3 scripts/gen_diagram.py # 重新生成 images/slots_memory.png
+# 交互示意图: 浏览器打开 images/slots_memory.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -99,12 +98,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/slots_memory.png
 
 ## 5. 预期结果与陷阱
 
-![Slots Memory](images/slots_memory.png)
+**交互示意图**：[浏览器打开](images/slots_memory.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/slots_memory.archify.json`）。
 
-上图三面板展示 `__slots__` 的效果：
-- **左图 — 实例内存布局**：`RegularPoint` 使用 `__dict__` 哈希表（对象本体 48 B + 实例字典 ~88-104 B），`SlotPoint` 使用固定数组（~48 bytes，CPython 3.10/3.13 实测）
-- **中图 — 大规模内存对比**：随实例数量增长，slots 的内存优势愈发明显（10000 实例节省 ~65%）
-- **右图 — 属性访问速度**：使用真实基准数据。3.10 及以前 slots 的描述符访问普遍快于 `__dict__` 查找；3.11+ 属性访问优化后两者基本持平——速度比值随版本与负载浮动，看量级即可
+属性写入的两条路径：`type(p)` 查找 `x`——类定义了 `__slots__` 经描述符直取固定槽位数组，没有（默认）落进实例字典哈希表；给 slots 对象新增未声明属性 → `AttributeError`。
 
 诚实预期（本机实测）：
 

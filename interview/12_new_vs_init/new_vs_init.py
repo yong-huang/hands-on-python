@@ -14,7 +14,7 @@ __new__ 负责创建实例（分配内存），__init__ 负责初始化（设置
 - __new__ 返回非 cls 实例时，__init__ 不会被调用
 - 不可变类型必须在 __new__ 中修改值（__init__ 无法修改）
 
-示意图: python3 scripts/gen_diagram.py 生成 images/new_vs_init.png
+交互示意图: 用浏览器打开 images/new_vs_init.archify.html
 """
 
 
@@ -150,4 +150,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    run_demo()  # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/new_vs_init.archify.html
+    run_demo()

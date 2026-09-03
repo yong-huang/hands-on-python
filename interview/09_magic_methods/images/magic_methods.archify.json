@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "a + b 背后的魔术方法分发",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "双目运算符协议"
+    },
+    {
+      "id": "fallback",
+      "label": "反射回退",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "expr",
+    "add",
+    "result"
+  ],
+  "nodes": [
+    {
+      "id": "expr",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "p + \"hello\""
+    },
+    {
+      "id": "add",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "type(p).__add__",
+      "width": 150
+    },
+    {
+      "id": "result",
+      "lane": "main",
+      "col": 2,
+      "type": "database",
+      "label": "return Point(4, 6)",
+      "width": 150
+    },
+    {
+      "id": "ni",
+      "lane": "fallback",
+      "col": 2,
+      "type": "messagebus",
+      "label": "NotImplemented"
+    },
+    {
+      "id": "radd",
+      "lane": "fallback",
+      "col": 3,
+      "type": "backend",
+      "label": "type(\"hello\").__radd__",
+      "width": 150
+    },
+    {
+      "id": "terr",
+      "lane": "fallback",
+      "col": 4,
+      "type": "security",
+      "label": "TypeError"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "expr",
+      "to": "add",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "add",
+      "to": "result",
+      "label": "认识右操作数"
+    },
+    {
+      "id": "e3",
+      "from": "add",
+      "to": "ni",
+      "label": "不认识 → 哨兵"
+    },
+    {
+      "id": "e4",
+      "from": "ni",
+      "to": "radd",
+      "label": "改试右反射"
+    },
+    {
+      "id": "e5",
+      "from": "radd",
+      "to": "terr",
+      "label": "也没有 → 抛异常"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "NotImplemented ≠ NotImplementedError",
+      "items": [
+        "NotImplemented 是哨兵值：\"我不认识对方\"，触发反射回退",
+        "NotImplementedError 是异常：\"子类必须实现\""
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "__eq__ 与 __hash__ 契约",
+      "items": [
+        "a == b 必须保证 hash(a) == hash(b)",
+        "只定义 __eq__ 不定义 __hash__ → __hash__ = None，对象不可哈希"
+      ]
+    }
+  ]
+}

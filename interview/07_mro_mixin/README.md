@@ -12,10 +12,9 @@ Mixin 是一种通过多继承实现的可插拔功能模式：每个 Mixin 提�
 07_mro_mixin/
 ├── README.md          # 本教程文档
 ├── mro_mixin.py       # 主演示脚本：钻石继承 / super() 链 / Mixin 组合
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制图）
 └── images/
-    └── mro_mixin.png  # 三面板可视化（由 gen_diagram.py 生成）
+    ├── mro_mixin.archify.html  # 交互示意图（浏览器打开）
+    └── mro_mixin.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -79,7 +78,7 @@ ClassName.__init__(self)  # 直接调用指定类，破坏链
 ```bash
 cd interview/07_mro_mixin
 python3 mro_mixin.py          # 运行全部 demo
-python3 scripts/gen_diagram.py # 重新生成 images/mro_mixin.png
+# 交互示意图: 浏览器打开 images/mro_mixin.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10，节选）：
@@ -108,12 +107,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/mro_mixin.png
 
 ## 5. 预期结果与陷阱
 
-![MRO & Mixin](images/mro_mixin.png)
+**交互示意图**：[浏览器打开](images/mro_mixin.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/mro_mixin.archify.json`）。
 
-上图三面板展示 MRO 和 Mixin 的核心机制：
-- **左图 — 钻石继承**：`D(B, C)` 的继承图和 MRO 序列 `D → B → C → A → object`，A 只出现一次
-- **中图 — super() 调用链**：`MyService(MixinLog, MixinValidate, Base)` 的 `__init__` 调用链，每次 `super()` 转到 MRO 中的下一个
-- **右图 — Mixin 组合模式**：`User(JSONMixin, ReprMixin)` 通过组合获得 JSON 序列化和自定义 repr 能力（图中 `ValidateMixin` 是 `Product` 使用的第三个 Mixin，同一组合模式）
+`d.greet()` 的 super() 链：D → B → C → A（`super() → C，不是父类 A！`），结果沿链原路回传——每个类只被调用一次由 C3 保证。
 
 诚实预期（本机实测）：
 

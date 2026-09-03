@@ -12,7 +12,7 @@ property 深度剖析 —— getter / setter / deleter
 - property 本质就是 data descriptor
 - 缓存场景可用 functools.cached_property (非数据描述符, 见 README Q5)
 
-示意图: python3 scripts/gen_diagram.py 生成 images/property.png
+交互示意图: 用浏览器打开 images/property.archify.html
 """
 
 
@@ -161,5 +161,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 可视化图由 scripts/gen_diagram.py 生成
+    # 只跑 demo; 交互示意图见 images/property.archify.html
     run_demo()

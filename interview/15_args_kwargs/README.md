@@ -12,10 +12,9 @@
 15_args_kwargs/
 ├── README.md              # 本教程文档
 ├── args_kwargs.py         # 主演示脚本：收集/解包/分隔符/实用模式
-├── scripts/
-│   └── gen_diagram.py # 示意图生成脚本（三面板机制示意图）
 └── images/
-    └── args_kwargs.png    # 三面板可视化（由 gen_diagram.py 生成）
+    ├── args_kwargs.archify.html  # 交互示意图（浏览器打开）
+    └── args_kwargs.archify.json  # 图源（typed JSON）
 ```
 
 主脚本内容：
@@ -183,7 +182,7 @@ def wrapper(func, *args, **kwargs):
 ```bash
 cd interview/15_args_kwargs
 python3 args_kwargs.py        # 运行 demo（无需 matplotlib）
-python3 scripts/gen_diagram.py # 重新生成 images/args_kwargs.png
+# 交互示意图: 浏览器打开 images/args_kwargs.archify.html
 ```
 
 真实输出示例（macOS, CPython 3.10）：
@@ -228,13 +227,9 @@ python3 scripts/gen_diagram.py # 重新生成 images/args_kwargs.png
 
 ## 5. 预期结果与陷阱
 
-![args_kwargs](images/args_kwargs.png)
+**交互示意图**：[浏览器打开](images/args_kwargs.archify.html)（自包含 HTML：trace 动画、深/浅主题、节点检索与路径追踪；图源 `images/args_kwargs.archify.json`）。
 
-上图三面板布局展示了 `*args/**kwargs` 的核心规则：
-
-- **左面板 — Parameter Order Rules**：完整参数签名 `def f(a, b, /, c, d, *args, key=val, **kwargs)` 中各参数的位置和约束，从仅位置参数到仅关键字参数依次排列
-- **中面板 — Four Uses of \***：`*` 和 `**` 的四种用途——定义时收集（`*args`/`**kwargs`）和调用时解包（`*list`/`**dict`），每种用法配有代码示例
-- **右面板 — Unpacking Visual**：解包的可视化图示。`*[1,2,3]` 将列表元素逐个展开为位置参数，`**{'x':1, 'y':2}` 将字典键值对展开为关键字参数，箭头表示数据流向
+`*`/`**` 的双向流动：调用侧解包 `f(*seq, **mapping)` → 进入函数体形参绑定 → 定义侧把剩余位置/关键字参数收集进 `*args` 元组与 `**kwargs` 字典；多传/少传/重名 → `TypeError`。
 
 诚实预期（本机实测）：
 
