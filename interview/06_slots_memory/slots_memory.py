@@ -152,7 +152,11 @@ def run_demo():
     print(f"  RegularPoint: {sys.getsizeof(r)} bytes, has __dict__: {hasattr(r, '__dict__')}")
     print(f"  SlotPoint:     {sys.getsizeof(s)} bytes, has __dict__: {hasattr(s, '__dict__')}")
     if hasattr(r, "__dict__"):
-        print(f"  RegularPoint.__dict__: {r.__dict__}")
+        dict_size = sys.getsizeof(r.__dict__)
+        # getsizeof 只算对象本体这一层，__dict__ 是另一个对象要单独量——
+        # 实例本体打平不代表 slots 不省内存，真实差距在字典那一层
+        print(f"  RegularPoint.__dict__: {r.__dict__} ({dict_size} bytes)")
+        print(f"  True total: RegularPoint {sys.getsizeof(r)} + {dict_size} = {sys.getsizeof(r) + dict_size} bytes  vs  SlotPoint {sys.getsizeof(s)} bytes")
 
     d = SlotWithDefault(1, 2)
     print(f"  SlotWithDefault(1, 2): z={d.z}  (default comes from __init__, not slots)")
