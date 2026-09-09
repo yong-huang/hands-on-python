@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "free-threading：同一个 threading，两种世界",
+    "locale": "zh-CN",
+    "viewBox": [
+      1060,
+      500
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "线程调度"
+        },
+        "emphasis": {
+          "label": "真并行（无 GIL）"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "同一份 threading 代码"
+    },
+    {
+      "label": "解释器构建"
+    },
+    {
+      "label": "4 线程实测"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "code",
+      "type": "frontend",
+      "label": "4 线程 · 200 万迭代",
+      "sublabel": "纯 Python 循环 · 无锁",
+      "stage": 0,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "gil",
+      "type": "security",
+      "label": "GIL 构建 (3.13)",
+      "sublabel": "全局锁 · 串行化",
+      "stage": 1,
+      "row": 0,
+      "tag": "扩展比 0.97×"
+    },
+    {
+      "id": "ft",
+      "type": "security",
+      "label": "free-threading (3.14t)",
+      "sublabel": "PEP 703 · 无 GIL",
+      "stage": 1,
+      "row": 2,
+      "tag": "扩展比 3.73×",
+      "width": 170
+    },
+    {
+      "id": "out-gil",
+      "type": "database",
+      "label": "串行执行",
+      "sublabel": "0.125s · 白忙",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "out-ft",
+      "type": "database",
+      "label": "真并行",
+      "sublabel": "0.027s · 4 栋齐跑",
+      "stage": 2,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-g",
+      "from": "code",
+      "to": "gil",
+      "label": "锁全让给一把 GIL",
+      "variant": "default"
+    },
+    {
+      "id": "f-f",
+      "from": "code",
+      "to": "ft",
+      "label": "每线程独立执行",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-go",
+      "from": "gil",
+      "to": "out-gil",
+      "label": "排队执行"
+    },
+    {
+      "id": "f-fo",
+      "from": "ft",
+      "to": "out-ft",
+      "label": "真并行",
+      "variant": "emphasis"
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "同步原语工具箱：六把钥匙各管一扇门",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "visual_preset": "signal-flow"
+  },
+  "components": [
+    {
+      "id": "threads",
+      "type": "external",
+      "label": "N 个线程",
+      "sublabel": "交错不可预测",
+      "pos": [
+        40,
+        330
+      ],
+      "size": [
+        120,
+        60
+      ]
+    },
+    {
+      "id": "lock",
+      "type": "security",
+      "label": "Lock",
+      "sublabel": "with lock: 惯用法",
+      "pos": [
+        350,
+        100
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "rlock",
+      "type": "security",
+      "label": "RLock",
+      "sublabel": "可重入 · 嵌套函数",
+      "pos": [
+        350,
+        220
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "counter",
+      "type": "database",
+      "label": "共享状态",
+      "sublabel": "counter / 余额",
+      "pos": [
+        750,
+        155
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "sem",
+      "type": "security",
+      "label": "Semaphore(3)",
+      "sublabel": "限流",
+      "pos": [
+        350,
+        400
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "pool",
+      "type": "database",
+      "label": "受限资源",
+      "sublabel": "连接池 / 端点",
+      "pos": [
+        750,
+        400
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "event",
+      "type": "messagebus",
+      "label": "Event",
+      "sublabel": "一次性广播",
+      "pos": [
+        250,
+        530
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "cond",
+      "type": "messagebus",
+      "label": "Condition",
+      "sublabel": "谓词等待 + notify",
+      "pos": [
+        620,
+        530
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "barrier",
+      "type": "messagebus",
+      "label": "Barrier",
+      "sublabel": "全员集结",
+      "pos": [
+        990,
+        530
+      ],
+      "size": [
+        150,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "互斥闸门 · 一次一个",
+      "wraps": [
+        "lock",
+        "rlock"
+      ]
+    },
+    {
+      "kind": "security-group",
+      "label": "协调原语 · 线程间守序",
+      "wraps": [
+        "event",
+        "cond",
+        "barrier"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "t-lock",
+      "from": "threads",
+      "to": "lock",
+      "label": "with lock:",
+      "fromSide": "top",
+      "toSide": "left"
+    },
+    {
+      "id": "t-sem",
+      "from": "threads",
+      "to": "sem",
+      "label": "acquire()",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "lock-counter",
+      "from": "lock",
+      "to": "counter",
+      "label": "一次一个"
+    },
+    {
+      "id": "rlock-counter",
+      "from": "rlock",
+      "to": "counter",
+      "label": "嵌套安全",
+      "variant": "dashed"
+    },
+    {
+      "id": "sem-pool",
+      "from": "sem",
+      "to": "pool",
+      "label": "并发峰值 ≤ N"
+    }
+  ]
+}

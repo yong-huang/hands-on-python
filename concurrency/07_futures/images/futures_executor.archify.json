@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "concurrent.futures：统一执行器与 Future",
+    "locale": "zh-CN",
+    "viewBox": [
+      1000,
+      560
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "结果回流"
+        },
+        "emphasis": {
+          "label": "submit 提交"
+        },
+        "dashed": {
+          "label": "一键切换对照"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "业务代码"
+    },
+    {
+      "label": "Executor 后端"
+    },
+    {
+      "label": "Future"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "biz",
+      "type": "frontend",
+      "label": "同一份业务代码",
+      "sublabel": "submit / result 两个动词",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "tpool",
+      "type": "messagebus",
+      "label": "ThreadPoolExecutor",
+      "sublabel": "IO 密集 · 等待时释放 GIL",
+      "stage": 1,
+      "row": 0,
+      "tag": "IO 密集首选"
+    },
+    {
+      "id": "ppool",
+      "type": "security",
+      "label": "ProcessPoolExecutor",
+      "sublabel": "CPU 密集 · 独立 GIL",
+      "stage": 1,
+      "row": 2,
+      "tag": "CPU 密集首选"
+    },
+    {
+      "id": "future",
+      "type": "messagebus",
+      "label": "Future 欠条",
+      "sublabel": "result(timeout=) · 异常重抛",
+      "stage": 2,
+      "row": 1,
+      "tag": "as_completed 按完成序放行",
+      "width": 168
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-bt",
+      "from": "biz",
+      "to": "tpool",
+      "label": "submit(fn)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-bp",
+      "from": "biz",
+      "to": "ppool",
+      "label": "submit(fn) 一键切换",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-tf",
+      "from": "tpool",
+      "to": "future",
+      "label": "完成即结算"
+    },
+    {
+      "id": "f-pf",
+      "from": "ppool",
+      "to": "future",
+      "label": "异常经 pickle 送回"
+    }
+  ]
+}

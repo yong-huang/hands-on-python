@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "🏁 可切换执行模型的并发下载器",
+    "locale": "zh-CN",
+    "viewBox": [
+      950,
+      500
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "数据流向"
+        },
+        "emphasis": {
+          "label": "统一入口"
+        },
+        "security": {
+          "label": "执行模型闸门"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "统一入口"
+    },
+    {
+      "label": "执行模型"
+    },
+    {
+      "label": "本地服务"
+    },
+    {
+      "label": "校验"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "type": "frontend",
+      "label": "download_round",
+      "sublabel": "--model / --limit / --twice",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "backends",
+      "type": "security",
+      "label": "执行模型后端 ×4",
+      "sublabel": "sync / thread / process / async",
+      "stage": 1,
+      "row": 1,
+      "tag": "限流 · 重试 · 断点续传",
+      "width": 180
+    },
+    {
+      "id": "server",
+      "type": "database",
+      "label": "本地 aiohttp 服务",
+      "sublabel": "20 文件 · 30ms · 首败恢复",
+      "stage": 2,
+      "row": 1,
+      "tag": "在飞峰值 ≤ limit",
+      "width": 180
+    },
+    {
+      "id": "verify",
+      "type": "database",
+      "label": "SHA256 校验",
+      "sublabel": "20/20 · 逐文件断言",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "kill",
+      "type": "external",
+      "label": "SIGKILL 对照",
+      "sublabel": "强杀撕裂写入 · 无续传",
+      "stage": 1,
+      "row": 2,
+      "tag": "反面教材"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-eb",
+      "from": "entry",
+      "to": "backends",
+      "label": "dispatch(model)",
+      "variant": "emphasis",
+      "labelDy": 53
+    },
+    {
+      "id": "f-bs",
+      "from": "backends",
+      "to": "server",
+      "label": "GET /file/*",
+      "variant": "security",
+      "labelDy": 53
+    },
+    {
+      "id": "f-sv",
+      "from": "server",
+      "to": "verify",
+      "label": "落盘 + 校验",
+      "labelDy": 53
+    }
+  ]
+}

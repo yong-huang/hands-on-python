@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "生产者-消费者流水线：毒丸下班，背压限流",
+    "locale": "zh-CN",
+    "viewBox": [
+      1050,
+      540
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "default": {
+          "label": "普通数据流"
+        },
+        "emphasis": {
+          "label": "主数据流"
+        },
+        "security": {
+          "label": "毒丸下班协议"
+        },
+        "dashed": {
+          "label": "汇总 / 收尾统计"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "生产侧"
+    },
+    {
+      "label": "队列"
+    },
+    {
+      "label": "消费侧"
+    },
+    {
+      "label": "结果"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "producers",
+      "type": "frontend",
+      "label": "生产者 ×3",
+      "sublabel": "334 / 333 / 333 条",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "pill",
+      "type": "security",
+      "label": "毒丸 sentinel",
+      "sublabel": "主线程收尾发放 ×2",
+      "stage": 0,
+      "row": 2,
+      "tag": "收尾协议"
+    },
+    {
+      "id": "q",
+      "type": "messagebus",
+      "label": "queue.Queue(10)",
+      "sublabel": "FIFO · task_done 回执",
+      "stage": 1,
+      "row": 1,
+      "tag": "背压：满则阻塞 put"
+    },
+    {
+      "id": "consumers",
+      "type": "backend",
+      "label": "消费者 ×2",
+      "sublabel": "get() 循环 · 毒丸即退",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "results",
+      "type": "database",
+      "label": "计数 dict",
+      "sublabel": "每条恰好一次",
+      "stage": 3,
+      "row": 1,
+      "tag": "锁内更新"
+    },
+    {
+      "id": "report",
+      "type": "backend",
+      "label": "退出统计",
+      "sublabel": "总数/耗时/吞吐",
+      "stage": 3,
+      "row": 2,
+      "tag": "main 汇总"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-p",
+      "from": "producers",
+      "to": "q",
+      "label": "put() · 满则阻塞",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-pill",
+      "from": "pill",
+      "to": "q",
+      "label": "毒丸 ×2 下班通知",
+      "variant": "security"
+    },
+    {
+      "id": "f-qc",
+      "from": "q",
+      "to": "consumers",
+      "label": "get()/task_done",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-cr",
+      "from": "consumers",
+      "to": "results",
+      "label": "计数 +1"
+    },
+    {
+      "id": "f-rr",
+      "from": "results",
+      "to": "report",
+      "label": "汇总",
+      "variant": "dashed",
+      "labelAt": [
+        745,
+        314
+      ]
+    }
+  ]
+}

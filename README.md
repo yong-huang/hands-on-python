@@ -50,6 +50,39 @@ hands-on-python/
 | 19 | [collections 与 dataclass](interview/19_collections/README.md) | namedtuple / dataclass / dict 选型 |
 | 20 | [itertools / functools / operator](interview/20_itertools_func/README.md) | 标准库函数式工具三件套 |
 
+## 🧵 第二系列：Python 并发 16 站（2026-09 新增）
+
+继 20 个语言机制实验之后的完整并发专题：线程地基 → 多进程 → asyncio → 诊断与模式 → 终极串联。
+每个实验同为本仓库"五件套"规范（教程 README + 主演示脚本 + Archify 图三件套），
+清单与进度见 [python_concurrency.md](python_concurrency.md)。
+
+| 编号 | 实验名 | 一句话主题 |
+|:---|:---|:---|
+| 01 | [线程生命周期观察器](concurrency/01_thread_lifecycle/README.md) | Thread / start / join / daemon 与交错执行 |
+| 02 | [竞态复现与 GIL 边界实测](concurrency/02_race_gil/README.md) | 丢失更新、字节码证据、CPU 与 IO 的相反命运 |
+| 03 | [同步原语工具箱](concurrency/03_sync_primitives/README.md) | Lock / RLock / Semaphore / Event / Condition / Barrier |
+| 04 | [多线程生产者-消费者](concurrency/04_producer_consumer/README.md) | queue.Queue、毒丸关闭、maxsize 背压 |
+| 05 | [multiprocessing 多核加速](concurrency/05_mp_accel/README.md) | spawn、__main__ 保护、加速比实测、map 保序 |
+| 06 | [进程间通信与共享状态](concurrency/06_ipc_shared/README.md) | Pipe / Queue / SharedMemory / Manager |
+| 07 | [concurrent.futures 统一执行器](concurrency/07_futures/README.md) | Executor 双后端、as_completed、异常传播 |
+| 08 | [协程与事件循环](concurrency/08_coroutine_loop/README.md) | async/await 惰性、单线程交错、create_task 并发 |
+| 09 | [任务编排](concurrency/09_task_orchestration/README.md) | TaskGroup 结构化并发、wait_for、gather 双策略 |
+| 10 | [异步生产者-消费者与限流](concurrency/10_async_pipelines/README.md) | asyncio.Queue、Semaphore、背压对比 |
+| 11 | [异步本地批量抓取器](concurrency/11_async_fetcher/README.md) | aiohttp 三件套：限流/超时/重试（离线可跑） |
+| 12 | [死锁与竞态诊断工坊](concurrency/12_deadlock_workshop/README.md) | 子进程复现死锁、faulthandler 验尸、锁序修复 |
+| 13 | [并发设计模式集](concurrency/13_concurrency_patterns/README.md) | 优雅关闭、令牌桶、指数退避、fan-out/fan-in |
+| 14 | [四种执行模型性能对决](concurrency/14_model_benchmark/README.md) | 串行/线程/进程/协程同题基准与选型公式 |
+| 15 | [🏁 可切换执行模型并发下载器](concurrency/15_downloader/README.md) | 四后端一键切换、限流重试、断点续传、SHA256 |
+| 16 | [⚠️ free-threading 无 GIL 实测](concurrency/16_free_threading/README.md) | PEP 703 双构建对比：0.97× vs 3.73×（选做） |
+
+并发系列学习路线（每站 README §8 有上下篇链接）：
+
+1. **线程地基**（01 → 02 → 03 → 04）：线程生命周期、竞态与 GIL、同步原语、消息传递
+2. **多核与执行器**（05 → 06 → 07）：多进程真并行、四条 IPC、统一执行器
+3. **异步世界**（08 → 09 → 10 → 11）：事件循环、任务编排、异步流水线、真实网络
+4. **诊断与架构**（12 → 13 → 14）：死锁诊断、设计模式、四模型对决
+5. **毕业设计**（15 → 16 选做）：可切换执行模型下载器、free-threading 前沿实测
+
 ## 学习路线
 
 建议按四个阶段推进，每阶段内编号即推荐顺序：

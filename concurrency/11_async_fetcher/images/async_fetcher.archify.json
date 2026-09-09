@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "三种客户端模型对决：串行 / 线程池 / 异步",
+    "locale": "zh-CN",
+    "viewBox": [
+      1050,
+      560
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "请求 / 响应"
+        },
+        "emphasis": {
+          "label": "异步主链（最快）"
+        },
+        "dashed": {
+          "label": "阻塞对照"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "客户端模型"
+    },
+    {
+      "label": "本地 aiohttp 服务"
+    },
+    {
+      "label": "实测"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "serial",
+      "type": "external",
+      "label": "串行",
+      "sublabel": "一个接一个 · 3.7s",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "threads",
+      "type": "messagebus",
+      "label": "线程池 ×10",
+      "sublabel": "0.4s · 阻塞 IO",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "async",
+      "type": "frontend",
+      "label": "异步客户端",
+      "sublabel": "Semaphore(10) · 超时 · 重试",
+      "stage": 0,
+      "row": 2,
+      "width": 150
+    },
+    {
+      "id": "server",
+      "type": "database",
+      "label": "127.0.0.1 本地服务",
+      "sublabel": "50 端点 · 30-80ms 延迟",
+      "stage": 1,
+      "row": 1,
+      "tag": "15 个不稳定端点：首败必恢复"
+    },
+    {
+      "id": "metrics",
+      "type": "database",
+      "label": "统计",
+      "sublabel": "50/50 成功 · 恢复率 100%",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-s",
+      "from": "serial",
+      "to": "server",
+      "label": "逐个请求",
+      "variant": "dashed",
+      "labelAt": [
+        280,
+        175
+      ]
+    },
+    {
+      "id": "f-t",
+      "from": "threads",
+      "to": "server",
+      "label": "10 线程并发",
+      "labelAt": [
+        260,
+        238
+      ]
+    },
+    {
+      "id": "f-a",
+      "from": "async",
+      "to": "server",
+      "label": "10 并发 · 重试",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-r",
+      "from": "server",
+      "to": "metrics",
+      "label": "全部 200"
+    }
+  ]
+}

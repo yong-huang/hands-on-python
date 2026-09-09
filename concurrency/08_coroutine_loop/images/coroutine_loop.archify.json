@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "事件循环：单线程内的协作式调度",
+    "locale": "zh-CN",
+    "viewBox": [
+      1000,
+      520
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "让出 / 恢复"
+        },
+        "emphasis": {
+          "label": "事件驱动"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "任务"
+    },
+    {
+      "label": "事件循环"
+    },
+    {
+      "label": "就绪/定时"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "coroA",
+      "type": "frontend",
+      "label": "协程 A",
+      "sublabel": "await sleep 主动让出",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "coroB",
+      "type": "frontend",
+      "label": "协程 B",
+      "sublabel": "同一个线程",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "loop",
+      "type": "messagebus",
+      "label": "事件循环",
+      "sublabel": "单线程 · 调度一切",
+      "stage": 1,
+      "row": 1,
+      "tag": "永不创建新线程"
+    },
+    {
+      "id": "waitq",
+      "type": "database",
+      "label": "定时器堆 / 就绪队列",
+      "sublabel": "到期 → 放回可运行",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-a",
+      "from": "coroA",
+      "to": "loop",
+      "label": "await 让出",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-b",
+      "from": "coroB",
+      "to": "loop",
+      "label": "await 让出"
+    },
+    {
+      "id": "f-w",
+      "from": "loop",
+      "to": "waitq",
+      "label": "未到期 → 挂起"
+    },
+    {
+      "id": "f-ra",
+      "from": "waitq",
+      "to": "coroA",
+      "label": "到期恢复",
+      "variant": "emphasis",
+      "route": "top-channel"
+    },
+    {
+      "id": "f-rb",
+      "from": "waitq",
+      "to": "coroB",
+      "label": "到期恢复",
+      "route": "bottom-channel"
+    }
+  ]
+}

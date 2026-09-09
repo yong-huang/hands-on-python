@@ -1,0 +1,152 @@
+# 03 · 同步原语工具箱：六把钥匙各管一扇门
+
+> 上一篇看清了竞态怎么咬人，这一篇发药：`threading` 的六种同步原语。它们不是六个
+> 平行 API，而是六种**排队策略**——互斥靠 Lock/RLock，限流靠 Semaphore，守序靠
+> Event/Condition/Barrier。每个场景都以确定性断言收尾，包括亲手演示一次「死锁长什么样」。
+
+## 1. 为什么需要它
+
+项目 2 的结论是"加锁是唯一修法"，但工具箱里不止锁：限流不是互斥（要的是"最多 3 个"不是"只能 1 个"），广播不是条件（Event 只说"发生了"，Condition 还能说"条件成立了"），集结不是通知（Barrier 等全员，等不到不放行）。选错原语，代码能跑但语义是歪的。本实验给六种原语各配一个最小场景和一条可复跑的断言，让你凭"问题形状"选工具，而不是凭背 API。
+
+## 2. 总览：核心机制一图看懂
+
+![同步原语工具箱：六把钥匙各管一扇门](images/sync_primitives.archify.svg)
+
+一句话心智模型：**互斥类（Lock/RLock）守共享状态，Semaphore 守资源配额，协调类（Event/Condition/Barrier）守线程间秩序**。看图沿箭头走：线程带着 `with lock:` 进闸门，一次一个碰共享状态；Semaphore 发 3 张许可放进连接池；底部三个协调原语不碰资源，只管"谁先谁后、等到什么才走"。
+
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/03_sync_primitives/images/sync_primitives.archify.html)
+> （或本地打开 [`images/sync_primitives.archify.html`](images/sync_primitives.archify.html)）。
+
+## 3. 快速开始
+
+```bash
+cd concurrency/03_sync_primitives
+python3 sync_primitives.py      # 六个场景 + 全部断言，约 3 秒
+```
+
+真实输出节选（macOS, CPython 3.13.9，§4/§5 全文见脚本）：
+
+```
+========================================================
+[1. Lock：同一个竞态形状 + with lock，100 线程 × 10,000 次]
+========================================================
+  10 轮结果: 1,000,000（10 轮全部 = 1,000,000，一次不丢）
+  对照项目 2 实验组丢失 72~83% —— 锁把读-改-写变成原子区，竞态从物理上不可能
+
+========================================================
+[2. RLock：同一线程再次拿锁]
+========================================================
+  普通 Lock:  嵌套 acquire → 1 秒后仍卡在原地（自锁）
+             daemon=True 才敢这么演示——非 daemon 线程会让整个进程退不出去
+  RLock:      同一线程再 acquire → 直接通过（inner 正常执行）
+
+========================================================
+[3. Semaphore(3)：20 个任务，同时在飞的最多 3 个]
+========================================================
+  20 个任务全部完成，采样到并发峰值 = 3（≤ 许可数 3）
+
+========================================================
+[6. Barrier(6)：分批到达，全员集结后同时出发]
+========================================================
+  到达时间跨度 101ms，放行时刻全部 ≥ 最晚到达（差值 ≤ 0.3ms）
+```
+
+诚实预期（本机 5 次实测）：
+
+- **§1 十轮恒等是确定性保证**，不是概率——锁把窗口物理关闭，任何机器任何负载都该 10/10
+- **§3 采样到的峰值 = 3**，但你的机器上若采样更稀可能只看到 2——断言是 `1 ≤ 峰值 ≤ 3`，上限才是语义
+- **§2 的死锁演示是真死锁**：victim 线程永远出不来，靠 `daemon=True` + `join(timeout=1)` 才能把"死锁"安全地展览出来
+- **§6 放行差值在 0.1~1ms 量级**：Barrier 保证"不早于最晚者"，不保证绝对同时
+
+## 4. 核心概念
+
+### 4.1 Lock 与临界区：with 是唯一的正确姿势
+
+```python
+with counter_lock:          # 惯用法：等价于 try: acquire() finally: release()
+    tmp = counter
+    audit_hook()
+    counter = tmp + 1
+```
+
+锁保护的**不是变量，是不变量**（项目 2 §3 的"余额永不为负"）。临界区三原则：能多小就多小、里面绝不调用未知回调（持锁做 IO 是死锁温床）、异常也必须放锁——`with` 一并解决。实测对照：同一个读-改-写形状，无锁丢 72~83%，加锁后 100 线程 × 10000 次 × 10 轮分毫不差。
+
+### 4.2 RLock：锁的"会员制"
+
+普通 Lock 不认人：谁再 acquire（哪怕是持有者自己）都排队——递归函数、`a()` 调 `b()` 两层都拿同一把锁就自锁。实验里把自锁现场直接展览出来：daemon 线程里嵌套 acquire，1 秒后仍原地卡着。RLock 记录持有线程与重入计数，进出配对即可。**默认用 Lock，确实要嵌套才换 RLock**——RLock 的记账有轻微开销，且跨层传递锁对象容易掩盖设计问题。
+
+### 4.3 Semaphore：互斥的推广
+
+`Semaphore(n)` = 一个计数器 + 等待队列：acquire 减一（减到 0 就等），release 加一并唤醒。`Semaphore(1)` 退化成 Lock；`Semaphore(3)` 就是"这张桌子只坐 3 个人"。注意它**不绑定资源**——计数靠纪律维持，`release()` 谁都能多按，配额就失真了。
+
+### 4.4 Event / Condition / Barrier：三种"等"的分工
+
+| 原语 | 等什么 | 醒来条件 | 典型场景 |
+|:---|:---|:---|:---|
+| `Event` | 一个布尔开关 | `set()` 一次性广播全员 | 配置就绪、停止信号 |
+| `Condition` | 一个谓词成立 | `notify`/`notify_all` + 重新检查谓词 | 队列非空、缓存就绪 |
+| `Barrier` | 一群人到齐 | 第 n 个线程 `wait()` 时全员放行 | 分阶段计算、并行测试发令 |
+
+Condition 必须配谓词循环：`while not items: cond.wait()`——`notify` 只承诺"可能变了"，不承诺"条件已成立"，防的是虚假唤醒和被抢跑。
+
+## 5. 关键代码解析
+
+**§2 是怎么"安全地展示死锁"的？**
+
+```python
+victim = threading.Thread(target=outer, args=(plain, 0), daemon=True)
+victim.start()
+victim.join(timeout=1.0)
+assert victim.is_alive()      # 1 秒后仍卡着 = 自锁实锤
+```
+
+普通 Lock 嵌套 acquire 的死锁可以复现，但**不能让它堵住主进程**：`daemon=True` 让主进程不等它就能退出，`join(timeout=1)` + `is_alive()` 把"永远出不来"变成一条可断言的事实。第一版实现里演示函数自己 `with holder:` 直接把脚本挂死 90 秒——演示死锁时，先想清楚谁允许被锁死。
+
+坑清单：
+
+- **持锁调回调 / 做 IO**：锁的持有时间被别人决定，死锁与性能劣化的头号来源；先在锁内取快照，锁外处理
+- **`notify()` 不配谓词循环**：唤醒后条件可能已被第三个线程抢走，`while` 不是风格是必需
+- **拿 Event 当 Condition 用**：Event 没有状态语义，"队列非空又空了再非空"它会丢事件
+- **Barrier 的 parties 数与实际线程数不符**：多一个永远等不齐（超时抛 `BrokenBarrierError`），少一个提前放行
+- **Semaphore 手滑多 `release()`**：计数凭空变大，配额失效——用 `with sem:` 把配对交给语法
+
+## 6. 文件结构
+
+```
+03_sync_primitives/
+├── README.md                                # 本教程文档
+├── sync_primitives.py                       # 主演示脚本：六原语各一场景 + 断言
+└── images/
+    ├── sync_primitives.archify.json         # 图源（typed JSON IR，可编辑重渲染）
+    ├── sync_primitives.archify.html         # 交互示意图（浏览器打开）
+    └── sync_primitives.archify.svg          # 双主题矢量图（本 README §2 内嵌）
+```
+
+`sync_primitives.py` 内容：`demo_lock()` 修复丢失更新（验收点 1）/ `demo_rlock()` 自锁现场 + 可重入 / `demo_semaphore()` 限流峰值（验收点 2）/ `demo_event()` 广播开关 / `demo_condition()` 谓词等待 / `demo_barrier()` 集结守序。
+
+## 7. 面试要点
+
+**Q1: Lock 和 RLock 的区别？什么时候必须用 RLock？**
+Lock 不认持有者，重入即自锁；RLock 记录持有线程和重入计数，进出配对。只有递归/多层调用需要重复拿同一把锁时才换 RLock，否则 Lock 更简单更快。
+
+**Q2: Semaphore(1) 和 Lock 等价吗？**
+语义近似（互斥），机制不同：Semaphore 是计数器，不记录持有者，任何线程都能 release，也没有"谁持有"的概念可查。互斥场景优先 Lock——报错更早、语义更清晰。
+
+**Q3: Condition 的 wait() 为什么要放在 while 循环里？**
+`notify` 只保证"有人醒了"，不保证"条件成立"：可能被抢先、可能虚假唤醒。醒来后必须重新检查谓词，不成立继续 `wait()`。
+
+**Q4: Event 和 Condition 都能"通知"，怎么选？**
+Event 是无状态开关（set 后永久为真，丢失历史）；Condition 背后带着谓词和共享数据，"条件不成立→成立→又不成立"的每一步都能重查。一次性开关用 Event，条件与数据绑定的用 Condition。
+
+**Q5: 写一个必然死锁的代码？怎么避免？**
+线程 A 持锁 1 等锁 2，线程 B 持锁 2 等锁 1（循环等待）。避免：全局固定的加锁顺序（项目 12 的修复法）、缩小临界区、用 `acquire(timeout=)` 兜底。本实验 §2 还演示了单线程版本：普通 Lock 嵌套 acquire 自己等自己。
+
+## 8. 总结
+
+1. **Lock 守不变量**：with 惯用法 + 最小临界区，项目 2 的竞态 10 轮归零
+2. **RLock 解决自锁**：嵌套函数要重复拿锁时才换，演示死锁要用 daemon + timeout
+3. **Semaphore 是配额**：计数与资源靠纪律绑定，峰值 ≤ 许可数
+4. **三种"等"分工**：Event 广播开关、Condition 谓词等待（必须 while 循环）、Barrier 集结放行
+5. **锁保护的不是变量，是不变量**——这句话是下一篇 queue.Queue 的引子
+
+下一篇进入 [04 · 多线程生产者-消费者流水线](../04_producer_consumer/README.md)——queue.Queue 把"共享状态+锁"打包成消息传递，毒丸（sentinel）优雅关闭，背压 maxsize 控内存。

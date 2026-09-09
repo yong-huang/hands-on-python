@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "异步流水线：背压与限流",
+    "locale": "zh-CN",
+    "viewBox": [
+      1000,
+      500
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "数据流向"
+        },
+        "emphasis": {
+          "label": "5000 条主链"
+        },
+        "security": {
+          "label": "并发闸门"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "生产侧"
+    },
+    {
+      "label": "闸门/队列"
+    },
+    {
+      "label": "消费侧"
+    },
+    {
+      "label": "结果"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "prod",
+      "type": "frontend",
+      "label": "生产者 ×3",
+      "sublabel": "await put() 满则等待",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "aq",
+      "type": "messagebus",
+      "label": "asyncio.Queue(64)",
+      "sublabel": "5000 条 · 单线程",
+      "stage": 1,
+      "row": 0,
+      "tag": "背压：峰值实测 64"
+    },
+    {
+      "id": "cons",
+      "type": "backend",
+      "label": "消费者 ×2",
+      "sublabel": "get()/task_done",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "results",
+      "type": "database",
+      "label": "计数 dict",
+      "sublabel": "每条恰好一次",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "tasks",
+      "type": "frontend",
+      "label": "50 个任务",
+      "sublabel": "同时发起",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "sem",
+      "type": "security",
+      "label": "Semaphore(10)",
+      "sublabel": "并发许可",
+      "stage": 1,
+      "row": 1,
+      "tag": "在飞峰值 ≤10"
+    },
+    {
+      "id": "res",
+      "type": "database",
+      "label": "受限资源",
+      "sublabel": "连接池 / 端点",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "unbounded",
+      "type": "external",
+      "label": "无界队列对照",
+      "sublabel": "峰值 4749 · 内存堆积",
+      "stage": 1,
+      "row": 2,
+      "tag": "反面教材"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-p",
+      "from": "prod",
+      "to": "aq",
+      "label": "put()",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-c",
+      "from": "aq",
+      "to": "cons",
+      "label": "get()/task_done",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-r",
+      "from": "cons",
+      "to": "results",
+      "label": "计数 +1"
+    },
+    {
+      "id": "f-t",
+      "from": "tasks",
+      "to": "sem",
+      "label": "acquire()",
+      "variant": "security"
+    },
+    {
+      "id": "f-s",
+      "from": "sem",
+      "to": "res",
+      "label": "放行 ≤10",
+      "variant": "security"
+    }
+  ]
+}

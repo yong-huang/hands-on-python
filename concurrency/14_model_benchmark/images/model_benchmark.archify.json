@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "四模型对决：实测结论卡（CPU_N=60000 · IO 50ms×40）",
+    "locale": "zh-CN",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "serial",
+      "type": "external",
+      "label": "串行（基准）",
+      "sublabel": "IO 0.996s · CPU 0.158s",
+      "pos": [
+        60,
+        110
+      ],
+      "size": [
+        180,
+        72
+      ],
+      "tag": "对照基准"
+    },
+    {
+      "id": "threads",
+      "type": "messagebus",
+      "label": "threading",
+      "sublabel": "IO 8.0× · CPU 1.18×（GIL）",
+      "pos": [
+        560,
+        110
+      ],
+      "size": [
+        180,
+        72
+      ],
+      "tag": "IO 可用"
+    },
+    {
+      "id": "asyncio",
+      "type": "messagebus",
+      "label": "asyncio",
+      "sublabel": "IO 16.8× · CPU ≈ 串行",
+      "pos": [
+        60,
+        300
+      ],
+      "size": [
+        180,
+        72
+      ],
+      "tag": "IO 最快"
+    },
+    {
+      "id": "mp",
+      "type": "security",
+      "label": "multiprocessing",
+      "sublabel": "CPU 2.78× · IO 不适用",
+      "pos": [
+        560,
+        300
+      ],
+      "size": [
+        180,
+        72
+      ],
+      "tag": "CPU 最快"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "选型公式：IO 密集看 asyncio / 线程 · CPU 密集看进程",
+      "wraps": [
+        "serial",
+        "threads",
+        "asyncio",
+        "mp"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "multiprocessing：绕开 GIL 的真并行",
+    "locale": "zh-CN",
+    "viewBox": [
+      1050,
+      540
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "普通数据流"
+        },
+        "emphasis": {
+          "label": "主数据流"
+        },
+        "security": {
+          "label": "spawn 新进程"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "主进程"
+    },
+    {
+      "label": "进程池"
+    },
+    {
+      "label": "子进程"
+    },
+    {
+      "label": "结果"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "main",
+      "type": "frontend",
+      "label": "主进程",
+      "sublabel": "__main__ 保护内",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "pool",
+      "type": "messagebus",
+      "label": "Pool(4) 进程池",
+      "sublabel": "macOS spawn 启动",
+      "stage": 1,
+      "row": 1,
+      "tag": "任务切 4 块"
+    },
+    {
+      "id": "workers",
+      "type": "security",
+      "label": "子进程 ×4",
+      "sublabel": "每进程一把独立 GIL",
+      "stage": 2,
+      "row": 1,
+      "tag": "字节码真并行"
+    },
+    {
+      "id": "results",
+      "type": "database",
+      "label": "pool.map 保序",
+      "sublabel": "完成乱序结果不乱",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "threads",
+      "type": "external",
+      "label": "threading ×4",
+      "sublabel": "GIL 串行化 · 实测 0.78×",
+      "stage": 1,
+      "row": 2,
+      "tag": "对照"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-mp",
+      "from": "main",
+      "to": "pool",
+      "label": "map(cpu_task ×4)",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f-pw",
+      "from": "pool",
+      "to": "workers",
+      "label": "spawn ×4",
+      "variant": "security"
+    },
+    {
+      "id": "f-wr",
+      "from": "workers",
+      "to": "results",
+      "label": "按输入顺序汇合"
+    }
+  ]
+}

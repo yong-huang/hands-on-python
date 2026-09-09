@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "死锁：交叉获取两把锁，互相等待到永远",
+    "locale": "zh-CN",
+    "viewBox": [
+      860,
+      520
+    ],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "t1",
+      "type": "messagebus",
+      "label": "线程 T1"
+    },
+    {
+      "id": "lockA",
+      "type": "security",
+      "label": "Lock A"
+    },
+    {
+      "id": "lockB",
+      "type": "security",
+      "label": "Lock B"
+    },
+    {
+      "id": "t2",
+      "type": "messagebus",
+      "label": "线程 T2"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "t1",
+      "to": "lockA",
+      "y": 160,
+      "label": "acquire() 成功",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "t2",
+      "to": "lockB",
+      "y": 200,
+      "label": "acquire() 成功",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "t1",
+      "to": "lockB",
+      "y": 240,
+      "label": "acquire() 等待中…（B 被 T2 持有）"
+    },
+    {
+      "id": "m4",
+      "from": "t2",
+      "to": "lockA",
+      "y": 280,
+      "label": "acquire() 等待中…（A 被 T1 持有）"
+    },
+    {
+      "id": "m5",
+      "from": "lockB",
+      "to": "t1",
+      "y": 320,
+      "label": "永不返回",
+      "variant": "dashed"
+    },
+    {
+      "id": "m6",
+      "from": "lockA",
+      "to": "t2",
+      "y": 360,
+      "label": "永不返回",
+      "variant": "dashed"
+    }
+  ]
+}

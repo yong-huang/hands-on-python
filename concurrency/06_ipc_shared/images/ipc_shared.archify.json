@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "进程间通信：四条通道四种性格",
+    "locale": "zh-CN",
+    "viewBox": [
+      1000,
+      640
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "数据流向"
+        },
+        "emphasis": {
+          "label": "零拷贝对比重点"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "父进程"
+    },
+    {
+      "label": "通道"
+    },
+    {
+      "label": "子进程"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "par-pipe",
+      "type": "frontend",
+      "label": "父进程",
+      "sublabel": "send ping",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "ch-pipe",
+      "type": "messagebus",
+      "label": "Pipe",
+      "sublabel": "双向 · 一来一回",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "kid-pipe",
+      "type": "backend",
+      "label": "子进程",
+      "sublabel": "recv 回包",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "par-q",
+      "type": "frontend",
+      "label": "父进程",
+      "sublabel": "put() ×100k",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "ch-q",
+      "type": "messagebus",
+      "label": "Queue",
+      "sublabel": "10 万条 · FIFO",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "kid-q",
+      "type": "backend",
+      "label": "子进程",
+      "sublabel": "get() 全收",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "par-shm",
+      "type": "frontend",
+      "label": "父进程",
+      "sublabel": "memcpy 写入",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "ch-shm",
+      "type": "database",
+      "label": "SharedMemory",
+      "sublabel": "50MB · 零拷贝",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "kid-shm",
+      "type": "backend",
+      "label": "子进程",
+      "sublabel": "直读 + CRC",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "par-mgr",
+      "type": "frontend",
+      "label": "父进程",
+      "sublabel": "d[k] += 1",
+      "stage": 0,
+      "row": 3
+    },
+    {
+      "id": "ch-mgr",
+      "type": "messagebus",
+      "label": "Manager",
+      "sublabel": "代理 · 每访问一次 RPC",
+      "stage": 1,
+      "row": 3
+    },
+    {
+      "id": "kid-mgr",
+      "type": "backend",
+      "label": "子进程",
+      "sublabel": "锁内更新",
+      "stage": 2,
+      "row": 3
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-pipe-a",
+      "from": "par-pipe",
+      "to": "ch-pipe",
+      "label": "send ping",
+      "route": "straight"
+    },
+    {
+      "id": "f-pipe-b",
+      "from": "ch-pipe",
+      "to": "kid-pipe",
+      "label": "recv 回包",
+      "route": "straight"
+    },
+    {
+      "id": "f-q-a",
+      "from": "par-q",
+      "to": "ch-q",
+      "label": "put() ×100k",
+      "route": "straight"
+    },
+    {
+      "id": "f-q-b",
+      "from": "ch-q",
+      "to": "kid-q",
+      "label": "get() 全收",
+      "route": "straight"
+    },
+    {
+      "id": "f-shm-a",
+      "from": "par-shm",
+      "to": "ch-shm",
+      "label": "memcpy 写入",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-shm-b",
+      "from": "ch-shm",
+      "to": "kid-shm",
+      "label": "直读 + CRC",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-mgr-a",
+      "from": "par-mgr",
+      "to": "ch-mgr",
+      "label": "d[k] += 1",
+      "route": "straight"
+    },
+    {
+      "id": "f-mgr-b",
+      "from": "ch-mgr",
+      "to": "kid-mgr",
+      "label": "锁内更新",
+      "route": "straight"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "线程生命周期：start() 驱动的状态机",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1130,
+      630
+    ],
+    "legend": {
+      "mode": "hidden"
+    }
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "线程状态"
+    },
+    {
+      "id": "terminal",
+      "label": "陷阱与强杀"
+    }
+  ],
+  "states": [
+    {
+      "id": "created",
+      "type": "start",
+      "label": "NEW（未启动）",
+      "lane": "main",
+      "col": 0
+    },
+    {
+      "id": "running",
+      "type": "active",
+      "label": "RUNNABLE（存活）",
+      "lane": "main",
+      "col": 2
+    },
+    {
+      "id": "terminated",
+      "type": "success",
+      "label": "TERMINATED（已结束）",
+      "lane": "main",
+      "col": 4
+    },
+    {
+      "id": "killed",
+      "type": "failure",
+      "label": "daemon 被强杀",
+      "lane": "terminal",
+      "col": 0
+    },
+    {
+      "id": "rerun",
+      "type": "failure",
+      "label": "start() 仅一次",
+      "lane": "terminal",
+      "col": 2
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t-start",
+      "from": "created",
+      "to": "running",
+      "label": "start()",
+      "labelDy": 75
+    },
+    {
+      "id": "t-finish",
+      "from": "running",
+      "to": "terminated",
+      "label": "run() 返回/异常",
+      "labelDy": 75
+    },
+    {
+      "id": "t-kill",
+      "from": "running",
+      "to": "killed",
+      "label": "主线程退出 · daemon=True",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        402,
+        319
+      ]
+    }
+  ]
+}

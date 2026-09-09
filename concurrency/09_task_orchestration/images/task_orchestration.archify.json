@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "TaskGroup：一个失败，全员取消",
+    "locale": "zh-CN",
+    "viewBox": [
+      1000,
+      520
+    ],
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "default": {
+          "label": "正常流"
+        },
+        "emphasis": {
+          "label": "失败信号"
+        },
+        "dashed": {
+          "label": "被取消的路径"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "三个任务"
+    },
+    {
+      "label": "TaskGroup"
+    },
+    {
+      "label": "结局"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "fast",
+      "type": "frontend",
+      "label": "fast_ok",
+      "sublabel": "0.05s 完成",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "slow",
+      "type": "backend",
+      "label": "slow_task",
+      "sublabel": "要跑 1.0s",
+      "stage": 0,
+      "row": 1,
+      "tag": "finally 清理"
+    },
+    {
+      "id": "bomber",
+      "type": "security",
+      "label": "bomber",
+      "sublabel": "0.1s 引爆",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "tg",
+      "type": "messagebus",
+      "label": "TaskGroup",
+      "sublabel": "async with 结构化并发",
+      "stage": 1,
+      "row": 1,
+      "tag": "一个失败 → 全员取消"
+    },
+    {
+      "id": "ok",
+      "type": "database",
+      "label": "fast-ok 结果",
+      "sublabel": "成功但作废",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "cancelled",
+      "type": "external",
+      "label": "慢任务被取消",
+      "sublabel": "CancelledError → finally",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "exc",
+      "type": "external",
+      "label": "ExceptionGroup",
+      "sublabel": "RuntimeError 打包上抛",
+      "stage": 2,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-f",
+      "from": "fast",
+      "to": "tg",
+      "label": "0.05s 先完成",
+      "labelDy": -50
+    },
+    {
+      "id": "f-s",
+      "from": "slow",
+      "to": "tg",
+      "label": "跑到一半",
+      "variant": "dashed",
+      "labelAt": [
+        133,
+        314
+      ]
+    },
+    {
+      "id": "f-b",
+      "from": "bomber",
+      "to": "tg",
+      "label": "raise RuntimeError",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-tg-ok",
+      "from": "tg",
+      "to": "ok",
+      "label": "结果作废",
+      "labelDy": -50
+    },
+    {
+      "id": "f-tg-c",
+      "from": "tg",
+      "to": "cancelled",
+      "label": "cancel()",
+      "variant": "dashed",
+      "labelAt": [
+        520,
+        314
+      ]
+    },
+    {
+      "id": "f-tg-e",
+      "from": "tg",
+      "to": "exc",
+      "label": "上抛",
+      "variant": "emphasis"
+    }
+  ]
+}
