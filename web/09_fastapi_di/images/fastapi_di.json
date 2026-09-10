@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "依赖注入：深度优先求解与必执行的 teardown",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "依赖树（深度优先求解）"
+    },
+    {
+      "id": "edgepath",
+      "label": "异常与替身",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "settings",
+    "session",
+    "user",
+    "handler",
+    "teardown"
+  ],
+  "nodes": [
+    {
+      "id": "settings",
+      "lane": "main",
+      "col": 0,
+      "type": "backend",
+      "label": "dep_settings",
+      "width": 140
+    },
+    {
+      "id": "session",
+      "lane": "main",
+      "col": 1,
+      "type": "database",
+      "label": "dep_session",
+      "width": 140
+    },
+    {
+      "id": "user",
+      "lane": "main",
+      "col": 2,
+      "type": "messagebus",
+      "label": "dep_current_user",
+      "width": 160
+    },
+    {
+      "id": "handler",
+      "lane": "main",
+      "col": 3,
+      "type": "external",
+      "label": "handler /profile",
+      "width": 150
+    },
+    {
+      "id": "teardown",
+      "lane": "main",
+      "col": 4,
+      "type": "backend",
+      "label": "yield 依赖 teardown 必执行",
+      "width": 190
+    },
+    {
+      "id": "boom",
+      "lane": "edgepath",
+      "col": 3,
+      "type": "security",
+      "label": "handler 抛 418 · teardown 照到",
+      "width": 200
+    },
+    {
+      "id": "fake",
+      "lane": "edgepath",
+      "col": 0,
+      "type": "security",
+      "label": "dependency_overrides 换假 DB",
+      "width": 200
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "settings",
+      "to": "session",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "session",
+      "to": "user"
+    },
+    {
+      "id": "e3",
+      "from": "user",
+      "to": "handler",
+      "label": "已验证的依赖实例"
+    },
+    {
+      "id": "e4",
+      "from": "handler",
+      "to": "teardown",
+      "label": "请求结束",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e5",
+      "from": "handler",
+      "to": "boom",
+      "label": "异常路径"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "求解顺序与缓存（实测）",
+      "items": [
+        "深度优先：settings → session → user → handler，实测顺序与声明一致",
+        "同请求内同依赖只执行一次（use_cache 默认开）；关闭后各引用独立求值"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "teardown 与替身（实测）",
+      "items": [
+        "yield 依赖 teardown 必执行：handler 抛 HTTPException 也在案（finally 语义）",
+        "dependency_overrides 换假 DB：响应来自替身，真依赖调用计数为 0"
+      ]
+    }
+  ]
+}

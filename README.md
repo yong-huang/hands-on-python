@@ -99,7 +99,10 @@ hands-on-python/
 | 06 | [SQLAlchemy ORM 实战](web/06_sqlalchemy_orm/README.md) | N+1 实测 21→2、session 生命周期、Alembic 加列不丢数据 |
 | 07 | [蓝图与登录认证 · 书签应用](web/07_flask_auth_app/README.md) | 应用工厂 + 双蓝图 + scrypt 认证 + 限流，Flask 段收官 |
 | 08 | [Pydantic 校验与自动文档](web/08_fastapi_pydantic/README.md) | 类型驱动：4 组 422 指向字段、出口闸裁剪、OpenAPI 编译 |
-| 09-12 | FastAPI 段（规划中） | 依赖注入、async 真相、中间件、JWT |
+| 09 | [依赖注入系统](web/09_fastapi_di/README.md) | 三层 Depends 链实测顺序、yield 依赖异常不豁免、overrides 替身 |
+| 10 | [async 端点与 ASGI 真相](web/10_async_asgi_truth/README.md) | 线程名实证执行位置、100 并发 0.56s vs 1.56s、4 worker PID 分发 |
+| 11 | [中间件、异常与后台任务](web/11_fastapi_middleware/README.md) | 耗时头覆盖边界实测、418 兜底、后台任务时间戳证据 |
+| 12 | [JWT + OAuth2 认证](web/12_fastapi_jwt_auth/README.md) | 四路 401 实测、bcrypt 无明文、FastAPI 段收官 |
 | 13-16 | Django 段（规划中） | MTV/admin、视图表单、DRF、信号缓存测试 |
 | 17-20 | 对比与交付（规划中） | 三框架同题、生产部署、🏁 短链接服务、⚠️ WebSocket/Litestar |
 

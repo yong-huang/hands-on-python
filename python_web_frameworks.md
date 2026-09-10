@@ -16,17 +16,17 @@
 
 ## 📊 总进度
 
-进度：████████░░░░░░░░░░░░ 8/20 (40%)
+进度：████████████░░░░░░░░ 12/20 (60%)
 
 | 阶段 | 项目数 | 已完成 |
 |:---|:---:|:---:|
 | 第一阶段：Web 地基（零依赖手写） | 3 | 3 |
 | 第二阶段：Flask 微框架 | 4 | 4 |
-| 第三阶段：FastAPI 现代 ASGI | 5 | 1 |
+| 第三阶段：FastAPI 现代 ASGI | 5 | 5 |
 | 第三阶段：FastAPI 现代 ASGI | 5 | 0 |
 | 第四阶段：Django 全家桶 | 4 | 0 |
 | 第五阶段：对比、部署与综合 | 4 | 0 |
-| **合计** | **20** | **8** |
+| **合计** | **20** | **12** |
 
 ---
 
@@ -187,7 +187,7 @@
 
 ---
 
-### [ ] 项目 9：依赖注入系统
+### [x] 项目 9：依赖注入系统
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -200,12 +200,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「FastAPI 依赖注入系统」。请给我完整代码约 160 行：实现三层嵌套 Depends（配置 → 会话 → 业务校验）、yield 依赖模拟 DB 连接的 setup/teardown（含端点抛异常时 teardown 仍执行）、同请求内同依赖只执行一次（use_cache 计数）、dependency_overrides 注入假 DB（真依赖调用计数为 0）；main 用 TestClient 断言全部顺序与计数，依赖 fastapi + httpx，中文注释解释依赖解析的深度优先顺序。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：一次通过。全局依赖用计数验证（7 请求 = 7 次执行）；Depends(lambda) 能用但进不了 OpenAPI——正式代码用具名函数。
 
 ---
 
-### [ ] 项目 10：async 端点与 ASGI 真相
+### [x] 项目 10：async 端点与 ASGI 真相
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -219,12 +219,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「async 端点与 ASGI 真相」。请给我完整代码约 180 行：FastAPI 定义同一 IO 任务（0.5s 延迟）的 def 与 async def 两端点，端点内打印 threading.current_thread().name 证明执行位置；demo 脚本用 uvicorn 起服务（subprocess），httpx.AsyncClient 并发 50 请求实测两版本耗时（断言 async <2s 且 def/async ≥2），探测 anyio 线程池上限并打印；再用 --workers 4 起多 worker 压 100 请求断言 ≥3 个不同 PID 出现，依赖 fastapi + uvicorn + httpx，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：anyio 的 CapacityLimiter 属性叫 total_tokens 而非 total_capacity（第一版 500）；TestClient 的事件循环线程名与真部署不同——改起真 uvicorn 实测；并发比值实测 2.78×；线程名只有一种 ≠ 只有一个线程（输出措辞已修正）。
 
 ---
 
-### [ ] 项目 11：中间件、异常与后台任务
+### [x] 项目 11：中间件、异常与后台任务
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -237,12 +237,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「FastAPI 中间件、异常与后台任务」。请给我完整代码约 170 行：@app.middleware 记录耗时写入 X-Process-Time 响应头，自定义 BusinessError + exception_handler 返回 418 约定 JSON，BackgroundTasks 在响应返回后追加写日志文件；main 用 TestClient 断言：所有响应含正数耗时头、业务异常返回 418 与 message、后台任务完成时间戳晚于响应时间（日志双时间戳比对），并注释解释 BaseHTTPMiddleware 与纯 ASGI 中间件差异，依赖 fastapi + httpx，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：两个实测修正预期：①未处理异常的 500 不经过用户中间件（无耗时头，ServerErrorMiddleware 在最外层）；②TestClient 的 post 会等后台任务完成才返回——"响应先于任务"改用进程内时间戳证明。另需 raise_server_exceptions=False 才能断言 500。
 
 ---
 
-### [ ] 项目 12：JWT + OAuth2 认证
+### [x] 项目 12：JWT + OAuth2 认证
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -255,8 +255,8 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「JWT + OAuth2 认证」。请给我完整代码约 220 行：FastAPI + OAuth2PasswordBearer 实现 /token 登录（bcrypt 验密码、PyJWT 签 HS256 token 含 sub/exp），get_current_user 依赖解码保护 /me 路由，区分凭证异常（无效签名/过期/缺失）各自 401；main 用 TestClient 断言：登录 200 拿 token、带 token 访问 /me 200 且 sub 正确、无 token/篡改签名/错密钥签发/过期 token 四路全 401、sqlite 用户表无明文密码，依赖 fastapi + pyjwt + bcrypt + httpx，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：PyJWT 2.13 对 <32B 的 HS256 密钥发 InsecureKeyLengthWarning（RFC 7518）——SECRET 与攻击者密钥都加长到 32B；四路 401（缺失/篡改/错密钥/过期）断言全绿。
 
 ---
 

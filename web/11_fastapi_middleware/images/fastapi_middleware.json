@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "请求管道的三个扩展点",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "一次带业务失败的请求"
+    },
+    {
+      "id": "edgepath",
+      "label": "绕行路径",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "request",
+    "timing",
+    "handler",
+    "exception",
+    "response"
+  ],
+  "nodes": [
+    {
+      "id": "request",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "GET /business-error",
+      "width": 170
+    },
+    {
+      "id": "timing",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "耗时中间件 计时开始",
+      "width": 180
+    },
+    {
+      "id": "handler",
+      "lane": "main",
+      "col": 2,
+      "type": "messagebus",
+      "label": "handler raise BusinessError",
+      "width": 190
+    },
+    {
+      "id": "exception",
+      "lane": "main",
+      "col": 3,
+      "type": "security",
+      "label": "exception_handler 兜底",
+      "width": 180
+    },
+    {
+      "id": "response",
+      "lane": "main",
+      "col": 4,
+      "type": "external",
+      "label": "418 JSON + 耗时头",
+      "width": 160
+    },
+    {
+      "id": "boom500",
+      "lane": "edgepath",
+      "col": 2,
+      "type": "security",
+      "label": "无人兜底 → 500 · 绕过用户中间件",
+      "width": 220
+    },
+    {
+      "id": "bg",
+      "lane": "edgepath",
+      "col": 4,
+      "type": "messagebus",
+      "label": "BackgroundTasks 响应后执行",
+      "width": 210
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "request",
+      "to": "timing",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "timing",
+      "to": "handler"
+    },
+    {
+      "id": "e3",
+      "from": "handler",
+      "to": "exception",
+      "label": "可预期的业务失败"
+    },
+    {
+      "id": "e4",
+      "from": "exception",
+      "to": "response",
+      "label": "约定 JSON",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e5",
+      "from": "handler",
+      "to": "boom500",
+      "label": "RuntimeError"
+    },
+    {
+      "id": "e6",
+      "from": "response",
+      "to": "bg",
+      "label": "响应发送后"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "中间件的覆盖范围（实测）",
+      "items": [
+        "200、兜底 418、路由 404 都被盖上 X-Process-Time 耗时头",
+        "未处理异常的 500 由最外层 ServerErrorMiddleware 兜底——异常穿过用户中间件，无耗时头"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "后台任务与分层（实测）",
+      "items": [
+        "时间戳证据：响应创建 < 任务完成——发信的 0.3s 不计入用户等待",
+        "分层原则：可预期业务失败用自定义异常 + handler；程序缺陷让它 500 暴露"
+      ]
+    }
+  ]
+}

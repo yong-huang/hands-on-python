@@ -1,0 +1,146 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "同一应用的两种执行模型：事件循环 vs 线程池",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "async",
+      "label": "async def：事件循环"
+    },
+    {
+      "id": "sync",
+      "label": "def：anyio 线程池（容量 40）"
+    }
+  ],
+  "mainPath": [
+    "req_a",
+    "loop",
+    "await",
+    "done_a"
+  ],
+  "nodes": [
+    {
+      "id": "req_a",
+      "lane": "async",
+      "col": 0,
+      "type": "external",
+      "label": "100 并发请求（0.5s 延迟）",
+      "width": 200
+    },
+    {
+      "id": "loop",
+      "lane": "async",
+      "col": 1,
+      "type": "messagebus",
+      "label": "事件循环线程 MainThread",
+      "width": 190
+    },
+    {
+      "id": "await",
+      "lane": "async",
+      "col": 2,
+      "type": "backend",
+      "label": "await sleep 串联等待",
+      "width": 180
+    },
+    {
+      "id": "done_a",
+      "lane": "async",
+      "col": 3,
+      "type": "backend",
+      "label": "总耗时 0.56s",
+      "width": 140
+    },
+    {
+      "id": "req_s",
+      "lane": "sync",
+      "col": 0,
+      "type": "external",
+      "label": "同一负载打到 def 端点",
+      "width": 190
+    },
+    {
+      "id": "pool",
+      "lane": "sync",
+      "col": 1,
+      "type": "database",
+      "label": "anyio 线程池容量 40",
+      "width": 180
+    },
+    {
+      "id": "waves",
+      "lane": "sync",
+      "col": 2,
+      "type": "backend",
+      "label": "分批执行 约 3 批 × 0.5s",
+      "width": 190
+    },
+    {
+      "id": "done_s",
+      "lane": "sync",
+      "col": 3,
+      "type": "security",
+      "label": "总耗时 1.56s · 2.78×",
+      "width": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "req_a",
+      "to": "loop",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "loop",
+      "to": "await"
+    },
+    {
+      "id": "e3",
+      "from": "await",
+      "to": "done_a",
+      "label": "等待不占线程"
+    },
+    {
+      "id": "e4",
+      "from": "req_s",
+      "to": "pool"
+    },
+    {
+      "id": "e5",
+      "from": "pool",
+      "to": "waves"
+    },
+    {
+      "id": "e6",
+      "from": "waves",
+      "to": "done_s",
+      "label": "线程被 sleep 占满",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "执行位置（实测线程名）",
+      "items": [
+        "async def 跑在事件循环线程：threading.current_thread().name = MainThread",
+        "def 被 anyio 扔进工作线程池：线程名带 AnyIO，容量默认 40（total_tokens）"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "多 worker 分发（实测）",
+      "items": [
+        "uvicorn --workers 4：四个进程共享监听 socket，内核决定谁 accept",
+        "100 请求实测分发到 4 个不同 PID——负载均衡在内核层，不在应用层"
+      ]
+    }
+  ]
+}
