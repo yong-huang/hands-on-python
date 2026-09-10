@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "同一资源的三条视图链路：CBV 与 FBV",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "list",
+      "label": "读链路：列表与详情"
+    },
+    {
+      "id": "write",
+      "label": "写链路：登录保护的创建"
+    }
+  ],
+  "mainPath": [
+    "login",
+    "guard",
+    "form",
+    "validate",
+    "save"
+  ],
+  "nodes": [
+    {
+      "id": "listview",
+      "lane": "list",
+      "col": 0,
+      "type": "database",
+      "label": "ListView 分页每页 4 条",
+      "width": 190
+    },
+    {
+      "id": "detailview",
+      "lane": "list",
+      "col": 1,
+      "type": "messagebus",
+      "label": "DetailView 单篇",
+      "width": 160
+    },
+    {
+      "id": "fbv",
+      "lane": "list",
+      "col": 2,
+      "type": "backend",
+      "label": "FBV stats 统计接口",
+      "width": 180
+    },
+    {
+      "id": "login",
+      "lane": "write",
+      "col": 0,
+      "type": "external",
+      "label": "LoginView（auth 组件自带）",
+      "width": 210
+    },
+    {
+      "id": "guard",
+      "lane": "write",
+      "col": 1,
+      "type": "security",
+      "label": "LoginRequiredMixin",
+      "width": 170
+    },
+    {
+      "id": "form",
+      "lane": "write",
+      "col": 2,
+      "type": "backend",
+      "label": "CreateView + ModelForm",
+      "width": 180
+    },
+    {
+      "id": "validate",
+      "lane": "write",
+      "col": 3,
+      "type": "security",
+      "label": "clean_title 自定义校验",
+      "width": 190
+    },
+    {
+      "id": "save",
+      "lane": "write",
+      "col": 4,
+      "type": "database",
+      "label": "合法 → 302 落库",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "listview",
+      "to": "detailview",
+      "label": "?page=2 零重叠"
+    },
+    {
+      "id": "e2",
+      "from": "detailview",
+      "to": "fbv",
+      "label": "非模式化需求"
+    },
+    {
+      "id": "e3",
+      "from": "login",
+      "to": "guard",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e4",
+      "from": "guard",
+      "to": "form",
+      "label": "已登录"
+    },
+    {
+      "id": "e5",
+      "from": "form",
+      "to": "validate"
+    },
+    {
+      "id": "e6",
+      "from": "validate",
+      "to": "save",
+      "label": "双闸全过",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "CBV vs FBV（实测对照）",
+      "items": [
+        "模式化需求用 CBV：ListView 一行 paginate_by，分页/切页/越界全包办",
+        "非模式化需求用 FBV：stats 接口一个函数 + JsonResponse，直白即美德"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "登录保护与表单双闸（实测）",
+      "items": [
+        "未登录访问 CreateView → 302 到 LOGIN_URL 且 next 指回原页",
+        "ModelForm 字段校验 + clean_title：非法 200 回显不落库，合法 302 落库"
+      ]
+    }
+  ]
+}

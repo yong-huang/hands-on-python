@@ -1,0 +1,121 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "信号、缓存与测试：三根工程支柱",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "保存一篇文章的副作用链"
+    },
+    {
+      "id": "edgepath",
+      "label": "防回归",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "save",
+    "signal",
+    "audit",
+    "cache",
+    "pytest"
+  ],
+  "nodes": [
+    {
+      "id": "save",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "Article.objects.save",
+      "width": 180
+    },
+    {
+      "id": "signal",
+      "lane": "main",
+      "col": 1,
+      "type": "messagebus",
+      "label": "post_save 信号",
+      "width": 150
+    },
+    {
+      "id": "audit",
+      "lane": "main",
+      "col": 2,
+      "type": "database",
+      "label": "AuditLog created/updated",
+      "width": 180
+    },
+    {
+      "id": "cache",
+      "lane": "main",
+      "col": 3,
+      "type": "backend",
+      "label": "get_or_set 二次 0 查询",
+      "width": 180
+    },
+    {
+      "id": "pytest",
+      "lane": "main",
+      "col": 4,
+      "type": "security",
+      "label": "pytest --cov ≥80%",
+      "width": 150
+    },
+    {
+      "id": "cached_property",
+      "lane": "edgepath",
+      "col": 3,
+      "type": "backend",
+      "label": "cached_property 实例级缓存",
+      "width": 200
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "save",
+      "to": "signal",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "signal",
+      "to": "audit",
+      "label": "receiver 落审计"
+    },
+    {
+      "id": "e3",
+      "from": "audit",
+      "to": "cache"
+    },
+    {
+      "id": "e4",
+      "from": "cache",
+      "to": "pytest",
+      "label": "行为全部断言",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "解耦与度量（实测）",
+      "items": [
+        "业务保存零感知：created/updated 审计由 receiver 自动落库",
+        "CaptureQueriesContext 把'缓存省了一次查询'变成数字：第二次 0 条 SQL"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "cached_property 边界",
+      "items": [
+        "重计算派生值算一次挂实例 __dict__；输入可变时要换带失效的缓存框架"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ article.title }}</h2>
+<p>{{ article.author.name }} · {{ article.created|date:"Y-m-d" }}</p>
+<article>{{ article.content }}</article>
+<a href="{% url 'blog:list' %}">返回列表</a>
+{% endblock %}

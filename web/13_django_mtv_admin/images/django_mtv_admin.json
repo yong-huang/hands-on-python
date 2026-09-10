@@ -1,0 +1,114 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "MTV 流水线：从 models.py 到 admin 后台",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "define",
+      "label": "定义与落库"
+    },
+    {
+      "id": "use",
+      "label": "使用与后台"
+    }
+  ],
+  "mainPath": [
+    "models",
+    "makemigs",
+    "migrate",
+    "qs",
+    "admin"
+  ],
+  "nodes": [
+    {
+      "id": "models",
+      "lane": "define",
+      "col": 0,
+      "type": "backend",
+      "label": "models.py 声明模型",
+      "width": 180
+    },
+    {
+      "id": "makemigs",
+      "lane": "define",
+      "col": 1,
+      "type": "database",
+      "label": "makemigrations 生成迁移脚本",
+      "width": 200
+    },
+    {
+      "id": "migrate",
+      "lane": "define",
+      "col": 2,
+      "type": "database",
+      "label": "migrate 建表",
+      "width": 140
+    },
+    {
+      "id": "qs",
+      "lane": "use",
+      "col": 3,
+      "type": "messagebus",
+      "label": "QuerySet ↔ 手写 SQL 对照",
+      "width": 190
+    },
+    {
+      "id": "admin",
+      "lane": "use",
+      "col": 4,
+      "type": "external",
+      "label": "admin 自动后台 200",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "models",
+      "to": "makemigs",
+      "label": "字段约束进迁移",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "makemigs",
+      "to": "migrate"
+    },
+    {
+      "id": "e3",
+      "from": "migrate",
+      "to": "qs",
+      "label": "PRAGMA 验证表结构"
+    },
+    {
+      "id": "e4",
+      "from": "qs",
+      "to": "admin",
+      "label": "seed 数据进 changelist",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "MTV 分层",
+      "items": [
+        "Model 管数据与约束、Template 管展示、View 管编排——urls.py 把三者接起来",
+        "migrations 是 schema 的版本控制：与项目 6 的 Alembic 同思想、不同风味"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "ORM 与 admin（实测）",
+      "items": [
+        "values+annotate 聚合与手写 JOIN+GROUP BY 逐项相等——ORM 是 SQL 的生成器",
+        "admin 两行注册换整套增删改查后台：list_display/list_filter/search_fields"
+      ]
+    }
+  ]
+}

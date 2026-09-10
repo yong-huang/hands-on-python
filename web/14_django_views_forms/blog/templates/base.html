@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{% block title %}博客{% endblock %}</title></head>
+<body>
+  <h1>博客实验室</h1>
+  {% if messages %}
+    {% for m in messages %}<p class="flash">{{ m }}</p>{% endfor %}
+  {% endif %}
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>

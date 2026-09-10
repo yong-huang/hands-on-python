@@ -103,7 +103,10 @@ hands-on-python/
 | 10 | [async 端点与 ASGI 真相](web/10_async_asgi_truth/README.md) | 线程名实证执行位置、100 并发 0.56s vs 1.56s、4 worker PID 分发 |
 | 11 | [中间件、异常与后台任务](web/11_fastapi_middleware/README.md) | 耗时头覆盖边界实测、418 兜底、后台任务时间戳证据 |
 | 12 | [JWT + OAuth2 认证](web/12_fastapi_jwt_auth/README.md) | 四路 401 实测、bcrypt 无明文、FastAPI 段收官 |
-| 13-16 | Django 段（规划中） | MTV/admin、视图表单、DRF、信号缓存测试 |
+| 13 | [MTV、ORM 与 admin](web/13_django_mtv_admin/README.md) | migrate 表结构 PRAGMA、ORM==SQL 对账、admin 免费后台 |
+| 14 | [视图与表单](web/14_django_views_forms/README.md) | CBV 分页零重叠、FBV 对照、登录保护与 ModelForm 双闸 |
+| 15 | [DRF 构建 REST API](web/15_drf_rest_api/README.md) | 读写分离序列化、403/400/201/204 全实测、@action 路由 |
+| 16 | [信号、缓存与测试](web/16_django_signals_cache/README.md) | post_save 审计、二次 0 条 SQL、pytest 覆盖率 97%，Django 段收官 |
 | 17-20 | 对比与交付（规划中） | 三框架同题、生产部署、🏁 短链接服务、⚠️ WebSocket/Litestar |
 
 ## 学习路线

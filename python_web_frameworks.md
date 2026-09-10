@@ -16,17 +16,18 @@
 
 ## 📊 总进度
 
-进度：████████████░░░░░░░░ 12/20 (60%)
+进度：████████████████░░░░ 16/20 (80%)
 
 | 阶段 | 项目数 | 已完成 |
 |:---|:---:|:---:|
 | 第一阶段：Web 地基（零依赖手写） | 3 | 3 |
 | 第二阶段：Flask 微框架 | 4 | 4 |
 | 第三阶段：FastAPI 现代 ASGI | 5 | 5 |
+| 第四阶段：Django 全家桶 | 4 | 4 |
 | 第三阶段：FastAPI 现代 ASGI | 5 | 0 |
 | 第四阶段：Django 全家桶 | 4 | 0 |
 | 第五阶段：对比、部署与综合 | 4 | 0 |
-| **合计** | **20** | **12** |
+| **合计** | **20** | **16** |
 
 ---
 
@@ -264,7 +265,7 @@
 
 > **目标**：驾驭 batteries-included 的工程化框架——MTV 分层、自带 ORM/admin/auth、DRF 构建 REST API、信号缓存与测试体系
 
-### [ ] 项目 13：MTV、ORM 与 admin
+### [x] 项目 13：MTV、ORM 与 admin
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -278,12 +279,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「Django MTV、ORM 与 admin」。请在 web/13_django_mtv_admin/ 下给出完整 Django 工程：一个 blog app（Article/Author 两模型含外键）、admin 注册、fixtures 或迁移钩子灌种子数据；附 manage.py shell 脚本演示 filter/双下划线跨关系/aggregate 三类查询并与原生 SQL 对照断言，test client 登录 superuser 断言 admin 列表页 200；migrate 后用 PRAGMA 断言表结构，依赖 django，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：一次通过。迁移由 makemigrations 现场生成入库；ORM（values+annotate）与手写 SQL（JOIN+GROUP BY）对账断言是本站亮点。
 
 ---
 
-### [ ] 项目 14：视图与表单
+### [x] 项目 14：视图与表单
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -296,12 +297,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「Django 视图与表单」。请给我完整代码约 200 行：同一资源 Article 分别写 FBV 与 CBV（ListView 分页 + DetailView + LoginRequiredMixin 的 CreateView + ModelForm 校验），配 LoginView 登录与 messages 提示；tests.py 用 test client 断言：分页第二页偏移正确、合法创建 302 落库、非法创建 200 带错误、未登录创建 302 到登录页且 next 正确，依赖 django，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：auto_now_add 让 6 篇文章挤同一秒、分页内容断言随机红——改 default=timezone.now 显式固定时间戳（确定性测试的前提是确定性输入）。
 
 ---
 
-### [ ] 项目 15：DRF 构建 REST API
+### [x] 项目 15：DRF 构建 REST API
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -314,12 +315,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「DRF 构建 REST API」。请给我完整代码约 220 行：Django + DRF 实现 Article 的 ModelSerializer（含嵌套作者信息与字段校验）、ModelViewSet + Router、IsAuthenticated 写权限 + 匿名只读、PageNumberPagination、自定义 @action（如 /articles/recent/）；tests.py 用 APIClient 断言：匿名读 200 写 401、登录创建 201、更新 200 删除 204、第二页分页切片正确、recent 路由已注册且响应正确，依赖 django + djangorestframework，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：URLPattern 属性是 pattern 不是 url（第一版 AttributeError）；匿名写实际 403（未带凭证）而非 401——DRF 按"没带/带错"区分；django.request 对预期 403/400 的警告日志按预期失败静音。
 
 ---
 
-### [ ] 项目 16：信号、缓存与测试
+### [x] 项目 16：信号、缓存与测试
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -332,8 +333,8 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「Django 信号、缓存与测试」。请给我完整代码约 180 行：Article app 挂 post_save 信号自动写 AuditLog 审计行，settings 配 LocMemCache 并演示 cache.get_or_set 低级 API（用 CaptureQueriesContext 断言第二次调用零查询），模型加 @cached_property；tests.py 用 pytest-django 写全部用例（信号触发、缓存命中计数、cached_property 首算后缓存），pytest --cov 断言覆盖率 ≥80%，依赖 django + pytest-django + pytest-cov，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：空 urlpatterns 会 ImproperlyConfigured——补合法空列表；AppConfig.ready() 连信号防重复连接；覆盖率实测 97%（行覆盖高≠分支全覆盖，守底线不追虚荣）。
 
 ---
 

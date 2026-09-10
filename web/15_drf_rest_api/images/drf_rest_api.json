@@ -1,0 +1,143 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "一次 REST 请求穿过 DRF 的三层抽象",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "登录用户的合法请求"
+    },
+    {
+      "id": "edgepath",
+      "label": "拒绝路径",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "request",
+    "perm",
+    "serializer",
+    "viewset",
+    "renderer"
+  ],
+  "nodes": [
+    {
+      "id": "request",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "POST /api/articles/",
+      "width": 170
+    },
+    {
+      "id": "perm",
+      "lane": "main",
+      "col": 1,
+      "type": "security",
+      "label": "IsAuthenticatedOrReadOnly",
+      "width": 210
+    },
+    {
+      "id": "serializer",
+      "lane": "main",
+      "col": 2,
+      "type": "backend",
+      "label": "Serializer 校验与转换",
+      "width": 190
+    },
+    {
+      "id": "viewset",
+      "lane": "main",
+      "col": 3,
+      "type": "messagebus",
+      "label": "ViewSet.create",
+      "width": 140
+    },
+    {
+      "id": "renderer",
+      "lane": "main",
+      "col": 4,
+      "type": "external",
+      "label": "201 JSON 嵌套 author",
+      "width": 170
+    },
+    {
+      "id": "anon403",
+      "lane": "edgepath",
+      "col": 1,
+      "type": "security",
+      "label": "匿名写 → 403",
+      "width": 140
+    },
+    {
+      "id": "bad400",
+      "lane": "edgepath",
+      "col": 2,
+      "type": "security",
+      "label": "缺字段 → 400 指向字段",
+      "width": 180
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "request",
+      "to": "perm",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "perm",
+      "to": "serializer",
+      "label": "已登录放行"
+    },
+    {
+      "id": "e3",
+      "from": "serializer",
+      "to": "viewset",
+      "label": "validated_data"
+    },
+    {
+      "id": "e4",
+      "from": "viewset",
+      "to": "renderer",
+      "label": "Router 自动路由",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e5",
+      "from": "perm",
+      "to": "anon403",
+      "label": "匿名写"
+    },
+    {
+      "id": "e6",
+      "from": "serializer",
+      "to": "bad400",
+      "label": "校验失败"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三层抽象各管一段（实测）",
+      "items": [
+        "Router 自动生成 CRUD 路由；@action 一行注册 /articles/recent/",
+        "ViewSet 一个类五个视图；Serializer 读写分离——读嵌套 author、写收 author_id"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "状态码即协议（实测）",
+      "items": [
+        "匿名写 403（权限层）、缺字段 400（校验层指向字段名）、201/200/204 全链路",
+        "分页由全局 PAGE_SIZE=5 配置：count=7、第二页 2 条"
+      ]
+    }
+  ]
+}
