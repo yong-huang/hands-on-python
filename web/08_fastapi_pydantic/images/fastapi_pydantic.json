@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "类型驱动校验：注解长出校验、文档与出口闸",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "合法请求的流水线"
+    },
+    {
+      "id": "edgepath",
+      "label": "422 拒绝路径",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "request",
+    "parse",
+    "model",
+    "handler",
+    "filter",
+    "response"
+  ],
+  "nodes": [
+    {
+      "id": "request",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "POST /items JSON",
+      "width": 150
+    },
+    {
+      "id": "parse",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "解析 path/query/body 三来源",
+      "width": 190
+    },
+    {
+      "id": "model",
+      "lane": "main",
+      "col": 2,
+      "type": "backend",
+      "label": "Pydantic 字段约束",
+      "width": 170
+    },
+    {
+      "id": "handler",
+      "lane": "main",
+      "col": 3,
+      "type": "messagebus",
+      "label": "handler 只写业务",
+      "width": 160
+    },
+    {
+      "id": "filter",
+      "lane": "main",
+      "col": 4,
+      "type": "security",
+      "label": "response_model 出口闸",
+      "width": 180
+    },
+    {
+      "id": "response",
+      "lane": "main",
+      "col": 5,
+      "type": "messagebus",
+      "label": "JSON + OpenAPI 文档",
+      "width": 170
+    },
+    {
+      "id": "err422",
+      "lane": "edgepath",
+      "col": 2,
+      "type": "security",
+      "label": "验证失败 → 422 · loc 指向字段",
+      "width": 210
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "request",
+      "to": "parse",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "parse",
+      "to": "model"
+    },
+    {
+      "id": "e3",
+      "from": "model",
+      "to": "handler",
+      "label": "已验证实例",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e4",
+      "from": "handler",
+      "to": "filter",
+      "label": "全量 dict"
+    },
+    {
+      "id": "e5",
+      "from": "filter",
+      "to": "response"
+    },
+    {
+      "id": "e6",
+      "from": "model",
+      "to": "err422",
+      "label": "任一约束违例"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "校验即类型（实测）",
+      "items": [
+        "函数签名就是接口契约：负价格、超长名称、坏 pattern 各返 422 且 loc 指向字段",
+        "handler 收到的已是验证过的实例——校验代码一行都不用写"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "文档与出口闸（实测）",
+      "items": [
+        "/docs 与 /openapi.json 由模型自动生成：ge=0 编译成 minimum=0，零手写",
+        "response_model 是出口闸：internal_price/owner 等内部字段被剔除，多配也不泄露"
+      ]
+    }
+  ]
+}

@@ -94,8 +94,12 @@ hands-on-python/
 | 01 | [WSGI 最小应用手写](web/01_wsgi_barebones/README.md) | environ / start_response / 中间件洋葱，validator 背书 |
 | 02 | [HTTP 协议观察器](web/02_http_protocol/README.md) | 手搓报文、chunked 解码、keep-alive 复用实测 |
 | 03 | [Cookie 与 Session 手写](web/03_cookie_session/README.md) | 服务端 session vs HMAC 签名 cookie，篡改/过期实测 |
-| 04-07 | Flask 段（规划中） | 请求上下文、模板表单、SQLAlchemy、蓝图书签应用 |
-| 08-12 | FastAPI 段（规划中） | Pydantic、依赖注入、async 真相、中间件、JWT |
+| 04 | [Flask 最小应用与请求上下文](web/04_flask_request_context/README.md) | request/g/current_app 的上下文栈真相，钩子三路径实测 |
+| 05 | [模板与表单](web/05_flask_templates_forms/README.md) | Jinja2 继承/宏/转义 + WTForms 校验 + CSRF 防线 |
+| 06 | [SQLAlchemy ORM 实战](web/06_sqlalchemy_orm/README.md) | N+1 实测 21→2、session 生命周期、Alembic 加列不丢数据 |
+| 07 | [蓝图与登录认证 · 书签应用](web/07_flask_auth_app/README.md) | 应用工厂 + 双蓝图 + scrypt 认证 + 限流，Flask 段收官 |
+| 08 | [Pydantic 校验与自动文档](web/08_fastapi_pydantic/README.md) | 类型驱动：4 组 422 指向字段、出口闸裁剪、OpenAPI 编译 |
+| 09-12 | FastAPI 段（规划中） | 依赖注入、async 真相、中间件、JWT |
 | 13-16 | Django 段（规划中） | MTV/admin、视图表单、DRF、信号缓存测试 |
 | 17-20 | 对比与交付（规划中） | 三框架同题、生产部署、🏁 短链接服务、⚠️ WebSocket/Litestar |
 

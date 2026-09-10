@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}留言板{% endblock %}</title>
+</head>
+<body>
+  <header>
+    {# 块可被子模板覆写；get_flashed_messages 只在这次请求活着，闪完即焚 #}
+    <h1>{% block header %}留言板实验室{% endblock %}</h1>
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+      {% for cat, m in msgs %}
+        <p class="flash flash-{{ cat }}">{{ m }}</p>
+      {% endfor %}
+    {% endwith %}
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>注册</h2>
+<form method="post">
+  <p><label>用户名</label><br><input name="name" required></p>
+  <p><label>密码（至少 6 位）</label><br><input name="password" type="password" required></p>
+  <p><button type="submit">注册</button></p>
+</form>
+<p><a href="{{ url_for('auth.login') }}">已有账号？去登录</a></p>
+{% endblock %}

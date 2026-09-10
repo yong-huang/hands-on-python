@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>我的书签（{{ links_list|length }}）</h2>
+<form method="post" action="{{ url_for('links.add') }}">
+  <input name="url" placeholder="https://…" required size="40">
+  <input name="title" placeholder="标题（可选）" size="20">
+  <button type="submit">添加</button>
+</form>
+<ul>
+  {% for link in links_list %}
+    <li><a href="{{ link.url }}">{{ link.title }}</a> · {{ link.url }}</li>
+  {% else %}
+    <li>还没有书签，添加一个吧</li>
+  {% endfor %}
+</ul>
+{% endblock %}

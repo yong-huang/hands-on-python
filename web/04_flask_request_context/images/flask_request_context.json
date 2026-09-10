@@ -1,0 +1,156 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "一次请求在 Flask 上下文栈里的旅程",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "一次 GET 的执行流"
+    },
+    {
+      "id": "edgepath",
+      "label": "上下文边界与异常",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "tc",
+    "push",
+    "before",
+    "view",
+    "after",
+    "pop"
+  ],
+  "nodes": [
+    {
+      "id": "tc",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "test_client GET /whoami",
+      "width": 170
+    },
+    {
+      "id": "push",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "wsgi_app 压入上下文栈",
+      "width": 170
+    },
+    {
+      "id": "before",
+      "lane": "main",
+      "col": 2,
+      "type": "messagebus",
+      "label": "before_request 写 g.t0",
+      "width": 180
+    },
+    {
+      "id": "view",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "视图读 request / g",
+      "width": 170
+    },
+    {
+      "id": "after",
+      "lane": "main",
+      "col": 4,
+      "type": "messagebus",
+      "label": "after_request 加响应头",
+      "width": 180
+    },
+    {
+      "id": "pop",
+      "lane": "main",
+      "col": 5,
+      "type": "backend",
+      "label": "弹出上下文 teardown 必执行",
+      "width": 190
+    },
+    {
+      "id": "outside",
+      "lane": "edgepath",
+      "col": 1,
+      "type": "security",
+      "label": "裸线程摸 request → 报错",
+      "width": 180
+    },
+    {
+      "id": "crash",
+      "lane": "edgepath",
+      "col": 3,
+      "type": "security",
+      "label": "raise 无人兜底 → 500",
+      "width": 180
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "tc",
+      "to": "push",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "push",
+      "to": "before"
+    },
+    {
+      "id": "e3",
+      "from": "before",
+      "to": "view",
+      "label": "g 桥接传值",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e4",
+      "from": "view",
+      "to": "after"
+    },
+    {
+      "id": "e5",
+      "from": "after",
+      "to": "pop"
+    },
+    {
+      "id": "e6",
+      "from": "push",
+      "to": "outside",
+      "label": "栈是线程本地的"
+    },
+    {
+      "id": "e7",
+      "from": "view",
+      "to": "crash",
+      "label": "异常逃逸"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "上下文栈与 LocalProxy",
+      "items": [
+        "应用上下文承载 current_app / g，请求上下文承载 request——后者依赖前者",
+        "栈是线程本地的：子线程不继承；request/g 是 LocalProxy，按线程转发到栈顶上下文",
+        "两个交叠线程各写各的 g，实测互不串——'全局'是假象，隔离是真章"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "teardown vs after（实测）",
+      "items": [
+        "teardown 是 finally 语义必执行：无人兜底时 exc 带回异常，有 handler 兜底时 exc=None",
+        "before 里写 g.t0、视图里读——g 是钩子与视图之间的请求级笔记本"
+      ]
+    }
+  ]
+}

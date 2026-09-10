@@ -1,0 +1,158 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "一次表单提交的防线流水线",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "合法提交的路径"
+    },
+    {
+      "id": "edgepath",
+      "label": "两道防线的拒绝路径",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "get",
+    "post",
+    "csrf",
+    "validate",
+    "save",
+    "render"
+  ],
+  "nodes": [
+    {
+      "id": "get",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "GET / 表单页渲染",
+      "width": 160
+    },
+    {
+      "id": "post",
+      "lane": "main",
+      "col": 1,
+      "type": "external",
+      "label": "POST / 提交留言",
+      "width": 150
+    },
+    {
+      "id": "csrf",
+      "lane": "main",
+      "col": 2,
+      "type": "security",
+      "label": "CSRFProtect 验 token",
+      "width": 170
+    },
+    {
+      "id": "validate",
+      "lane": "main",
+      "col": 3,
+      "type": "backend",
+      "label": "WTForms 字段校验",
+      "width": 160
+    },
+    {
+      "id": "save",
+      "lane": "main",
+      "col": 4,
+      "type": "database",
+      "label": "落库 + flash + 302",
+      "width": 160
+    },
+    {
+      "id": "render",
+      "lane": "main",
+      "col": 5,
+      "type": "messagebus",
+      "label": "Jinja2 渲染 继承+宏+转义",
+      "width": 180
+    },
+    {
+      "id": "no400",
+      "lane": "edgepath",
+      "col": 2,
+      "type": "security",
+      "label": "无/伪造 token → 400",
+      "width": 170
+    },
+    {
+      "id": "invalid",
+      "lane": "edgepath",
+      "col": 3,
+      "type": "security",
+      "label": "缺字段/超长 → 200+错误",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "get",
+      "to": "post",
+      "label": "hidden_tag 埋 token",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "post",
+      "to": "csrf"
+    },
+    {
+      "id": "e3",
+      "from": "csrf",
+      "to": "validate",
+      "label": "token 合法"
+    },
+    {
+      "id": "e4",
+      "from": "validate",
+      "to": "save",
+      "label": "全部通过",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e5",
+      "from": "save",
+      "to": "render",
+      "label": "PRG 重定向后 GET"
+    },
+    {
+      "id": "e6",
+      "from": "csrf",
+      "to": "no400",
+      "label": "缺失/伪造"
+    },
+    {
+      "id": "e7",
+      "from": "validate",
+      "to": "invalid",
+      "label": "字段违规"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "CSRF 防线的本质",
+      "items": [
+        "token 由服务器签发、埋进 GET 渲染的表单——恶意站点诱导的跨站 POST 拿不到它",
+        "CSRFProtect 全局生效：无/伪造 token 的 POST 直接 400，视图代码一行都不会执行"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "校验与转义分层",
+      "items": [
+        "WTForms 管格式：必填/长度违规 → 200 回显错误文案，数据不落库",
+        "Jinja2 管安全：<script> 渲染即变 &lt;script&gt;，显式 |safe 是唯一豁免口——入库不拦、出口转义"
+      ]
+    }
+  ]
+}

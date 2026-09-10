@@ -1,0 +1,157 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "书签应用：从注册到加书签的完整防线",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "合法用户的路径"
+    },
+    {
+      "id": "edgepath",
+      "label": "守卫与锁定",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "register",
+    "hash",
+    "login",
+    "session",
+    "guard",
+    "add"
+  ],
+  "nodes": [
+    {
+      "id": "register",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "POST /auth/register",
+      "width": 170
+    },
+    {
+      "id": "hash",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "scrypt 哈希入库",
+      "width": 150
+    },
+    {
+      "id": "login",
+      "lane": "main",
+      "col": 2,
+      "type": "external",
+      "label": "POST /auth/login",
+      "width": 150
+    },
+    {
+      "id": "session",
+      "lane": "main",
+      "col": 3,
+      "type": "messagebus",
+      "label": "session 存 user_id",
+      "width": 160
+    },
+    {
+      "id": "guard",
+      "lane": "main",
+      "col": 4,
+      "type": "security",
+      "label": "links 守卫放行 g.user",
+      "width": 170
+    },
+    {
+      "id": "add",
+      "lane": "main",
+      "col": 5,
+      "type": "database",
+      "label": "POST /links/add 落库",
+      "width": 170
+    },
+    {
+      "id": "redirect302",
+      "lane": "edgepath",
+      "col": 4,
+      "type": "security",
+      "label": "未登录 → 302 登录页",
+      "width": 180
+    },
+    {
+      "id": "lockout",
+      "lane": "edgepath",
+      "col": 2,
+      "type": "security",
+      "label": "连错 5 次 → 429 锁定",
+      "width": 180
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "register",
+      "to": "hash",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "hash",
+      "to": "login",
+      "label": "密码不落明文"
+    },
+    {
+      "id": "e3",
+      "from": "login",
+      "to": "session",
+      "label": "校验通过 · 计数清零"
+    },
+    {
+      "id": "e4",
+      "from": "session",
+      "to": "guard",
+      "label": "before_app_request 装 g.user"
+    },
+    {
+      "id": "e5",
+      "from": "guard",
+      "to": "add",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e6",
+      "from": "login",
+      "to": "lockout",
+      "label": "failed_attempts ≥ 5"
+    },
+    {
+      "id": "e7",
+      "from": "guard",
+      "to": "redirect302",
+      "label": "g.user 为 None"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "工厂与蓝图（实测）",
+      "items": [
+        "create_app(test_config) 每次产出独立应用：各自 engine 与配置，两个实例数据互不可见",
+        "auth / links 两蓝图按 url_prefix 分区；links 蓝图级 before_request 统一登录保护"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "认证安全三件（实测）",
+      "items": [
+        "密码只存 scrypt 哈希——直接查 users 表断言无明文",
+        "连错 5 次锁定：429 先于密码校验，正确密码也进不来；登录成功计数清零"
+      ]
+    }
+  ]
+}

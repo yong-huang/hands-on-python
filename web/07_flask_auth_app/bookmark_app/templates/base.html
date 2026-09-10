@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}书签应用{% endblock %}</title>
+</head>
+<body>
+  <nav>
+    <b>书签应用</b>
+    {% if g.user %}
+      | {{ g.user.name }} | <a href="{{ url_for('links.index') }}">我的书签</a>
+      | <a href="{{ url_for('auth.logout') }}">登出</a>
+    {% else %}
+      | <a href="{{ url_for('auth.login') }}">登录</a>
+      | <a href="{{ url_for('auth.register') }}">注册</a>
+    {% endif %}
+  </nav>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<p class="flash flash-{{ cat }}">{{ m }}</p>{% endfor %}
+  {% endwith %}
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>

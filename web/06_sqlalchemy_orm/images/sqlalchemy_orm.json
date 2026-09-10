@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "N+1 实测：懒加载 21 条 SQL vs selectinload 2 条",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "lazy",
+      "label": "默认懒加载"
+    },
+    {
+      "id": "eager",
+      "label": "selectinload 预加载"
+    }
+  ],
+  "mainPath": [
+    "loop",
+    "users_sql",
+    "posts_x20",
+    "total21"
+  ],
+  "nodes": [
+    {
+      "id": "loop",
+      "lane": "lazy",
+      "col": 0,
+      "type": "external",
+      "label": "遍历 20 位作者的帖子",
+      "width": 170
+    },
+    {
+      "id": "users_sql",
+      "lane": "lazy",
+      "col": 1,
+      "type": "database",
+      "label": "SELECT users",
+      "sublabel": "1 条",
+      "width": 150
+    },
+    {
+      "id": "posts_x20",
+      "lane": "lazy",
+      "col": 2,
+      "type": "database",
+      "label": "循环点 .posts 触发 20 次",
+      "width": 190
+    },
+    {
+      "id": "total21",
+      "lane": "lazy",
+      "col": 3,
+      "type": "security",
+      "label": "共 21 条 SQL",
+      "width": 130
+    },
+    {
+      "id": "opt",
+      "lane": "eager",
+      "col": 0,
+      "type": "external",
+      "label": "同一遍历 + selectinload",
+      "width": 170
+    },
+    {
+      "id": "users_sql2",
+      "lane": "eager",
+      "col": 1,
+      "type": "database",
+      "label": "SELECT users",
+      "sublabel": "1 条",
+      "width": 150
+    },
+    {
+      "id": "in_sql",
+      "lane": "eager",
+      "col": 2,
+      "type": "database",
+      "label": "按 user_id IN (…) 批取",
+      "width": 220
+    },
+    {
+      "id": "total2",
+      "lane": "eager",
+      "col": 3,
+      "type": "backend",
+      "label": "共 2 条 SQL",
+      "width": 130
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "loop",
+      "to": "users_sql",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "users_sql",
+      "to": "posts_x20",
+      "label": "逐个访问关系属性"
+    },
+    {
+      "id": "e3",
+      "from": "posts_x20",
+      "to": "total21",
+      "label": "每作者 1 条",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e4",
+      "from": "opt",
+      "to": "users_sql2"
+    },
+    {
+      "id": "e5",
+      "from": "users_sql2",
+      "to": "in_sql"
+    },
+    {
+      "id": "e6",
+      "from": "in_sql",
+      "to": "total2",
+      "label": "结果与懒加载完全一致"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "session 生命周期（实测）",
+      "items": [
+        "expire_on_commit 默认开：commit 后首次读属性隐式补发 1 条 SELECT",
+        "会话关闭后读过期属性 → DetachedInstanceError；Web 里一请求一 session 是标配"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Alembic 加列不丢数据（实测）",
+      "items": [
+        "upgrade 0001 建表 → 插入老数据 → upgrade head：posts 多出 views 列",
+        "server_default=\"0\" 让旧行自动填默认值，alembic_version 表记录迁移进度"
+      ]
+    }
+  ]
+}

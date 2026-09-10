@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "_macros.html" import render_field %}
+
+{% block content %}
+<form method="post">
+  {{ form.hidden_tag() }}  {# csrf_token 隐藏域就藏在这里 #}
+  {{ render_field(form.name) }}
+  {{ render_field(form.content) }}
+  {{ render_field(form.submit) }}
+</form>
+
+<ul>
+  {% for msg in messages %}
+    <li>{{ msg.created|dtime }} · <b>{{ msg.name }}</b>：{{ msg.content }}</li>
+  {% endfor %}
+</ul>
+<footer>共 {{ messages|length }} 条留言</footer>
+{% endblock %}

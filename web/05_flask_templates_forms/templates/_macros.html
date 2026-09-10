@@ -1,0 +1,10 @@
+{# 宏：所有表单字段统一走这里渲染——label、控件、错误文案位三件套 #}
+{% macro render_field(field) %}
+  <p>
+    <label>{{ field.label }}</label><br>
+    {{ field() }}<br>
+    {% for err in field.errors %}
+      <span class="error">{{ err }}</span>
+    {% endfor %}
+  </p>
+{% endmacro %}

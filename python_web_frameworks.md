@@ -16,16 +16,17 @@
 
 ## 📊 总进度
 
-进度：░░░░░░░░░░░░░░░░░░░░ 0/20 (0%)
+进度：████████░░░░░░░░░░░░ 8/20 (40%)
 
 | 阶段 | 项目数 | 已完成 |
 |:---|:---:|:---:|
-| 第一阶段：Web 地基（零依赖手写） | 3 | 0 |
-| 第二阶段：Flask 微框架 | 4 | 0 |
+| 第一阶段：Web 地基（零依赖手写） | 3 | 3 |
+| 第二阶段：Flask 微框架 | 4 | 4 |
+| 第三阶段：FastAPI 现代 ASGI | 5 | 1 |
 | 第三阶段：FastAPI 现代 ASGI | 5 | 0 |
 | 第四阶段：Django 全家桶 | 4 | 0 |
 | 第五阶段：对比、部署与综合 | 4 | 0 |
-| **合计** | **20** | **0** |
+| **合计** | **20** | **8** |
 
 ---
 
@@ -33,7 +34,7 @@
 
 > **目标**：不靠任何框架吃透 WSGI 协议、HTTP 报文与会话机制——之后三个框架的"魔法"全是这三课的封装
 
-### [ ] 项目 1：WSGI 最小应用手写
+### [x] 项目 1：WSGI 最小应用手写
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -46,12 +47,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「WSGI 最小应用手写」。请给我完整代码约 130 行：用 wsgiref.simple_server 在 127.0.0.1:8000 起 WSGI 应用，实现 dict 路由表（含 /hello/<name> 动态段与 404 兜底）、一个日志中间件（方法/路径/状态码/耗时）并用 wsgiref.validate.validator 包裹应用证明合规，main 里附带自测：起服务线程后用 urllib 实际请求三类路径断言状态码与头，零第三方依赖，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：手工 environ 漏 `SCRIPT_NAME` 被 validator 抓；中间件未传播 `close()` 被 GC 断言咬；日志格式断言没考虑状态行自带空格（`200 OK`）。三处全进了 README 坑清单。
 
 ---
 
-### [ ] 项目 2：HTTP 协议观察器
+### [x] 项目 2：HTTP 协议观察器
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -64,12 +65,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「HTTP 协议观察器」。请给我完整代码约 160 行：① socket 手搓 HTTP GET 报文请求本地 http.server，逐行解析响应行/头/体并与 http.client 结果逐项比对断言；② 自写 5 行级 chunked 响应的 HTTP/1.1 服务，手搓客户端按 chunk-size 解码还原 Body 并逐字节断言；③ 手写支持 keep-alive 的极简服务，同一 socket 连续两次 GET 断言连接对象复用。全程打印原始报文便于观察，零第三方依赖，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：/echo 的 Content-Length 误写成请求体长度（4 vs 9）→ 客户端与服务端双超时、连接 RST；keep-alive 无 idle timeout 线程崩；头误拼到空行之后。全进了 README 坑清单。
 
 ---
 
-### [ ] 项目 3：Cookie 与 Session 手写
+### [x] 项目 3：Cookie 与 Session 手写
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -82,8 +83,8 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「Cookie 与 Session 手写」。请给我完整代码约 160 行：用 http.server.BaseHTTPRequestHandler 实现登录（两种模式对比——服务端 session dict 存 sessionid、客户端 HMAC 签名 cookie 存 payload+签名），受保护页校验登录态并演示 Set-Cookie 各属性（Expires/Max-Age/HttpOnly/SameSite），main 里用 http.client 模拟完整登录流程并内置四条验收断言（登录 200/无 cookie 401/篡改签名 401/过期 cookie 401），零第三方依赖，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：一次通过，仅修 payload.签名 的打印格式；三连跑 stderr 全零。
 
 ---
 
@@ -91,7 +92,7 @@
 
 > **目标**：从最贴近手写 WSGI 心智模型的微框架入手，掌握请求上下文、模板、ORM 与认证，独立交付一个带登录的多蓝图应用
 
-### [ ] 项目 4：Flask 最小应用与请求上下文
+### [x] 项目 4：Flask 最小应用与请求上下文
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -104,12 +105,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「Flask 最小应用与请求上下文」。请给我完整代码约 150 行：单文件 Flask 应用含动态路由与自定义 errorhandler；用工作线程演示在上下文外访问 request 抛 RuntimeError、两个线程各自写 g 互不串（LocalProxy 线程隔离）；挂 before_request/after_request/teardown_request 打日志断言执行顺序与异常时 teardown 仍执行；main 用 app.test_client() 跑全部验收断言，依赖仅 Flask，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：Flask 3.1 移除 `__version__`（改用 importlib.metadata）；实测修正预期——errorhandler 兜底的异常属"已处理"，teardown 拿到 exc=None，只有无人兜底才带回异常；/crash 触发的自带 ERROR 日志需静音才保 stderr 干净。
 
 ---
 
-### [ ] 项目 5：模板与表单
+### [x] 项目 5：模板与表单
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -122,12 +123,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「模板与表单」。请给我完整代码约 180 行：Flask + Flask-WTF 实现留言表单（base.html 模板继承 + 宏渲染字段 + flash 消息），WTForms 校验长度与必填；单文件内用 render_template_string 或临时模板目录组织，main 用 test_client 断言：非法提交 200 带错误文案、合法提交 302 落存储、script 标签被转义、无 CSRF token 被拒 400 而带 token 通过，依赖仅 flask + flask-wtf，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：一次通过，五连断言全绿、stderr 零输出；实现用真实模板目录（base/宏/留言页）替代了清单原计划的 render_template_string 方案，教学效果更好。
 
 ---
 
-### [ ] 项目 6：SQLAlchemy ORM 实战
+### [x] 项目 6：SQLAlchemy ORM 实战
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -141,12 +142,12 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「SQLAlchemy ORM 实战」。请给我完整代码约 200 行：SQLAlchemy 2.0 声明式定义 User/Post 一对多模型，sqlite 落库；开启 echo 统计懒加载 N+1（断言 21 条 SQL）再演示 selectinload 降为 ≤2 条；演示 session detached 坑与 expire_on_commit 行为并注释解释；附 alembic 最小目录（ini + env.py + 一版迁移），demo 里 subprocess 执行 upgrade 后用 PRAGMA 断言新列存在且数据完好，依赖 sqlalchemy + alembic，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：一次通过。SQL 计数用 before_cursor_execute 事件替代 echo 日志（可断言、无噪音）；迁移扩成两版脚本（0001 建表 + 0002 加列）以演示"升级不丢数据"的完整故事；migration_lab.db 跑完即清。
 
 ---
 
-### [ ] 项目 7：蓝图与登录认证 —— 书签应用
+### [x] 项目 7：蓝图与登录认证 —— 书签应用
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -159,8 +160,8 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「书签应用：蓝图与登录认证」。请给我完整代码约 250 行：Flask 应用工厂 + auth（注册/登录/登出）与 bookmark（增删列表）两蓝图，sqlite 存用户（werkzeug generate_password_hash）与书签，before_request/装饰器做登录保护，错误密码连续 5 次触发简单限流；main 用 test_client 断言全流程（注册→登出→登录→加书签→200、未登录 302 到登录页、库里无明文密码、第 6 次错误密码 429），依赖仅 Flask，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：一次通过。实现从"单文件"升级为标准应用包（bookmark_app/：工厂 + db + auth/links 双蓝图 + 模板），代码量超原计划（~370 行含模板）但教学完整度更好；限流断言加了"锁定后正确密码也 429"的加强项。
 
 ---
 
@@ -168,7 +169,7 @@
 
 > **目标**：掌握类型驱动的现代 API 开发——校验、依赖注入、异步真相、中间件与 JWT 认证，能解释每个请求在 ASGI 栈里的真实执行位置
 
-### [ ] 项目 8：Pydantic 校验与自动文档
+### [x] 项目 8：Pydantic 校验与自动文档
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -181,8 +182,8 @@
 **🤖 开始提示词**：
 > `我要开始 Python Web 项目「Pydantic 校验与自动文档」。请给我完整代码约 160 行：FastAPI 应用含路径/查询/Body 三类参数、带 Field 约束的 BaseModel（ge/max_length/pattern）、response_model 过滤内部字段（如内部价 internal_price 不外泄）、自定义 title/tags；main 用 TestClient 断言：合法创建 200、负数与超长各返 422 且 errors 含字段名、响应 JSON 无被过滤字段、/openapi.json 含自定义 schema，依赖 fastapi + httpx，中文注释。只输出代码。`
 
-**完成日期**：________
-**踩坑记录**：________
+**完成日期**：2026-09-11
+**踩坑记录**：一次通过。starlette 新版提示 testclient 配 httpx2（与清单实测组合冲突，warnings 过滤静音）；422 断言做到 loc 字段粒度（只查状态码是弱校验）。
 
 ---
 
@@ -461,7 +462,8 @@ pip install fastapi uvicorn flask flask-wtf sqlalchemy alembic \
 #    pyjwt 2.13.0 / bcrypt 5.0.0 / python-multipart 0.0.32 / gunicorn 26.2.0
 #    冒烟项：FastAPI TestClient 全链路 / Flask test_client / DRF serializer 校验 /
 #    bcrypt hash-check / Django configure+auth models，全过
-pip install pytest-django pytest-cov   # 项目 16 用（不在上述实测集内 ⚠️，纯 Python 低风险）
+pip install pytest-django pytest-cov   # ✅ 已随 2026-09-11 环境初始化一并装通（项目 16 用）
+#    环境现状：web/.venv 已按上述命令建好；web/requirements.txt 已冻结 43 个锁定版本
 # 2. 每项目开工前：
 source web/.venv/bin/activate && python --version && python -c "import fastapi, flask, django; print('frameworks OK')"
 ```
