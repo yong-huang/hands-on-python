@@ -17,12 +17,12 @@ Python 是动态类型语言，但 PEP 484 引入了类型注解（Type Hints）
 
 ## 2. 总览：核心机制一图看懂
 
-![typing 与泛型：静态检查与运行时行为分道而行](images/typing_generic.archify.svg)
+![typing 与泛型：静态检查与运行时行为分道而行](images/typing_generic.svg)
 
 一句话心智模型：**同一个 `s.push('wrong')`，mypy/pyright 报类型错误，CPython 却把注解丢在一边、照常入栈**。看图时沿"静态检查 / 运行时"两条并行的道走：静态侧 TypeVar 约束、Generic 参数化、Protocol 结构匹配都在编译前发生；运行时唯一的类型保障是手写 `isinstance` 或 `@runtime_checkable` Protocol 结构检查。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/18_typing_generic/images/typing_generic.archify.html)
-> （或本地打开 [`images/typing_generic.archify.html`](images/typing_generic.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/18_typing_generic/images/typing_generic.html)
+> （或本地打开 [`images/typing_generic.html`](images/typing_generic.html)）。
 
 ## 3. 快速开始
 
@@ -238,9 +238,9 @@ class Stack(Generic[T]):
 ├── README.md                       # 本教程文档
 ├── typing_generic.py               # 主演示脚本：TypeVar / Generic / Protocol / Union
 └── images/
-    ├── typing_generic.archify.json # 图源（typed JSON IR，可编辑重渲染）
-    ├── typing_generic.archify.html # 交互示意图（浏览器打开）
-    └── typing_generic.archify.svg  # 双主题矢量图（本 README §2 内嵌）
+    ├── typing_generic.json # 图源（typed JSON IR，可编辑重渲染）
+    ├── typing_generic.html # 交互示意图（浏览器打开）
+    └── typing_generic.svg  # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `typing_generic.py` 内容：`1. T / K / N (TypeVar)` 类型变量定义 / `2. Stack(Generic[T])` 泛型栈 / `3. Sized / Closeable / Writable / Readable (Protocol)` 结构化子类型 / `4. process_id() / find_user()` Union / Optional / `5. first_item()` 泛型函数 / `6. run_demo()` 交互式演示。

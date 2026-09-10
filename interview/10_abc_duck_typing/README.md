@@ -11,12 +11,12 @@ Python 的多态基于 **Duck Typing**（"走起来像鸭子就是鸭子"）—�
 
 ## 2. 总览：核心机制一图看懂
 
-![多态三条路线：Duck Typing / ABC / Protocol](images/abc_duck_typing.archify.svg)
+![多态三条路线：Duck Typing / ABC / Protocol](images/abc_duck_typing.svg)
 
 一句话心智模型：**统一入口是 `ship_item(t, dest)`，区别只在于"什么时候发现对象不合格"**。看图时对着三条 lane 找失败点：Duck Typing 直接 `t.deliver(dest)`，缺方法要到调用时才 `AttributeError`；ABC 未实现抽象方法在实例化时即 `TypeError`，`register()` 虚拟子类可通过 isinstance；`@runtime_checkable` Protocol 按结构匹配——失败点越靠前，约束越强。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/10_abc_duck_typing/images/abc_duck_typing.archify.html)
-> （或本地打开 [`images/abc_duck_typing.archify.html`](images/abc_duck_typing.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/10_abc_duck_typing/images/abc_duck_typing.html)
+> （或本地打开 [`images/abc_duck_typing.html`](images/abc_duck_typing.html)）。
 
 ## 3. 快速开始
 
@@ -145,9 +145,9 @@ Transport.register(ExternalLogistics)     # 第三方类不继承也能过 isins
 ├── README.md                        # 本教程文档
 ├── abc_duck_typing.py               # 主演示脚本：Duck Typing / ABC / register / Protocol
 └── images/
-    ├── abc_duck_typing.archify.json  # 图源（typed JSON IR，可编辑重渲染）
-    ├── abc_duck_typing.archify.html  # 交互示意图（浏览器打开）
-    └── abc_duck_typing.archify.svg   # 双主题矢量图（本 README §2 内嵌）
+    ├── abc_duck_typing.json  # 图源（typed JSON IR，可编辑重渲染）
+    ├── abc_duck_typing.html  # 交互示意图（浏览器打开）
+    └── abc_duck_typing.svg   # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `abc_duck_typing.py` 内容：`1. Duck / Robot / Person` Duck Typing 演示 / `2. Transport (ABC)` + Truck / Drone 抽象基类 / `3. ExternalLogistics` + `register()` 虚拟子类 / `4. CacheInterface` + MemoryCache / RedisCache 缓存接口 / `5. ship_item() / cache_demo()` 多态使用。

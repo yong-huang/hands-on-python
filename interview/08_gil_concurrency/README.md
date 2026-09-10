@@ -11,12 +11,12 @@ GIL（Global Interpreter Lock）是 CPython 的全局解释器锁，同一时刻
 
 ## 2. 总览：核心机制一图看懂
 
-![GIL：线程在 I/O 等待时释放锁](images/gil_concurrency.archify.svg)
+![GIL：线程在 I/O 等待时释放锁](images/gil_concurrency.svg)
 
 一句话心智模型：**GIL 只锁"执行字节码"这件事，线程一进入 I/O 等待就把锁让出去**。看图时顺着线程1 走一遍：`acquire()` 拿到 GIL → 发起 `socket.recv()` 进入阻塞等待 → **I/O 等待期间释放 GIL** → 线程2 获得锁执行字节码 ~5ms → I/O 完成后线程1 重新竞争。这正是"多线程能加速 I/O、不能加速 CPU"的微观原因。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/08_gil_concurrency/images/gil_concurrency.archify.html)
-> （或本地打开 [`images/gil_concurrency.archify.html`](images/gil_concurrency.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/08_gil_concurrency/images/gil_concurrency.html)
+> （或本地打开 [`images/gil_concurrency.html`](images/gil_concurrency.html)）。
 
 ## 3. 快速开始
 
@@ -124,9 +124,9 @@ def bench_io(workers=8, duration=0.1):
 ├── README.md                        # 本教程文档
 ├── gil_concurrency.py               # 主演示脚本：基准测试 + GIL 释放场景 + 选型指南
 └── images/
-    ├── gil_concurrency.archify.json  # 图源（typed JSON IR，可编辑重渲染）
-    ├── gil_concurrency.archify.html  # 交互示意图（浏览器打开）
-    └── gil_concurrency.archify.svg   # 双主题矢量图（本 README §2 内嵌）
+    ├── gil_concurrency.json  # 图源（typed JSON IR，可编辑重渲染）
+    ├── gil_concurrency.html  # 交互示意图（浏览器打开）
+    └── gil_concurrency.svg   # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `gil_concurrency.py` 内容：`1. cpu_heavy()` CPU 密集任务（素数计数）/ `2. io_heavy()` I/O 密集任务（模拟 sleep）/ `3. bench_cpu()` 串行 / threading / multiprocessing 对比 / `4. bench_io()` 串行 / threading / asyncio 对比。

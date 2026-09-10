@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![property：把方法伪装成属性的读写分发](images/property.archify.svg)
+![property：把方法伪装成属性的读写分发](images/property.svg)
 
 一句话心智模型：**`obj.x` 的读路径经 getter `__get__` 返回存储/计算值，写路径经 setter `__set__` 校验**。看图时沿读写两条路径走：读 `c.radius` → `__get__` 返回 `_radius` 或实时计算值；写 `c.radius = value` → `__set__` 校验，`value > 0` 合法写入、非法值抛 `ValueError`；对无 setter 的只读属性赋值 → `AttributeError`。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/17_property/images/property.archify.html)
-> （或本地打开 [`images/property.archify.html`](images/property.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/17_property/images/property.html)
+> （或本地打开 [`images/property.html`](images/property.html)）。
 
 ## 3. 快速开始
 
@@ -199,9 +199,9 @@ obj.radius = value
 ├── README.md                  # 本教程文档
 ├── property.py                # 主演示脚本：验证 / 只读计算 / 联动属性 / 描述符本质
 └── images/
-    ├── property.archify.json  # 图源（typed JSON IR，可编辑重渲染）
-    ├── property.archify.html  # 交互示意图（浏览器打开）
-    └── property.archify.svg   # 双主题矢量图（本 README §2 内嵌）
+    ├── property.json  # 图源（typed JSON IR，可编辑重渲染）
+    ├── property.html  # 交互示意图（浏览器打开）
+    └── property.svg   # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `property.py` 内容：`1. Circle` getter + setter + deleter，验证半径 / `2. Rectangle` 只读计算属性（面积、周长） / `3. Temperature` 联动属性（摄氏/华氏自动同步） / `4. reveal_property()` 揭示 property 的描述符本质 / `5. run_demo()` 五组交互演示。

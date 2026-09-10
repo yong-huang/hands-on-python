@@ -10,12 +10,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![四模型对决结论卡](images/model_benchmark.archify.svg)
+![四模型对决结论卡](images/model_benchmark.svg)
 
 一句话心智模型：**IO 密集看"等待重叠"——asyncio 16.8×、threading 8.0×；CPU 密集看"绕开 GIL"——multiprocessing 2.78× 唯一真并行，threading 1.18× 倒贴，asyncio ≈ 串行**。四张结论卡按选型公式排布：上限标注实测倍数，tag 标注适用场景。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/14_model_benchmark/images/model_benchmark.archify.html)
-> （或本地打开 [`images/model_benchmark.archify.html`](images/model_benchmark.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/14_model_benchmark/images/model_benchmark.html)
+> （或本地打开 [`images/model_benchmark.html`](images/model_benchmark.html)）。
 
 ## 3. 快速开始
 
@@ -112,9 +112,9 @@ def run_process_cpu(blocks):
 ├── model_benchmark.py                       # 主演示脚本：四模型 × 两负载对决
 ├── README.md                                # 本教程文档
 └── images/
-    ├── model_benchmark.archify.json         # 图源（typed JSON IR，可编辑重渲染）
-    ├── model_benchmark.archify.html         # 交互示意图（浏览器打开）
-    ├── model_benchmark.archify.svg          # 双主题矢量图（本 README §2 内嵌）
+    ├── model_benchmark.json         # 图源（typed JSON IR，可编辑重渲染）
+    ├── model_benchmark.html         # 交互示意图（浏览器打开）
+    ├── model_benchmark.svg          # 双主题矢量图（本 README §2 内嵌）
     └── model_benchmark_bars.png             # --plot 生成的柱状图
 ```
 

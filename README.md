@@ -20,9 +20,9 @@ hands-on-python/
         ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 面试要点 → 总结
         ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
         └── images/
-            ├── <topic>.archify.json  # 图源（typed JSON IR，可编辑重渲染）
-            ├── <topic>.archify.html  # 交互示意图（自包含单文件）
-            └── <topic>.archify.svg   # 双主题矢量图（README §2 内嵌）
+            ├── <topic>.json  # 图源（typed JSON IR，可编辑重渲染）
+            ├── <topic>.html  # 交互示意图（自包含单文件）
+            └── <topic>.svg   # 双主题矢量图（README §2 内嵌）
 ```
 
 ## 实验列表
@@ -53,7 +53,7 @@ hands-on-python/
 ## 🧵 第二系列：Python 并发 16 站（2026-09 新增）
 
 继 20 个语言机制实验之后的完整并发专题：线程地基 → 多进程 → asyncio → 诊断与模式 → 终极串联。
-每个实验同为本仓库"五件套"规范（教程 README + 主演示脚本 + Archify 图三件套），
+每个实验同为本仓库"五件套"规范（教程 README + 主演示脚本 + 架构图三件套），
 清单与进度见 [python_concurrency.md](python_concurrency.md)。
 
 | 编号 | 实验名 | 一句话主题 |
@@ -83,6 +83,22 @@ hands-on-python/
 4. **诊断与架构**（12 → 13 → 14）：死锁诊断、设计模式、四模型对决
 5. **毕业设计**（15 → 16 选做）：可切换执行模型下载器、free-threading 前沿实测
 
+## 🌐 第三系列：Python Web 框架 20 站（2026-09 新增，施工中）
+
+三大框架通吃的地基层：先零依赖手写 WSGI/HTTP/会话（第一阶段），再依次进入 Flask → FastAPI → Django/DRF，收拢于三框架同题对比与容器化综合项目。
+本系列主演示脚本分两类：第一阶段三站零第三方依赖；框架阶段运行于 `web/.venv`（依赖清单与 2026-09-10 实测版本见 [python_web_frameworks.md](python_web_frameworks.md)）。
+清单与进度见 [python_web_frameworks.md](python_web_frameworks.md)。
+
+| 编号 | 实验名 | 一句话主题 |
+|:---|:---|:---|
+| 01 | [WSGI 最小应用手写](web/01_wsgi_barebones/README.md) | environ / start_response / 中间件洋葱，validator 背书 |
+| 02 | [HTTP 协议观察器](web/02_http_protocol/README.md) | 手搓报文、chunked 解码、keep-alive 复用实测 |
+| 03 | [Cookie 与 Session 手写](web/03_cookie_session/README.md) | 服务端 session vs HMAC 签名 cookie，篡改/过期实测 |
+| 04-07 | Flask 段（规划中） | 请求上下文、模板表单、SQLAlchemy、蓝图书签应用 |
+| 08-12 | FastAPI 段（规划中） | Pydantic、依赖注入、async 真相、中间件、JWT |
+| 13-16 | Django 段（规划中） | MTV/admin、视图表单、DRF、信号缓存测试 |
+| 17-20 | 对比与交付（规划中） | 三框架同题、生产部署、🏁 短链接服务、⚠️ WebSocket/Litestar |
+
 ## 学习路线
 
 建议按四个阶段推进，每阶段内编号即推荐顺序：
@@ -97,7 +113,7 @@ hands-on-python/
 ```bash
 cd interview/01_decorator_factory
 python3 decorator_factory.py      # 主演示：分步打印 demo 输出（零第三方依赖）
-open images/decorator_factory.archify.html   # 交互示意图（浏览器打开；Linux 用 xdg-open）
+open images/decorator_factory.html   # 交互示意图（浏览器打开；Linux 用 xdg-open）
 ```
 
 主演示脚本从任意 cwd 调用都正确。每个实验的 README §3「快速开始」里有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常；§2 有内嵌架构图与交互版链接。

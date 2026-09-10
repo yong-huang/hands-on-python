@@ -11,12 +11,12 @@ asyncio 的语法十分钟就会，但四个误解会跟一辈子：以为调用
 
 ## 2. 总览：核心机制一图看懂
 
-![事件循环：单线程内的协作式调度](images/coroutine_loop.archify.svg)
+![事件循环：单线程内的协作式调度](images/coroutine_loop.svg)
 
 一句话心智模型：**协程在 await 处主动交还控制权，事件循环单线程地在协程之间切换，睡眠中的任务挂在定时器堆上，到期再放回可运行队列**。看图闭环：协程 A/B await 让出 → 事件循环接管 → 未到期挂起 → 到期恢复——全程没有第二个线程。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/08_coroutine_loop/images/coroutine_loop.archify.html)
-> （或本地打开 [`images/coroutine_loop.archify.html`](images/coroutine_loop.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/08_coroutine_loop/images/coroutine_loop.html)
+> （或本地打开 [`images/coroutine_loop.html`](images/coroutine_loop.html)）。
 
 ## 3. 快速开始
 
@@ -102,9 +102,9 @@ t = asyncio.create_task(slow_step("c2", 0.1))   # 并发：先挂上任务再收
 ├── README.md                                # 本教程文档
 ├── coroutine_loop.py                        # 主演示脚本：惰性/交错/等价/对比
 └── images/
-    ├── coroutine_loop.archify.json          # 图源（typed JSON IR，可编辑重渲染）
-    ├── coroutine_loop.archify.html          # 交互示意图（浏览器打开）
-    └── coroutine_loop.archify.svg           # 双主题矢量图（本 README §2 内嵌）
+    ├── coroutine_loop.json          # 图源（typed JSON IR，可编辑重渲染）
+    ├── coroutine_loop.html          # 交互示意图（浏览器打开）
+    └── coroutine_loop.svg           # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `coroutine_loop.py` 内容：`demo_lazy()` 惰性协程 / `demo_interleave()` 单线程交错 + 线程断言 / `demo_run_equivalence()` 两种启动方式等价 / `demo_await_vs_task()` await 链 vs create_task。

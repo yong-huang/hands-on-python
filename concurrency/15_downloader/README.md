@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![可切换执行模型的并发下载器](images/downloader.archify.svg)
+![可切换执行模型的并发下载器](images/downloader.svg)
 
 一句话心智模型：**统一入口 `download_round(model, limit)` 把"怎么下载"封进后端，"下什么、下到哪、怎么验"留在协议层**。看图主链：入口按 `--model` 分发到四个执行模型闸门（限流/重试/续传挂在闸门上），访问本地 aiohttp 服务（20 个文件、30ms 延迟、首败恢复），最后 SHA256 逐文件断言；右下角是 SIGKILL 强杀对照——不挂进这套协议的下场。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/15_downloader/images/downloader.archify.html)
-> （或本地打开 [`images/downloader.archify.html`](images/downloader.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/15_downloader/images/downloader.html)
+> （或本地打开 [`images/downloader.html`](images/downloader.html)）。
 
 ## 3. 快速开始
 
@@ -95,9 +95,9 @@ sync/thread 共享父进程的本地服务；process 后端真开 N 个子进程
 ├── downloader.py                            # 主程序：文件服务 + 四后端 + 校验
 ├── README.md                                # 本教程文档
 └── images/
-    ├── downloader.archify.json              # 图源（typed JSON IR，可编辑重渲染）
-    ├── downloader.archify.html              # 交互示意图（浏览器打开）
-    └── downloader.archify.svg               # 双主题矢量图（本 README §2 内嵌）
+    ├── downloader.json              # 图源（typed JSON IR，可编辑重渲染）
+    ├── downloader.html              # 交互示意图（浏览器打开）
+    └── downloader.svg               # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `downloader.py` 内容：`FileServer` 本地服务（内容 seed 固定 + 在飞峰值观测）/ `fetch_once_blocking()` 带重试抓取 / `round_sync()/round_threads()/round_process()/round_async()` 四后端 / `download_round()` 统一入口（可续传）/ `verify_all()` SHA256 逐文件断言。

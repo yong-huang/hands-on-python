@@ -10,12 +10,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![同步原语工具箱：六把钥匙各管一扇门](images/sync_primitives.archify.svg)
+![同步原语工具箱：六把钥匙各管一扇门](images/sync_primitives.svg)
 
 一句话心智模型：**互斥类（Lock/RLock）守共享状态，Semaphore 守资源配额，协调类（Event/Condition/Barrier）守线程间秩序**。看图沿箭头走：线程带着 `with lock:` 进闸门，一次一个碰共享状态；Semaphore 发 3 张许可放进连接池；底部三个协调原语不碰资源，只管"谁先谁后、等到什么才走"。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/03_sync_primitives/images/sync_primitives.archify.html)
-> （或本地打开 [`images/sync_primitives.archify.html`](images/sync_primitives.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/03_sync_primitives/images/sync_primitives.html)
+> （或本地打开 [`images/sync_primitives.html`](images/sync_primitives.html)）。
 
 ## 3. 快速开始
 
@@ -117,9 +117,9 @@ assert victim.is_alive()      # 1 秒后仍卡着 = 自锁实锤
 ├── README.md                                # 本教程文档
 ├── sync_primitives.py                       # 主演示脚本：六原语各一场景 + 断言
 └── images/
-    ├── sync_primitives.archify.json         # 图源（typed JSON IR，可编辑重渲染）
-    ├── sync_primitives.archify.html         # 交互示意图（浏览器打开）
-    └── sync_primitives.archify.svg          # 双主题矢量图（本 README §2 内嵌）
+    ├── sync_primitives.json         # 图源（typed JSON IR，可编辑重渲染）
+    ├── sync_primitives.html         # 交互示意图（浏览器打开）
+    └── sync_primitives.svg          # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `sync_primitives.py` 内容：`demo_lock()` 修复丢失更新（验收点 1）/ `demo_rlock()` 自锁现场 + 可重入 / `demo_semaphore()` 限流峰值（验收点 2）/ `demo_event()` 广播开关 / `demo_condition()` 谓词等待 / `demo_barrier()` 集结守序。

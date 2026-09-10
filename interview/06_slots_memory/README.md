@@ -13,12 +13,12 @@ Python 默认用 `__dict__`（哈希表）存储实例属性，两属性对象�
 
 ## 2. 总览：核心机制一图看懂
 
-![__slots__：属性写入的两条路径](images/slots_memory.archify.svg)
+![__slots__：属性写入的两条路径](images/slots_memory.svg)
 
 一句话心智模型：**`__slots__` 把"属性存哪"从哈希表换成固定数组——`p.x = 1` 写入时经 member_descriptor 直达槽位，而不是查/建 `__dict__`**。看图时对比两条写入路径：`type(p)` 查找 `x`——类定义了 `__slots__` 就经描述符直取固定槽位数组；没有（默认）则落进实例字典哈希表；给 slots 对象新增未声明属性会直接 `AttributeError`。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/06_slots_memory/images/slots_memory.archify.html)
-> （或本地打开 [`images/slots_memory.archify.html`](images/slots_memory.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/06_slots_memory/images/slots_memory.html)
+> （或本地打开 [`images/slots_memory.html`](images/slots_memory.html)）。
 
 ## 3. 快速开始
 
@@ -126,9 +126,9 @@ class Slot3D(Slot2D):
 ├── README.md                     # 本教程文档
 ├── slots_memory.py               # 主演示脚本：内存对比 / 继承 / weakref / 速度基准
 └── images/
-    ├── slots_memory.archify.json # 图源（typed JSON IR，可编辑重渲染）
-    ├── slots_memory.archify.html # 交互示意图（浏览器打开）
-    └── slots_memory.archify.svg  # 双主题矢量图（本 README §2 内嵌）
+    ├── slots_memory.json # 图源（typed JSON IR，可编辑重渲染）
+    ├── slots_memory.html # 交互示意图（浏览器打开）
+    └── slots_memory.svg  # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `slots_memory.py` 内容：`1. RegularPoint / SlotPoint` 基础对比 / `2. SlotWithDefault` 默认值来自 `__init__` 形参（slots 本身无默认值）/ `3. Slot3D / NoSlotChild` 继承中的 slots / `4. SlotWithWeakref` weakref 支持 / `5. benchmark_access()` 访问速度基准测试。

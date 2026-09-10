@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![装饰器工厂：定义期套壳 + 调用期重试](images/decorator_factory.archify.svg)
+![装饰器工厂：定义期套壳 + 调用期重试](images/decorator_factory.svg)
 
 一句话心智模型：**定义期两次调用完成"套壳"（`retry(3,0.1)` → `decorator` → `wrapper`），调用期 `wrapper` 接管控制流**。看图时先看上半段的定义期时序——参数 `times` 在第二次调用时被闭包捕获；再看下半段的调用期——`wrapper` 内 `func(*args)` 失败自动重试、成功后把结果透传给调用方。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/01_decorator_factory/images/decorator_factory.archify.html)
-> （或本地打开 [`images/decorator_factory.archify.html`](images/decorator_factory.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/01_decorator_factory/images/decorator_factory.html)
+> （或本地打开 [`images/decorator_factory.html`](images/decorator_factory.html)）。
 
 ## 3. 快速开始
 
@@ -162,9 +162,9 @@ def cache(ttl=60.0):            # ttl 在第1层 —— 装饰器配置，装饰
 ├── README.md                        # 本教程文档
 ├── decorator_factory.py             # 主演示脚本：@retry / @cache / @log_call
 └── images/
-    ├── decorator_factory.archify.json  # 图源（typed JSON IR，可编辑重渲染）
-    ├── decorator_factory.archify.html  # 交互示意图（浏览器打开）
-    └── decorator_factory.archify.svg   # 双主题矢量图（本 README §2 内嵌）
+    ├── decorator_factory.json  # 图源（typed JSON IR，可编辑重渲染）
+    ├── decorator_factory.html  # 交互示意图（浏览器打开）
+    └── decorator_factory.svg   # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `decorator_factory.py` 内容：`1. retry(times, delay)` 失败重试 / `2. cache(ttl)` 带过期缓存 / `3. log_call(level)` 日志控制 / `4. 演示函数 fetch / compute / add` / `5. main()` 主入口。

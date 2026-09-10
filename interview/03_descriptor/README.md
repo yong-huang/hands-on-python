@@ -17,12 +17,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![obj.attr 的查找优先级](images/descriptor.archify.svg)
+![obj.attr 的查找优先级](images/descriptor.svg)
 
 一句话心智模型：**`obj.attr` 按优先级走查找链——数据描述符 `__get__` > 实例 `__dict__` > 非数据描述符/类属性**。看图时从 `__getattribute__`（每次访问都经过）出发，顺着分支看两种描述符各自在哪一步被拦截、`__getattr__` 兜底后才抛 `AttributeError`。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/03_descriptor/images/descriptor.archify.html)
-> （或本地打开 [`images/descriptor.archify.html`](images/descriptor.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/03_descriptor/images/descriptor.html)
+> （或本地打开 [`images/descriptor.html`](images/descriptor.html)）。
 
 ## 3. 快速开始
 
@@ -182,9 +182,9 @@ class CachedProperty:                       # 只定义 __get__ → 非数据描
 ├── README.md                      # 本教程文档
 ├── descriptor.py                  # 主演示脚本：四种描述符模式 + 查找优先级演示
 └── images/
-    ├── descriptor.archify.json    # 图源（typed JSON IR，可编辑重渲染）
-    ├── descriptor.archify.html    # 交互示意图（浏览器打开）
-    └── descriptor.archify.svg     # 双主题矢量图（本 README §2 内嵌）
+    ├── descriptor.json    # 图源（typed JSON IR，可编辑重渲染）
+    ├── descriptor.html    # 交互示意图（浏览器打开）
+    └── descriptor.svg     # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `descriptor.py` 内容：`1. TypedField` 数据描述符：类型+范围验证 / `2. CachedProperty` 非数据描述符：计算后缓存 / `3. LazyField` 非数据描述符：惰性初始化 / `4. LoggedField` 数据描述符：读写审计日志 / `5. User / DataProcessor / HeavyResource / TrackedEntity` 演示用类 / `6. reveal_descriptor_nature()` property/classmethod 本质 / `7. demo_priority()` 属性查找优先级演示。

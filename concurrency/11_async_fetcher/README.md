@@ -10,12 +10,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![三种客户端模型对决](images/async_fetcher.archify.svg)
+![三种客户端模型对决](images/async_fetcher.svg)
 
 一句话心智模型：**同一组 50 个端点，三种模型各抓一遍——串行付全款（每个延迟都等）、线程池付 10 份、异步付 10 份但不占线程**。看图：三行客户端都汇入中央本地服务（15 个不稳定端点第一次必失败），右侧统计节点记录"50/50 成功、重试恢复率 100%"——重试三件套让失败不再致命。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/11_async_fetcher/images/async_fetcher.archify.html)
-> （或本地打开 [`images/async_fetcher.archify.html`](images/async_fetcher.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/11_async_fetcher/images/async_fetcher.html)
+> （或本地打开 [`images/async_fetcher.html`](images/async_fetcher.html)）。
 
 ## 3. 快速开始
 
@@ -92,9 +92,9 @@ await runner.cleanup()
 ├── async_fetcher.py                         # 主演示脚本：本地服务 + 三模型对决
 ├── README.md                                # 本教程文档
 └── images/
-    ├── async_fetcher.archify.json           # 图源（typed JSON IR，可编辑重渲染）
-    ├── async_fetcher.archify.html           # 交互示意图（浏览器打开）
-    └── async_fetcher.archify.svg            # 双主题矢量图（本 README §2 内嵌）
+    ├── async_fetcher.json           # 图源（typed JSON IR，可编辑重渲染）
+    ├── async_fetcher.html           # 交互示意图（浏览器打开）
+    └── async_fetcher.svg            # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `async_fetcher.py` 内容：`make_app()` 可控测试服务（延迟/首败状态机）/ `start_server()` 随机端口启动 / `fetch_serial()/fetch_threads()/fetch_async()` 三种模型（同重试策略）/ `demo_compare()` 对决与断言。

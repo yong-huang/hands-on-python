@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![丢失更新：GIL 切换切开读-改-写](images/race_gil.archify.svg)
+![丢失更新：GIL 切换切开读-改-写](images/race_gil.svg)
 
 一句话心智模型：**竞态窗口 = 「读出旧值」与「写回新值」之间被插入了别人的完整读写；GIL 只保证切换发生在它自己的检查点（循环回边、调用边界），不保证你的业务动作原子**。看图沿箭头走一遍：A 读到 100 → 调用边界被切换 → B 完整做完读 100、写 101 → A 回来接着写 101——B 的 +1 凭空蒸发。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/02_race_gil/images/race_gil.archify.html)
-> （或本地打开 [`images/race_gil.archify.html`](images/race_gil.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/02_race_gil/images/race_gil.html)
+> （或本地打开 [`images/race_gil.html`](images/race_gil.html)）。
 
 ## 3. 快速开始
 
@@ -122,9 +122,9 @@ CPU 密集任务 4 线程 **1.53× 慢于串行**：GIL 让同一时刻只有一
 ├── README.md                        # 本教程文档
 ├── race_gil.py                      # 主演示脚本：字节码/竞态/透支/CPU/IO 五节实测
 └── images/
-    ├── race_gil.archify.json        # 图源（typed JSON IR，可编辑重渲染）
-    ├── race_gil.archify.html        # 交互示意图（浏览器打开）
-    └── race_gil.archify.svg         # 双主题矢量图（本 README §2 内嵌）
+    ├── race_gil.json        # 图源（typed JSON IR，可编辑重渲染）
+    ├── race_gil.html        # 交互示意图（浏览器打开）
+    └── race_gil.svg         # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `race_gil.py` 内容：`demo_bytecode()` 字节码解剖 / `demo_lost_update()` 裸 `+=` 对照 + 读-改-写实验（验收点 1）/ `demo_check_then_act()` 双 Barrier 确定性透支 / `demo_cpu_bound()` CPU 减速比（验收点 2）/ `demo_io_bound()` IO 加速对照。

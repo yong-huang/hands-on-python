@@ -13,12 +13,12 @@ Mixin 是一种通过多继承实现的可插拔功能模式：每个 Mixin 提�
 
 ## 2. 总览：核心机制一图看懂
 
-![MRO：d.greet() 的 super() 链](images/mro_mixin.archify.svg)
+![MRO：d.greet() 的 super() 链](images/mro_mixin.svg)
 
 一句话心智模型：**`super()` = "MRO 中我之后的下一个类"，不是"我的父类"**。看图时跟着 `d.greet()` 的调用链走：D → B → C → A（B 的 `super()` 跳向 C，不是父类 A！），结果沿链原路回传——每个类只被调用一次由 C3 保证。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/07_mro_mixin/images/mro_mixin.archify.html)
-> （或本地打开 [`images/mro_mixin.archify.html`](images/mro_mixin.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/07_mro_mixin/images/mro_mixin.html)
+> （或本地打开 [`images/mro_mixin.html`](images/mro_mixin.html)）。
 
 ## 3. 快速开始
 
@@ -118,9 +118,9 @@ class MyService(MixinLog, MixinValidate, Base):
 ├── README.md                  # 本教程文档
 ├── mro_mixin.py               # 主演示脚本：钻石继承 / super() 链 / Mixin 组合
 └── images/
-    ├── mro_mixin.archify.json # 图源（typed JSON IR，可编辑重渲染）
-    ├── mro_mixin.archify.html # 交互示意图（浏览器打开）
-    └── mro_mixin.archify.svg  # 双主题矢量图（本 README §2 内嵌）
+    ├── mro_mixin.json # 图源（typed JSON IR，可编辑重渲染）
+    ├── mro_mixin.html # 交互示意图（浏览器打开）
+    └── mro_mixin.svg  # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `mro_mixin.py` 内容：`1. Diamond inheritance (A → B,C → D)` MRO 基础 / `2. super() chain with Mixins` super() 真实行为 / `3. JSONMixin / ReprMixin / ValidateMixin` 实战 Mixin / `4. User / Product` Mixin 组合。

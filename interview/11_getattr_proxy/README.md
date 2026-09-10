@@ -11,12 +11,12 @@ Python 的属性访问背后有一条完整的查找链：`__getattribute__` -> 
 
 ## 2. 总览：核心机制一图看懂
 
-![__getattr__ 动态代理：未声明的属性去哪找](images/getattr_proxy.archify.svg)
+![__getattr__ 动态代理：未声明的属性去哪找](images/getattr_proxy.svg)
 
 一句话心智模型：**`__getattribute__` 是大门（每次都过），`__getattr__` 是兜底（找不到才来）**。看图时顺着 `proxy.config` 走：实例/类里都没有 → 触发 `__getattr__` → 转发给真实对象 `getattr(self._target)` → 懒加载首次访问才 `load()`；目标对象也没有 → `AttributeError`。这条"失败才转发"的路径正是代理和懒加载都选 `__getattr__` 做钩子的原因。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/11_getattr_proxy/images/getattr_proxy.archify.html)
-> （或本地打开 [`images/getattr_proxy.archify.html`](images/getattr_proxy.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/11_getattr_proxy/images/getattr_proxy.html)
+> （或本地打开 [`images/getattr_proxy.html`](images/getattr_proxy.html)）。
 
 ## 3. 快速开始
 
@@ -156,9 +156,9 @@ def __getattr__(self, name):
 ├── README.md                        # 本教程文档
 ├── getattr_proxy.py                 # 主演示脚本：动态属性 / 访问日志 / 代理 / 懒加载
 └── images/
-    ├── getattr_proxy.archify.json    # 图源（typed JSON IR，可编辑重渲染）
-    ├── getattr_proxy.archify.html    # 交互示意图（浏览器打开）
-    └── getattr_proxy.archify.svg     # 双主题矢量图（本 README §2 内嵌）
+    ├── getattr_proxy.json    # 图源（typed JSON IR，可编辑重渲染）
+    ├── getattr_proxy.html    # 交互示意图（浏览器打开）
+    └── getattr_proxy.svg     # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `getattr_proxy.py` 内容：`1. DynamicAttributes` `__getattr__` 访问不存在属性时动态查找 / `2. AccessLogger` `__getattribute__` 记录所有属性读写 / `3. Proxy` 代理模式，属性转发到内部对象 / `4. LazyConfig` 懒加载，首次访问时触发加载 / `5. run_demo()` 交互式演示。

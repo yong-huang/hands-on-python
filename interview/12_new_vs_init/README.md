@@ -11,12 +11,12 @@ Python 创建对象时实际经历两步：`__new__` 负责分配内存并返回
 
 ## 2. 总览：核心机制一图看懂
 
-![对象创建两步走：__new__ 分配，__init__ 初始化](images/new_vs_init.archify.svg)
+![对象创建两步走：__new__ 分配，__init__ 初始化](images/new_vs_init.svg)
 
 一句话心智模型：**`__new__` 决定"给哪个对象"，`__init__` 只负责"初始化它"——返回的不是 `cls` 实例，`__init__` 就不执行**。看图时沿 `CachedInstance(key)` 走创建流程：`__new__(cls, ...)` 先查缓存——命中返回旧实例（注意 `__init__` 仍会重新执行），未命中 `super().__new__(cls)` 分配新实例 → `__init__` 初始化。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/12_new_vs_init/images/new_vs_init.archify.html)
-> （或本地打开 [`images/new_vs_init.archify.html`](images/new_vs_init.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/12_new_vs_init/images/new_vs_init.html)
+> （或本地打开 [`images/new_vs_init.html`](images/new_vs_init.html)）。
 
 ## 3. 快速开始
 
@@ -181,9 +181,9 @@ def __new__(cls, key):
 ├── README.md                        # 本教程文档
 ├── new_vs_init.py                   # 主演示脚本：调用顺序 / 实例缓存 / 不可变子类 / 工厂
 └── images/
-    ├── new_vs_init.archify.json     # 图源（typed JSON IR，可编辑重渲染）
-    ├── new_vs_init.archify.html     # 交互示意图（浏览器打开）
-    └── new_vs_init.archify.svg      # 双主题矢量图（本 README §2 内嵌）
+    ├── new_vs_init.json     # 图源（typed JSON IR，可编辑重渲染）
+    ├── new_vs_init.html     # 交互示意图（浏览器打开）
+    └── new_vs_init.svg      # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `new_vs_init.py` 内容：`1. Tracked` 追踪 `__new__` 和 `__init__` 的调用顺序 / `2. CachedInstance` `__new__` 实现实例缓存（单例变体）/ `3. UpperStr(str) / LimitedInt(int)` 不可变类型的子类化（必须用 `__new__`）/ `4. Factory` `__new__` 返回不同类型的实例 / `5. run_demo()` 交互式演示。

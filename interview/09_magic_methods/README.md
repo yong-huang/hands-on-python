@@ -11,12 +11,12 @@ Python 的运算符和内置函数背后都是魔术方法：`a + b` 调用 `a._
 
 ## 2. 总览：核心机制一图看懂
 
-![a + b 背后的魔术方法分发](images/magic_methods.archify.svg)
+![a + b 背后的魔术方法分发](images/magic_methods.svg)
 
 一句话心智模型：**运算符先问左操作数的类型，不认识就返回 `NotImplemented` 哨兵，解释器再问右操作数的反射方法**。看图时走两条 lane：主 lane 里 `type(p).__add__` 认识右操作数直接返回结果；回退 lane 里 `Point(3, 4) + "hello"` 的 `__add__` 返回 `NotImplemented` → 解释器改试 `type("hello").__radd__` → 也没有 → `TypeError`。这就是双目运算符协议的完整回退链。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/09_magic_methods/images/magic_methods.archify.html)
-> （或本地打开 [`images/magic_methods.archify.html`](images/magic_methods.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/09_magic_methods/images/magic_methods.html)
+> （或本地打开 [`images/magic_methods.html`](images/magic_methods.html)）。
 
 ## 3. 快速开始
 
@@ -129,9 +129,9 @@ def __hash__(self):
 ├── README.md                        # 本教程文档
 ├── magic_methods.py                 # 主演示脚本：repr/str、eq/hash、运算符、容器协议
 └── images/
-    ├── magic_methods.archify.json    # 图源（typed JSON IR，可编辑重渲染）
-    ├── magic_methods.archify.html    # 交互示意图（浏览器打开）
-    └── magic_methods.archify.svg     # 双主题矢量图（本 README §2 内嵌）
+    ├── magic_methods.json    # 图源（typed JSON IR，可编辑重渲染）
+    ├── magic_methods.html    # 交互示意图（浏览器打开）
+    └── magic_methods.svg     # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `magic_methods.py` 内容：`1. Point` 完整魔术方法（repr/str/eq/hash/add/mul/abs/bool）/ `2. Version` + `@total_ordering` 自动比较运算 / `3. DCPoint` + `@dataclass` 自动生成魔术方法 / `4. RingBuffer` 自定义容器（len/getitem/iter）。

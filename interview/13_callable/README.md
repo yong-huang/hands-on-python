@@ -11,12 +11,12 @@ Python 中一切皆对象，函数也不例外。当你写下 `obj(42)` 时，Py
 
 ## 2. 总览：核心机制一图看懂
 
-![acc(10) 背后：type(obj).__call__ 分发](images/callable.archify.svg)
+![acc(10) 背后：type(obj).__call__ 分发](images/callable.svg)
 
 一句话心智模型：**调用实例时，解释器去实例的"类型"上找 `__call__`，实例状态通过 `self` 跨调用保留**。看图时跟着 `acc(10)` 走一遍分发时序：解释器定位 `type(acc).__call__` 并调用 → 读 `self.total` → `total += 10` → 返回——实例状态跨调用保留，这是可调用对象相对普通函数的核心差异。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/13_callable/images/callable.archify.html)
-> （或本地打开 [`images/callable.archify.html`](images/callable.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/13_callable/images/callable.html)
+> （或本地打开 [`images/callable.html`](images/callable.html)）。
 
 ## 3. 快速开始
 
@@ -213,9 +213,9 @@ class Accumulator:
 ├── README.md                        # 本教程文档
 ├── callable.py                      # 主演示脚本：可调用对象 / 策略模式 / 验证器链
 └── images/
-    ├── callable.archify.json        # 图源（typed JSON IR，可编辑重渲染）
-    ├── callable.archify.html        # 交互示意图（浏览器打开）
-    └── callable.archify.svg         # 双主题矢量图（本 README §2 内嵌）
+    ├── callable.json        # 图源（typed JSON IR，可编辑重渲染）
+    ├── callable.html        # 交互示意图（浏览器打开）
+    └── callable.svg         # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `callable.py` 内容：`1. Multiplier` 可调用对象，封装倍数 / `2. Accumulator` 有状态的可调用对象，累加器 / `3. Formatter` 策略模式，可互换的格式化策略 / `4. format_json / format_csv / format_table` 模块级策略函数 / `5. Validator + validate_all` 可组合验证器与验证器链 / `6. run_demo()` 完整演示。

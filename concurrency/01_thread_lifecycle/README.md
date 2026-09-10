@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![线程生命周期：start() 驱动的状态机](images/thread_lifecycle.archify.svg)
+![线程生命周期：start() 驱动的状态机](images/thread_lifecycle.svg)
 
 一句话心智模型：**Thread 对象是 `start()` 驱动的单次状态机——NEW → RUNNABLE → TERMINATED 走完即报废；daemon 属性不改变走法，只改变"进程退出时要不要等它"**。看图时先走上排主路径：`start()` 是唯一合法的启动开关，`run()` 返回或抛异常即死亡，之后 `join()` 立即返回；再看下排两个陷阱——RUNNABLE 期间主线程退出时 daemon 被直接强杀，对已启动的线程再次 `start()` 则抛 `RuntimeError`。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/01_thread_lifecycle/images/thread_lifecycle.archify.html)
-> （或本地打开 [`images/thread_lifecycle.archify.html`](images/thread_lifecycle.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/01_thread_lifecycle/images/thread_lifecycle.html)
+> （或本地打开 [`images/thread_lifecycle.html`](images/thread_lifecycle.html)）。
 
 ## 3. 快速开始
 
@@ -122,9 +122,9 @@ def worker(idx: int) -> None:
 ├── README.md                            # 本教程文档
 ├── thread_lifecycle.py                  # 主演示脚本：家谱/状态机/start vs run/交错/daemon
 └── images/
-    ├── thread_lifecycle.archify.json    # 图源（typed JSON IR，可编辑重渲染）
-    ├── thread_lifecycle.archify.html    # 交互示意图（浏览器打开）
-    └── thread_lifecycle.archify.svg     # 双主题矢量图（本 README §2 内嵌）
+    ├── thread_lifecycle.json    # 图源（typed JSON IR，可编辑重渲染）
+    ├── thread_lifecycle.html    # 交互示意图（浏览器打开）
+    └── thread_lifecycle.svg     # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `thread_lifecycle.py` 内容：`demo_family_and_states()` 家谱与三态迁移 / `demo_start_vs_run()` run 陷阱与二次 start / `run_batch()`+`demo_interleaving()` 交错观察（验收点 1）/ `chatty_worker()`+`demo_join_and_daemon()` join 对照（验收点 2）/ `daemon_only_demo()` `--daemon` 专用演示。

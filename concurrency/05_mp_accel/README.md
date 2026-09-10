@@ -10,12 +10,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![multiprocessing：绕开 GIL 的真并行](images/mp_accel.archify.svg)
+![multiprocessing：绕开 GIL 的真并行](images/mp_accel.svg)
 
 一句话心智模型：**Pool 把任务切成 4 块 spawn 给 4 个子进程，每个进程一把独立 GIL 真并行；同题 threading 对照被 GIL 串行化**。看图主链从左到右：`map(cpu_task ×4)` 提交、`spawn ×4` 开工、结果按输入顺序汇合；下方虚线是 threading 对照路——它到不了"结果"，只到"白忙"。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/05_mp_accel/images/mp_accel.archify.html)
-> （或本地打开 [`images/mp_accel.archify.html`](images/mp_accel.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/05_mp_accel/images/mp_accel.html)
+> （或本地打开 [`images/mp_accel.html`](images/mp_accel.html)）。
 
 ## 3. 快速开始
 
@@ -105,9 +105,9 @@ def bench_once(n_procs):
 ├── README.md                        # 本教程文档
 ├── mp_accel.py                      # 主演示脚本：环境/加速比/spawn 保护/保序
 └── images/
-    ├── mp_accel.archify.json        # 图源（typed JSON IR，可编辑重渲染）
-    ├── mp_accel.archify.html        # 交互示意图（浏览器打开）
-    └── mp_accel.archify.svg         # 双主题矢量图（本 README §2 内嵌）
+    ├── mp_accel.json        # 图源（typed JSON IR，可编辑重渲染）
+    ├── mp_accel.html        # 交互示意图（浏览器打开）
+    └── mp_accel.svg         # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `mp_accel.py` 内容：`demo_env()` 核数与启动方式 / `demo_speedup()` 串行 vs Pool(4) vs threading 对照（验收点 1）/ `demo_spawn_guard()` 静默失败复现（验收点 2）/ `demo_map_order()` 保序验证（验收点 3）。

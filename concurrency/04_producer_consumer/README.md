@@ -10,12 +10,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![生产者-消费者流水线：毒丸下班，背压限流](images/producer_consumer.archify.svg)
+![生产者-消费者流水线：毒丸下班，背压限流](images/producer_consumer.svg)
 
 一句话心智模型：**queue.Queue 是带回执的传送带——put 侧满了会被按住（背压），get 侧每取一件要交 task_done 回执（join 的依据），下班要靠毒丸（sentinel）逐个通知**。看图从左到右：生产侧两个来源（任务、毒丸）汇入同一条传送带，消费者分不清也不需要区分——取到毒丸即退；右侧计数 dict 用锁保护更新，收尾由 main 汇总。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/04_producer_consumer/images/producer_consumer.archify.html)
-> （或本地打开 [`images/producer_consumer.archify.html`](images/producer_consumer.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/04_producer_consumer/images/producer_consumer.html)
+> （或本地打开 [`images/producer_consumer.html`](images/producer_consumer.html)）。
 
 ## 3. 快速开始
 
@@ -100,9 +100,9 @@ with counter_lock:
 ├── README.md                                    # 本教程文档
 ├── producer_consumer.py                         # 主演示脚本：正确性/背压/反面教材
 └── images/
-    ├── producer_consumer.archify.json           # 图源（typed JSON IR，可编辑重渲染）
-    ├── producer_consumer.archify.html           # 交互示意图（浏览器打开）
-    └── producer_consumer.archify.svg            # 双主题矢量图（本 README §2 内嵌）
+    ├── producer_consumer.json           # 图源（typed JSON IR，可编辑重渲染）
+    ├── producer_consumer.html           # 交互示意图（浏览器打开）
+    └── producer_consumer.svg            # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `producer_consumer.py` 内容：`produce()/consume()` 流水线主体 + 毒丸收尾（验收点 1/3）/ `demo_backpressure()` maxsize=10 背压 + 1ms 采样峰值（验收点 2）/ `demo_no_shutdown()` 反面教材 + 毒丸救援。

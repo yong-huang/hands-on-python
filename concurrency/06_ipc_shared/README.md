@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![进程间通信：四条通道四种性格](images/ipc_shared.archify.svg)
+![进程间通信：四条通道四种性格](images/ipc_shared.svg)
 
 一句话心智模型：**Pipe/Queue 走"序列化 + 管道"（每字节都要拷贝），SharedMemory 走"同一块物理内存"（零拷贝直读），Manager 走"代理 + RPC"（每次访问一个来回）**。性能排序即实现排序：零拷贝 > 管道 > RPC；纪律排序相反——Manager 的 dict 最像普通 dict，也最容易让人忘记 get 与 set 之间隔着两次网络式调用。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/06_ipc_shared/images/ipc_shared.archify.html)
-> （或本地打开 [`images/ipc_shared.archify.html`](images/ipc_shared.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/06_ipc_shared/images/ipc_shared.html)
+> （或本地打开 [`images/ipc_shared.html`](images/ipc_shared.html)）。
 
 ## 3. 快速开始
 
@@ -102,9 +102,9 @@ spawn 一个子进程要 0.3~0.5s，若计入传输耗时，两条通道各付�
 ├── README.md                        # 本教程文档
 ├── ipc_shared.py                    # 主演示脚本：Pipe/Queue/SharedMemory/Manager
 └── images/
-    ├── ipc_shared.archify.json      # 图源（typed JSON IR，可编辑重渲染）
-    ├── ipc_shared.archify.html      # 交互示意图（浏览器打开）
-    └── ipc_shared.archify.svg       # 双主题矢量图（本 README §2 内嵌）
+    ├── ipc_shared.json      # 图源（typed JSON IR，可编辑重渲染）
+    ├── ipc_shared.html      # 交互示意图（浏览器打开）
+    └── ipc_shared.svg       # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `ipc_shared.py` 内容：`demo_pipe()` 双向一来一回 / `demo_queue()` 10 万条不丢 / `demo_shm()` 零拷贝对比（验收点）/ `demo_manager()` 加锁前后命运对照（验收点）。

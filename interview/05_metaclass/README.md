@@ -15,12 +15,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![元类流水线：从 class 语句到 ORM 模型](images/metaclass.archify.svg)
+![元类流水线：从 class 语句到 ORM 模型](images/metaclass.svg)
 
 一句话心智模型：**`class Foo` 不是声明而是表达式——Python 调用 `type("Foo", bases, namespace)` 创建类对象，写元类就是把这个 `type` 换成你自己的类**。看图时顺着流水线走：`class User(Model)` 语句委托给 `type` → name/bases/namespace 三要素 → `OrmMeta.__new__` 扫描 Field 属性生成 `cls._fields`/`cls._table` → `create_table_sql()` 按字段生成 SQL。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/05_metaclass/images/metaclass.archify.html)
-> （或本地打开 [`images/metaclass.archify.html`](images/metaclass.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/05_metaclass/images/metaclass.html)
+> （或本地打开 [`images/metaclass.html`](images/metaclass.html)）。
 
 ## 3. 快速开始
 
@@ -155,9 +155,9 @@ class SingletonMeta(type):
 ├── README.md                     # 本教程文档
 ├── metaclass.py                  # 主演示脚本：type() 创建类 / 单例 / ORM / 子类注册
 └── images/
-    ├── metaclass.archify.json    # 图源（typed JSON IR，可编辑重渲染）
-    ├── metaclass.archify.html    # 交互示意图（浏览器打开）
-    └── metaclass.archify.svg     # 双主题矢量图（本 README §2 内嵌）
+    ├── metaclass.json    # 图源（typed JSON IR，可编辑重渲染）
+    ├── metaclass.html    # 交互示意图（浏览器打开）
+    └── metaclass.svg     # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `metaclass.py` 内容：`1. demo_type_creation()` type() 手动创建类 / `2. AddStrMeta` 元类：自动添加 `__str__` / `3. SingletonMeta` 元类：单例模式 / `4. OrmMeta + Model` 元类：ORM 字段映射 / `5. EventRegistry` `__init_subclass__`：子类注册。

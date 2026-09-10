@@ -11,12 +11,12 @@ Python 标准库中三大函数式工具模块是面试中的常客：**itertool
 
 ## 2. 总览：核心机制一图看懂
 
-![itertools 惰性管道：逐元素流动，零中间列表](images/itertools_func.archify.svg)
+![itertools 惰性管道：逐元素流动，零中间列表](images/itertools_func.svg)
 
 一句话心智模型：**组合子接成惰性管道，元素逐个流过，消费时才物化**。看图时沿管道走向走：两个 iterable → `chain` / `islice` 组合 → `accumulate` / `groupby` 加工 → `next()` 驱动逐个产出 → `list()` / `dict()` 消费时才物化，全程零中间列表。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/20_itertools_func/images/itertools_func.archify.html)
-> （或本地打开 [`images/itertools_func.archify.html`](images/itertools_func.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/20_itertools_func/images/itertools_func.html)
+> （或本地打开 [`images/itertools_func.html`](images/itertools_func.html)）。
 
 ## 3. 快速开始
 
@@ -275,9 +275,9 @@ expensive(4)   # 缓存已满 → 淘汰最近最少使用的 2，真正执行�
 ├── README.md                        # 本教程文档
 ├── itertools_func.py                # 主演示脚本：itertools / functools / operator
 └── images/
-    ├── itertools_func.archify.json  # 图源（typed JSON IR，可编辑重渲染）
-    ├── itertools_func.archify.html  # 交互示意图（浏览器打开）
-    └── itertools_func.archify.svg   # 双主题矢量图（本 README §2 内嵌）
+    ├── itertools_func.json  # 图源（typed JSON IR，可编辑重渲染）
+    ├── itertools_func.html  # 交互示意图（浏览器打开）
+    └── itertools_func.svg   # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `itertools_func.py` 内容：`1. demo_itertools()` chain / islice / accumulate / combinations / groupby / `2. demo_functools()` lru_cache / partial / reduce / singledispatch / `3. demo_operator()` itemgetter / attrgetter / methodcaller / `4. run_demo()` 交互式演示。

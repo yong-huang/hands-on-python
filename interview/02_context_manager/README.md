@@ -13,12 +13,12 @@ Python 提供两种实现方式：**类式**（定义 `__enter__`/`__exit__`）�
 
 ## 2. 总览：核心机制一图看懂
 
-![with 语句：__enter__ / __exit__ 协议](images/context_manager.archify.svg)
+![with 语句：__enter__ / __exit__ 协议](images/context_manager.svg)
 
 一句话心智模型：**`with obj` = `__enter__()` 取资源 → 执行 with 块 → `__exit__()` 无论是否抛异常都被调用**。看图时先顺着主路径走一遍正常流程；再看异常分支——`__exit__` 收到异常三元组后，返回 `True` 抑制异常，返回 `False`/`None` 则继续传播。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/02_context_manager/images/context_manager.archify.html)
-> （或本地打开 [`images/context_manager.archify.html`](images/context_manager.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/02_context_manager/images/context_manager.html)
+> （或本地打开 [`images/context_manager.html`](images/context_manager.html)）。
 
 ## 3. 快速开始
 
@@ -179,9 +179,9 @@ def __exit__(self, exc_type, exc_val, exc_tb):
 ├── README.md                          # 本教程文档
 ├── context_manager.py                 # 主演示脚本：类式/函数式上下文管理器 + contextlib 工具
 └── images/
-    ├── context_manager.archify.json   # 图源（typed JSON IR，可编辑重渲染）
-    ├── context_manager.archify.html   # 交互示意图（浏览器打开）
-    └── context_manager.archify.svg    # 双主题矢量图（本 README §2 内嵌）
+    ├── context_manager.json   # 图源（typed JSON IR，可编辑重渲染）
+    ├── context_manager.html   # 交互示意图（浏览器打开）
+    └── context_manager.svg    # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `context_manager.py` 内容：`1. Timer` 计时器（类式，自动打印耗时）/ `2. FileLock` 文件锁（类式，threading.Lock）/ `3. Transaction` 数据库事务（类式，自动 commit/rollback）/ `4. temporary_file()` 临时文件（@contextmanager，自动删除）/ `5. benchmark()` 性能计时（@contextmanager，异常安全）/ `6. demo_suppress()` contextlib.suppress 示例 / `7. demo_redirect()` redirect_stdout 示例 / `8. demo_nested()` 嵌套上下文管理器 / `9. demo_exit_return()` `__exit__` 返回值对异常传播的影响。

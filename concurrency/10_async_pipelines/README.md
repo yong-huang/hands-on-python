@@ -10,12 +10,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![异步流水线：背压与限流](images/async_pipelines.archify.svg)
+![异步流水线：背压与限流](images/async_pipelines.svg)
 
 一句话心智模型：**asyncio.Queue 是单线程世界的传送带（满了 await put 挂起），Semaphore 是并发闸门（许可外排队），无界队列是反面教材（生产狂奔、内存堆积）**。看图两行闸门：上行 5000 条主链带背压 tag（峰值实测 64），中行 Semaphore 许可闸门（在飞 ≤10），下行灰色对照是无界的下场。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/10_async_pipelines/images/async_pipelines.archify.html)
-> （或本地打开 [`images/async_pipelines.archify.html`](images/async_pipelines.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/10_async_pipelines/images/async_pipelines.html)
+> （或本地打开 [`images/async_pipelines.html`](images/async_pipelines.html)）。
 
 ## 3. 快速开始
 
@@ -90,9 +90,9 @@ results[item] = results.get(item, 0) + 1   # 多个消费者并发执行这段
 ├── async_pipelines.py                       # 主演示脚本：守恒/限流/背压
 ├── README.md                                # 本教程文档
 └── images/
-    ├── async_pipelines.archify.json         # 图源（typed JSON IR，可编辑重渲染）
-    ├── async_pipelines.archify.html         # 交互示意图（浏览器打开）
-    └── async_pipelines.archify.svg          # 双主题矢量图（本 README §2 内嵌）
+    ├── async_pipelines.json         # 图源（typed JSON IR，可编辑重渲染）
+    ├── async_pipelines.html         # 交互示意图（浏览器打开）
+    └── async_pipelines.svg          # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `async_pipelines.py` 内容：`demo_pipeline()` 5000 条守恒（验收点 1）/ `demo_semaphore()` 在飞峰值（验收点 2）/ `demo_backpressure()` 无界 vs maxsize 对照（验收点 3）。

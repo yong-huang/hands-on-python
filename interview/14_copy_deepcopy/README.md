@@ -11,12 +11,12 @@ Python 中"复制一个对象"看似简单，实则暗藏玄机。`=` 赋值只�
 
 ## 2. 总览：核心机制一图看懂
 
-![三种复制的内存传播：= / copy / deepcopy](images/copy_deepcopy.archify.svg)
+![三种复制的内存传播：= / copy / deepcopy](images/copy_deepcopy.svg)
 
 一句话心智模型：**`=` 只绑新名字，`copy.copy()` 换新外壳、共享内层，`copy.deepcopy()` 每层全新独立**。看图时沿"源对象 → 复制操作 → 新名字 → 内层对象"逐列追踪：`assigned` 与 `original` 汇成同一个对象，`shallow` 的内层仍指向共享的 `[1, 2]`，只有 `deep` 拥有独立副本——三种复制对内层可变对象的态度一目了然。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/14_copy_deepcopy/images/copy_deepcopy.archify.html)
-> （或本地打开 [`images/copy_deepcopy.archify.html`](images/copy_deepcopy.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/14_copy_deepcopy/images/copy_deepcopy.html)
+> （或本地打开 [`images/copy_deepcopy.html`](images/copy_deepcopy.html)）。
 
 ## 3. 快速开始
 
@@ -171,9 +171,9 @@ deep     = copy.deepcopy(original)  # 深拷贝：递归下探，每层都新建
 ├── README.md                        # 本教程文档
 ├── copy_deepcopy.py                 # 主演示脚本：= vs copy vs deepcopy 全场景对比
 └── images/
-    ├── copy_deepcopy.archify.json   # 图源（typed JSON IR，可编辑重渲染）
-    ├── copy_deepcopy.archify.html   # 交互示意图（浏览器打开）
-    └── copy_deepcopy.archify.svg    # 双主题矢量图（本 README §2 内嵌）
+    ├── copy_deepcopy.json   # 图源（typed JSON IR，可编辑重渲染）
+    ├── copy_deepcopy.html   # 交互示意图（浏览器打开）
+    └── copy_deepcopy.svg    # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `copy_deepcopy.py` 内容：`1. demo_basics()` 基础对比 / `2. demo_immutable()` 不可变对象 copy 行为 / `3. Node + __copy__()` 自定义浅拷贝（链表节点） / `4. demo_cyclic()` deepcopy 处理循环引用 / `5. run_demo()` 汇总演示 + 内存 id 对比。

@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![\*args / \*\*kwargs：调用侧解包，定义侧收集](images/args_kwargs.archify.svg)
+![\*args / \*\*kwargs：调用侧解包，定义侧收集](images/args_kwargs.svg)
 
 一句话心智模型：**定义侧收集（pack），调用侧解包（unpack），二者是对偶操作**。看图时从调用侧往定义侧追：`f(*seq, **mapping)` 先把序列/映射展开为实参 → 进入函数体形参按顺序绑定 → 定义侧把剩余位置/关键字参数收集进 `*args` 元组与 `**kwargs` 字典；多传/少传/重名 → `TypeError`。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/15_args_kwargs/images/args_kwargs.archify.html)
-> （或本地打开 [`images/args_kwargs.archify.html`](images/args_kwargs.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/15_args_kwargs/images/args_kwargs.html)
+> （或本地打开 [`images/args_kwargs.html`](images/args_kwargs.html)）。
 
 ## 3. 快速开始
 
@@ -208,9 +208,9 @@ with_defaults(1, 2, 3, 4, key="custom", z=99)
 ├── README.md                      # 本教程文档
 ├── args_kwargs.py                 # 主演示脚本：收集/解包/分隔符/实用模式
 └── images/
-    ├── args_kwargs.archify.json   # 图源（typed JSON IR，可编辑重渲染）
-    ├── args_kwargs.archify.html   # 交互示意图（浏览器打开）
-    └── args_kwargs.archify.svg    # 双主题矢量图（本 README §2 内嵌）
+    ├── args_kwargs.json   # 图源（typed JSON IR，可编辑重渲染）
+    ├── args_kwargs.html   # 交互示意图（浏览器打开）
+    └── args_kwargs.svg    # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `args_kwargs.py` 内容：`1. variadic()` 收集参数 / `2. with_defaults()` 参数顺序规则 / `3. add() / greet()` 解包调用 / `4. kw_only()` 强制关键字 / `5. pos_only()` 仅位置参数 / `6. log() / wrapper()` 实用模式 / `7. 字面量解包 & 字典合并` / `8. run_demo()` 8 组交互演示。

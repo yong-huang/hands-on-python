@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![死锁：交叉获取两把锁](images/deadlock_workshop.archify.svg)
+![死锁：交叉获取两把锁](images/deadlock_workshop.svg)
 
 一句话心智模型：**T1 持 A 要 B、T2 持 B 要 A——两条"等待中…"谁也不返回，循环等待成立，死锁即成**。看图上下对称的两条等待箭头：B 告诉 T1"永不返回"，A 告诉 T2"永不返回"。修复只改一处：全局约定先 A 后 B，T2 的第二条 acquire 永远排在 B 之后，交叉消失。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/12_deadlock_workshop/images/deadlock_workshop.archify.html)
-> （或本地打开 [`images/deadlock_workshop.archify.html`](images/deadlock_workshop.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/12_deadlock_workshop/images/deadlock_workshop.html)
+> （或本地打开 [`images/deadlock_workshop.html`](images/deadlock_workshop.html)）。
 
 ## 3. 快速开始
 
@@ -103,9 +103,9 @@ dump = open(dump_path).read()
 ├── deadlock_workshop.py                     # 主演示脚本：复现/验尸/修复
 ├── README.md                                # 本教程文档
 └── images/
-    ├── deadlock_workshop.archify.json       # 图源（typed JSON IR，可编辑重渲染）
-    ├── deadlock_workshop.archify.html       # 交互示意图（浏览器打开）
-    └── deadlock_workshop.archify.svg        # 双主题矢量图（本 README §2 内嵌）
+    ├── deadlock_workshop.json       # 图源（typed JSON IR，可编辑重渲染）
+    ├── deadlock_workshop.html       # 交互示意图（浏览器打开）
+    └── deadlock_workshop.svg        # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `deadlock_workshop.py` 内容：`transfer_bad()/transfer_good()` 反序与锁序版本 / `deadlock_child()` 子进程死锁 + faulthandler 验尸 / `demo_deadlock_and_dump()` 击杀与诊断（验收点 1/2）/ `demo_fix()` 统一锁序 100 轮回归（验收点 3）。

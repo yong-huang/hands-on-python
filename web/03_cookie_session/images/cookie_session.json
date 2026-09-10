@@ -1,0 +1,143 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "登录态的签发与校验：两种存法",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "签发与携带"
+    },
+    {
+      "id": "reject",
+      "label": "拒绝路径",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "login",
+    "issue",
+    "carry",
+    "verify",
+    "ok"
+  ],
+  "nodes": [
+    {
+      "id": "login",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "POST /login 账号密码",
+      "width": 170
+    },
+    {
+      "id": "issue",
+      "lane": "main",
+      "col": 1,
+      "type": "messagebus",
+      "label": "Set-Cookie 二选一",
+      "width": 180
+    },
+    {
+      "id": "carry",
+      "lane": "main",
+      "col": 2,
+      "type": "backend",
+      "label": "GET /protected 带 Cookie 头",
+      "width": 190
+    },
+    {
+      "id": "verify",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "校验登录态",
+      "width": 180
+    },
+    {
+      "id": "ok",
+      "lane": "main",
+      "col": 4,
+      "type": "messagebus",
+      "label": "200 whoami",
+      "width": 150
+    },
+    {
+      "id": "noauth",
+      "lane": "reject",
+      "col": 2,
+      "type": "security",
+      "label": "无 cookie → 401",
+      "width": 160
+    },
+    {
+      "id": "bad",
+      "lane": "reject",
+      "col": 3,
+      "type": "security",
+      "label": "篡改 / 过期 → 401",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "login",
+      "to": "issue",
+      "label": "密码正确才签发",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "issue",
+      "to": "carry",
+      "label": "浏览器自动回带"
+    },
+    {
+      "id": "e3",
+      "from": "carry",
+      "to": "verify"
+    },
+    {
+      "id": "e4",
+      "from": "verify",
+      "to": "ok",
+      "label": "两关全过",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e5",
+      "from": "carry",
+      "to": "noauth",
+      "label": "裸请求"
+    },
+    {
+      "id": "e6",
+      "from": "verify",
+      "to": "bad",
+      "label": "任一关失败"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "两种存法对照",
+      "items": [
+        "服务端 session：cookie 只放随机 sid，状态在服务端 dict——吊销 = 删一行，重启默认全掉线",
+        "签名 cookie：状态（用户名|过期时间）在 cookie 本体，HMAC 防篡改——无状态但发出即收不回"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Set-Cookie 安全属性",
+      "items": [
+        "HttpOnly 挡 JS 读取（防 XSS 偷 cookie）；SameSite=Lax 限跨站携带（防 CSRF）",
+        "Max-Age/Expires 控浏览器侧过期；校验侧还要再查一次 exp——签名防篡改，不防过期"
+      ]
+    }
+  ]
+}

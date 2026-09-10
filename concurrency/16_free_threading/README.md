@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![free-threading：同一个 threading，两种世界](images/free_threading.archify.svg)
+![free-threading：同一个 threading，两种世界](images/free_threading.svg)
 
 一句话心智模型：**同一份 threading 代码，GIL 构建把它串行化（0.97×），free-threading 构建让它 4 核齐跑（3.73×）——换的是解释器构建，不是你的代码**。看图上下对照：同一个"4 线程 × 200 万迭代"任务，走进 GIL 构建就排队（0.125s 白忙），走进 free-threading 构建就真并行（0.027s）。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/16_free_threading/images/free_threading.archify.html)
-> （或本地打开 [`images/free_threading.archify.html`](images/free_threading.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/16_free_threading/images/free_threading.html)
+> （或本地打开 [`images/free_threading.html`](images/free_threading.html)）。
 
 ## 3. 快速开始
 
@@ -90,9 +90,9 @@ speedup = N_THREADS * t1 / t4       # 串行做 4n ÷ 并行做 4n
 ├── free_threading.py                        # 主演示脚本：双构建对比 + 断言
 ├── README.md                                # 本教程文档
 └── images/
-    ├── free_threading.archify.json          # 图源（typed JSON IR，可编辑重渲染）
-    ├── free_threading.archify.html          # 交互示意图（浏览器打开）
-    └── free_threading.archify.svg           # 双主题矢量图（本 README §2 内嵌）
+    ├── free_threading.json          # 图源（typed JSON IR，可编辑重渲染）
+    ├── free_threading.html          # 交互示意图（浏览器打开）
+    └── free_threading.svg           # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `free_threading.py` 内容：`bench_threads()` 线程扩展比基准 / `bench_build()` 当前构建画像（版本/GIL/速度）/ `find_ft_python()` 探测 python3.14t / `demo_compare()` 双构建对比与断言；`--bench` 模式输出 JSON 供父进程收集。

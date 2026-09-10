@@ -11,12 +11,12 @@ Python 提供多种数据容器来组织结构化数据：`dict` 是最通用的
 
 ## 2. 总览：核心机制一图看懂
 
-![@dataclass：从字段注解到可用实例](images/collections.archify.svg)
+![@dataclass：从字段注解到可用实例](images/collections.svg)
 
 一句话心智模型：**`@dataclass` 是一条"字段注解 → 生成方法 → 实例化校验"的流水线**。看图时按生成顺序走：读 `__annotations__` 字段 → 生成 `__init__` / `__repr__` / `__eq__` → 实例化时 `__post_init__` 校验（非法值钳到 0.0）→ 实例就绪；旁支是 `frozen=True`：任何字段赋值 → `AttributeError`。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/19_collections/images/collections.archify.html)
-> （或本地打开 [`images/collections.archify.html`](images/collections.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/19_collections/images/collections.html)
+> （或本地打开 [`images/collections.html`](images/collections.html)）。
 
 ## 3. 快速开始
 
@@ -203,9 +203,9 @@ class Product:
 ├── README.md                    # 本教程文档
 ├── collections.py               # 主演示脚本：namedtuple / NamedTuple / dataclass
 └── images/
-    ├── collections.archify.json # 图源（typed JSON IR，可编辑重渲染）
-    ├── collections.archify.html # 交互示意图（浏览器打开）
-    └── collections.archify.svg  # 双主题矢量图（本 README §2 内嵌）
+    ├── collections.json # 图源（typed JSON IR，可编辑重渲染）
+    ├── collections.html # 交互示意图（浏览器打开）
+    └── collections.svg  # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `collections.py` 内容：`1. Point / Color (namedtuple)` 经典命名元组 / `2. TypedPoint (NamedTuple)` 带类型注解的命名元组 / `3. Product (dataclass, mutable)` 可变数据类 + `__post_init__` / `4. Version (dataclass, frozen)` 不可变数据类 + 排序 / `5. Address / Employee (nested)` 嵌套数据类 / `6. run_demo()` 汇总演示。

@@ -11,12 +11,12 @@ Python 的内存管理采用**引用计数为主、分代 GC 为辅**的双轨�
 
 ## 2. 总览：核心机制一图看懂
 
-![对象的一生：引用计数 + 分代 GC](images/gc_weakref.archify.svg)
+![对象的一生：引用计数 + 分代 GC](images/gc_weakref.svg)
 
 一句话心智模型：**引用计数随引用增减，归 0 立即回收；循环引用计数永不归 0，由分代 GC 兜底；weakref 不参与计数，只是"观察"**。看图时先走主线：`obj = Node()` → `a = b = obj`（引用 +1）→ 逐个 `del` → 计数归 0 触发 `__del__` 释放；再看两条岔路——循环引用 `a↔b` 靠 `gc.collect()` 分代扫描回收，`weakref.ref(obj)` 在对象回收后返回 `None`。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/16_gc_weakref/images/gc_weakref.archify.html)
-> （或本地打开 [`images/gc_weakref.archify.html`](images/gc_weakref.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/16_gc_weakref/images/gc_weakref.html)
+> （或本地打开 [`images/gc_weakref.html`](images/gc_weakref.html)）。
 
 ## 3. 快速开始
 
@@ -207,9 +207,9 @@ del a; del b   # 引用计数永远到不了 0 → 只能等 gc.collect() 的分
 ├── README.md                     # 本教程文档
 ├── gc_weakref.py                 # 主演示脚本：引用计数 / 循环引用 / weakref / 分代 GC
 └── images/
-    ├── gc_weakref.archify.json   # 图源（typed JSON IR，可编辑重渲染）
-    ├── gc_weakref.archify.html   # 交互示意图（浏览器打开）
-    └── gc_weakref.archify.svg    # 双主题矢量图（本 README §2 内嵌）
+    ├── gc_weakref.json   # 图源（typed JSON IR，可编辑重渲染）
+    ├── gc_weakref.html   # 交互示意图（浏览器打开）
+    └── gc_weakref.svg    # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `gc_weakref.py` 内容：`1. demo_refcount()` 引用计数演示（sys.getrefcount） / `2. Node + demo_cyclic()` 循环引用与 gc.collect() / `3. demo_weakref()` weakref.ref + finalize 回调 / `4. demo_weakref_dict()` WeakKeyDictionary 自动清理 / `5. run_demo()` 综合演示（含 `__del__` 警告、GC 分代）。

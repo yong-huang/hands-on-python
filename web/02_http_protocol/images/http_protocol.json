@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "HTTP/1.1 报文解剖：四段式与 body 定界",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "visual_preset": "signal-flow"
+  },
+  "components": [
+    {
+      "id": "startline",
+      "type": "external",
+      "label": "起始行",
+      "sublabel": "请求行 GET /text HTTP/1.1 · 或状态行",
+      "pos": [
+        60,
+        80
+      ],
+      "size": [
+        280,
+        64
+      ]
+    },
+    {
+      "id": "headers",
+      "type": "database",
+      "label": "头部 Header",
+      "sublabel": "Host · Content-Type · Connection …",
+      "pos": [
+        410,
+        80
+      ],
+      "size": [
+        280,
+        64
+      ]
+    },
+    {
+      "id": "blankline",
+      "type": "messagebus",
+      "label": "空行 CRLF",
+      "sublabel": "头与体的分界线",
+      "pos": [
+        760,
+        84
+      ],
+      "size": [
+        230,
+        56
+      ]
+    },
+    {
+      "id": "body",
+      "type": "messagebus",
+      "label": "体 Body",
+      "sublabel": "裸字节流，读多长看下行",
+      "pos": [
+        1060,
+        80
+      ],
+      "size": [
+        250,
+        64
+      ]
+    },
+    {
+      "id": "ka",
+      "type": "security",
+      "label": "Connection: keep-alive",
+      "sublabel": "3 请求 1 连接 · accept=1 实测",
+      "pos": [
+        60,
+        300
+      ],
+      "size": [
+        280,
+        72
+      ]
+    },
+    {
+      "id": "cl",
+      "type": "backend",
+      "label": "Content-Length",
+      "sublabel": "先知长度：读够 N 字节即完",
+      "pos": [
+        560,
+        300
+      ],
+      "size": [
+        280,
+        72
+      ]
+    },
+    {
+      "id": "chunked",
+      "type": "backend",
+      "label": "Transfer-Encoding: chunked",
+      "sublabel": "chunk-size 行 + 数据 + 0 终止块",
+      "pos": [
+        1040,
+        300
+      ],
+      "size": [
+        280,
+        72
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "报文四段式 · 逐段 CRLF 分隔",
+      "wraps": [
+        "startline",
+        "headers",
+        "blankline",
+        "body"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "startline",
+      "to": "headers",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "c2",
+      "from": "headers",
+      "to": "blankline",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "c3",
+      "from": "blankline",
+      "to": "body",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "c4",
+      "from": "headers",
+      "to": "ka",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "c5",
+      "from": "body",
+      "to": "cl",
+      "label": "定界机制一",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "c6",
+      "from": "body",
+      "to": "chunked",
+      "label": "定界机制二 · 流式",
+      "fromSide": "bottom",
+      "toSide": "right",
+      "variant": "dashed"
+    }
+  ]
+}

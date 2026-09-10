@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![并发设计模式集](images/concurrency_patterns.archify.svg)
+![并发设计模式集](images/concurrency_patterns.svg)
 
 一句话心智模型：**优雅关闭管生命周期（信号→停接活→善后→落盘），令牌桶管速率（长期平均+突发额度），指数退避管失败恢复（越挫越有耐心），fan-out / fan-in 管批量吞吐（并行扇出、失败隔离、结果归拢）**。四个模式覆盖生产并发系统的四大关切：活得好、跑得稳、摔得起、扛得住。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/13_concurrency_patterns/images/concurrency_patterns.archify.html)
-> （或本地打开 [`images/concurrency_patterns.archify.html`](images/concurrency_patterns.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/13_concurrency_patterns/images/concurrency_patterns.html)
+> （或本地打开 [`images/concurrency_patterns.html`](images/concurrency_patterns.html)）。
 
 ## 3. 快速开始
 
@@ -102,9 +102,9 @@ self.updated = now
 ├── concurrency_patterns.py                  # 主演示脚本：四模式 + 验收
 ├── README.md                                # 本教程文档
 └── images/
-    ├── concurrency_patterns.archify.json    # 图源（typed JSON IR，可编辑重渲染）
-    ├── concurrency_patterns.archify.html    # 交互示意图（浏览器打开）
-    └── concurrency_patterns.archify.svg     # 双主题矢量图（本 README §2 内嵌）
+    ├── concurrency_patterns.json    # 图源（typed JSON IR，可编辑重渲染）
+    ├── concurrency_patterns.html    # 交互示意图（浏览器打开）
+    └── concurrency_patterns.svg     # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `concurrency_patterns.py` 内容：`worker_mode()` + `demo_graceful_shutdown()` 信号优雅关闭（验收点 1）/ `TokenBucket` + `demo_token_bucket()` 令牌桶（验收点 2）/ `retry_with_backoff()` + `demo_backoff()` 指数退避（验收点 3）/ `demo_fan_out_in()` 扇出隔离（验收点 4）。

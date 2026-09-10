@@ -1,0 +1,148 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "WSGI 请求生命周期：洋葱调用链",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "entry",
+      "label": "server 侧：请求进入"
+    },
+    {
+      "id": "appside",
+      "label": "app 侧：路由与响应"
+    },
+    {
+      "id": "edgepath",
+      "label": "违规与兜底",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "client",
+    "server",
+    "onion",
+    "router",
+    "respond"
+  ],
+  "nodes": [
+    {
+      "id": "client",
+      "lane": "entry",
+      "col": 0,
+      "type": "external",
+      "label": "客户端 GET /hello/Zed",
+      "width": 170
+    },
+    {
+      "id": "server",
+      "lane": "entry",
+      "col": 1,
+      "type": "backend",
+      "label": "wsgiref 组装 environ",
+      "width": 170
+    },
+    {
+      "id": "onion",
+      "lane": "entry",
+      "col": 2,
+      "type": "messagebus",
+      "label": "中间件洋葱 日志→validator",
+      "width": 190
+    },
+    {
+      "id": "router",
+      "lane": "appside",
+      "col": 3,
+      "type": "database",
+      "label": "路由 app 查表分发",
+      "width": 170
+    },
+    {
+      "id": "respond",
+      "lane": "appside",
+      "col": 4,
+      "type": "messagebus",
+      "label": "start_response + body 回传",
+      "width": 190
+    },
+    {
+      "id": "broken",
+      "lane": "edgepath",
+      "col": 2,
+      "type": "security",
+      "label": "忘调 start_response → 抓",
+      "width": 180
+    },
+    {
+      "id": "notfound",
+      "lane": "edgepath",
+      "col": 3,
+      "type": "security",
+      "label": "未命中 → 404 兜底",
+      "width": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "client",
+      "to": "server",
+      "label": "environ + start_response",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "server",
+      "to": "onion"
+    },
+    {
+      "id": "e3",
+      "from": "onion",
+      "to": "router",
+      "label": "剥洋葱到最内层",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e4",
+      "from": "router",
+      "to": "respond",
+      "label": "iterable body"
+    },
+    {
+      "id": "e5",
+      "from": "onion",
+      "to": "broken",
+      "label": "迭代 body 时发现"
+    },
+    {
+      "id": "e6",
+      "from": "router",
+      "to": "notfound",
+      "label": "查表未命中"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "合约三要素（PEP 3333）",
+      "items": [
+        "environ：请求全量 dict——CGI 风格键 + wsgi.* 内控键 + HTTP_ 前缀的请求头",
+        "start_response(status, headers)：响应行/头必须在 body 迭代前调用",
+        "返回 bytes 可迭代；server 消费完必须调 close()，漏调 GC 时会被 validator 抓"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "中间件就是洋葱",
+      "items": [
+        "log_middleware(app) 返回新 app：捕获状态行，body 消费完才写耗时日志",
+        "validator 是官方合规检查器：坏 app 迭代 body 时当场 AssertionError（§3 实测）"
+      ]
+    }
+  ]
+}

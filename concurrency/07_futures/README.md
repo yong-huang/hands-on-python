@@ -11,12 +11,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![concurrent.futures：统一执行器](images/futures_executor.archify.svg)
+![concurrent.futures：统一执行器](images/futures_executor.svg)
 
 一句话心智模型：**submit() 立刻返回一个 Future（"欠条"），result() 是唯一取货口——取值、收异常、带超时都走这一个方法**。看图：同一份业务代码指向两个后端闸门（线程池/进程池），欠条从两边汇到同一个收集口；as_completed 按完成顺序放行，异常沿 result() 原路返回。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/07_futures/images/futures_executor.archify.html)
-> （或本地打开 [`images/futures_executor.archify.html`](images/futures_executor.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/07_futures/images/futures_executor.html)
+> （或本地打开 [`images/futures_executor.html`](images/futures_executor.html)）。
 
 ## 3. 快速开始
 
@@ -111,9 +111,9 @@ for name, factory in factories.items():
 ├── README.md                            # 本教程文档
 ├── futures_executor.py                  # 主演示脚本：统一接口/as_completed/异常/超时
 └── images/
-    ├── futures_executor.archify.json    # 图源（typed JSON IR，可编辑重渲染）
-    ├── futures_executor.archify.html    # 交互示意图（浏览器打开）
-    └── futures_executor.archify.svg     # 双主题矢量图（本 README §2 内嵌）
+    ├── futures_executor.json    # 图源（typed JSON IR，可编辑重渲染）
+    ├── futures_executor.html    # 交互示意图（浏览器打开）
+    └── futures_executor.svg     # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `futures_executor.py` 内容：`demo_unified()` 双后端一致性（验收点 1）/ `demo_as_completed()` 完成序收集（验收点 2）/ `demo_exception()` 异常传播（验收点 3）/ `demo_timeout()` 超时保护。

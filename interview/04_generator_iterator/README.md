@@ -12,12 +12,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![生成器生命周期：yield 暂停与恢复](images/generator_iterator.archify.svg)
+![生成器生命周期：yield 暂停与恢复](images/generator_iterator.svg)
 
 一句话心智模型：**生成器是一个可暂停/恢复的函数——`next()` 推它跑到下一个 `yield`，栈帧连同局部变量原封不动停在原地，下次从暂停处精确恢复**。看图时按状态机走：已创建（调用不执行函数体）→ 运行中 ⇄ 已暂停（`yield` 产出值）→ 函数返回 → `StopIteration`；留意 `close()` 在暂停处触发 `GeneratorExit` 的分支。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/04_generator_iterator/images/generator_iterator.archify.html)
-> （或本地打开 [`images/generator_iterator.archify.html`](images/generator_iterator.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/interview/04_generator_iterator/images/generator_iterator.html)
+> （或本地打开 [`images/generator_iterator.html`](images/generator_iterator.html)）。
 
 ## 3. 快速开始
 
@@ -187,9 +187,9 @@ def accumulator():
 ├── README.md                            # 本教程文档
 ├── generator_iterator.py                # 主演示脚本：yield / send / yield from / 惰性管道
 └── images/
-    ├── generator_iterator.archify.json  # 图源（typed JSON IR，可编辑重渲染）
-    ├── generator_iterator.archify.html  # 交互示意图（浏览器打开）
-    └── generator_iterator.archify.svg   # 双主题矢量图（本 README §2 内嵌）
+    ├── generator_iterator.json  # 图源（typed JSON IR，可编辑重渲染）
+    ├── generator_iterator.html  # 交互示意图（浏览器打开）
+    └── generator_iterator.svg   # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `generator_iterator.py` 内容：`1. RangeIterator / range_generator` 手写迭代器 vs 生成器 / `2. fibonacci()` yield 基础：惰性斐波那契 / `3. accumulator() / moving_average()` send() 双向通信 / `4. flatten() / chain()` yield from 委托 / `5. integers() / take() / filter_gen() / map_gen()` 惰性管道 / `6. demo_memory()` 生成器 vs 列表内存对比 / `7. pipeline_demo()` 日志处理实战管道。

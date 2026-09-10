@@ -14,12 +14,13 @@ Content language is Chinese (正文中文，命令/代码/术语保留英文).
 - `README.md` — series index: intro, environment requirements, lab table, learning path, how to run.
 - `interview/NN_topic/` — 20 numbered labs (01_decorator_factory … 20_itertools_func), one Python interview topic each. The directory is named `interview/` (not the skill's `labs/`) — a deliberate deviation to match this repo's theme.
 - `concurrency/NN_topic/` — second series (2026-09): 16 Python concurrency labs with the same 五件套 conventions, planned by `python_concurrency.md` (learning-list skill) and built via the hands-on-series skill. Same README 8-section order and diagram pipeline.
+- `web/NN_topic/` — third series (2026-09): 20 Python web-framework labs (WSGI/HTTP/cookie foundations → Flask → FastAPI → Django → comparison/capstone), planned by `python_web_frameworks.md`. Same 五件套 conventions. Stage-1 labs (01-03) are stdlib-only; framework labs (04+) run in `web/.venv` — setup commands and the 2026-09-10 smoke-tested version matrix live in python_web_frameworks.md 环境配置.
 - Each lab is a "五件套":
   - `README.md` — tutorial in the fixed 8-section order (see below)
   - `<topic>.py` — the main demo script AND the learning material itself; self-contained, **zero third-party imports**
-  - `images/<topic>.archify.json` — the diagram source (typed JSON IR; edit + revalidate to iterate)
-  - `images/<topic>.archify.html` — interactive diagram (self-contained HTML; trace animation, dark/light themes, zh-CN UI)
-  - `images/<topic>.archify.svg` — dual-theme vector export, embedded in README §2
+  - `images/<topic>.json` — the diagram source (typed JSON IR; edit + revalidate to iterate)
+  - `images/<topic>.html` — interactive diagram (self-contained HTML; trace animation, dark/light themes, zh-CN UI)
+  - `images/<topic>.svg` — dual-theme vector export, embedded in README §2
 
 ## README section order (fixed across all 20 labs)
 
@@ -35,7 +36,7 @@ Diagram content is designed from what the main script teaches (机制/流程/状
 ```bash
 cd interview/01_decorator_factory
 python3 decorator_factory.py      # demo only, zero third-party deps
-open images/decorator_factory.archify.html   # interactive diagram in browser
+open images/decorator_factory.html   # interactive diagram in browser
 ```
 
 Main scripts print step-by-step demo output (中文注释 explaining each step). There is no test suite, no linter config, and no package manifest; verify changes by running the lab script and checking `python3 -m py_compile`.
@@ -43,7 +44,7 @@ Main scripts print step-by-step demo output (中文注释 explaining each step).
 ## Conventions for new/modified labs
 
 - Lab dirs: `NN_short_name/` (two digits + lowercase snake_case). Never insert numbers in the middle; append or renumber wholly.
-- Main script named after the topic (`09_magic_methods/magic_methods.py`); diagrams never live in it — always `images/<topic>.archify.{json,html,svg}`.
+- Main script named after the topic (`09_magic_methods/magic_methods.py`); diagrams never live in it — always `images/<topic>.{json,html,svg}`.
 - "诚实预期" (honest expectations): if something can't be fully demonstrated in the local environment, say so explicitly in the doc rather than faking success.
 - Verify with `python3 -m py_compile <topic>.py` and a real full demo run before considering a lab done; static checks don't replace running it.
 - Commit messages: English, imperative mood, bullet points in body.

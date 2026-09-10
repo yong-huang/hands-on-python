@@ -10,12 +10,12 @@
 
 ## 2. 总览：核心机制一图看懂
 
-![TaskGroup：一个失败，全员取消](images/task_orchestration.archify.svg)
+![TaskGroup：一个失败，全员取消](images/task_orchestration.svg)
 
 一句话心智模型：**TaskGroup 是"连带责任制"——任一子任务抛异常，组内其余任务立刻收到取消信号，异常打包成 ExceptionGroup 在 async with 出口上抛**。看图：三个任务汇入 TaskGroup，bomber 的 raise 沿强调线击穿；结局三分——fast 的结果作废、slow 沿虚线被 cancel()（先过 finally）、异常组上抛。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/09_task_orchestration/images/task_orchestration.archify.html)
-> （或本地打开 [`images/task_orchestration.archify.html`](images/task_orchestration.archify.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/09_task_orchestration/images/task_orchestration.html)
+> （或本地打开 [`images/task_orchestration.html`](images/task_orchestration.html)）。
 
 ## 3. 快速开始
 
@@ -105,9 +105,9 @@ assert elapsed < 0.5    # 慢任务完整要 1.0s
 ├── README.md                                    # 本教程文档
 ├── task_orchestration.py                        # 主演示脚本：TaskGroup/wait_for/gather
 └── images/
-    ├── task_orchestration.archify.json          # 图源（typed JSON IR，可编辑重渲染）
-    ├── task_orchestration.archify.html          # 交互示意图（浏览器打开）
-    └── task_orchestration.archify.svg           # 双主题矢量图（本 README §2 内嵌）
+    ├── task_orchestration.json          # 图源（typed JSON IR，可编辑重渲染）
+    ├── task_orchestration.html          # 交互示意图（浏览器打开）
+    └── task_orchestration.svg           # 双主题矢量图（本 README §2 内嵌）
 ```
 
 `task_orchestration.py` 内容：`demo_taskgroup()` 一败全停 + 取消清理（验收点 1）/ `demo_wait_for()` 超时兜底（验收点 2）/ `demo_gather()` 双策略收集（验收点 3）。
