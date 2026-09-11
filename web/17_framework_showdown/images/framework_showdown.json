@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "三框架同题对比：控制变量下的选型数据",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "同一道题的三种解"
+    },
+    {
+      "id": "edgepath",
+      "label": "控制变量",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "spec",
+    "impl",
+    "checks",
+    "bench",
+    "table"
+  ],
+  "nodes": [
+    {
+      "id": "spec",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "同一题目 TODO API + 受保护路由",
+      "width": 220
+    },
+    {
+      "id": "impl",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "三框架各写一遍",
+      "width": 190
+    },
+    {
+      "id": "checks",
+      "lane": "main",
+      "col": 2,
+      "type": "security",
+      "label": "14 条 HTTP 断言 ×3 全绿",
+      "width": 190
+    },
+    {
+      "id": "bench",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "1000 请求 × 并发 50 压测",
+      "width": 190
+    },
+    {
+      "id": "table",
+      "lane": "main",
+      "col": 4,
+      "type": "messagebus",
+      "label": "QPS / p95 / 行数对比表",
+      "width": 180
+    },
+    {
+      "id": "auth",
+      "lane": "edgepath",
+      "col": 1,
+      "type": "security",
+      "label": "共享 tokenbox 认证零差异",
+      "width": 200
+    },
+    {
+      "id": "devserver",
+      "lane": "edgepath",
+      "col": 3,
+      "type": "security",
+      "label": "dev server 数字看方向不看绝对值",
+      "width": 220
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "spec",
+      "to": "impl",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "impl",
+      "to": "checks"
+    },
+    {
+      "id": "e3",
+      "from": "checks",
+      "to": "bench"
+    },
+    {
+      "id": "e4",
+      "from": "bench",
+      "to": "table",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "实测数据（本机 dev server）",
+      "items": [
+        "14 条断言三框架全绿：同一道题同解，状态码序列完全一致",
+        "代码行数 62 / 83 / 119；QPS 131/131/121、p95 5.8s/5.8s/6.2s——量级同档"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "选型判读",
+      "items": [
+        "dev server 的压测绝对值不重要——方向（谁明显掉队）才重要",
+        "选型看生态与团队：异步密集/微服务选 FastAPI，小而美选 Flask，内容密集带后台选 Django"
+      ]
+    }
+  ]
+}

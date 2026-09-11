@@ -83,7 +83,7 @@ hands-on-python/
 4. **诊断与架构**（12 → 13 → 14）：死锁诊断、设计模式、四模型对决
 5. **毕业设计**（15 → 16 选做）：可切换执行模型下载器、free-threading 前沿实测
 
-## 🌐 第三系列：Python Web 框架 20 站（2026-09 新增，施工中）
+## 🌐 第三系列：Python Web 框架 20 站（2026-09 新增，20/20 完成）
 
 三大框架通吃的地基层：先零依赖手写 WSGI/HTTP/会话（第一阶段），再依次进入 Flask → FastAPI → Django/DRF，收拢于三框架同题对比与容器化综合项目。
 本系列主演示脚本分两类：第一阶段三站零第三方依赖；框架阶段运行于 `web/.venv`（依赖清单与 2026-09-10 实测版本见 [python_web_frameworks.md](python_web_frameworks.md)）。
@@ -107,7 +107,10 @@ hands-on-python/
 | 14 | [视图与表单](web/14_django_views_forms/README.md) | CBV 分页零重叠、FBV 对照、登录保护与 ModelForm 双闸 |
 | 15 | [DRF 构建 REST API](web/15_drf_rest_api/README.md) | 读写分离序列化、403/400/201/204 全实测、@action 路由 |
 | 16 | [信号、缓存与测试](web/16_django_signals_cache/README.md) | post_save 审计、二次 0 条 SQL、pytest 覆盖率 97%，Django 段收官 |
-| 17-20 | 对比与交付（规划中） | 三框架同题、生产部署、🏁 短链接服务、⚠️ WebSocket/Litestar |
+| 17 | [⛓️ 三框架同题对比](web/17_framework_showdown/README.md) | 14 条断言 ×3 全绿、1000×50 压测、代码量对比表 |
+| 18 | [生产部署](web/18_production_deploy/README.md) | gunicorn 4 worker PID 实测、12-factor、Docker healthz |
+| 19 | [🏁 综合项目：短链接服务](web/19_url_shortener/README.md) | 302 点击计数、200 并发码无碰撞、19 条 pytest、容器化交付 |
+| 20 | [⚠️ WebSocket 实时聊天室](web/20_websocket_room/README.md) | 双客户端广播、断开减员（选做，全系列收官） |
 
 ## 学习路线
 

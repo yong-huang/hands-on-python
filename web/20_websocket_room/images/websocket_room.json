@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "聊天室：一次握手，双向长连接",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      920,
+      540
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "alice",
+      "type": "external",
+      "label": "Alice (WS)"
+    },
+    {
+      "id": "server",
+      "type": "backend",
+      "label": "聊天室服务端"
+    },
+    {
+      "id": "bob",
+      "type": "external",
+      "label": "Bob (WS)"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "alice",
+      "to": "server",
+      "y": 160,
+      "label": "GET /ws/demo/Alice 升级握手",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "server",
+      "to": "alice",
+      "y": 190,
+      "label": "accept · 广播「Alice 加入」",
+      "variant": "return"
+    },
+    {
+      "id": "m3",
+      "from": "bob",
+      "to": "server",
+      "y": 220,
+      "label": "握手加入"
+    },
+    {
+      "id": "m4",
+      "from": "server",
+      "to": "bob",
+      "y": 250,
+      "label": "accept · 广播「Bob 加入」(2 人)",
+      "variant": "return"
+    },
+    {
+      "id": "m5",
+      "from": "server",
+      "to": "alice",
+      "y": 280,
+      "label": "广播「Bob 加入」"
+    },
+    {
+      "id": "m6",
+      "from": "alice",
+      "to": "server",
+      "y": 310,
+      "label": "send_text(\"hi\")",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m7",
+      "from": "server",
+      "to": "alice",
+      "y": 340,
+      "label": "广播「Alice: hi」"
+    },
+    {
+      "id": "m8",
+      "from": "server",
+      "to": "bob",
+      "y": 370,
+      "label": "广播「Alice: hi」"
+    },
+    {
+      "id": "m9",
+      "from": "bob",
+      "to": "server",
+      "y": 400,
+      "label": "close 断开"
+    },
+    {
+      "id": "m10",
+      "from": "server",
+      "to": "alice",
+      "y": 430,
+      "label": "广播「Bob 离开」(剩 1 人)",
+      "variant": "emphasis"
+    }
+  ]
+}

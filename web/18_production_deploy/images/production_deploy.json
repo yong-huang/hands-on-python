@@ -1,0 +1,132 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "从开发到生产：worker、配置与容器",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "生产部署三步"
+    },
+    {
+      "id": "edgepath",
+      "label": "边界与取舍",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "code",
+    "workers",
+    "env",
+    "image",
+    "healthz"
+  ],
+  "nodes": [
+    {
+      "id": "code",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "同一份应用代码",
+      "width": 170
+    },
+    {
+      "id": "workers",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "gunicorn -w 4",
+      "sublabel": "100 请求 4 PID 实测",
+      "width": 160
+    },
+    {
+      "id": "env",
+      "lane": "main",
+      "col": 2,
+      "type": "messagebus",
+      "label": "环境变量注入配置",
+      "width": 170
+    },
+    {
+      "id": "image",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "docker build 镜像",
+      "width": 160
+    },
+    {
+      "id": "healthz",
+      "lane": "main",
+      "col": 4,
+      "type": "security",
+      "label": "容器 /healthz 200",
+      "width": 160
+    },
+    {
+      "id": "nginx",
+      "lane": "edgepath",
+      "col": 4,
+      "type": "security",
+      "label": "nginx 反代（选做）",
+      "width": 170
+    },
+    {
+      "id": "oneper",
+      "lane": "edgepath",
+      "col": 3,
+      "type": "security",
+      "label": "容器内 1 进程",
+      "sublabel": "多实例交给编排层",
+      "width": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "code",
+      "to": "workers",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "workers",
+      "to": "env",
+      "label": "12-factor"
+    },
+    {
+      "id": "e3",
+      "from": "env",
+      "to": "image",
+      "label": "构建一次处处部署"
+    },
+    {
+      "id": "e4",
+      "from": "image",
+      "to": "healthz",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "worker 模型（实测）",
+      "items": [
+        "gunicorn master 只拉起与监视；accept 由各 worker 竞争——100 请求 4 个 PID",
+        "与项目 10 的 uvicorn --workers 同机制：进程级并发用满多核"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "配置与环境（实测）",
+      "items": [
+        "APP_MODE=prod/dev 环境变量切换，代码零改动——12-factor III",
+        "容器内 1 进程 1 端口；横向扩展交给编排层而非 worker 数"
+      ]
+    }
+  ]
+}

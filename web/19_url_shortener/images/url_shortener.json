@@ -1,0 +1,145 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "短链接服务：一次缩短与一次跳转的全链路",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "缩短与跳转主链路"
+    },
+    {
+      "id": "edgepath",
+      "label": "管理与运维",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "shorten",
+    "unique",
+    "code",
+    "redirect",
+    "clicks",
+    "stats"
+  ],
+  "nodes": [
+    {
+      "id": "shorten",
+      "lane": "main",
+      "col": 0,
+      "type": "external",
+      "label": "POST /shorten",
+      "width": 160
+    },
+    {
+      "id": "unique",
+      "lane": "main",
+      "col": 1,
+      "type": "security",
+      "label": "唯一约束 + 冲突重试",
+      "width": 180
+    },
+    {
+      "id": "code",
+      "lane": "main",
+      "col": 2,
+      "type": "database",
+      "label": "8 位随机码落库",
+      "width": 160
+    },
+    {
+      "id": "redirect",
+      "lane": "main",
+      "col": 3,
+      "type": "messagebus",
+      "label": "GET /{code} 302",
+      "width": 150
+    },
+    {
+      "id": "clicks",
+      "lane": "main",
+      "col": 4,
+      "type": "backend",
+      "label": "点击计数 +1",
+      "width": 140
+    },
+    {
+      "id": "stats",
+      "lane": "main",
+      "col": 5,
+      "type": "external",
+      "label": "GET /stats/{code}",
+      "width": 160
+    },
+    {
+      "id": "admin",
+      "lane": "edgepath",
+      "col": 2,
+      "type": "security",
+      "label": "JWT 管理端 删除短码",
+      "width": 190
+    },
+    {
+      "id": "pytest",
+      "lane": "edgepath",
+      "col": 4,
+      "type": "security",
+      "label": "19 用例 + 容器 healthz",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "shorten",
+      "to": "unique",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "unique",
+      "to": "code",
+      "label": "200 并发实测无碰撞"
+    },
+    {
+      "id": "e3",
+      "from": "code",
+      "to": "redirect",
+      "label": "过期检查 410"
+    },
+    {
+      "id": "e4",
+      "from": "redirect",
+      "to": "clicks"
+    },
+    {
+      "id": "e5",
+      "from": "clicks",
+      "to": "stats",
+      "label": "连点 3 次 = 3",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "唯一性保证（实测）",
+      "items": [
+        "随机码唯一约束 + IntegrityError 冲突重试；自定义码被占直接 409",
+        "并发生成 200 个码全部唯一——约束在数据库层，不在应用层"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "交付形态（实测）",
+      "items": [
+        "pytest 19 条全绿：404/410/409/422/401 拒绝路径全覆盖",
+        "Docker 构建 + 容器 /healthz 200；管理端点 JWT 保护（项目 12 方案）"
+      ]
+    }
+  ]
+}
