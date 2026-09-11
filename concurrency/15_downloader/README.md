@@ -102,7 +102,7 @@ sync/thread 共享父进程的本地服务；process 后端真开 N 个子进程
 
 `downloader.py` 内容：`FileServer` 本地服务（内容 seed 固定 + 在飞峰值观测）/ `fetch_once_blocking()` 带重试抓取 / `round_sync()/round_threads()/round_process()/round_async()` 四后端 / `download_round()` 统一入口（可续传）/ `verify_all()` SHA256 逐文件断言。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 如何设计一个"执行模型可切换"的并发框架？**
 定义协议层接口（输入：任务清单 + 并发参数；输出：统一统计），每个后端实现"如何并发地执行单个任务"。关键是把限流/重试/校验放在协议层而不是后端里——后端只回答"用多少个执行体、怎么排队"。

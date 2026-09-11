@@ -126,7 +126,7 @@ werkzeug 多线程服务下每个请求各开一条连接——SQLite 的 `:memo
 14 条同一组断言 / `bench()` 1000×50 压测（QPS + p95）/ `line_count()` wc -l / 对比总表。
 环境：`web/.venv`（flask + fastapi + uvicorn + django + djangorestframework + httpx）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 三个框架的适用场景？（要求给出理由而不是偏好）**
 FastAPI：异步 IO 密集、微服务、需要自动文档与类型契约；Flask：小服务、原型、需要最小

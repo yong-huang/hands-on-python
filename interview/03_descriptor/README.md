@@ -189,7 +189,7 @@ class CachedProperty:                       # 只定义 __get__ → 非数据描
 
 `descriptor.py` 内容：`1. TypedField` 数据描述符：类型+范围验证 / `2. CachedProperty` 非数据描述符：计算后缓存 / `3. LazyField` 非数据描述符：惰性初始化 / `4. LoggedField` 数据描述符：读写审计日志 / `5. User / DataProcessor / HeavyResource / TrackedEntity` 演示用类 / `6. reveal_descriptor_nature()` property/classmethod 本质 / `7. demo_priority()` 属性查找优先级演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: property 和描述符有什么关系？**
 

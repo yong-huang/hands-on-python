@@ -136,7 +136,7 @@ with ThreadPoolExecutor(max_workers=10) as pool:
 PID 断言（验收点）/ `demo_env_config()` prod/dev 切换断言（验收点）/ `demo_docker()`
 build→run→healthz→清理（验收点）。环境：`web/.venv`（flask + gunicorn）+ Docker daemon。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: gunicorn 的 master/worker 分工？worker 数怎么定？**
 master 只 fork/监视/重启 worker；worker 做 accept 与处理。CPU 密集起点 = 核数；IO 密集

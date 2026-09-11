@@ -162,7 +162,7 @@ class SingletonMeta(type):
 
 `metaclass.py` 内容：`1. demo_type_creation()` type() 手动创建类 / `2. AddStrMeta` 元类：自动添加 `__str__` / `3. SingletonMeta` 元类：单例模式 / `4. OrmMeta + Model` 元类：ORM 字段映射 / `5. EventRegistry` `__init_subclass__`：子类注册。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: `__new__` vs `__init__` vs 元类的 `__new__`？**
 

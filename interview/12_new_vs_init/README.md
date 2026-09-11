@@ -70,7 +70,7 @@ python3 new_vs_init.py          # 运行 demo
 诚实预期（本机实测）：
 
 - demo 输出是**确定性的**，但 `[1]` 中的实例内存地址（`0x109127970`）每次运行都不同，属正常现象
-- `[2]` 中第二次 `CachedInstance('a')` 仍会打印 `__init__` 行 —— 缓存命中跳过的是**创建**，不会跳过 `__init__`（见 §7 面试要点 Q4），不是 bug
+- `[2]` 中第二次 `CachedInstance('a')` 仍会打印 `__init__` 行 —— 缓存命中跳过的是**创建**，不会跳过 `__init__`（见 §7 深入要点 Q4），不是 bug
 - `Tracked._count` 是类级计数器，重复运行 demo 会从 1 重新开始（进程重启），但同一进程内多次 `import` 会累积
 
 ## 4. 核心概念
@@ -188,7 +188,7 @@ def __new__(cls, key):
 
 `new_vs_init.py` 内容：`1. Tracked` 追踪 `__new__` 和 `__init__` 的调用顺序 / `2. CachedInstance` `__new__` 实现实例缓存（单例变体）/ `3. UpperStr(str) / LimitedInt(int)` 不可变类型的子类化（必须用 `__new__`）/ `4. Factory` `__new__` 返回不同类型的实例 / `5. run_demo()` 交互式演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: `__new__` 和 `__init__` 的区别？**
 

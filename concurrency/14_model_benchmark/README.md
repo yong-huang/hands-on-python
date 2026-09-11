@@ -120,7 +120,7 @@ def run_process_cpu(blocks):
 
 `model_benchmark.py` 内容：`run_serial/threads/process/asyncio_cpu/io()` 四模型两负载 / `bench()` 预热 + 3 轮中位框架 / `main()` 三条方向性断言 / `plot_results()` 可选柱状图。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: IO 密集为什么 asyncio 比 threading 还快一点？**
 两者都重叠等待，但 asyncio 的"切换"是函数调用级的让出，threading 每次切换要经过内核调度。16 个并发连接下差异 ~8%（实测 16.8× vs 8.0×，并发数不同倍数不同）；千级并发时 asyncio 的内存与切换优势才真正拉开。

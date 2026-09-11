@@ -109,7 +109,7 @@ self.updated = now
 
 `concurrency_patterns.py` 内容：`worker_mode()` + `demo_graceful_shutdown()` 信号优雅关闭（验收点 1）/ `TokenBucket` + `demo_token_bucket()` 令牌桶（验收点 2）/ `retry_with_backoff()` + `demo_backoff()` 指数退避（验收点 3）/ `demo_fan_out_in()` 扇出隔离（验收点 4）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 进程收到 SIGTERM 后如何优雅退出？**
 handler 只 set 关闭 Event；worker 停止接活、完成手头任务；结果持久化后主线程 join 全部 worker 再退出。核心原则：信号处理函数不做重活，退出是流程不是事件。

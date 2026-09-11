@@ -119,7 +119,7 @@ echo 是给人看的日志（受级别配置影响、混着 BEGIN/COMMIT 噪音�
 
 `sqlalchemy_orm.py` 内容：`User`/`Post` 声明式模型（一对多 + back_populates）/ `SQLCounter` SQL 计数器 / `demo_relations()` 跨关系与聚合断言 / `demo_n_plus_one()` 21 vs 2 数字断言（验收点）/ `demo_session_lifecycle()` 隐式刷新 +1 与 DetachedInstanceError / `demo_migration()` subprocess 跑 alembic + PRAGMA 验证加列不丢数据（验收点）。环境：`web/.venv`（sqlalchemy + alembic）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 什么是 N+1 查询？怎么发现和解决？**
 查 N 条主记录后再逐条查关联记录，共 1+N 条 SQL。发现：SQL 计数/日志（事件监听比 echo 可断言）或 APM 里 SQL 数随行数线性增长。解决：selectinload（一对多，IN 批查）、joinedload（多对一，JOIN 一次拿全）、或显式懒加载策略按需加载。

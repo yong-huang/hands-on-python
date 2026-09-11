@@ -220,7 +220,7 @@ class Accumulator:
 
 `callable.py` 内容：`1. Multiplier` 可调用对象，封装倍数 / `2. Accumulator` 有状态的可调用对象，累加器 / `3. Formatter` 策略模式，可互换的格式化策略 / `4. format_json / format_csv / format_table` 模块级策略函数 / `5. Validator + validate_all` 可组合验证器与验证器链 / `6. run_demo()` 完整演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: `__call__` 和普通函数有什么区别？**
 

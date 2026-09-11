@@ -109,7 +109,7 @@ t = asyncio.create_task(slow_step("c2", 0.1))   # 并发：先挂上任务再收
 
 `coroutine_loop.py` 内容：`demo_lazy()` 惰性协程 / `demo_interleave()` 单线程交错 + 线程断言 / `demo_run_equivalence()` 两种启动方式等价 / `demo_await_vs_task()` await 链 vs create_task。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 协程和线程的区别？**
 协程是用户态的协作式任务：单线程、主动让出（await）、切换成本是函数调用级；线程是内核抢占式调度，切换要陷入内核且受 GIL 串行化。协程适合海量 IO 等待，线程适合阻塞库兜底，CPU 密集两者都不行（要进程）。

@@ -125,7 +125,7 @@ cookie 是**用户可控输入**：格式错误、base64 非法、exp 不是数�
 
 `cookie_session.py` 内容：`issue_session()`/`issue_signed_cookie()`/`check_cookie()` 两种模式的核心逻辑（与 HTTP 层解耦）/ `LabHandler` 登录与受保护页（Set-Cookie 属性逐个点名）/ `post_login()`/`get_protected()` 手写测试客户端 / 四个 demo 小节（验收点：§2 无 cookie 401、§3 篡改 401、§4 过期 401）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Cookie 和 Session 的关系与区别？**
 Cookie 是浏览器存储并自动回带的 HTTP 头机制；Session 是"状态存服务端、cookie 只存 sessionid"的登录态方案。Session 依赖 Cookie（或 URL 重写）携带标识，本质是同一枚硬币的两面。

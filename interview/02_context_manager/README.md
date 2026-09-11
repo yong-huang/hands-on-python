@@ -186,7 +186,7 @@ def __exit__(self, exc_type, exc_val, exc_tb):
 
 `context_manager.py` 内容：`1. Timer` 计时器（类式，自动打印耗时）/ `2. FileLock` 文件锁（类式，threading.Lock）/ `3. Transaction` 数据库事务（类式，自动 commit/rollback）/ `4. temporary_file()` 临时文件（@contextmanager，自动删除）/ `5. benchmark()` 性能计时（@contextmanager，异常安全）/ `6. demo_suppress()` contextlib.suppress 示例 / `7. demo_redirect()` redirect_stdout 示例 / `8. demo_nested()` 嵌套上下文管理器 / `9. demo_exit_return()` `__exit__` 返回值对异常传播的影响。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: with 语句和 try/finally 有什么区别？**
 

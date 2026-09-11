@@ -169,7 +169,7 @@ def cache(ttl=60.0):            # ttl 在第1层 —— 装饰器配置，装饰
 
 `decorator_factory.py` 内容：`1. retry(times, delay)` 失败重试 / `2. cache(ttl)` 带过期缓存 / `3. log_call(level)` 日志控制 / `4. 演示函数 fetch / compute / add` / `5. main()` 主入口。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 带参数的装饰器为什么要三层嵌套？**
 每层各接一样东西：第 1 层接装饰器参数，第 2 层接被装饰函数，第 3 层接调用参数。参数少一层都放不下——这是 `@retry(times=3)` 语法糖背后的两次真实函数调用。

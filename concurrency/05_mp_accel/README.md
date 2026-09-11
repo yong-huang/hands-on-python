@@ -112,7 +112,7 @@ def bench_once(n_procs):
 
 `mp_accel.py` 内容：`demo_env()` 核数与启动方式 / `demo_speedup()` 串行 vs Pool(4) vs threading 对照（验收点 1）/ `demo_spawn_guard()` 静默失败复现（验收点 2）/ `demo_map_order()` 保序验证（验收点 3）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: multiprocessing 为什么能绕开 GIL？**
 GIL 是每个解释器实例的全局锁。多进程 = 多个解释器实例 = 多把 GIL，各进程的字节码互不排队，操作系统直接把进程调度到不同核上。代价是进程间内存隔离，通信要显式（项目 6）。

@@ -194,7 +194,7 @@ def accumulator():
 
 `generator_iterator.py` 内容：`1. RangeIterator / range_generator` 手写迭代器 vs 生成器 / `2. fibonacci()` yield 基础：惰性斐波那契 / `3. accumulator() / moving_average()` send() 双向通信 / `4. flatten() / chain()` yield from 委托 / `5. integers() / take() / filter_gen() / map_gen()` 惰性管道 / `6. demo_memory()` 生成器 vs 列表内存对比 / `7. pipeline_demo()` 日志处理实战管道。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: yield 和 return 的区别？**
 

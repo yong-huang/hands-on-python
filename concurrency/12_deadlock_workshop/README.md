@@ -110,7 +110,7 @@ dump = open(dump_path).read()
 
 `deadlock_workshop.py` 内容：`transfer_bad()/transfer_good()` 反序与锁序版本 / `deadlock_child()` 子进程死锁 + faulthandler 验尸 / `demo_deadlock_and_dump()` 击杀与诊断（验收点 1/2）/ `demo_fix()` 统一锁序 100 轮回归（验收点 3）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 死锁的四个必要条件？工程上拆哪个？**
 互斥、持有并等待、不可剥夺、循环等待。前三者通常是业务/系统属性，工程上拆**循环等待**：全局锁序 + 所有线程遵守，成本最低、无性能损失。

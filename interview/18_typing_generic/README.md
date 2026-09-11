@@ -245,7 +245,7 @@ class Stack(Generic[T]):
 
 `typing_generic.py` 内容：`1. T / K / N (TypeVar)` 类型变量定义 / `2. Stack(Generic[T])` 泛型栈 / `3. Sized / Closeable / Writable / Readable (Protocol)` 结构化子类型 / `4. process_id() / find_user()` Union / Optional / `5. first_item()` 泛型函数 / `6. run_demo()` 交互式演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Python 的类型注解在运行时有效吗？**
 **不影响运行时行为**。`int_stack: Stack[int] = Stack()` 中的 `Stack[int]` 只是一个注释，运行时你仍然可以 `int_stack.push("wrong")`，Python 不会报错。类型检查完全依赖外部工具（mypy、pyright）。

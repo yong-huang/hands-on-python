@@ -133,7 +133,7 @@ class Slot3D(Slot2D):
 
 `slots_memory.py` 内容：`1. RegularPoint / SlotPoint` 基础对比 / `2. SlotWithDefault` 默认值来自 `__init__` 形参（slots 本身无默认值）/ `3. Slot3D / NoSlotChild` 继承中的 slots / `4. SlotWithWeakref` weakref 支持 / `5. benchmark_access()` 访问速度基准测试。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 什么时候应该用 `__slots__`？**
 

@@ -105,7 +105,7 @@ except jwt.PyJWTError:
 
 `fastapi_jwt_auth.py` 内容：`register_user` bcrypt 入库 / `make_token` 签发（sub/iat/exp，可注错密钥与过期）/ `get_current_user` 依赖（验签+过期+用户存在三关，分异常类型 401）/ `/token` 登录端点 / 三个 demo 小节（验收点：§2 四路 401、§3 哈希无明文）。环境：`web/.venv`（fastapi + pyjwt + bcrypt + httpx）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: JWT 的结构与每段的作用？**
 header（算法与类型）、payload（claims：sub/exp/iat 等声明）、signature（对前两段的 HMAC）。前两段 base64url 可解码，签名保证不可篡改——可读不可改。

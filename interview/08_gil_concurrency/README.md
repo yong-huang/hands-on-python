@@ -131,7 +131,7 @@ def bench_io(workers=8, duration=0.1):
 
 `gil_concurrency.py` 内容：`1. cpu_heavy()` CPU 密集任务（素数计数）/ `2. io_heavy()` I/O 密集任务（模拟 sleep）/ `3. bench_cpu()` 串行 / threading / multiprocessing 对比 / `4. bench_io()` 串行 / threading / asyncio 对比。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 为什么多线程不能利用多核？**
 CPython 的 GIL 保证同一时刻只有一个线程执行 Python 字节码，4 个 CPU 密集线程实际是轮流执行（每 ~5ms 切换一次），耗时约等于串行。

@@ -118,7 +118,7 @@ for name, factory in factories.items():
 
 `futures_executor.py` 内容：`demo_unified()` 双后端一致性（验收点 1）/ `demo_as_completed()` 完成序收集（验收点 2）/ `demo_exception()` 异常传播（验收点 3）/ `demo_timeout()` 超时保护。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Future 是什么？解决什么问题？**
 一张"结果欠条"：提交与获取解耦。submit 立即返回不阻塞，result() 随时取、可超时、异常原样重抛——把"等待"从业务的控制流里抽出来，变成可传递、可组合的对象。

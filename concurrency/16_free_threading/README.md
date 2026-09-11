@@ -97,7 +97,7 @@ speedup = N_THREADS * t1 / t4       # 串行做 4n ÷ 并行做 4n
 
 `free_threading.py` 内容：`bench_threads()` 线程扩展比基准 / `bench_build()` 当前构建画像（版本/GIL/速度）/ `find_ft_python()` 探测 python3.14t / `demo_compare()` 双构建对比与断言；`--bench` 模式输出 JSON 供父进程收集。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 什么是 free-threading 构建？与普通构建的区别？**
 PEP 703 移除 GIL 的 CPython 变体（cp314t ABI）：用细粒度锁与延迟引用计数保证内存安全，线程可真并行。普通构建靠 GIL 串行化字节码。两者 API 兼容，但扩展 ABI 与性能特征不同。

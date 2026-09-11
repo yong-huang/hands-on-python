@@ -152,7 +152,7 @@ Transport.register(ExternalLogistics)     # 第三方类不继承也能过 isins
 
 `abc_duck_typing.py` 内容：`1. Duck / Robot / Person` Duck Typing 演示 / `2. Transport (ABC)` + Truck / Drone 抽象基类 / `3. ExternalLogistics` + `register()` 虚拟子类 / `4. CacheInterface` + MemoryCache / RedisCache 缓存接口 / `5. ship_item() / cache_demo()` 多态使用。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: ABC 的 `@abstractmethod` 和直接 raise NotImplementedError 有什么区别？**
 `@abstractmethod` 在**类实例化时**就失败（第一次 `Transport()` 即 TypeError，失败点更早），`NotImplementedError` 在**方法调用时**才检查（可能潜伏很久才暴露）。

@@ -118,7 +118,7 @@ assert "<script>alert(1)" not in html, "绝不能出现可执行的原样 script
 
 `flask_templates_forms.py` 内容：`MessageForm` 字段与 validators / `dtime` 自定义过滤器 / `index()` 视图（validate_on_submit → 落库+flash+302）/ `fetch_token()`+`post_message()` 测试助手 / 五个 demo 小节（验收点：§2 无 token 400、§4 合法 302 落库、§5 XSS 转义）。环境：`web/.venv`（flask + flask-wtf + wtforms）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: CSRF 是什么？token 防线为什么有效？**
 跨站请求伪造：利用浏览器自动携带 Cookie，诱导用户在登录态下向目标站发恶意请求。token 有效是因为它由目标站签发、埋在目标站的表单页里，第三方站点受同源策略限制拿不到；服务器只放行携带正确 token 的 POST。

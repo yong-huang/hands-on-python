@@ -17,7 +17,7 @@ hands-on-python/
 ├── CLAUDE.md                  # 仓库约定（面向 AI 协作工具）
 └── interview/
     └── NN_short_name/         # 两位编号 + 小写主题名，共 20 个实验
-        ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 面试要点 → 总结
+        ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 深入要点 → 总结
         ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
         └── images/
             ├── <topic>.json  # 图源（typed JSON IR，可编辑重渲染）

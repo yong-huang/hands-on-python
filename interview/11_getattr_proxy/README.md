@@ -163,7 +163,7 @@ def __getattr__(self, name):
 
 `getattr_proxy.py` 内容：`1. DynamicAttributes` `__getattr__` 访问不存在属性时动态查找 / `2. AccessLogger` `__getattribute__` 记录所有属性读写 / `3. Proxy` 代理模式，属性转发到内部对象 / `4. LazyConfig` 懒加载，首次访问时触发加载 / `5. run_demo()` 交互式演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: `__getattr__` 和 `__getattribute__` 的区别？**
 

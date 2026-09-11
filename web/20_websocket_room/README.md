@@ -100,7 +100,7 @@ async def broadcast(self, room: str, text: str) -> None:
 
 `websocket_room.py` 内容：`ConnectionManager`（rooms 列表 / connect / disconnect / broadcast）/ `chat` WS 端点（加入广播 → 收发循环 → 断开清理）/ `/rooms/{room}/count` 人数端点 / 极简 HTML 聊天页 / `demo_websocket()` 双客户端全流程断言。环境：`web/.venv`（fastapi + httpx）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: WebSocket 与 HTTP 轮询/SSE 的区别与选型？**
 轮询：客户端定时拉，实时性差、无效请求多；SSE：服务端单向推（文本），实现简单；WebSocket：全双工、二进制/文本帧、实时性最好，代价是连接状态管理。聊天/协同/游戏选 WS，通知推送 SSE 足够。

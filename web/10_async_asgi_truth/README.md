@@ -107,7 +107,7 @@ TestClient 在进程内用 anyio portal 跑应用，事件循环线程的名字�
 
 `fastapi_async_truth.py` 内容：`/io-async`、`/io-sync`、`/pool-capacity` 三端点（响应自带线程名与 PID）/ `free_port()`+`start_server()`+`wait_ready()` 真服务器管理 / `fetch_all()` httpx.AsyncClient 并发压测 / `demo_location()` 线程名断言 / `demo_concurrency()` 100 并发耗时与比值断言（验收点）/ `demo_workers()` 4 worker PID 分发断言（验收点）。环境：`web/.venv`（fastapi + uvicorn + httpx）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: FastAPI 里 def 和 async def 端点的执行区别？**
 async def 在事件循环线程上以协程方式运行，等待时可服务其他请求；def 被 anyio 扔进容量 40（默认）的线程池执行，阻塞不拖累事件循环但并发受池容量限制。实测线程名：MainThread vs AnyIO worker thread。

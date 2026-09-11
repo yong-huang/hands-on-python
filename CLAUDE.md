@@ -25,7 +25,7 @@ Content language is Chinese (正文中文，命令/代码/术语保留英文).
 ## README section order (fixed across all 20 labs)
 
 H1 `# NN · 主题名：一句话副标题` + 引言 blockquote (bridging from the previous lab), then:
-`## 1. 为什么需要它` → `## 2. 总览：核心机制一图看懂` (embedded SVG + 交互版链接: Pages 在线 + 本地相对路径) → `## 3. 快速开始` → `## 4. 核心概念` → `## 5. 关键代码解析` (why-comments + 坑清单) → `## 6. 文件结构` (tree must match disk) → `## 7. 面试要点` (4–5 问答式考点) → `## 8. 总结` (+ next-lab link).
+`## 1. 为什么需要它` → `## 2. 总览：核心机制一图看懂` (embedded SVG + 交互版链接: Pages 在线 + 本地相对路径) → `## 3. 快速开始` → `## 4. 核心概念` → `## 5. 关键代码解析` (why-comments + 坑清单) → `## 6. 文件结构` (tree must match disk) → `## 7. 深入要点` (4–5 问答式考点) → `## 8. 总结` (+ next-lab link).
 
 ## Diagrams (Archify)
 

@@ -136,7 +136,7 @@ def __hash__(self):
 
 `magic_methods.py` 内容：`1. Point` 完整魔术方法（repr/str/eq/hash/add/mul/abs/bool）/ `2. Version` + `@total_ordering` 自动比较运算 / `3. DCPoint` + `@dataclass` 自动生成魔术方法 / `4. RingBuffer` 自定义容器（len/getitem/iter）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: `NotImplemented` 和 `NotImplementedError` 的区别？**
 - `NotImplemented`：魔术方法返回值，表示"不支持这个操作"，Python 会尝试交换操作数

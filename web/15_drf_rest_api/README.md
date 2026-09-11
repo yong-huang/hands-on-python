@@ -110,7 +110,7 @@ assert any("recent" in s for s in route_strs)
 
 `rest_demo.py` 内容：`prepare_db()` 灌 2 作者 7 文章 / `demo_anonymous()` 匿名读分页 + 写 403（验收点）/ `demo_authenticated()` 201→200→204 全流程（验收点）/ `demo_validation_and_action()` 400 指向字段 + recent 路由（验收点）。环境：`web/.venv`（django + djangorestframework）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: DRF 的请求处理管线经过哪几层？**
 认证（是谁）→ 权限（能不能）→ 节流（频不频繁）→ 序列化校验（数据合不合法）→ 视图逻辑 → 渲染。401 来自认证、403 来自权限、400 来自校验——三种拒绝各归其位。

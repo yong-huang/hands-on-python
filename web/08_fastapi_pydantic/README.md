@@ -108,7 +108,7 @@ assert ("body", field) in locs, f"errors 应指向 body.{field}: {locs}"
 
 `fastapi_pydantic.py` 内容：`ItemIn`/`ItemOut` 进出分离模型（约束字段 + 出口裁剪素材）/ 三个路由（POST 创建带内部字段、GET 路径参数、GET 查询参数）/ `demo_legal()` 三类参数断言 / `demo_validation()` 四组 422 的 loc 精确断言（验收点）/ `demo_response_filter()` 字段裁剪断言（验收点）/ `demo_openapi()` schema 编译断言（验收点）。环境：`web/.venv`（fastapi + httpx）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: FastAPI 的类型注解在运行时做了什么？**
 注解被 FastAPI 读取后编译成三层：参数解析与类型强转、Pydantic 校验（违规 422 带字段定位）、OpenAPI schema 生成。运行时真实生效，不是编辑器提示——这是它与 Flask+decorator 路线的本质差异。

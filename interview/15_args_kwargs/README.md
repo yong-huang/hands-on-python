@@ -215,7 +215,7 @@ with_defaults(1, 2, 3, 4, key="custom", z=99)
 
 `args_kwargs.py` 内容：`1. variadic()` 收集参数 / `2. with_defaults()` 参数顺序规则 / `3. add() / greet()` 解包调用 / `4. kw_only()` 强制关键字 / `5. pos_only()` 仅位置参数 / `6. log() / wrapper()` 实用模式 / `7. 字面量解包 & 字典合并` / `8. run_demo()` 8 组交互演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: `*args` 和 `**kwargs` 的区别？**
 

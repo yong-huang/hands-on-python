@@ -128,7 +128,7 @@ payload, buf = buf[:need], buf[need:] # 多读的部分是下一条请求，留�
 
 `http_protocol.py` 内容：`handle_request()`+`serve_once()`+`start_server()` 自带极简 HTTP/1.1 服务（三种传输形态 + accept 计数）/ `craft_request()` 手搓报文 / `parse_response()` 手写解析器 / `recv_response()` 按定界机制读响应 / `decode_chunked()` chunked 解码器 / 四个 demo 小节（验收点：§2 解析对照、§4 复用计数）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: HTTP 报文的结构？解析它要做什么？**
 四段式：起始行（请求行/状态行）、头部（`k: v` 逐行）、空行 CRLF、体。解析 = 按 CRLF 切行、空行分头体、体按定界机制读。

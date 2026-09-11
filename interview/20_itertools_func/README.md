@@ -282,7 +282,7 @@ expensive(4)   # 缓存已满 → 淘汰最近最少使用的 2，真正执行�
 
 `itertools_func.py` 内容：`1. demo_itertools()` chain / islice / accumulate / combinations / groupby / `2. demo_functools()` lru_cache / partial / reduce / singledispatch / `3. demo_operator()` itemgetter / attrgetter / methodcaller / `4. run_demo()` 交互式演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: itertools 和直接用列表操作有什么区别？**
 itertools 是惰性的，不预生成全部元素，内存占用 O(1)。列表操作会创建中间列表，内存占用 O(n)。对于大数据或无限流，itertools 是唯一选择。

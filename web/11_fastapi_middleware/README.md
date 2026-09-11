@@ -103,7 +103,7 @@ assert EVIDENCE["response_created_at"] < EVIDENCE["task_done_at"]
 
 `fastapi_middleware.py` 内容：`add_process_time` 耗时中间件 / `BusinessError` + `exception_handler`（418 约定 JSON）/ `/orders` + `send_confirmation_email` 后台任务（双时间戳留痕）/ 三个 demo 小节（验收点：§1 覆盖范围边界、§3 时间戳证据）。环境：`web/.venv`（fastapi + httpx）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: FastAPI 中间件和依赖注入的区别？怎么选？**
 中间件包住整个请求/响应周期，能改响应头、耗时打点，但看不到路由参数；依赖注入在路由解析阶段执行，能复用依赖树、能按路由声明。横切的"响应整形"用中间件，"准入校验/资源准备"用依赖（项目 9）。

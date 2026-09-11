@@ -97,7 +97,7 @@ results[item] = results.get(item, 0) + 1   # 多个消费者并发执行这段
 
 `async_pipelines.py` 内容：`demo_pipeline()` 5000 条守恒（验收点 1）/ `demo_semaphore()` 在飞峰值（验收点 2）/ `demo_backpressure()` 无界 vs maxsize 对照（验收点 3）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: asyncio.Queue 和 queue.Queue 的区别？**
 API 几乎一致，等待机制完全不同：前者 await 让出（单线程协作），后者阻塞线程（多线程抢占）。前者只能在事件循环内用，跨线程要用 `queue.Queue` 或 `loop.call_soon_threadsafe` 桥接。

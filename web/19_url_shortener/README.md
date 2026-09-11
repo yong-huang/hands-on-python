@@ -131,7 +131,7 @@ with SessionLocal() as db:
 验期 + 计数 + 302 / `get_admin()` JWT 依赖 + `/admin/links/{code}` 删除。环境：
 `web/.venv`（fastapi + sqlalchemy + pyjwt + bcrypt + httpx + pytest）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 短码生成有哪些策略？各自的取舍？**
 随机码（本方案，碰撞靠约束+重试）、自增 ID 转 base62（有序可预测、需防遍历）、哈希截断

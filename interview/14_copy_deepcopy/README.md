@@ -178,7 +178,7 @@ deep     = copy.deepcopy(original)  # 深拷贝：递归下探，每层都新建
 
 `copy_deepcopy.py` 内容：`1. demo_basics()` 基础对比 / `2. demo_immutable()` 不可变对象 copy 行为 / `3. Node + __copy__()` 自定义浅拷贝（链表节点） / `4. demo_cyclic()` deepcopy 处理循环引用 / `5. run_demo()` 汇总演示 + 内存 id 对比。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 浅拷贝之后修改内层元素会怎样？**
 替换外层引用（`outer[0] = 99`、`outer.append(x)`）双方独立；修改内层可变对象（`outer[0][0] = 99`）原对象和浅拷贝同时被改——浅拷贝只保证外层容器独立。

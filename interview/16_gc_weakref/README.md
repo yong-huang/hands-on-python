@@ -214,7 +214,7 @@ del a; del b   # 引用计数永远到不了 0 → 只能等 gc.collect() 的分
 
 `gc_weakref.py` 内容：`1. demo_refcount()` 引用计数演示（sys.getrefcount） / `2. Node + demo_cyclic()` 循环引用与 gc.collect() / `3. demo_weakref()` weakref.ref + finalize 回调 / `4. demo_weakref_dict()` WeakKeyDictionary 自动清理 / `5. run_demo()` 综合演示（含 `__del__` 警告、GC 分代）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Python 的垃圾回收机制是什么？**
 引用计数为主（实时回收），分代 GC 为辅（处理循环引用）。引用计数归零立即回收，循环引用通过 `gc.collect()` 的可达性分析处理。

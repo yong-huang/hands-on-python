@@ -117,7 +117,7 @@ teardown 的执行在响应之外，响应体里看不到它；只有把 `LOG.ap
 
 `fastapi_di.py` 内容：三层嵌套链（settings→session→user）/ `dep_conn` yield 依赖（setup/teardown 留痕 LOG）/ `dep_probe` 缓存探针（含 use_cache=False 对照）/ 真 DB 依赖与假 DB 替身 / 四个 demo 小节（验收点：§2 异常路径 teardown、§4 真依赖零调用）/ 全局依赖计数收尾断言。环境：`web/.venv`（fastapi + httpx）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Depends 的解析顺序是什么？**
 深度优先：先递归求解子依赖，再执行当前依赖；多个同级依赖按声明顺序依次求解。同请求内同一依赖默认缓存复用（use_cache=True）。

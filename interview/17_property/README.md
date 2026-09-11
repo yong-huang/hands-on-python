@@ -206,7 +206,7 @@ obj.radius = value
 
 `property.py` 内容：`1. Circle` getter + setter + deleter，验证半径 / `2. Rectangle` 只读计算属性（面积、周长） / `3. Temperature` 联动属性（摄氏/华氏自动同步） / `4. reveal_property()` 揭示 property 的描述符本质 / `5. run_demo()` 五组交互演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: property 和普通属性有什么区别？**
 

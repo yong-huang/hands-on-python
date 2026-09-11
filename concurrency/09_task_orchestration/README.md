@@ -112,7 +112,7 @@ assert elapsed < 0.5    # 慢任务完整要 1.0s
 
 `task_orchestration.py` 内容：`demo_taskgroup()` 一败全停 + 取消清理（验收点 1）/ `demo_wait_for()` 超时兜底（验收点 2）/ `demo_gather()` 双策略收集（验收点 3）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 什么是结构化并发？TaskGroup 解决什么问题？**
 并发的生命周期被限定在词法作用域内：async with 块结束时任务必然到终态——全成或全取消。解决裸 create_task 的孤儿任务、异常静默、取消无人负责三大问题。

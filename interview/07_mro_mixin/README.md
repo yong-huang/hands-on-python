@@ -125,7 +125,7 @@ class MyService(MixinLog, MixinValidate, Base):
 
 `mro_mixin.py` 内容：`1. Diamond inheritance (A → B,C → D)` MRO 基础 / `2. super() chain with Mixins` super() 真实行为 / `3. JSONMixin / ReprMixin / ValidateMixin` 实战 Mixin / `4. User / Product` Mixin 组合。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 钻石问题（Diamond Problem）？**
 

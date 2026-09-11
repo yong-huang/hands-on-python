@@ -111,7 +111,7 @@ ORM 的价值主张是"生成正确的 SQL"——对账是直接验证这个主�
 
 `mtv_demo.py` 内容：`demo_migrate()` migrate + PRAGMA 表结构断言（验收点）/ `demo_orm_vs_sql()` 跨关系过滤与 ORM==SQL 聚合对账（验收点）/ `demo_admin()` superuser 登录 200 + 未登录 302（验收点）。环境：`web/.venv`（django）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Django 的 MTV 与 MVC 的对应关系？**
 Model 对应 M，Template 对应 V（展示），View 对应 C（编排）——Django 的"View"其实是 MVC 的 Controller 职责，路由由 urls.py 承担。改名是为了强调"模板才是用户看到的视图"。

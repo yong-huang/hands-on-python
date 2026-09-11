@@ -99,7 +99,7 @@ await runner.cleanup()
 
 `async_fetcher.py` 内容：`make_app()` 可控测试服务（延迟/首败状态机）/ `start_server()` 随机端口启动 / `fetch_serial()/fetch_threads()/fetch_async()` 三种模型（同重试策略）/ `demo_compare()` 对决与断言。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 异步客户端为什么快？快在哪？**
 不是"单线程更快"，而是**等待成本为零**：50 个请求的等待时间重叠在一张调度表上，串行要累加每个延迟（实测 3.6s），异步只付总延迟/并发度（实测 0.4s）。CPU 计算它一分钱省不了。

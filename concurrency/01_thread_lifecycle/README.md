@@ -129,7 +129,7 @@ def worker(idx: int) -> None:
 
 `thread_lifecycle.py` 内容：`demo_family_and_states()` 家谱与三态迁移 / `demo_start_vs_run()` run 陷阱与二次 start / `run_batch()`+`demo_interleaving()` 交错观察（验收点 1）/ `chatty_worker()`+`demo_join_and_daemon()` join 对照（验收点 2）/ `daemon_only_demo()` `--daemon` 专用演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: `start()` 和 `run()` 的区别？**
 `start()` 注册到 OS 创建真实线程并在新线程回调 `run()`；直接调 `run()` 是当前线程里的普通方法调用，没有并发。线程只能 `start()` 一次，第二次抛 `RuntimeError`。

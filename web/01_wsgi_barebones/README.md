@@ -128,7 +128,7 @@ def body_iter():
 
 `wsgi_barebones.py` 内容：`home()/greet()/info()/not_found()` 处理函数 / `route()` 查表分发 / `wsgi_app()` WSGI 合约翻译层 / `log_middleware()` 洋葱中间件（计时 + close 传播）/ `fake_environ()` 手工 environ / `demo_contract()` 合约直调 / `demo_routing()` 路由断言 / `demo_middleware_and_validator()` 洋葱与坏 app 实测 / `demo_real_server()` 起服务 + urllib 5 请求全断言（验收点）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 什么是 WSGI？为什么需要它？**
 PEP 3333 定义的 Web server 与 Python 应用之间的统一接口：`app(environ, start_response)` 返回可迭代 body。有了它，uwsgi/gunicorn 等任意 server 可以搭配 Flask/Django 等任意框架，双方互不绑定。

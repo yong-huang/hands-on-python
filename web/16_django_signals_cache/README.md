@@ -111,7 +111,7 @@ models.py 在应用注册早期被加载，此时连信号可能在测试（impo
 
 `signals_cache_demo.py` 内容：`demo_signal()` created/updated 审计断言（验收点）/ `demo_cache()` 首次 vs 二次的 SQL 计数（验收点）/ `demo_cached_property()` 实例缓存边界 / `demo_pytest_coverage()` subprocess 跑 pytest --cov 并解析 TOTAL ≥80%（验收点）。环境：`web/.venv`（django + pytest-django + pytest-cov）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Django 信号的适用场景与滥用风险？**
 适用：跨模块的旁路副作用（审计、失效缓存、发通知）。风险：调用链隐身、调试困难、顺序不可控、循环触发（save 里又 save）。原则：主流程逻辑不进信号；`dispatch_uid` 防重复连接。

@@ -107,7 +107,7 @@ with counter_lock:
 
 `producer_consumer.py` 内容：`produce()/consume()` 流水线主体 + 毒丸收尾（验收点 1/3）/ `demo_backpressure()` maxsize=10 背压 + 1ms 采样峰值（验收点 2）/ `demo_no_shutdown()` 反面教材 + 毒丸救援。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: queue.Queue 和 list+Lock 比好在哪？**
 Queue 内置阻塞语义（空则等、满则停）和条件通知，list+Lock 要自己用 Condition 拼；Queue 还是 FIFO + 回执协议（task_done/join）+ 背压（maxsize）的现成实现。性能上 deque 更快，但工程语义 Queue 完胜。

@@ -127,7 +127,7 @@ session["user_id"] = user.id
 
 `flask_auth_app.py` 内容：`new_client()` 工厂产独立实例 / `demo_factory()` 蓝图注册与数据隔离（验收点）/ `demo_full_flow()` 全流程状态码断言（验收点）/ `demo_hash_only()` 直接查库验证 scrypt（验收点）/ `demo_rate_limit()` 5 锁 429 与"正确密码也进不来"（验收点）。环境：`web/.venv`（flask + sqlalchemy，DB 走 tempfile 自动清理）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: 什么是应用工厂模式？解决什么问题？**
 把"创建 Flask 应用"封装成 `create_app(config)` 函数：支持多实例（测试/开发/生产不同配置）、避免循环导入（扩展绑定延迟到工厂内）、配合蓝图实现大项目拆分。代价是视图里不能直接 import app 变量，要用 current_app。

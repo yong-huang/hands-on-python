@@ -210,7 +210,7 @@ class Product:
 
 `collections.py` 内容：`1. Point / Color (namedtuple)` 经典命名元组 / `2. TypedPoint (NamedTuple)` 带类型注解的命名元组 / `3. Product (dataclass, mutable)` 可变数据类 + `__post_init__` / `4. Version (dataclass, frozen)` 不可变数据类 + 排序 / `5. Address / Employee (nested)` 嵌套数据类 / `6. run_demo()` 汇总演示。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: namedtuple 和 dataclass 怎么选？**
 

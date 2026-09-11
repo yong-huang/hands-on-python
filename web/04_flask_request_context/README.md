@@ -116,7 +116,7 @@ def g_worker(tag: str) -> None:
 
 `flask_request_context.py` 内容：路由与 errorhandler（`/user/<name>`、`/whoami` 读 request+g、`/boom` 有兜底、`/crash` 无兜底）/ 三个钩子写 EVENTS / `demo_routing()` test_client 断言 / `demo_context_boundary()` 上下文边界三连 / `demo_g_isolation()` 交叠线程隔离 / `demo_hooks()` 三条路径顺序断言。环境：`web/.venv`（Flask 3.1.3，见 `../requirements.txt`）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Flask 的 request 为什么不需要传参就能用？它是全局变量吗？**
 不是真全局。它是 LocalProxy，把属性访问转发给"当前线程上下文栈顶"的 Request 对象；请求上下文由 wsgi_app 在处理请求前压栈。所以任何一层函数都能直接访问 request，且线程之间互不干扰。

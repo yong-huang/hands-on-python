@@ -110,7 +110,7 @@ Article.objects.create(title=f"文章 {k:02d}", created=datetime(2026, 1, k, tzi
 
 `views_forms_demo.py` 内容：`prepare_db()` 固定时间戳灌 6 篇 + 建测试用户 / `demo_pagination()` 两页内容与零重叠断言（验收点）/ `demo_detail_and_fbv()` 详情页与 FBV 统计 / `demo_create_flow()` 302+next、非法回显、合法落库（验收点）。环境：`web/.venv`（django）。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: FBV 和 CBV 怎么选？**
 按模式化程度：CRUD/列表/详情用 CBV 泛型视图省样板；非标准流程用 FBV 直白。CBV 深度定制（覆写多个钩子）超过阈值时可读性反超 FBV 成本，退回 FBV。

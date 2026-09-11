@@ -124,7 +124,7 @@ assert victim.is_alive()      # 1 秒后仍卡着 = 自锁实锤
 
 `sync_primitives.py` 内容：`demo_lock()` 修复丢失更新（验收点 1）/ `demo_rlock()` 自锁现场 + 可重入 / `demo_semaphore()` 限流峰值（验收点 2）/ `demo_event()` 广播开关 / `demo_condition()` 谓词等待 / `demo_barrier()` 集结守序。
 
-## 7. 面试要点
+## 7. 深入要点
 
 **Q1: Lock 和 RLock 的区别？什么时候必须用 RLock？**
 Lock 不认持有者，重入即自锁；RLock 记录持有线程和重入计数，进出配对。只有递归/多层调用需要重复拿同一把锁时才换 RLock，否则 Lock 更简单更快。
