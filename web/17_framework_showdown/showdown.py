@@ -35,6 +35,13 @@ import logging  # noqa: E402
 
 logging.getLogger("werkzeug").setLevel(logging.CRITICAL)  # 静音压测期间 1000+ 行访问日志
 
+# 版本检查必须在 import app_* 之前——旧环境会在模块导入阶段就崩，main() 里拦不住
+from importlib.metadata import version as _v  # noqa: E402
+for _pkg, _min in (("flask", (3, 0)), ("fastapi", (0, 100)), ("django", (4, 2))):
+    if tuple(int(x) for x in _v(_pkg).split(".")[:2]) < _min:
+        sys.exit(f"本实验需要 {_pkg} ≥ {'.'.join(map(str, _min))}（当前 {_v(_pkg)}）。"
+                 f"请先激活系列环境：source ../.venv/bin/activate")
+
 import app_django  # noqa: E402
 import app_fastapi  # noqa: E402
 import app_flask  # noqa: E402

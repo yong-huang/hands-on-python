@@ -236,6 +236,9 @@ def demo_hooks() -> None:
 
 def main() -> None:
     from importlib.metadata import version
+    if tuple(int(x) for x in version("flask").split(".")[:2]) < (3, 0):
+        sys.exit(f"本实验需要 Flask ≥3.0（当前 {version('flask')}，旧 Flask 配新 werkzeug "
+                 f"会在 test_client 处崩）。请先激活系列环境：source ../.venv/bin/activate")
     print(f"Python {sys.version.split()[0]} · Flask {version('flask')} · 请求上下文实验")
     demo_routing()
     demo_context_boundary()

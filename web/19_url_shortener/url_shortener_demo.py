@@ -160,6 +160,10 @@ def demo_docker() -> None:
 
 
 def main() -> None:
+    from importlib.metadata import version as _v
+    if tuple(int(x) for x in _v("fastapi").split(".")[:2]) < (0, 100):
+        sys.exit(f"本实验需要 fastapi ≥ 0.100（当前 {_v('fastapi')}）。"
+                 f"请先激活系列环境：source ../.venv/bin/activate")
     from importlib.metadata import version
     print(f"Python {sys.version.split()[0]} · FastAPI {version('fastapi')} · 🏁 短链接服务综合交付")
     print(f"数据库: {DEMO_DB}（环境变量注入，收尾清理）")

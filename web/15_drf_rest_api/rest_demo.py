@@ -137,6 +137,10 @@ def demo_validation_and_action(client: APIClient) -> None:
 
 
 def main() -> None:
+    from importlib.metadata import version as _v
+    if tuple(int(x) for x in _v("django").split(".")[:2]) < (4, 2):
+        sys.exit(f"本实验需要 django ≥ 4.2（当前 {_v('django')}）。"
+                 f"请先激活系列环境：source ../.venv/bin/activate")
     from importlib.metadata import version
     print(f"Python {sys.version.split()[0]} · Django {version('django')} + DRF "
           f"{version('djangorestframework')} · REST API 实验")

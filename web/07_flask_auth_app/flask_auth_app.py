@@ -152,6 +152,10 @@ def demo_rate_limit(tmp: str) -> None:
 
 
 def main() -> None:
+    from importlib.metadata import version as _v
+    if tuple(int(x) for x in _v("flask").split(".")[:2]) < (3, 0):
+        sys.exit(f"本实验需要 flask ≥ 3.0（当前 {_v('flask')}）。"
+                 f"请先激活系列环境：source ../.venv/bin/activate")
     from importlib.metadata import version
     print(f"Python {sys.version.split()[0]} · Flask {version('flask')} · 书签应用（Flask 段收官）")
     with tempfile.TemporaryDirectory() as tmp:  # 所有 DB 进临时目录，收尾自动清理
