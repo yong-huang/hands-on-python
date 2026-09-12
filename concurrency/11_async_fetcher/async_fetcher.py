@@ -174,11 +174,13 @@ async def demo_compare() -> None:
     # ---- 断言 ----
     assert ok_s == ok_t == stats["ok"] == N_ENDPOINTS, "三种模型应全部抓齐"
     assert t_async < t_serial / 5, f"异步未达串行 1/5（{t_async:.2f}s vs {t_serial:.2f}s）"
-    assert t_async < t_threads, f"异步应快于线程池（{t_async:.2f}s vs {t_threads:.2f}s）"
+    assert t_async <= t_threads * 1.2, (
+        f"异步明显慢于线程池（{t_async:.2f}s vs {t_threads:.2f}s）——限流是否失效？")
     recovery = stats["recovered"] / max(stats["first_failed"], 1)
     assert recovery >= 0.9, f"重试恢复率仅 {recovery:.0%}"
-    print(f"\n  加速比: 异步 = 串行的 1/{t_serial / t_async:.1f}，且快于线程池")
+    print(f"\n  加速比: 异步 = 串行的 1/{t_serial / t_async:.1f}；与线程池同并发下打平")
     print(f"  重试恢复率: {recovery:.0%}（不稳定端点全部救回）")
+    print("  同并发 = 同等待重叠，打平是理论必然；异步的真正优势在'并发便宜'（见 §4.4）")
     print("  三件套各司其职：Semaphore 限流防打爆、超时防挂死、退避重试救回失败")
 
 
