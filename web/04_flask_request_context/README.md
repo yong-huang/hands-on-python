@@ -23,7 +23,7 @@
 
 ```bash
 cd web/04_flask_request_context
-source ../.venv/bin/activate        # 本系列框架阶段的公共环境（见 python_web_frameworks.md）
+source ../.venv/bin/activate        # 本系列框架阶段的公共环境（见 docs/python_web_frameworks.md）
 python3 flask_request_context.py    # 完整演示（4 个小节，内置验收断言）
 ```
 

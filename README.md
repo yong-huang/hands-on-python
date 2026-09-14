@@ -12,17 +12,25 @@
 
 ```
 hands-on-python/
-├── README.md                  # 本总目录：实验表格 + 学习路线
+├── README.md                  # 本总目录：三个系列的实验表格 + 学习路线
 ├── LICENSE                    # MIT
 ├── CLAUDE.md                  # 仓库约定（面向 AI 协作工具）
-└── interview/
-    └── NN_short_name/         # 两位编号 + 小写主题名，共 20 个实验
-        ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 深入要点 → 总结
-        ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
-        └── images/
-            ├── <topic>.json  # 图源（typed JSON IR，可编辑重渲染）
-            ├── <topic>.html  # 交互示意图（自包含单文件）
-            └── <topic>.svg   # 双主题矢量图（README §2 内嵌）
+├── docs/                      # 各系列清单与规划文档（根目录只留 README）
+│   ├── python_interview.md       # 第一系列（语言机制）清单与进度
+│   ├── python_concurrency.md     # 第二系列（并发）清单与进度
+│   └── python_web_frameworks.md  # 第三系列（Web 框架）清单、环境配置与版本矩阵
+├── interview/
+│   └── NN_short_name/         # 第一系列：两位编号 + 小写主题名，共 20 个实验
+│       ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 深入要点 → 总结
+│       ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
+│       └── images/
+│           ├── <topic>.json  # 图源（typed JSON IR，可编辑重渲染）
+│           ├── <topic>.html  # 交互示意图（自包含单文件）
+│           └── <topic>.svg   # 双主题矢量图（README §2 内嵌）
+├── concurrency/
+│   └── NN_topic/              # 第二系列：16 个并发实验，同"五件套"规范
+└── web/
+    └── NN_topic/              # 第三系列：20 个 Web 框架实验，同"五件套"规范（框架阶段跑在 web/.venv）
 ```
 
 ## 实验列表
