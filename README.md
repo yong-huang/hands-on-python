@@ -54,7 +54,7 @@ hands-on-python/
 
 继 20 个语言机制实验之后的完整并发专题：线程地基 → 多进程 → asyncio → 诊断与模式 → 终极串联。
 每个实验同为本仓库"五件套"规范（教程 README + 主演示脚本 + 架构图三件套），
-清单与进度见 [python_concurrency.md](python_concurrency.md)。
+清单与进度见 [python_concurrency.md](docs/python_concurrency.md)。
 
 | 编号 | 实验名 | 一句话主题 |
 |:---|:---|:---|
@@ -86,8 +86,8 @@ hands-on-python/
 ## 🌐 第三系列：Python Web 框架 20 站（2026-09 新增，20/20 完成）
 
 三大框架通吃的地基层：先零依赖手写 WSGI/HTTP/会话（第一阶段），再依次进入 Flask → FastAPI → Django/DRF，收拢于三框架同题对比与容器化综合项目。
-本系列主演示脚本分两类：第一阶段三站零第三方依赖；框架阶段运行于 `web/.venv`（依赖清单与 2026-09-10 实测版本见 [python_web_frameworks.md](python_web_frameworks.md)）。
-清单与进度见 [python_web_frameworks.md](python_web_frameworks.md)。
+本系列主演示脚本分两类：第一阶段三站零第三方依赖；框架阶段运行于 `web/.venv`（依赖清单与 2026-09-10 实测版本见 [python_web_frameworks.md](docs/python_web_frameworks.md)）。
+清单与进度见 [python_web_frameworks.md](docs/python_web_frameworks.md)。
 
 | 编号 | 实验名 | 一句话主题 |
 |:---|:---|:---|
