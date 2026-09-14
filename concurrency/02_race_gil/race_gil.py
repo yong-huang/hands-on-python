@@ -48,7 +48,9 @@ def demo_bytecode() -> None:
 
     opnames = [i.opname for i in instrs]
     # 断言：剥掉前后缀（RESUME/RETURN_CONST）后，先 LOAD 后 STORE，中间隔着加法
-    core = [op for op in opnames if op not in ("RESUME", "RETURN_CONST")]
+    # 跨版本：3.13 是 LOAD_CONST，3.14 换成专用指令 LOAD_SMALL_INT，尾部还有 RETURN_VALUE
+    housekeeping = {"RESUME", "RETURN_CONST", "RETURN_VALUE", "LOAD_CONST"}
+    core = [op for op in opnames if op not in housekeeping]
     assert core[0].startswith("LOAD"), f"第一条应为 LOAD: {core}"
     assert core[-1].startswith("STORE"), f"最后一条应为 STORE: {core}"
     assert any(op.startswith("BINARY") for op in core), core

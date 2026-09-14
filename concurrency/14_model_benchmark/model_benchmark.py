@@ -139,8 +139,9 @@ def main() -> None:
     p_cpu = bench("multiprocessing(4)", run_process_cpu, n_cpu)
     a_cpu = bench("asyncio", run_asyncio_cpu, n_cpu)
     assert p_cpu <= s_cpu * 0.6, f"进程版加速比不足（{s_cpu / p_cpu:.2f}×），应为四模型最快"
-    assert a_cpu >= s_cpu * 0.99, "协程版不应快于串行（CPU 任务 await 不帮忙）"
-    assert t_cpu >= s_cpu * 0.99, f"线程版 CPU 竟快于串行（GIL 失效？）{t_cpu:.3f} vs {s_cpu:.3f}"
+    # 容差 10%：机器渐热会让后跑的模型稳定快 ~3%（3.14 实测），方向性结论不变
+    assert a_cpu >= s_cpu * 0.9, "协程版不应明显快于串行（CPU 任务 await 不帮忙）"
+    assert t_cpu >= s_cpu * 0.9, f"线程版 CPU 明显快于串行（GIL 失效？）{t_cpu:.3f} vs {s_cpu:.3f}"
     print(f"  → CPU 密集：multiprocessing {s_cpu / p_cpu:.2f}× 最快；"
           f"threading {t_cpu / s_cpu:.2f}× 串行耗时（GIL 串行化）；asyncio ≈ 串行")
 
