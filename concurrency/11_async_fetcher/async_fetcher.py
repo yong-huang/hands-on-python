@@ -155,7 +155,7 @@ async def fetch_async(base: str) -> tuple:
 # ============================================================
 
 async def demo_compare() -> None:
-    section(f"3. 对决：50 个端点（15 个不稳定），三种模型")
+    section(f"三模型对决：50 个端点（15 个不稳定）")
 
     # 串行/线程池客户端是阻塞代码，必须丢进工作线程——
     # 若在事件循环线程里直接调 urlopen，服务端和客户端在同一个循环里互相等死（实测挂 5s 超时）
@@ -193,7 +193,7 @@ def main() -> None:
     print(f"Python {sys.version.split()[0]} · aiohttp 本地实测（离线可跑）")
     asyncio.run(demo_compare())
     print(f"\n{'=' * 56}")
-    print("全部断言通过 ✓  验收点：全部成功、异步 < 串行 1/5 且 < 线程池、恢复率 ≥ 90%")
+    print("全部断言通过 ✓  验收点：全部成功、异步 < 串行 1/5、与线程池打平（±20%）、恢复率 ≥ 90%")
 
 
 if __name__ == "__main__":

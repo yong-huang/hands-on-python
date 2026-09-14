@@ -73,7 +73,7 @@ def deadlock_child() -> None:
 # ============================================================
 
 def demo_deadlock_and_dump() -> None:
-    section("1+2. 复现死锁，faulthandler 3 秒后抓现场")
+    section("1. 复现死锁，faulthandler 3 秒后抓现场")
     dump_path = "/tmp/_deadlock_dump.txt"
     p = subprocess.Popen(
         [sys.executable, __file__, "--deadlock-child"],
@@ -103,7 +103,7 @@ def demo_deadlock_and_dump() -> None:
 # ============================================================
 
 def demo_fix() -> None:
-    section("3. 修复：统一锁序，连跑 100 次无挂起")
+    section("2. 修复：统一锁序，连跑 100 次无挂起")
     t0 = time.perf_counter()
     for i in range(100):
         with ThreadPoolExecutor(max_workers=2) as pool:
@@ -125,7 +125,7 @@ def main() -> None:
     demo_deadlock_and_dump()
     demo_fix()
     print(f"\n{'=' * 56}")
-    print("全部断言通过 ✓  验收点：死锁复现（§1）、faulthandler 现场（§1）、100 轮修复（§3）")
+    print("全部断言通过 ✓  验收点：死锁复现与验尸（§1）、100 轮锁序修复（§2）")
 
 
 if __name__ == "__main__":
