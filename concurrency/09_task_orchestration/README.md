@@ -137,4 +137,4 @@ except* 语法按异常类型分组匹配（3.11+），或手动遍历 `.excepti
 4. **gather 双策略**：True 尽力收齐，False 一票否决——但都不取消兄弟任务
 5. **断言取消用时间**：总耗时是取消是否发生的最诚实证据
 
-下一篇：**10 · 异步生产者-消费者与限流**——asyncio.Queue 背压 + Semaphore 并发上限，把流水线搬到单线程世界（规划见根目录 [python_concurrency.md](../../python_concurrency.md) 项目 10）。
+下一篇进入 [10 · 异步生产者-消费者与限流](../10_async_pipelines/README.md)——asyncio.Queue 背压 + Semaphore 并发上限，把流水线搬到单线程世界。

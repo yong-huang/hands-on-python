@@ -132,4 +132,4 @@ Queue 内置阻塞语义（空则等、满则停）和条件通知，list+Lock �
 4. **maxsize 背压把过载反馈到源头**：峰值顶满上限、总量守恒不丢不重
 5. **队列安全 ≠ 全程安全**：记账仍然是"读-改-写隔调用"，锁不能省
 
-下一篇：**05 · multiprocessing 多核加速实测**——绕开 GIL 用真并行把 CPU 密集任务跑出 2.5× 以上加速比，顺手看清 fork/spawn 两种启动方式（规划见根目录 [python_concurrency.md](../../python_concurrency.md) 项目 5）。
+下一篇进入 [05 · multiprocessing 多核加速实测](../05_mp_accel/README.md)——绕开 GIL 用真并行把 CPU 密集任务跑出 2.5× 以上加速比，顺手看清 fork/spawn 两种启动方式。
