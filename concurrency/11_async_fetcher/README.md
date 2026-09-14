@@ -21,7 +21,8 @@
 
 ```bash
 cd concurrency/11_async_fetcher
-python3 async_fetcher.py      # 需 aiohttp（已装 3.14.1），约 5 秒
+pip install aiohttp           # 全系列唯一第三方依赖（实验 11 专属）
+python3 async_fetcher.py      # 约 5 秒
 ```
 
 真实输出（macOS, CPython 3.13.9）：

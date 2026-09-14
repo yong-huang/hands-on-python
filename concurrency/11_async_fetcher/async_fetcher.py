@@ -24,8 +24,13 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.request import urlopen
 from urllib.error import URLError
 
-import aiohttp
-from aiohttp import web
+try:
+    import aiohttp
+    from aiohttp import web
+except ImportError:
+    print("本实验需要 aiohttp。请在当前环境执行：pip install aiohttp")
+    print("（lab 11 是全系列唯一有第三方依赖的实验，其余实验零依赖可直接跑）")
+    sys.exit(1)
 
 N_ENDPOINTS = 50
 N_FLAKY = 15                 # 30% 端点首次必失败，重试即恢复
