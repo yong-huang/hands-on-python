@@ -473,7 +473,7 @@ source web/.venv/bin/activate && python --version && python -c "import fastapi, 
 
 | 已有清单 | 关系 |
 |:---|:---|
-| `python_interview.md`（已完成 20/20，语言机制线） | **正交互补**：那条不含 Web 主题。本清单项目 4 的 LocalProxy 会用到描述符与上下文管理器知识，项目 10 的线程池行为关联 GIL——对应实验（interview/03、08）可回头重读，其余全部为新覆盖 |
+| `python_interview.md`（已完成 20/20，语言机制线） | **正交互补**：那条不含 Web 主题。本清单项目 4 的 LocalProxy 会用到描述符与上下文管理器知识，项目 10 的线程池行为关联 GIL——对应实验（core/03、08）可回头重读，其余全部为新覆盖 |
 | `python_concurrency.md`（0/16，并发线） | **衔接不重复**：asyncio 语法在那条线教（其项目 8-11）；本清单项目 10 只讲 async 在 Web 端点的真实执行行为，项目 17 的压测客户端复用 asyncio 写法。做本项目 10 前建议至少完成并发线的项目 8（asyncio 入门），否则先把并发线排前 |
 
 ## 📚 来源

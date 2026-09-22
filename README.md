@@ -19,7 +19,7 @@ hands-on-python/
 │   ├── python_interview.md       # 第一系列（语言机制）清单与进度
 │   ├── python_concurrency.md     # 第二系列（并发）清单与进度
 │   └── python_web_frameworks.md  # 第三系列（Web 框架）清单、环境配置与版本矩阵
-├── interview/
+├── core/
 │   └── NN_short_name/         # 第一系列：两位编号 + 小写主题名，共 20 个实验
 │       ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 深入要点 → 总结
 │       ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
@@ -37,26 +37,26 @@ hands-on-python/
 
 | 编号 | 实验名 | 一句话主题 |
 |:---|:---|:---|
-| 01 | [装饰器工厂](interview/01_decorator_factory/README.md) | 三层嵌套实现带参数的装饰器 |
-| 02 | [上下文管理器](interview/02_context_manager/README.md) | with 语句背后的 `__enter__` / `__exit__` 协议 |
-| 03 | [描述符协议](interview/03_descriptor/README.md) | `__get__` / `__set__` / `__delete__` 与属性访问底层机制 |
-| 04 | [生成器与迭代器](interview/04_generator_iterator/README.md) | yield / send / yield from 与迭代器协议 |
-| 05 | [元类](interview/05_metaclass/README.md) | `__new__`、`__init_subclass__` 与类型创建过程 |
-| 06 | [`__slots__` 与内存](interview/06_slots_memory/README.md) | 固定属性集合如何降低实例内存开销 |
-| 07 | [MRO 与 Mixin](interview/07_mro_mixin/README.md) | C3 线性化与 `super()` 的真实语义 |
-| 08 | [GIL 与并发模型](interview/08_gil_concurrency/README.md) | threading / multiprocessing / asyncio 选型 |
-| 09 | [魔术方法](interview/09_magic_methods/README.md) | `__eq__` / `__hash__` / `__repr__` 与运算符重载 |
-| 10 | [ABC 与 Duck Typing](interview/10_abc_duck_typing/README.md) | 抽象基类、鸭子类型与 Protocol |
-| 11 | [`__getattr__` 与代理](interview/11_getattr_proxy/README.md) | 属性查找链与动态代理模式 |
-| 12 | [`__new__` vs `__init__`](interview/12_new_vs_init/README.md) | 对象创建生命周期两步走 |
-| 13 | [`__call__` 与可调用对象](interview/13_callable/README.md) | 让实例像函数一样被调用 |
-| 14 | [copy 与 deepcopy](interview/14_copy_deepcopy/README.md) | 浅拷贝与深拷贝的内存行为差异 |
-| 15 | [`*args` / `**kwargs`](interview/15_args_kwargs/README.md) | `*` / `**` 运算符的四种用途 |
-| 16 | [GC 与 weakref](interview/16_gc_weakref/README.md) | 引用计数、分代 GC 与循环引用 |
-| 17 | [property 深度剖析](interview/17_property/README.md) | 把方法伪装成属性的受控访问 |
-| 18 | [typing 与泛型](interview/18_typing_generic/README.md) | TypeVar / Generic / Protocol 静态类型 |
-| 19 | [collections 与 dataclass](interview/19_collections/README.md) | namedtuple / dataclass / dict 选型 |
-| 20 | [itertools / functools / operator](interview/20_itertools_func/README.md) | 标准库函数式工具三件套 |
+| 01 | [装饰器工厂](core/01_decorator_factory/README.md) | 三层嵌套实现带参数的装饰器 |
+| 02 | [上下文管理器](core/02_context_manager/README.md) | with 语句背后的 `__enter__` / `__exit__` 协议 |
+| 03 | [描述符协议](core/03_descriptor/README.md) | `__get__` / `__set__` / `__delete__` 与属性访问底层机制 |
+| 04 | [生成器与迭代器](core/04_generator_iterator/README.md) | yield / send / yield from 与迭代器协议 |
+| 05 | [元类](core/05_metaclass/README.md) | `__new__`、`__init_subclass__` 与类型创建过程 |
+| 06 | [`__slots__` 与内存](core/06_slots_memory/README.md) | 固定属性集合如何降低实例内存开销 |
+| 07 | [MRO 与 Mixin](core/07_mro_mixin/README.md) | C3 线性化与 `super()` 的真实语义 |
+| 08 | [GIL 与并发模型](core/08_gil_concurrency/README.md) | threading / multiprocessing / asyncio 选型 |
+| 09 | [魔术方法](core/09_magic_methods/README.md) | `__eq__` / `__hash__` / `__repr__` 与运算符重载 |
+| 10 | [ABC 与 Duck Typing](core/10_abc_duck_typing/README.md) | 抽象基类、鸭子类型与 Protocol |
+| 11 | [`__getattr__` 与代理](core/11_getattr_proxy/README.md) | 属性查找链与动态代理模式 |
+| 12 | [`__new__` vs `__init__`](core/12_new_vs_init/README.md) | 对象创建生命周期两步走 |
+| 13 | [`__call__` 与可调用对象](core/13_callable/README.md) | 让实例像函数一样被调用 |
+| 14 | [copy 与 deepcopy](core/14_copy_deepcopy/README.md) | 浅拷贝与深拷贝的内存行为差异 |
+| 15 | [`*args` / `**kwargs`](core/15_args_kwargs/README.md) | `*` / `**` 运算符的四种用途 |
+| 16 | [GC 与 weakref](core/16_gc_weakref/README.md) | 引用计数、分代 GC 与循环引用 |
+| 17 | [property 深度剖析](core/17_property/README.md) | 把方法伪装成属性的受控访问 |
+| 18 | [typing 与泛型](core/18_typing_generic/README.md) | TypeVar / Generic / Protocol 静态类型 |
+| 19 | [collections 与 dataclass](core/19_collections/README.md) | namedtuple / dataclass / dict 选型 |
+| 20 | [itertools / functools / operator](core/20_itertools_func/README.md) | 标准库函数式工具三件套 |
 
 ## 🧵 第二系列：Python 并发 16 站（2026-09 新增）
 
@@ -132,7 +132,7 @@ hands-on-python/
 ## 如何运行一个实验
 
 ```bash
-cd interview/01_decorator_factory
+cd core/01_decorator_factory
 python3 decorator_factory.py      # 主演示：分步打印 demo 输出（零第三方依赖）
 open images/decorator_factory.html   # 交互示意图（浏览器打开；Linux 用 xdg-open）
 ```
