@@ -2,12 +2,12 @@
 
 > 上一实验用 `list[int]`、`Stack[T]` 给容器贴上了类型标签。
 > 可结构化数据的样板代码还没着落：命名字段、默认值、比较、哈希、校验……
-> `namedtuple` / `NamedTuple` / `dataclass` 各管一段，怎么选是面试高频题。
+> `namedtuple` / `NamedTuple` / `dataclass` 各管一段，怎么选是高频要点。
 > 本实验从 `collections.namedtuple` 出发，按场景理清三种容器的适用边界。
 
 ## 1. 为什么需要它
 
-Python 提供多种数据容器来组织结构化数据：`dict` 是最通用的键值对，`namedtuple` 提供不可变的命名字段访问，`dataclass`（Python 3.7+）则在灵活性和代码简洁性之间取得了最佳平衡。三者各有适用场景，选错了会怎样：用裸 `dict` 传数据没有字段约束、拼错 key 只能运行时炸；把该不可变的配置做成可变对象，哈希和并发安全都无从谈起；手写 `__init__` / `__repr__` / `__eq__` 则是纯粹的样板劳动。面试中"namedtuple 和 dataclass 怎么选"是高频题。本文从 `collections.namedtuple` 出发，逐步介绍 `typing.NamedTuple`、可变/frozen `dataclass`、嵌套 dataclass。
+Python 提供多种数据容器来组织结构化数据：`dict` 是最通用的键值对，`namedtuple` 提供不可变的命名字段访问，`dataclass`（Python 3.7+）则在灵活性和代码简洁性之间取得了最佳平衡。三者各有适用场景，选错了会怎样：用裸 `dict` 传数据没有字段约束、拼错 key 只能运行时炸；把该不可变的配置做成可变对象，哈希和并发安全都无从谈起；手写 `__init__` / `__repr__` / `__eq__` 则是纯粹的样板劳动。"namedtuple 和 dataclass 怎么选"是最经典的选型问题。本文从 `collections.namedtuple` 出发，逐步介绍 `typing.NamedTuple`、可变/frozen `dataclass`、嵌套 dataclass。
 
 ## 2. 总览：核心机制一图看懂
 
@@ -176,7 +176,7 @@ asdict(emp)  # {'name': 'Alice', 'age': 30, 'address': {'city': 'Shanghai', 'str
 
 ## 5. 关键代码解析
 
-`@dataclass` 省掉的样板里藏着两个必考点：
+`@dataclass` 省掉的样板里藏着两个必记的坑：
 
 ```python
 @dataclass
@@ -249,7 +249,7 @@ class Product:
 3. **`NamedTuple`** 在 namedtuple 基础上增加类型注解，适合需要静态检查的项目
 4. **`dataclass`** 可配置可变/不可变，自动生成样板代码，`__post_init__` 支持校验
 5. **`frozen=True`** 使 dataclass 不可变且可哈希，适合配置和字典键
-6. **`field(default_factory=list)`** 避免可变默认值陷阱，面试必考
+6. **`field(default_factory=list)`** 避免可变默认值陷阱（必记）
 7. **`asdict()` / `astuple()`** 递归转换嵌套 dataclass，方便序列化
 
 下一篇进入 [20_itertools_func](../20_itertools_func/README.md)：看迭代器代数如何用几个组合子替代手写循环。

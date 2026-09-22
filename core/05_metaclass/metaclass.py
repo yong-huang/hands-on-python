@@ -1,6 +1,6 @@
 """
 元类 —— __new__, __init_subclass__, 类型创建的底层机制
-面试高频题: 元类是什么、单例模式、ORM、__init_subclass__
+核心要点: 元类是什么、单例模式、ORM、__init_subclass__
 
 元类是"类的类"。type 是所有类的默认元类。
 当你写 class Foo: ... 时，Python 调用 type(name, bases, namespace) 来创建类。

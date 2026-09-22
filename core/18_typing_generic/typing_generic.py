@@ -1,6 +1,6 @@
 """
 typing / TypeVar / Generic / Protocol —— Python 类型系统
-面试高频题: TypeVar、泛型、Protocol、typing.cast、运行时 vs 编译时
+核心要点: TypeVar、泛型、Protocol、typing.cast、运行时 vs 编译时
 
 Python 的类型注解（PEP 484）用于静态类型检查（mypy/pyright），
 但不影响运行时行为。typing 模块提供泛型、协议、联合类型等工具。

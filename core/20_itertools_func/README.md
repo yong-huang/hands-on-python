@@ -7,7 +7,7 @@
 
 ## 1. 为什么需要它
 
-Python 标准库中三大函数式工具模块是面试中的常客：**itertools** 提供高效的迭代器组合工具（惰性求值，不预生成全部元素）；**functools** 提供高阶函数工具（缓存、偏函数、装饰器辅助）；**operator** 用函数式的方式替代 lambda，提高可读性和性能。不掌握它们会怎样：合并数据流先建中间列表、递归没缓存跑不动、排序 key 全是匿名 lambda——样板代码多、内存占用高，也少了 Pythonic 的味道。这三者在实际开发中经常配合使用——用 `itertools.chain` 合并数据流，用 `functools.lru_cache` 缓存递归结果，用 `operator.itemgetter` 替代排序中的 lambda。
+Python 标准库中三大函数式工具模块是函数式编程的主力：**itertools** 提供高效的迭代器组合工具（惰性求值，不预生成全部元素）；**functools** 提供高阶函数工具（缓存、偏函数、装饰器辅助）；**operator** 用函数式的方式替代 lambda，提高可读性和性能。不掌握它们会怎样：合并数据流先建中间列表、递归没缓存跑不动、排序 key 全是匿名 lambda——样板代码多、内存占用高，也少了 Pythonic 的味道。这三者在实际开发中经常配合使用——用 `itertools.chain` 合并数据流，用 `functools.lru_cache` 缓存递归结果，用 `operator.itemgetter` 替代排序中的 lambda。
 
 ## 2. 总览：核心机制一图看懂
 
@@ -106,7 +106,7 @@ list(combinations('ABCD', 2))
 # [('A','B'), ('A','C'), ('A','D'), ('B','C'), ('B','D'), ('C','D')]
 ```
 
-生成不可重复的 k 元组合，无序。面试中常见于"从 n 个数中选 k 个"的场景。
+生成不可重复的 k 元组合，无序。经典场景是"从 n 个数中选 k 个"的场景。
 
 **groupby —— 分组**
 
@@ -145,7 +145,7 @@ print(expensive.cache_info())
 - `maxsize=None` 时为无限缓存（小心内存泄漏）
 - 基于 LRU 策略淘汰（最近最少使用）
 - 适用于纯函数（相同输入必定返回相同输出）
-- 面试常考：递归 Fibonacci 加 `lru_cache` 从 O(2^n) 降到 O(n)
+- 经典应用：递归 Fibonacci 加 `lru_cache` 从 O(2^n) 降到 O(n)
 
 **partial —— 偏函数**
 
@@ -304,6 +304,6 @@ itertools 是惰性的，不预生成全部元素，内存占用 O(1)。列表�
 1. **itertools 惰性求值**：chain/islice/accumulate/combinations/groupby，适合大数据和无限流
 2. **functools 高阶工具**：lru_cache 缓存递归、partial 固定参数、wraps 保留元信息、singledispatch 类型分派
 3. **operator 替代 lambda**：itemgetter/attrgetter/methodcaller 用 C 实现，更快更清晰
-4. **三者在面试中常组合考察**：排序用 operator，缓存用 functools，流式处理用 itertools
+4. **三者常组合使用**：排序用 operator，缓存用 functools，流式处理用 itertools
 
-至此 20 个面试主题 lab 全部完成——从装饰器、描述符、GIL 到类型系统与函数式工具，这个系列覆盖了 Python 语言内部的核心机制，祝面试顺利。建议回到 [根 README](../../README.md) 的「学习路线」一节，按四阶段路线回顾各实验、查漏补缺。
+至此 20 个核心机制 lab 全部完成——从装饰器、描述符、GIL 到类型系统与函数式工具，这个系列覆盖了 Python 语言内部的核心机制，祝编码愉快。建议回到 [根 README](../../README.md) 的「学习路线」一节，按四阶段路线回顾各实验、查漏补缺。

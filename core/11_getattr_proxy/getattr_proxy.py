@@ -1,6 +1,6 @@
 """
 __getattr__ / __getattribute__ —— 属性访问控制与动态代理
-面试高频题: __getattr__ vs __getattribute__、动态属性、懒加载、API 代理
+核心要点: __getattr__ vs __getattribute__、动态属性、懒加载、API 代理
 
 Python 属性查找链: __getattribute__ -> 数据描述符 -> 实例 __dict__ ->
 非数据描述符 -> __getattr__(仅在找不到时调用)

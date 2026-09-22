@@ -1,6 +1,6 @@
 """
 ABC 抽象基类与 Duck Typing
-面试高频题: ABC vs interface、Protocol (PEP 544)、isinstance 检查、多态
+核心要点: ABC vs interface、Protocol (PEP 544)、isinstance 检查、多态
 
 Python 的多态基于 Duck Typing（"如果它走起来像鸭子，它就是鸭子"），
 不要求显式继承接口。ABC (Abstract Base Class) 提供可选的类型约束，

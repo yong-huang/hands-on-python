@@ -1,6 +1,6 @@
 """
 copy / deepcopy —— 浅拷贝与深拷贝
-面试高频题: = vs copy vs deepcopy、可变/不可变对象、循环引用、__copy__
+核心要点: = vs copy vs deepcopy、可变/不可变对象、循环引用、__copy__
 
 赋值(=)不创建副本，copy.copy()做浅拷贝（共享内层可变对象），
 copy.deepcopy()做深拷贝（递归复制所有对象）。

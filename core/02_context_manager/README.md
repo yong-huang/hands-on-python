@@ -167,7 +167,7 @@ def __exit__(self, exc_type, exc_val, exc_tb):
 
 坑清单：
 
-- **`__exit__` 忘写 `return True`**：默认返回 `None` 等于不吞异常——想吞必须显式返回 `True`，这是面试手写题最常见的丢分点
+- **`__exit__` 忘写 `return True`**：默认返回 `None` 等于不吞异常——想吞必须显式返回 `True`，这是手写实现最常见的丢分点
 - **`@contextmanager` 靠 `finally` 吞不掉异常**：必须在 `yield` 处用 `try/except` 捕获；但这会隐藏 `with` 块内的 bug，实际中应谨慎使用
 - **`return True` 滥用**：`__exit__` 返回 `True` 会吞掉一切异常，"代码没报错但行为不对"往往源于此
 - **示意图中的执行时序是示意数据**（展示行为模式），不是某次运行的实录

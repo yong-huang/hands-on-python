@@ -1,6 +1,6 @@
 """
 collections / namedtuple / dataclass / attrs —— 数据容器
-面试高频题: namedtuple vs dataclass vs dict、数据类最佳实践
+核心要点: namedtuple vs dataclass vs dict、数据类最佳实践
 
 Python 提供多种数据容器，各有适用场景:
 - dict: 通用键值对，灵活但无类型约束

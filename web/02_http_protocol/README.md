@@ -151,6 +151,6 @@ server（如 wsgiref/gunicorn）做完了本实验服务端的活：按定界机
 2. **body 两种定界**：Content-Length 读够即止 / chunked 块长行流式，二者互斥
 3. **keep-alive 复用连接**：3 请求 1 accept 实测；代价是必须处理空闲超时与按长度切包
 4. **Content-Length 写错一个数字，两端一起挂**：头部是协议的"合同条款"
-5. 这些细节在框架里被 `environ`/`wsgi.input` 封装——但面试和排障时，字节层理解是硬通货
+5. 这些细节在框架里被 `environ`/`wsgi.input` 封装——但排障时，字节层理解是硬通货
 
 下一篇进入 [03 · Cookie 与 Session 手写](../03_cookie_session/README.md)：在无状态的 HTTP 上，用手写 HMAC 签名 cookie 撑起登录态。

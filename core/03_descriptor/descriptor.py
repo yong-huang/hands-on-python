@@ -1,6 +1,6 @@
 """
 描述符协议 —— __get__ / __set__ / __delete__
-面试高频题: property 底层原理, descriptor vs property, 数据验证, cached_property
+核心要点: property 底层原理, descriptor vs property, 数据验证, cached_property
 
 描述符是 Python 属性访问的底层机制。当你访问 obj.attr 时，Python 先查找 attr 是否是
 描述符——如果是，则调用描述符的 __get__/__set__ 方法，而非直接读写实例 __dict__。

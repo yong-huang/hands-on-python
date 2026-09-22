@@ -1,6 +1,6 @@
 """
 GIL 与并发模型 —— threading / multiprocessing / asyncio
-面试高频题: GIL 是什么、为什么多线程不能利用多核、如何绕过 GIL
+核心要点: GIL 是什么、为什么多线程不能利用多核、如何绕过 GIL
 
 GIL (Global Interpreter Lock) 是 CPython 的全局锁:
 - 同一时刻只有一个线程执行 Python 字节码

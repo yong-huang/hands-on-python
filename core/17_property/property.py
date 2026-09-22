@@ -1,6 +1,6 @@
 """
 property 深度剖析 —— getter / setter / deleter
-面试高频题: property 本质、setter 验证、只读属性、property vs descriptor
+核心要点: property 本质、setter 验证、只读属性、property vs descriptor
 
 @property 是 Python 中实现"受控属性访问"的语法糖。
 本质是一个数据描述符（同时定义 __get__ + __set__）。

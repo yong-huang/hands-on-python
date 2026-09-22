@@ -1,6 +1,6 @@
 """
 上下文管理器与 with 语句
-面试高频题: __enter__/__exit__, contextlib, 资源管理, 异常安全
+核心要点: __enter__/__exit__, contextlib, 资源管理, 异常安全
 
 上下文管理器是 Python 中保证资源正确获取和释放的机制。
 with 语句的背后是 __enter__ 和 __exit__ 的协议。

@@ -1,6 +1,6 @@
 """
 魔术方法 —— __eq__, __hash__, __repr__, __str__, 运算符重载
-面试高频题: == vs is、自定义对象做 dict key、__repr__ vs __str__、dataclass
+核心要点: == vs is、自定义对象做 dict key、__repr__ vs __str__、dataclass
 
 Python 的运算符和内置函数背后都是魔术方法。
 理解它们可以自定义类的行为，使其像内置类型一样自然地使用。

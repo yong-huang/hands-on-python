@@ -1,6 +1,6 @@
 """
 itertools / functools / operator —— 函数式工具库
-面试高频题: accumulate / chain / groupby / lru_cache / partial
+核心要点: accumulate / chain / groupby / lru_cache / partial
 
 Python 标准库中的三大函数式工具:
 - itertools: 高效迭代器（不预生成全部元素）

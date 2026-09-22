@@ -1,6 +1,6 @@
 """
 生成器与迭代器协议 —— yield, send, yield from, 惰性求值
-面试高频题: yield vs return, 生成器表达式, 惰性管道, 协程基础
+核心要点: yield vs return, 生成器表达式, 惰性管道, 协程基础
 
 迭代器协议: __iter__() 返回自身, __next__() 返回下一个元素, StopIteration 结束
 生成器: 含 yield 的函数自动变为生成器函数，调用后返回生成器对象（迭代器的一种）
