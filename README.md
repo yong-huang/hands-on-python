@@ -37,7 +37,7 @@ hands-on-python/
 
 | 编号 | 实验名 | 一句话主题 |
 |:---|:---|:---|
-| 01 | [装饰器工厂](core/01_decorator_factory/README.md) | 三层嵌套实现带参数的装饰器 |
+| 01 | [装饰器工厂](core/01_decorator_factory/README.md) | 装饰器全景：基础、带参工厂、类装饰器、装饰类与标准库 |
 | 02 | [上下文管理器](core/02_context_manager/README.md) | with 语句背后的 `__enter__` / `__exit__` 协议 |
 | 03 | [描述符协议](core/03_descriptor/README.md) | `__get__` / `__set__` / `__delete__` 与属性访问底层机制 |
 | 04 | [生成器与迭代器](core/04_generator_iterator/README.md) | yield / send / yield from 与迭代器协议 |
