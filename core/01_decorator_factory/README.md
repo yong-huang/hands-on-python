@@ -195,13 +195,3 @@ def singleton(cls):
 
 **Q5: `functools.wraps` 不写会怎样？**
 功能不受影响，但 `func.__name__` 变成 `"wrapper"`、`__doc__` 丢失；调试、序列化、文档生成全部受牵连——这也是衡量工程素养的细节。类版装饰器对应 `functools.update_wrapper(self, func)`。
-
-## 总结
-
-1. **装饰器只是"接收→返回"**：基础形态两行核心，带参工厂三层嵌套
-2. **functools.wraps / update_wrapper 保留元信息**，调试时至关重要
-3. **闭包变量持久化状态**；要显式状态就用类装饰器（`__call__`）
-4. **装饰类在类创建期动手脚**：单例、方法增强；注意工厂函数接管语义的副作用
-5. **先翻标准库再手写**：`lru_cache` / `singledispatch` / `wraps` 覆盖大多数场景
-
-下一篇进入 [02_context_manager](../02_context_manager/README.md)：看 `with` 语句背后的 `__enter__` / `__exit__` 协议。
