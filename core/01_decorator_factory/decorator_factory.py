@@ -1,11 +1,3 @@
-"""
-装饰器全家桶 —— 基础装饰器 / 带参工厂 / 类装饰器 / 装饰类 / 标准库实用装饰器
-面试高频题: 装饰器、闭包、functools.wraps、单例
-
-交互示意图: 用浏览器打开 images/decorator_factory.html（时序图演示工厂的
-定义期/调用期，是下面第 2 部分的机制核心）
-"""
-
 import time
 import functools
 import random
