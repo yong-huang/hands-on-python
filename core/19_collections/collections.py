@@ -13,8 +13,6 @@ Python 提供多种数据容器，各有适用场景:
 - dataclass: 可配置的可变/不可变，自动 __init__/__repr__/__eq__
 - typing.NamedTuple: 类型注解版 namedtuple (Python 3.6+)
 - 字段顺序: dataclass 用 __post_init__ 处理初始化依赖
-
-交互示意图: 用浏览器打开 images/collections.archify.html
 """
 
 from collections import namedtuple
@@ -157,5 +155,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/collections.archify.html
+    # 只跑 demo; 
     run_demo()

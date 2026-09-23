@@ -13,8 +13,6 @@
 - **kwargs: 收集剩余关键字参数为 dict
 - 位置参数必须写在 *args 之前
 - *args 之后的参数必须是 keyword-only
-
-交互示意图: 用浏览器打开 images/args_kwargs.archify.html
 """
 
 
@@ -151,5 +149,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/args_kwargs.archify.html
+    # 只跑 demo; 
     run_demo()

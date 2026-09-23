@@ -12,8 +12,6 @@ Python 的多态基于 Duck Typing（"如果它走起来像鸭子，它就是鸭
 - ABCMeta: 元类，使 isinstance(instance, AbstractClass) / issubclass(subclass, AbstractClass) 生效
 - virtual subclass: register() 不继承也能通过 isinstance
 - Protocol: 结构化子类型（PEP 544），更灵活的 ABC
-
-交互示意图: 用浏览器打开 images/abc_duck_typing.archify.html
 """
 
 from abc import ABC, abstractmethod, ABCMeta
@@ -260,5 +258,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/abc_duck_typing.archify.html
+    # 只跑 demo; 
     run_demo()

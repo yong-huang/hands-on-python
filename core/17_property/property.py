@@ -11,8 +11,6 @@ property 深度剖析 —— getter / setter / deleter
 - @x.deleter: 控制 del obj.x
 - property 本质就是 data descriptor
 - 缓存场景可用 functools.cached_property (非数据描述符, 见 README Q5)
-
-交互示意图: 用浏览器打开 images/property.archify.html
 """
 
 
@@ -161,5 +159,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/property.archify.html
+    # 只跑 demo; 
     run_demo()

@@ -1,12 +1,12 @@
 # hands-on-python
 
-Python 语言核心机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等核心主题。每个实验都是一个"五件套"目录——README 教程 + 主演示脚本 + 图三件套（图源 JSON / 交互 HTML / 内嵌 SVG）——读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
+Python 语言核心机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等核心主题。每个实验目录包含 README 教程（五段式：What / Why / How / Core / Q&A）与零依赖的主演示脚本，读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
 
 ## 环境要求
 
 - **Python 3.8+**（推荐 3.10+；使用 `python3 --version` 探测实际版本）
 - 主演示脚本 `python3 <topic>.py` **零第三方依赖**
-- 每篇 README §2 内嵌双主题架构图（SVG，GitHub 深/浅色模式自适应），并附**交互版**链接（GitHub Pages 在线打开，或本地浏览器打开自包含 HTML：trace 动画、深/浅主题、节点检索）
+- 每篇 README 按五段式组织：What（它是什么）/ Why（为什么需要）/ How（实现与使用，含真实输出与"诚实预期"）/ Core（核心概念与坑清单）/ Q&A（深入要点）
 
 ## 目录结构
 
@@ -21,12 +21,12 @@ hands-on-python/
 │   └── python_web_frameworks.md  # 第三系列（Web 框架）清单、环境配置与版本矩阵
 ├── core/
 │   └── NN_short_name/         # 第一系列：两位编号 + 小写主题名，共 20 个实验
-│       ├── README.md          # 8 节制教程：为什么 → 图看懂 → 快速开始 → 概念 → 关键代码 → 文件 → 深入要点 → 总结
+│       ├── README.md          # 五段式教程：What / Why / How / Core / Q&A
 │       ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
-│       └── images/
-│           ├── <topic>.json  # 图源（typed JSON IR，可编辑重渲染）
-│           ├── <topic>.html  # 交互示意图（自包含单文件）
-│           └── <topic>.svg   # 双主题矢量图（README §2 内嵌）
+│       └── images/               # 架构图（历史产物，当前 README 不引用）
+│           ├── <topic>.json
+│           ├── <topic>.html
+│           └── <topic>.svg
 ├── concurrency/
 │   └── NN_topic/              # 第二系列：16 个并发实验，同"五件套"规范
 └── web/
@@ -134,7 +134,6 @@ hands-on-python/
 ```bash
 cd core/01_decorator_factory
 python3 decorator_factory.py      # 主演示：分步打印 demo 输出（零第三方依赖）
-open images/decorator_factory.html   # 交互示意图（浏览器打开；Linux 用 xdg-open）
 ```
 
-主演示脚本从任意 cwd 调用都正确。每个实验的 README §3「快速开始」里有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常；§2 有内嵌架构图与交互版链接。
+主演示脚本从任意 cwd 调用都正确。每个实验的 README「How」一节有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。

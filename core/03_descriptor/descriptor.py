@@ -10,8 +10,6 @@
 - 非数据描述符 (non-data descriptor): 只定义 __get__，实例 __dict__ 优先
 - property / classmethod / staticmethod 本质都是描述符
 - __set_name__: Python 3.6+，描述符创建时自动接收属性名
-
-交互示意图: 用浏览器打开 images/descriptor.archify.html
 """
 
 import time
@@ -367,4 +365,4 @@ def run_demo():
 
 if __name__ == "__main__":
     run_demo()
-    # 只跑 demo; 交互示意图见 images/descriptor.archify.html
+    # 只跑 demo; 

@@ -11,8 +11,6 @@ copy.deepcopy()做深拷贝（递归复制所有对象）。
 - 深拷贝: 递归复制所有层级的对象
 - 不可变对象: copy 返回自身（无需复制）
 - __copy__ / __deepcopy__: 自定义拷贝行为
-
-交互示意图: 用浏览器打开 images/copy_deepcopy.archify.html
 """
 
 import copy
@@ -154,5 +152,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/copy_deepcopy.archify.html
+    # 只跑 demo; 
     run_demo()

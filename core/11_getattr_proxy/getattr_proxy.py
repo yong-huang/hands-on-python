@@ -10,8 +10,6 @@ Python 属性查找链: __getattribute__ -> 数据描述符 -> 实例 __dict__ -
 - __getattr__: 仅在常规查找失败后触发（属性不存在时）
 - 动态属性: 根据访问模式生成/计算属性
 - 代理模式: 将属性访问转发到内部对象
-
-交互示意图: 用浏览器打开 images/getattr_proxy.archify.html
 """
 
 import time
@@ -198,5 +196,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/getattr_proxy.archify.html
+    # 只跑 demo; 
     run_demo()

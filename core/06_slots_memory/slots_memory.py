@@ -13,8 +13,6 @@ Python 默认用 __dict__ 存储实例属性（哈希表），两属性对象每
 - 继承: 父类的 slots 仍生效，但子类若不声明自己的 __slots__ 就会额外获得 __dict__
 - 属性访问速度: 3.10 及以前 slots 快 10~40%; 3.11+ 属性访问优化后基本持平——
   今天用 slots 主要为省内存，不为提速
-
-交互示意图: 用浏览器打开 images/slots_memory.archify.html
 """
 
 import time
@@ -231,5 +229,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/slots_memory.archify.html
+    # 只跑 demo; 
     run_demo()

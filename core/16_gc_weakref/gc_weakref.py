@@ -13,8 +13,6 @@ Python 用引用计数为主、分代 GC 为辅的内存管理:
 - 循环引用: 两个对象互相引用，引用计数永远不为 0
 - weakref.ref(obj): 弱引用，不影响 GC
 - __del__ 的风险: 循环引用时可能不被调用
-
-交互示意图: 用浏览器打开 images/gc_weakref.archify.html
 """
 
 import sys
@@ -206,5 +204,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/gc_weakref.archify.html
+    # 只跑 demo; 
     run_demo()

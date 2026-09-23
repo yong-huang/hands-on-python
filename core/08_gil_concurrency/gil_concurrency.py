@@ -13,8 +13,6 @@ GIL (Global Interpreter Lock) 是 CPython 的全局锁:
 - multiprocessing: 适合 CPU 密集，每个进程独立 GIL
 - asyncio: 适合大量 I/O 并发，单线程事件循环
 - ThreadPoolExecutor / ProcessPoolExecutor: 高级封装
-
-交互示意图: 用浏览器打开 images/gil_concurrency.archify.html
 """
 
 import time
@@ -195,5 +193,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/gil_concurrency.archify.html
+    # 只跑 demo; 
     run_demo()

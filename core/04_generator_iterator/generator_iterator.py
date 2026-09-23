@@ -11,8 +11,6 @@
 - yield from: 委托子生成器（Python 3.3+）
 - 生成器表达式: (x**2 for x in range(100)) — 惰性版列表推导
 - 惰性管道: map/filter 形式的链式处理，零内存开销
-
-交互示意图: 用浏览器打开 images/generator_iterator.archify.html
 """
 
 import sys
@@ -307,4 +305,4 @@ def run_demo():
 
 if __name__ == "__main__":
     run_demo()
-    # 只跑 demo; 交互示意图见 images/generator_iterator.archify.html
+    # 只跑 demo; 

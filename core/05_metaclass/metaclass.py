@@ -11,8 +11,6 @@
 - __init_subclass__: 子类注册/校验，无需自定义元类
 - 单例模式: 元类确保一个类只有一个实例
 - ORM 映射: 元类自动将类属性映射为数据库字段
-
-交互示意图: 用浏览器打开 images/metaclass.archify.html
 """
 
 
@@ -242,4 +240,4 @@ def run_demo():
 
 if __name__ == "__main__":
     run_demo()
-    # 只跑 demo; 交互示意图见 images/metaclass.archify.html
+    # 只跑 demo; 

@@ -1,3 +1,18 @@
+"""
+装饰器工厂与装饰器全家桶
+核心要点: 装饰器、闭包、functools.wraps、类装饰器、单例、lru_cache、singledispatch
+
+装饰器的本质是"接收函数、返回新函数"的高阶函数，@deco 只是 func = deco(func) 的语法糖。
+
+核心概念:
+- 基础装饰器: 两层骨架（接收函数 → 返回 wrapper），一切装饰器的最小形态
+- 带参装饰器工厂: 三层嵌套，第 1 层收参数、第 2 层收函数、第 3 层收调用参数
+- 类装饰器: __init__ 接函数、__call__ 接调用，状态显式比闭包好维护
+- 装饰类的装饰器: 在类创建期拦截（singleton 单例、add_repr 自动补方法）
+- functools.wraps / update_wrapper: 保留被装饰函数的元信息
+- 标准库: lru_cache 缓存递归、singledispatch 按类型分发
+"""
+
 import time
 import functools
 import random

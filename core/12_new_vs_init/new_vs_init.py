@@ -13,8 +13,6 @@ __new__ 负责创建实例（分配内存），__init__ 负责初始化（设置
 - __init__(self, ...) -> None: 初始化已创建的实例
 - __new__ 返回非 cls 实例时，__init__ 不会被调用
 - 不可变类型必须在 __new__ 中修改值（__init__ 无法修改）
-
-交互示意图: 用浏览器打开 images/new_vs_init.archify.html
 """
 
 
@@ -150,5 +148,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/new_vs_init.archify.html
+    # 只跑 demo; 
     run_demo()

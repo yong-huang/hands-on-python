@@ -11,8 +11,6 @@ MRO 决定了 super() 的调用链路，理解 MRO 是正确使用多继承和 M
 - 钻石问题: D(B, C) 中 B 和 C 都继承 A，A.init 被调用几次？
 - super(): 不是"调父类"，而是"MRO 中的下一个"
 - Mixin: 纯功能类，不独立使用，提供可插拔的能力
-
-交互示意图: 用浏览器打开 images/mro_mixin.archify.html
 """
 
 # ============================================================
@@ -197,5 +195,5 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 交互示意图见 images/mro_mixin.archify.html
+    # 只跑 demo; 
     run_demo()

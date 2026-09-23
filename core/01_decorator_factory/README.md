@@ -30,7 +30,7 @@ cd core/01_decorator_factory
 python3 decorator_factory.py
 ```
 
-真实输出示例（macOS, CPython 3.13，`@retry` 部分每次不同）：
+真实输出示例（`@retry` 部分每次不同）：
 
 ```
 === 装饰器全家桶 ===
@@ -112,7 +112,7 @@ class CountCalls:
         return self.func(*args, **kwargs)
 ```
 
-与函数版等价，但状态（计数器）是显式实例属性——需要多份状态或可配置行为时优先用它。
+与函数版等价，但状态（计数器）是显式实例属性。
 
 ### 装饰类的装饰器：在类创建期动手脚
 
@@ -144,9 +144,7 @@ def add_repr(cls):                     # 类增强：自动补方法
 
 `lru_cache` 与 `singledispatch` 的深入用法见 [20_itertools_func](../20_itertools_func/README.md)，`property` 见 [17_property](../17_property/README.md)。
 
-## Core
-
-**执行顺序**——`@retry(times=3, delay=0.1)` 装饰 `fetch` 是三次真实调用：`retry(3, 0.1)` 返回 `decorator`；`decorator(fetch)` 返回 `wrapper`（`times` 被闭包捕获）；此后 `fetch(url)` 实际执行 `wrapper(url)`。
+## Deep Dive
 
 **functools.wraps**——把原函数的 `__name__`、`__doc__` 等元信息复制到 wrapper；不写它，`func.__name__` 变成 `"wrapper"`，调试与日志无法识别原函数。类版装饰器用 `functools.update_wrapper(self, func)`。
 
@@ -160,7 +158,7 @@ def ttl_cache(ttl=60.0):          # ttl 在第1层 —— 装饰器配置，装�
             ...
 ```
 
-**坑清单**：
+**踩坑清单**：
 
 - **`functools.wraps` 忘写**：元信息丢失，多装饰器叠加时排查日志极其困难
 - **裸 `except:`**：会把 `KeyboardInterrupt` 也吞掉，重试逻辑里必须用 `except Exception`
@@ -179,19 +177,4 @@ def ttl_cache(ttl=60.0):          # ttl 在第1层 —— 装饰器配置，装�
 两种形态：无参类装饰器 `__init__(self, func)` 接函数、`__call__(self, *args)` 接调用（demo 的 `CountCalls`，状态显式好维护）；带参类装饰器再多一层——`__init__` 接参数、`__call__` 接函数返回 wrapper。
 
 **Q4: 装饰器能装饰类吗？**
-可以。装饰器接收类作为参数，返回新类、增强后的类或工厂函数。典型应用是单例：
-
-```python
-def singleton(cls):
-    instances = {}
-    def wrapper(*args, **kwargs):
-        if cls not in instances:
-            instances[cls] = cls(*args, **kwargs)
-        return instances[cls]
-    return wrapper
-```
-
-注意装饰后 `Config` 名字指向的是工厂函数而非类本身。
-
-**Q5: `functools.wraps` 不写会怎样？**
-功能不受影响，但 `func.__name__` 变成 `"wrapper"`、`__doc__` 丢失；调试、序列化、文档生成全部受牵连——这也是衡量工程素养的细节。类版装饰器对应 `functools.update_wrapper(self, func)`。
+可以。装饰器接收类作为参数，返回新类、增强后的类或工厂函数——demo 的 `@singleton` / `@add_repr` 就是两个典型（见 How「装饰类的装饰器」）。
