@@ -13,8 +13,6 @@ LoginRequiredMixin 的未登录 302 与 next 参数、分页第二页、非法�
 
 用法:
 - source ../.venv/bin/activate && python3 views_forms_demo.py
-
-交互示意图: 用浏览器打开 images/django_views_forms.html
 """
 
 import os

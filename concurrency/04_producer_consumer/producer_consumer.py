@@ -13,7 +13,6 @@
 - 毒丸发出后全部消费者 2 秒内退出
 
 用法: python3 producer_consumer.py   # 三个场景 + 全部断言，约 4 秒
-交互示意图: 用浏览器打开 images/producer_consumer.archify.html
 """
 
 import queue

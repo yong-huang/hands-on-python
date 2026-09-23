@@ -8,7 +8,6 @@
 - 背压:       maxsize 队列把生产速率拉低到消费速率——无界队列内存暴涨 vs 有界平稳
 
 用法: python3 async_pipelines.py   # 全部实测 + 断言，约 3 秒
-交互示意图: 用浏览器打开 images/async_pipelines.archify.html
 """
 
 import asyncio

@@ -9,7 +9,6 @@
 - Manager:    代理对象的并发更新——不加锁会丢，加锁后 10000 次分毫不差
 
 用法: python3 ipc_shared.py   # 全部实测 + 断言，约 10 秒
-交互示意图: 用浏览器打开 images/ipc_shared.archify.html
 """
 
 import multiprocessing

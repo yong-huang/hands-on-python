@@ -9,8 +9,6 @@ Web 框架清单项目 16：Django 段收官——解耦副作用、管住重复
 
 用法:
 - source ../.venv/bin/activate && python3 signals_cache_demo.py
-
-交互示意图: 用浏览器打开 images/django_signals_cache.html
 """
 
 import os

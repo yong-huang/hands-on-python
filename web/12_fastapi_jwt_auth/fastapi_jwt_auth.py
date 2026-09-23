@@ -17,8 +17,6 @@ Web 框架清单项目 12：FastAPI 段收官，把项目 3 的 HMAC 签名 cook
 
 用法:
 - source ../.venv/bin/activate && python3 fastapi_jwt_auth.py
-
-交互示意图: 用浏览器打开 images/fastapi_jwt_auth.html
 """
 
 import sys
@@ -129,7 +127,7 @@ def demo_four_401(client: TestClient, token: str) -> None:
     r = client.get("/me", headers={"Authorization": f"Bearer {stale}"})
     assert r.status_code == 401, f"过期 token 应 401，实际 {r.status_code}"
     print(f"  ④ 过期 token（exp=过去）→ 401（jwt.decode 抛 ExpiredSignatureError）")
-    print("  项目 3 的结论原样成立：签名防篡改，不防过期——所以 exp 校验是独立的一关")
+    print("  lab 03 的结论原样成立：签名防篡改，不防过期——所以 exp 校验是独立的一关")
 
 
 # ============================================================

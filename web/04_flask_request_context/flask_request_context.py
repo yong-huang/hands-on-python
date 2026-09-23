@@ -19,8 +19,6 @@ Web 框架清单项目 4：框架时代第一站，看 Flask 把项目 1-3 的�
 
 用法:
 - source ../.venv/bin/activate && python3 flask_request_context.py
-
-交互示意图: 用浏览器打开 images/flask_request_context.html
 """
 
 import logging

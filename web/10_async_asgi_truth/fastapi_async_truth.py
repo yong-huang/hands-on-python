@@ -13,8 +13,6 @@ Web 框架清单项目 10：用 uvicorn 真服务器 + 并发压测，把"异步
 前置：python_concurrency.md 项目 8-11（asyncio 语法不在此重复教）。
 用法:
 - source ../.venv/bin/activate && python3 fastapi_async_truth.py
-
-交互示意图: 用浏览器打开 images/fastapi_async_truth.html
 """
 
 import asyncio

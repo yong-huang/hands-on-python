@@ -15,7 +15,6 @@
 - python3 free_threading.py             # 双构建对比（自动探测 python3.14t）
 - python3 free_threading.py --bench     # 只输出当前构建的 JSON（供 --compare 调用）
 前置: uv python install 3.14t（本机已装 3.14.3t，见 README 环境配置）
-交互示意图: 用浏览器打开 images/free_threading.archify.html
 """
 
 import json
@@ -132,7 +131,7 @@ def main() -> None:
     demo_compare()
     print(f"\n{'=' * 56}")
     print("全部断言通过 ✓  验收点：双构建 GIL 状态（§1）、扩展比对照（§1）")
-    print("提醒：free-threading 下'靠 GIL 兜底的侥幸代码'不再安全——锁该加还得加（项目 3）")
+    print("提醒：free-threading 下'靠 GIL 兜底的侥幸代码'不再安全——锁该加还得加（见 lab 03）")
 
 
 if __name__ == "__main__":

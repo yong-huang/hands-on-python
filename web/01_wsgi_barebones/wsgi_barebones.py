@@ -14,8 +14,6 @@ wsgiref.validate.validator 是官方合规检查器: 忘调 start_response、bod
 
 用法:
 - python3 wsgi_barebones.py    # 完整演示（4 个小节，含内置验收断言）
-
-交互示意图: 用浏览器打开 images/wsgi_barebones.archify.html
 """
 
 import io

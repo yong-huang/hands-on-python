@@ -14,8 +14,6 @@ MTV 三层各就各位（对应 images/django_mtv_admin.svg）:
 
 用法:
 - source ../.venv/bin/activate && python3 mtv_demo.py
-
-交互示意图: 用浏览器打开 images/django_mtv_admin.html
 """
 
 import os

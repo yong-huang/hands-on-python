@@ -5,20 +5,15 @@
 > （并实测它够不到未处理异常的 500）、**exception_handler** 把业务异常兜底成约定 JSON、
 > **BackgroundTasks** 用时间戳证明"响应先于任务"。
 
-## 1. 为什么需要它
+## What
 
-三个扩展点各有必须实测的边界：**中间件的覆盖范围**——200、兜底 418、路由 404 都有耗时头，但未处理异常的 500 由最外层 `ServerErrorMiddleware` 兜底、异常穿过用户中间件，**实测没有耗时头**（覆盖范围有终点）；**异常分层**——可预期的业务失败（库存不足）该 418 带约定 JSON，程序缺陷该 500 暴露，两种失败一条 handler 都不能吞；**后台任务的时机**——响应创建时间戳 < 任务完成时间戳（实测差 0.31s），慢活不占用户等待。三条边界全部断言在案。
+三个扩展点各有必须实测的边界：**中间件的覆盖范围**——200、兜底 418、路由 404 都有耗时头，但未处理异常的 500 由最外层 `ServerErrorMiddleware` 兜底、异常穿过用户中间件，**实测没有耗时头**（覆盖范围有终点）；**异常分层**——可预期的业务失败（库存不足）该 418 带约定 JSON，程序缺陷该 500 暴露，两种失败一条 handler 都不能吞；**后台任务的时机**——响应创建时间戳 < 任务完成时间戳（实测差 0.31s），慢活不占用户等待。一句话心智模型：**请求沿"中间件 → handler → 异常处理器 → 响应"单向流动；后台任务挂在响应之后，500 兜底悬在用户中间件之外**。
 
-## 2. 总览：核心机制一图看懂
+## Why
 
-![请求管道的三个扩展点](images/fastapi_middleware.svg)
+三条边界全部断言在案。
 
-一句话心智模型：**请求沿"中间件 → handler → 异常处理器 → 响应"单向流动；后台任务挂在响应之后，500 兜底悬在用户中间件之外**。看图主路径是业务失败请求的完整旅程（raise → 418 + 耗时头）；两条绕行路径分别是"无人兜底的 500"与"响应后才执行的后台任务"。
-
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/web/11_fastapi_middleware/images/fastapi_middleware.html)
-> （或本地打开 [`images/fastapi_middleware.html`](images/fastapi_middleware.html)）。
-
-## 3. 快速开始
+## How
 
 ```bash
 cd web/11_fastapi_middleware
@@ -26,7 +21,7 @@ source ../.venv/bin/activate
 python3 fastapi_middleware.py    # 完整演示（3 个小节，内置验收断言）
 ```
 
-真实输出节选（macOS, CPython 3.14 · FastAPI 0.141.1）：
+真实输出节选（FastAPI 0.141.1）：
 
 ```
 ========================================================
@@ -56,21 +51,19 @@ python3 fastapi_middleware.py    # 完整演示（3 个小节，内置验收断�
 - **TestClient 下后台任务在 post 返回前完成**：一次 ASGI 调用含后台任务；"客户端先拿到响应"只在真实服务器上发生，进程内时间戳证据两种环境通用
 - **中间件里 `call_next` 之后的代码不保证对流式响应生效**：本实验的响应都是小 JSON，`BaseHTTPMiddleware` 语义足够；流式场景的时序差异不在此展开
 
-## 4. 核心概念
-
-### 4.1 中间件：请求与响应的必经之路
+### 中间件：请求与响应的必经之路
 
 `@app.middleware("http")` 注册函数式中间件（Starlette 的 BaseHTTPMiddleware 语法糖）：`call_next` 之前是请求阶段、之后是响应阶段，天然适合计时、打请求 ID、加安全头。本实验用它给每个响应盖 `X-Process-Time`。实测的覆盖边界：中间件栈位于 `ExceptionMiddleware` 之外、`ServerErrorMiddleware` 之内——**异常穿到最外层时，中间件对那个 500 响应失明**。
 
-### 4.2 异常分层：业务失败与程序缺陷
+### 异常分层：业务失败与程序缺陷
 
 `BusinessError`（可预期：库存不足、余额不够）→ 注册 `exception_handler` 兜成 418 + 约定 JSON，客户端按协议处理；`RuntimeError`（程序缺陷）→ 不注册、让它 500，监控告警接住。handler 里只剩 `raise`，错误响应的形状由 handler 统一决定——这就是"用异常表达业务失败"的收益。
 
-### 4.3 BackgroundTasks：响应后的轻量任务
+### BackgroundTasks：响应后的轻量任务
 
-`background.add_task(fn, *args)` 把任务排到**响应发送之后**执行——时间戳实测"响应创建 < 任务完成"。适合发邮件、写审计、清临时文件这类"失败不致命、耗时不能让用户等"的活。边界：任务跑在**同一进程**（不是队列服务），进程重启任务即丢；可靠性要求高的该上 Celery/ARQ（本系列不展开）。
+`background.add_task(fn, *args)` 把任务排到**响应发送之后**执行——时间戳实测"响应创建 < 任务完成"。适合发邮件、写审计、清临时文件这类"失败不致命、耗时不能让用户等"的活。边界：任务跑在**同一进程**（不是队列服务），进程重启任务即丢；可靠性要求高的该上 Celery/ARQ（本系列不展开）。判断标准：任务丢失的业务代价。
 
-## 5. 关键代码解析
+## Deep Dive
 
 **为什么"响应先于任务"要用时间戳证明，而不是看客户端返回时机？**
 
@@ -82,48 +75,20 @@ assert EVIDENCE["response_created_at"] < EVIDENCE["task_done_at"]
 
 第一版断言是"post 返回时任务未完成"——实测翻车：**TestClient 的 post 会等整次 ASGI 调用（含后台任务）结束**，客户端时钟在测试环境里测不到"先响应后任务"。时间戳是进程内证据，两种环境都成立。测试什么该用客户端时钟、什么该用服务端留痕，这道分界线本身就是一课。
 
-坑清单：
+踩坑清单：
 
 - **在中间件里吞异常**（try/except 后不 re-raise）：ServerErrorMiddleware 的 500 页面被你"保护"掉了，缺陷被藏进 200；中间件只加东西，不做兜底
 - **业务失败用 500 表达**：监控看到满屏 500，真实是"库存不足"；分层是 418/422/409 管业务、500 管缺陷
 - **后台任务里抛异常没人知道**：响应早已返回，异常只进日志；关键任务要有落盘/重试机制
 - **把重活塞 BackgroundTasks 当队列用**：同进程、无持久化、并发受 worker 数限制——任务量一大就堵，选型前先掂量可靠性要求
 
-## 6. 文件结构
-
-```
-11_fastapi_middleware/
-├── README.md                            # 本教程文档
-├── fastapi_middleware.py                # 主演示脚本：中间件/异常/后台任务三节实测
-└── images/
-    ├── fastapi_middleware.json          # 图源（typed JSON IR，可编辑重渲染）
-    ├── fastapi_middleware.html          # 交互示意图（浏览器打开）
-    └── fastapi_middleware.svg           # 双主题矢量图（本 README §2 内嵌）
-```
-
-`fastapi_middleware.py` 内容：`add_process_time` 耗时中间件 / `BusinessError` + `exception_handler`（418 约定 JSON）/ `/orders` + `send_confirmation_email` 后台任务（双时间戳留痕）/ 三个 demo 小节（验收点：§1 覆盖范围边界、§3 时间戳证据）。环境：`web/.venv`（fastapi + httpx）。
-
-## 7. 深入要点
+## Q&A
 
 **Q1: FastAPI 中间件和依赖注入的区别？怎么选？**
-中间件包住整个请求/响应周期，能改响应头、耗时打点，但看不到路由参数；依赖注入在路由解析阶段执行，能复用依赖树、能按路由声明。横切的"响应整形"用中间件，"准入校验/资源准备"用依赖（项目 9）。
+中间件包住整个请求/响应周期，能改响应头、耗时打点，但看不到路由参数；依赖注入在路由解析阶段执行，能复用依赖树、能按路由声明。横切的"响应整形"用中间件，"准入校验/资源准备"用依赖（lab 09）。
 
 **Q2: 自定义异常的兜底链是什么顺序？**
 异常先找 `exception_handler(具体类型)`，再找 `RequestValidationError`/HTTPException 的内建处理，最后落到最外层 ServerErrorMiddleware 的 500。越具体的 handler 越先命中；未被兜底的异常继续向外层冒泡。
 
-**Q3: BackgroundTasks 和 Celery 怎么选？**
-BackgroundTasks 同进程、无持久化、零依赖，适合"丢不起但要丢得起"的轻任务（发通知、写日志）；Celery/ARQ 有队列持久化、重试、分布式 worker，适合计费、批量同步等"丢了就是事故"的任务。判断标准：任务丢失的业务代价。
-
-**Q4: 为什么未处理异常的 500 响应没有经过用户中间件？**
-中间件栈顺序是 ServerErrorMiddleware（最外）→ 用户中间件 → ExceptionMiddleware → 路由。ExceptionMiddleware 内未注册的异常会一路冒泡穿过用户中间件（此时响应还没生成），由最外层兜底生成 500——所以那个响应不经过用户中间件的响应阶段。
-
-**Q5: 如何给所有响应（含 500）加统一响应头？**
+**Q3: 如何给所有响应（含 500）加统一响应头？**
 把逻辑写成纯 ASGI 中间件并注册在 `app.add_middleware` 时置于合适层级，或交给反向代理（nginx `add_header`）——边界在框架内时用 ASGI 原生写法，全局统一时交给网关。
-
-## 8. 总结
-
-1. **中间件是必经之路但有终点**：500 兜底悬在它之外（实测无耗时头），覆盖范围要心里有数
-2. **异常要分层**：BusinessError + handler 管可预期失败（418 约定 JSON），程序缺陷让 500 暴露
-3. **BackgroundTasks 用时间戳证明"响应先于任务"**（差 0.31s 实测）；它是同进程轻量队列，不是可靠性方案
-4. **TestClient 的返回时机含后台任务**：测试"先响应后任务"要用服务端留痕，不是客户端时钟
-5. 下一篇 [12 · JWT + OAuth2 认证](../12_fastapi_jwt_auth/README.md)：FastAPI 段收官——把项目 3 手写的签名 cookie 思想升级成工业级 token

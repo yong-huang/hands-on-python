@@ -9,7 +9,6 @@
 - 对照:     threading 同任务无加速（项目 2 的结论），数字摆在一起看
 
 用法: python3 mp_accel.py   # 全部实测 + 断言，约 15 秒
-交互示意图: 用浏览器打开 images/mp_accel.archify.html
 """
 
 import multiprocessing

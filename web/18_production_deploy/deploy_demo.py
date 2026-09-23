@@ -11,8 +11,6 @@ Web 框架清单项目 18：把 dev server 换成生产姿态
 用法:
 - source ../.venv/bin/activate && python3 deploy_demo.py
 - 需 Docker daemon（2026-09-10 实测本机在运行）；首次构建会拉基础镜像
-
-交互示意图: 用浏览器打开 images/production_deploy.html
 """
 
 import httpx

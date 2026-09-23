@@ -13,7 +13,6 @@
 - 不稳定端点的重试恢复率 ≥ 9/10（本设计下 100%）
 
 用法: python3 async_fetcher.py   # 全部实测 + 断言，约 8 秒（需要 aiohttp，已装 3.14.1）
-交互示意图: 用浏览器打开 images/async_fetcher.archify.html
 """
 
 import asyncio
@@ -185,7 +184,7 @@ async def demo_compare() -> None:
     assert recovery >= 0.9, f"重试恢复率仅 {recovery:.0%}"
     print(f"\n  加速比: 异步 = 串行的 1/{t_serial / t_async:.1f}；与线程池同并发下打平")
     print(f"  重试恢复率: {recovery:.0%}（不稳定端点全部救回）")
-    print("  同并发 = 同等待重叠，打平是理论必然；异步的真正优势在'并发便宜'（见 §4.4）")
+    print("  同并发 = 同等待重叠，打平是理论必然；异步的真正优势在'并发便宜'（见 README Q&A）")
     print("  三件套各司其职：Semaphore 限流防打爆、超时防挂死、退避重试救回失败")
 
 

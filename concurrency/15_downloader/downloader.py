@@ -11,7 +11,6 @@
 用法:
 - python3 downloader.py --model async --limit 5 --twice    # 单模型 + 续传演示
 - python3 downloader.py --verify-all --limit 5             # 四模式全跑 + 全部断言
-交互示意图: 用浏览器打开 images/downloader.archify.html
 """
 
 import argparse

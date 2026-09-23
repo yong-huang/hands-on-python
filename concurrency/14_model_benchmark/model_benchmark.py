@@ -10,7 +10,6 @@
 用法: python3 model_benchmark.py            # 全量基准，约 25 秒
       python3 model_benchmark.py --quick    # 快速档（任务减半），约 12 秒
       python3 model_benchmark.py --plot     # 追加 matplotlib 柱状图（存 images/）
-交互示意图: 用浏览器打开 images/model_benchmark.archify.html
 """
 
 import argparse

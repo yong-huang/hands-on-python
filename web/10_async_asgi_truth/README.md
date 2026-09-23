@@ -3,23 +3,18 @@
 > "加了 async 就快"是 Web 性能第一大谣传。本实验起**真 uvicorn 服务器**，用线程名、
 > 100 路并发压测和 `--workers 4` 多进程分发把执行模型钉死：**async def 跑在事件循环
 > 线程，def 被扔进容量 40 的 anyio 线程池**——100 个 0.5s 延迟请求，前者 0.56s、
-> 后者 1.56s。差距来自"等待不占线程"，不是魔法。asyncio 语法本身是并发线（项目 8-11）
+> 后者 1.56s。差距来自"等待不占线程"，不是魔法。asyncio 语法本身是并发线（lab 08-11）
 > 的课题，这里只回答 Web 语境的问题。
 
-## 1. 为什么需要它
+## What
 
-三个只有实测才能钉死的 ASGI 事实：**执行位置**——`async def` 端点内 `threading.current_thread()` 是 MainThread，`def` 端点却是 AnyIO 工作线程；**线程池天花板**——def 版并发被 anyio 默认容量 40 卡住，100 个请求要分约 3 批；**多 worker 分发**——`uvicorn --workers 4` 的四个进程共享监听 socket，accept 由内核分配，应用层无感知。在"该写 def 还是 async def"的选型争论里，这三条数据就是答案的地基。
+三个只有实测才能钉死的 ASGI 事实：**执行位置**——`async def` 端点内 `threading.current_thread()` 是 MainThread，`def` 端点却是 AnyIO 工作线程；**线程池天花板**——def 版并发被 anyio 默认容量 40 卡住，100 个请求要分约 3 批；**多 worker 分发**——`uvicorn --workers 4` 的四个进程共享监听 socket，accept 由内核分配，应用层无感知。一句话心智模型：**事件循环赢在"等待不占线程"——await 让出控制权，100 个 sleep 可以叠在同一根线程上；线程池赢在"兼容阻塞代码"，但每个 sleep 都实打实占一个线程名额**。
 
-## 2. 总览：核心机制一图看懂
+## Why
 
-![同一应用的两种执行模型](images/fastapi_async_truth.svg)
+在"该写 def 还是 async def"的选型争论里，这三条数据就是答案的地基。
 
-一句话心智模型：**事件循环赢在"等待不占线程"——await 让出控制权，100 个 sleep 可以叠在同一根线程上；线程池赢在"兼容阻塞代码"，但每个 sleep 都实打实占一个线程名额**。看图上下两条泳道是同一负载的两种命运；下方卡片记录线程名与多 worker 分发的实测证据。
-
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/web/10_async_asgi_truth/images/fastapi_async_truth.html)
-> （或本地打开 [`images/fastapi_async_truth.html`](images/fastapi_async_truth.html)）。
-
-## 3. 快速开始
+## How
 
 ```bash
 cd web/10_async_asgi_truth
@@ -27,7 +22,7 @@ source ../.venv/bin/activate
 python3 fastapi_async_truth.py    # 起两个真 uvicorn 实例完成三节实测（约 15s）
 ```
 
-真实输出节选（macOS, CPython 3.14 · FastAPI 0.141.1 + uvicorn 0.52.4）：
+真实输出节选（FastAPI 0.141.1 + uvicorn 0.52.4）：
 
 ```
 ========================================================
@@ -56,27 +51,25 @@ python3 fastapi_async_truth.py    # 起两个真 uvicorn 实例完成三节实�
 - **比值 ~2.78× 是"100 并发 / 容量 40"结构决定的**（⌈100/40⌉ ≈ 3 批），不是 async 快 2.78 倍的普适定律；并发数低于线程池容量时两者几乎打平
 - **线程名只有一种不代表只有一个线程**：anyio 工作线程全部同名，§2 输出"1 种线程名"是名字集合，不是线程数
 - **脚本起两个临时 uvicorn 实例**（单 worker 测模型、4 workers 测分发），端口向内核随机索取，跑完 terminate；并发断言对机器负载敏感，阈值已放宽（async < 2s、比值 ≥ 2）
-- **CPU 密集任务两个模型都救不了**：本实验只测 IO 延迟；CPU 密集该上进程池/多进程——那是并发线项目 14 的对决数据
+- **CPU 密集任务两个模型都救不了**：本实验只测 IO 延迟；CPU 密集该上进程池/多进程——那是并发线 lab 14 的对决数据
 
-## 4. 核心概念
-
-### 4.1 ASGI 三层：server → 框架 → 端点
+### ASGI 三层：server → 框架 → 端点
 
 uvicorn 是 ASGI server：监听 socket、解析 HTTP、把请求翻译成 `scope/receive/send` 三件消息喂给 ASGI 应用（Starlette/FastAPI）。事件循环在 server 进程里跑，**async 端点直接在循环上协程调度，def 端点被 anyio.to_thread 丢进线程池**——同一个应用，两种执行模型并存，选择权在端点声明的那个 `async` 字。
 
-### 4.2 def 的隐性天花板：线程池容量 40
+### def 的隐性天花板：线程池容量 40
 
 anyio 默认 `CapacityLimiter.total_tokens = 40`：第 41 个 def 请求要排队等前人腾线程。所以"def 端点在高并发下变慢"不是玄学——排队波次 ≈ ⌈并发数/40⌉。可以用 `RunVar`/配置调大容量，但那是在用线程数换并发，代价是内存与上下文切换——async 版用 1 根线程就叠住了 100 个等待。
 
-### 4.3 什么时候写 async def
+### 什么时候写 async def
 
 **IO 等待多且用的是异步客户端**（httpx.AsyncClient、asyncpg、redis.asyncio）→ async def，事件循环把等待叠起来。**调用了阻塞库**（requests、SQLAlchemy 同步引擎、time.sleep）→ 老实写 def，让它进线程池——**千万别在 async def 里写阻塞调用**：一根事件循环线程被占死，整个服务的所有并发一起停摆。这是 async Web 服务第一大事故来源。
 
-### 4.4 --workers：进程级横向扩展
+### --workers：进程级横向扩展
 
-GIL 之下单进程只能吃满一核；`uvicorn --workers 4` 起四个进程共享同一监听 socket，内核把 accept 分给空闲进程（实测 100 请求落到 4 个 PID）。worker 数的经验起点 = CPU 核数；配合容器时通常 1 容器 1 worker，副本数交给编排层（项目 18 会实践）。
+GIL 之下单进程只能吃满一核；`uvicorn --workers 4` 起四个进程共享同一监听 socket，内核把 accept 分给空闲进程（实测 100 请求落到 4 个 PID）。worker 数的经验起点 = CPU 核数；配合容器时通常 1 容器 1 worker，副本数交给编排层（lab 18 会实践）。
 
-## 5. 关键代码解析
+## Deep Dive
 
 **为什么起真 uvicorn 而不用 TestClient 测执行模型？**
 
@@ -86,48 +79,17 @@ proc = subprocess.Popen([sys.executable, "-m", "uvicorn", f"{MODULE}:app", ...])
 
 TestClient 在进程内用 anyio portal 跑应用，事件循环线程的名字与真实部署不同（且串行语义），测出来的"位置"不可信。**真 uvicorn + 真 socket + 并发压测**拿到的线程名与耗时才是生产语境的证据。代价是要管理子进程生命周期——`finally: terminate + wait` 保证无残留。
 
-坑清单：
+踩坑清单：
 
 - **在 async def 里调阻塞函数**（requests、time.sleep、同步 DB 驱动）：占死事件循环线程，全服务并发归零；本实验的 io-sync 若误标 async，比值会反着来
 - **以为 async 自动并行**：await 只是让出控制权，端点内如果一路同步计算，事件循环照样串行；并发来自"多个请求互相错开等待"
 - **用 `total_capacity` 探测线程池**：anyio 的 `CapacityLimiter` 属性叫 `total_tokens`——本实验第一版就栽在这个属性名上（AttributeError → 500），已如实记录
 - **workers 数拍脑袋调大**：每 worker 是完整进程（内存 ×N），CPU 密集型 4 workers 抢 2 核反而互拖；从核数起步压测定值
 
-## 6. 文件结构
-
-```
-10_async_asgi_truth/
-├── README.md                              # 本教程文档
-├── fastapi_async_truth.py                 # 主演示脚本：位置/并发/worker 三节实测
-└── images/
-    ├── fastapi_async_truth.json           # 图源（typed JSON IR，可编辑重渲染）
-    ├── fastapi_async_truth.html           # 交互示意图（浏览器打开）
-    └── fastapi_async_truth.svg            # 双主题矢量图（本 README §2 内嵌）
-```
-
-`fastapi_async_truth.py` 内容：`/io-async`、`/io-sync`、`/pool-capacity` 三端点（响应自带线程名与 PID）/ `free_port()`+`start_server()`+`wait_ready()` 真服务器管理 / `fetch_all()` httpx.AsyncClient 并发压测 / `demo_location()` 线程名断言 / `demo_concurrency()` 100 并发耗时与比值断言（验收点）/ `demo_workers()` 4 worker PID 分发断言（验收点）。环境：`web/.venv`（fastapi + uvicorn + httpx）。
-
-## 7. 深入要点
+## Q&A
 
 **Q1: FastAPI 里 def 和 async def 端点的执行区别？**
 async def 在事件循环线程上以协程方式运行，等待时可服务其他请求；def 被 anyio 扔进容量 40（默认）的线程池执行，阻塞不拖累事件循环但并发受池容量限制。实测线程名：MainThread vs AnyIO worker thread。
 
-**Q2: 为什么 async 端点里不能调用阻塞函数？**
-事件循环是单线程调度器，阻塞调用占住循环线程，所有请求（含其他 async 端点）一起停摆。阻塞库要么换异步版，要么把端点声明成 def（框架自动进线程池）。
-
-**Q3: uvicorn 的 --workers 起的是什么？负载怎么分？**
-多进程 worker（每个含独立事件循环），共享同一监听 socket；连接由内核分配给 accept 的进程，应用层无感知。用于利用多核；worker 数从 CPU 核数起步。
-
-**Q4: 100 并发打 0.5s 延迟的 def 端点要多久？async 端点呢？**
-def：受线程池容量 40 限制，约 ⌈100/40⌉ = 3 批 × 0.5s ≈ 1.5s（实测 1.56s）；async：事件循环叠起 100 个等待 ≈ 0.5s 出头（实测 0.56s）。本实验两个数字都有断言。
-
-**Q5: 什么情况下 async 不比 def 快，甚至更差？**
+**Q2: 什么情况下 async 不比 def 快，甚至更差？**
 CPU 密集任务（GIL 下事件循环单线程更无力，该用进程池/多进程）；端点内全是同步计算没有等待点；以及 async def 里误用阻塞库把整根循环线程卡住——此时它比 def 慢且殃及全服务。
-
-## 8. 总结
-
-1. **执行位置可实测**：async def = MainThread 事件循环；def = AnyIO 线程池（容量 40）
-2. **100 并发 0.5s 延迟：0.56s vs 1.56s（2.78×）**——差距来自分批排队，async 的优势是"等待不占线程"
-3. **--workers 4 共享 socket，内核分发**：实测 100 请求落到 4 个 PID
-4. **选型口诀**：异步库配 async def，阻塞库配 def；CPU 密集找进程，别为难事件循环
-5. 下一篇 [11 · 中间件、异常与后台任务](../11_fastapi_middleware/README.md)：请求/响应管道的三个扩展点——耗时头、全局异常兜底、响应后任务

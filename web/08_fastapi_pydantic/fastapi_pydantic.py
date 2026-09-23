@@ -15,8 +15,6 @@ parse_obj → model_validate——网上旧教程的写法注意甄别。
 
 用法:
 - source ../.venv/bin/activate && python3 fastapi_pydantic.py
-
-交互示意图: 用浏览器打开 images/fastapi_pydantic.html
 """
 
 import sys

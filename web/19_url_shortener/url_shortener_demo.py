@@ -9,8 +9,6 @@ Web 框架清单项目 19：终极交付，四个验收维度一次跑完
 
 用法:
 - source ../.venv/bin/activate && python3 url_shortener_demo.py
-
-交互示意图: 用浏览器打开 images/url_shortener.html
 """
 
 import asyncio

@@ -9,7 +9,6 @@
 - 对比:      await 链是顺序调用（不并发），create_task 才是真并发
 
 用法: python3 coroutine_loop.py   # 全部实测 + 断言，约 1 秒
-交互示意图: 用浏览器打开 images/coroutine_loop.archify.html
 """
 
 import asyncio

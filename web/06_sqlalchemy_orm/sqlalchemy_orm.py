@@ -14,7 +14,6 @@ Web 框架清单项目 6：给留言板换上真数据库，把 ORM 的三个高
 - source ../.venv/bin/activate && python3 sqlalchemy_orm.py
 
 注意: §1-3 用内存库（干净可重复），§5 迁移用文件库 migration_lab.db（脚本会先清理重建）。
-交互示意图: 用浏览器打开 images/sqlalchemy_orm.html
 """
 
 import os

@@ -16,8 +16,6 @@ Web 框架清单项目 5：服务端渲染时代的两道输入防线，全部�
 
 用法:
 - source ../.venv/bin/activate && python3 flask_templates_forms.py
-
-交互示意图: 用浏览器打开 images/flask_templates_forms.html
 """
 
 import re

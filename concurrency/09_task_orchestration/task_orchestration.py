@@ -8,7 +8,6 @@
 - gather:      return_exceptions=True 收齐全部结果（含异常对象）；不加则首败即抛
 
 用法: python3 task_orchestration.py   # 全部实测 + 断言，约 1 秒
-交互示意图: 用浏览器打开 images/task_orchestration.archify.html
 """
 
 import asyncio

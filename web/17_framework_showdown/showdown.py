@@ -11,8 +11,6 @@ Web 框架清单项目 17（集成点）：同一个 TODO API 写三遍，拿数
 
 用法:
 - source ../.venv/bin/activate && python3 showdown.py
-
-交互示意图: 用浏览器打开 images/framework_showdown.html
 """
 
 import asyncio

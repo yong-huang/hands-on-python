@@ -15,8 +15,6 @@ HTTP 本身无状态：每个请求都是陌生人。登录态靠 Cookie 头往�
 
 用法:
 - python3 cookie_session.py    # 完整演示（4 个小节，含内置验收断言）
-
-交互示意图: 用浏览器打开 images/cookie_session.archify.html
 """
 
 import base64

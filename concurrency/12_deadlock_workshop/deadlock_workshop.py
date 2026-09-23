@@ -13,7 +13,6 @@
 
 重要教训（第一版踩坑）: 死锁演示绝不能放在主进程里——挂死的线程是非 daemon，
 整个脚本永远退不出去。正确姿势是子进程隔离 + 父进程超时击杀 + 事后验尸。
-交互示意图: 用浏览器打开 images/deadlock_workshop.archify.html
 """
 
 import faulthandler

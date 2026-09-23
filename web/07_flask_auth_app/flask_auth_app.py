@@ -16,8 +16,6 @@ Web 框架清单项目 7：应用工厂 + 双蓝图 + 认证限流，把项目 4
 
 用法:
 - source ../.venv/bin/activate && python3 flask_auth_app.py
-
-交互示意图: 用浏览器打开 images/flask_auth_app.html
 """
 
 import os

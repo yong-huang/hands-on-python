@@ -15,7 +15,6 @@ A 被换回后接着执行自己的 STORE(=101)——它的 +1 就这样凭空�
 
 用法: python3 race_gil.py   # 全部实测 + 断言，约 10 秒
 提示: 在 free-threading 无 GIL 构建下本脚本的竞态部分将不再丢失更新（见清单项目 16）
-交互示意图: 用浏览器打开 images/race_gil.archify.html
 """
 
 import dis

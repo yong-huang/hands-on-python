@@ -1,24 +1,19 @@
 # 06 · 进程间通信与共享状态：Pipe / Queue / SharedMemory / Manager
 
-> 上一篇开了 4 个进程跑出 2.5× 加速，但它们互相是"哑巴"——内存完全隔离。这一篇补上
-> 对话能力：四条 IPC 通道各有性格——Pipe 会聊天、Queue 能吞吐、SharedMemory 不拷贝、
+> 多进程跑出 2.5× 加速，但进程们互相是"哑巴"——内存完全隔离。这一篇补上对话能力：
+> 四条 IPC 通道各有性格——Pipe 会聊天、Queue 能吞吐、SharedMemory 不拷贝、
 > Manager 什么都能代理但每次都是远程调用。本实验用 10 万条消息、50MB 大数组和 1 万次
 > 并发更新，把四条路的性能与纪律一次量清。
 
-## 1. 为什么需要它
+## What
 
-多进程绕开了 GIL，也拆掉了共享内存：子进程里改一个"全局变量"改的是自己的副本。四条通道的选择题由此而来——小消息聊天用 Pipe；批量吞吐用 Queue；50MB 大数组走 pickle 序列化要 366ms，走 SharedMemory 只要 20ms（实测 18.5×）；而 Manager 让你以为"进程也能共享 dict"，实测不加锁 1 万次更新丢 6404 次。**通道的代价与纪律，必须亲手量过才知道。**
+多进程绕开了 GIL，也拆掉了共享内存：子进程里改一个"全局变量"改的是自己的副本。四条通道由此而来。一句话心智模型：**Pipe/Queue 走"序列化 + 管道"（每字节都要拷贝），SharedMemory 走"同一块物理内存"（零拷贝直读），Manager 走"代理 + RPC"（每次访问一个来回）**。性能排序即实现排序：零拷贝 > 管道 > RPC；纪律排序相反——Manager 的 dict 最像普通 dict，也最容易让人忘记 get 与 set 之间隔着两次网络式调用。
 
-## 2. 总览：核心机制一图看懂
+## Why
 
-![进程间通信：四条通道四种性格](images/ipc_shared.svg)
+通道的代价与纪律，必须亲手量过才知道：小消息聊天用 Pipe；批量吞吐用 Queue；50MB 大数组走 pickle 序列化要 366ms，走 SharedMemory 只要 20ms（实测 18.5×）；而 Manager 让你以为"进程也能共享 dict"，实测不加锁 1 万次更新丢 6404 次。
 
-一句话心智模型：**Pipe/Queue 走"序列化 + 管道"（每字节都要拷贝），SharedMemory 走"同一块物理内存"（零拷贝直读），Manager 走"代理 + RPC"（每次访问一个来回）**。性能排序即实现排序：零拷贝 > 管道 > RPC；纪律排序相反——Manager 的 dict 最像普通 dict，也最容易让人忘记 get 与 set 之间隔着两次网络式调用。
-
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-python/concurrency/06_ipc_shared/images/ipc_shared.html)
-> （或本地打开 [`images/ipc_shared.html`](images/ipc_shared.html)）。
-
-## 3. 快速开始
+## How
 
 ```bash
 cd concurrency/06_ipc_shared
@@ -54,21 +49,19 @@ python3 ipc_shared.py      # 四个实测小节 + 全部断言，约 3 秒
 - **Manager 无锁丢失率 60%+**：每次 `d["k"] = d["k"] + 1` 是两次 RPC，窗口大到必然被穿插——丢失是常态不是偶发
 - **§1/§2 全零失败**：Pipe 双向与 Queue 批量是确定性协议，任何环境都该 100% 通过
 
-## 4. 核心概念
+### Pipe 与 Queue：序列化管道的两副面孔
 
-### 4.1 Pipe 与 Queue：序列化管道的两副面孔
+`Pipe()` 是双端双工的点对点通道，`send/recv` 走 pickle；`Queue` 是多生产者多消费者的 FIFO，内部是"Pipe + 锁 + 喂食线程"。共同纪律：**传的都是 pickle 副本**——改副本不影响原件，大对象的序列化成本按字节计费。
 
-`Pipe()` 是双端双工的点对点通道，`send/recv` 走 pickle；`Queue` 是多生产者多消费者的 FIFO，内部是"Pipe + 锁 + 喂食线程"。选择：两点聊天用 Pipe（更快更轻），多对多或要背压用 Queue。共同纪律：**传的都是 pickle 副本**——改副本不影响原件，大对象的序列化成本按字节计费。
+### SharedMemory：唯一的零拷贝通道
 
-### 4.2 SharedMemory：唯一的零拷贝通道
+`SharedMemory(size=n)` 在两个进程间映射同一块物理内存：父进程写 `shm.buf[:]=data` 是一次 memcpy，子进程 `bytes(shm.buf)` 是另一次 memcpy——**没有序列化、没有管道、没有第三份拷贝**。适用：大数组、帧数据、numpy 缓冲。纪律：生命周期手动管理（`close()` + `unlink()`，忘 unlink 文件块泄漏到 /dev/shm），同步靠自己上锁（它只共享内存，不共享原子性）。
 
-`SharedMemory(size=n)` 在两个进程间映射同一块物理内存：父进程写 `shm.buf[:]=data` 是一次 memcpy，子进程 `bytes(shm.buf)` 是另一次 memcpy——**没有序列化、没有管道、没有第三份拷贝**。实测 50MB 子进程侧 20ms vs pickle+Pipe 366ms。适用：大数组、帧数据、numpy 缓冲。纪律：生命周期手动管理（`close()` + `unlink()`，忘 unlink 文件块泄漏到 /dev/shm），同步靠自己上锁（它只共享内存，不共享原子性）。
-
-### 4.3 Manager：最方便也最贵
+### Manager：最方便也最贵
 
 `Manager().dict()` 返回一个代理对象——所有属性访问被转发到一个独立的服务进程执行，再带结果回来。它让"进程级共享 dict/list/Lock"像本地对象一样好写，但每次 `d["k"]` 都是两个 RPC 往返，且 `d["k"] += 1` 的读与写是**两次独立 RPC**——窗口大开，实测 1 万次丢 6404 次。修复与线程版一模一样：Manager 自带的 `Lock()` 包住读改写，立刻分毫不差。
 
-### 4.4 选型决策表
+### 选型决策表
 
 | 需求 | 通道 | 一句话理由 |
 |:---|:---|:---|
@@ -77,7 +70,7 @@ python3 ipc_shared.py      # 四个实测小节 + 全部断言，约 3 秒
 | 大数组/帧数据共享 | SharedMemory | 零拷贝，比序列化快一个量级 |
 | 想要"进程级共享 dict" | Manager + Lock | 最顺手，但每次访问都是 RPC，必须配锁 |
 
-## 5. 关键代码解析
+## Deep Dive
 
 **为什么 §3 的校验和用 `zlib.crc32` 而不是 `sum(bytes)`？**
 
@@ -87,7 +80,7 @@ python3 ipc_shared.py      # 四个实测小节 + 全部断言，约 3 秒
 
 spawn 一个子进程要 0.3~0.5s，若计入传输耗时，两条通道各付一遍（对称成本），加速比同样被稀释。子进程先启动、挂载好 SharedMemory、停在 `go_evt.wait()`，父进程发车后只测纯传输——**把对称成本从计时里剥掉，差异才可见**。
 
-坑清单：
+踩坑清单：
 
 - **忘了 `shm.unlink()`**：共享内存块在系统里泄漏，重启才清；`close()` 只断开映射不删除
 - **用完的一端不 close**：Pipe 的对端会以为还有写者，EOF 永远不来
@@ -95,43 +88,16 @@ spawn 一个子进程要 0.3~0.5s，若计入传输耗时，两条通道各付�
 - **在 `shm.buf` 上留引用**：`bytes(shm.buf)` 是拷贝、`shm.buf` 是视图——视图在 unlink 后是悬空内存
 - **以为 Queue 传过去的是原对象**：全是 pickle 副本，改副本不影响原件；要"真共享"用 SharedMemory 或 Manager
 
-## 6. 文件结构
-
-```
-06_ipc_shared/
-├── README.md                        # 本教程文档
-├── ipc_shared.py                    # 主演示脚本：Pipe/Queue/SharedMemory/Manager
-└── images/
-    ├── ipc_shared.json      # 图源（typed JSON IR，可编辑重渲染）
-    ├── ipc_shared.html      # 交互示意图（浏览器打开）
-    └── ipc_shared.svg       # 双主题矢量图（本 README §2 内嵌）
-```
-
-`ipc_shared.py` 内容：`demo_pipe()` 双向一来一回 / `demo_queue()` 10 万条不丢 / `demo_shm()` 零拷贝对比（验收点）/ `demo_manager()` 加锁前后命运对照（验收点）。
-
-## 7. 深入要点
+## Q&A
 
 **Q1: Pipe 和 Queue 怎么选？**
 Pipe 双端双工、更轻，适合两点对话；Queue 多生产者多消费者安全（内部有锁），适合任务分发。Queue 的 get 支持超时与毒丸协议，Pipe 需要自己设计消息边界。
 
-**Q2: SharedMemory 为什么快？它的代价是什么？**
-它把同一块物理内存映射进两个进程，传 50MB 只需各做一次 memcpy，省掉序列化+管道拷贝+反序列化三道工序（实测 18.5×）。代价：生命周期手动管理（close/unlink 配对）、并发读写自己上锁、只能放字节。
+**Q2: Manager 的 dict 为什么会丢更新？**
+`d["k"] += 1` 是两次 RPC（取回旧值、写回新值），进程穿插在窗口里就丢更新——和线程的 `counter += 1` 同构（见 [02_race_gil](../02_race_gil/README.md)），只是窗口宽了几百倍。修法也一样：Manager 的 Lock 包住读改写。
 
-**Q3: Manager 的 dict 为什么会丢更新？**
-`d["k"] += 1` 是两次 RPC（取回旧值、写回新值），进程穿插在窗口里就丢更新——和线程的 `counter += 1` 同构，只是窗口宽了几百倍。修法也一样：Manager 的 Lock 包住读改写。
-
-**Q4: 大数组在进程间怎么传最快？**
+**Q3: 大数组在进程间怎么传最快？**
 能不传就不传：SharedMemory 零拷贝共享（写一次读多次）；只读场景也可以 fork 前放进模块级变量（fork 复制后写时拷贝）。pickle+Pipe 是最慢但最通用的兜底。
 
-**Q5: Manager 和 SharedMemory 都能"共享"，架构上怎么选？**
+**Q4: Manager 和 SharedMemory 都能"共享"，架构上怎么选？**
 Manager 共享的是"对象的代理"（什么都能代理但每次 RPC），SharedMemory 共享的是"裸内存"（最快但只有字节）。高频小状态用 Manager+Lock（可读性优先），大块二进制用 SharedMemory（性能优先），两者常在同一个系统里分工共存。
-
-## 8. 总结
-
-1. **Pipe/Queue 都是 pickle 管道**：副本语义，大对象按字节计费
-2. **SharedMemory 零拷贝**：50MB 实测 18.5×，close/unlink 要配对
-3. **Manager = 代理 + RPC**：方便但贵，读改写必须配锁（实测无锁丢 64%）
-4. **基准探针要比被测物便宜**：crc32 换掉 sum(bytes) 才量出真差异
-5. **对称成本要剥出计时**：spawn 和发车协议决定基准的可信度
-
-下一篇进入 [07 · concurrent.futures 统一执行器](../07_futures/README.md)——ThreadPool 与 ProcessPool 一套接口随便切，Future 把"等结果"变成一等公民。

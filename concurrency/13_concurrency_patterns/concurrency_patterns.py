@@ -11,8 +11,6 @@
 用法:
 - python3 concurrency_patterns.py              # 全流程，约 6 秒
 - python3 concurrency_patterns.py --worker F   # 内部用：worker 模式（F=落盘文件）
-
-交互示意图: 用浏览器打开 images/concurrency_patterns.archify.html
 """
 
 import json

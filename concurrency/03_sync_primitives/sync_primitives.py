@@ -11,7 +11,6 @@
 - Barrier:    集结点。全员到齐才放行（项目 2 §3 用它复现竞态，这里用它守序）
 
 用法: python3 sync_primitives.py   # 六个场景 + 全部断言，约 8 秒
-交互示意图: 用浏览器打开 images/sync_primitives.archify.html
 """
 
 import sys

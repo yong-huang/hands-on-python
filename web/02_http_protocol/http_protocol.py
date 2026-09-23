@@ -17,8 +17,6 @@ Transfer-Encoding: chunked（分块流式，chunk-size 行 + 数据 + 终止块�
 
 用法:
 - python3 http_protocol.py    # 完整演示（4 个小节，含内置验收断言）
-
-交互示意图: 用浏览器打开 images/http_protocol.archify.html
 """
 
 import http.client

@@ -14,8 +14,6 @@ DRF 的三个抽象层（对应 images/drf_rest_api.svg）:
 
 用法:
 - source ../.venv/bin/activate && python3 rest_demo.py
-
-交互示意图: 用浏览器打开 images/drf_rest_api.html
 """
 
 import os

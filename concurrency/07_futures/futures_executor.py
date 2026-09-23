@@ -9,7 +9,6 @@
 - 附加:       result(timeout=) 超时保护——future 可以"暂时不 etc"
 
 用法: python3 futures_executor.py   # 全部实测 + 断言，约 5 秒
-交互示意图: 用浏览器打开 images/futures_executor.archify.html
 """
 
 import sys

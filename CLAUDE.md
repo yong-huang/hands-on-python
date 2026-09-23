@@ -14,8 +14,8 @@ Content language is Chinese (正文中文，命令/代码/术语保留英文).
 - `README.md` — series index: intro, environment requirements, lab table, learning path, how to run.
 - `docs/` — per-series planning/checklist documents (root keeps only README): `python_interview.md`, `python_concurrency.md`, `python_web_frameworks.md`.
 - `core/NN_topic/` — 20 numbered labs (01_decorator_factory … 20_itertools_func), one Python core-mechanics topic each. The directory is named `core/` (not the skill's `labs/`) — a deliberate deviation to match this repo's theme.
-- `concurrency/NN_topic/` — second series (2026-09): 16 Python concurrency labs, planned by `docs/python_concurrency.md` (learning-list skill) and built via the hands-on-series skill. Uses the older 8-section README order with embedded diagrams (not yet converted to the 5-section style).
-- `web/NN_topic/` — third series (2026-09): 20 Python web-framework labs (WSGI/HTTP/cookie foundations → Flask → FastAPI → Django → comparison/capstone), planned by `docs/python_web_frameworks.md`. Same 五件套 conventions. Stage-1 labs (01-03) are stdlib-only; framework labs (04+) run in `web/.venv` — setup commands and the 2026-09-10 smoke-tested version matrix live in docs/python_web_frameworks.md 环境配置.
+- `concurrency/NN_topic/` — second series (2026-09): 16 Python concurrency labs, planned by `docs/python_concurrency.md` (learning-list skill) and built via the hands-on-series skill. Same five-section README order as `core/`.
+- `web/NN_topic/` — third series (2026-09): 20 Python web-framework labs (WSGI/HTTP/cookie foundations → Flask → FastAPI → Django → comparison/capstone), planned by `docs/python_web_frameworks.md`. Same five-section README order as `core/`. Stage-1 labs (01-03) are stdlib-only; framework labs (04+) run in `web/.venv` — setup commands and the 2026-09-10 smoke-tested version matrix live in docs/python_web_frameworks.md 环境配置.
 - Each lab is a "五件套":
   - `README.md` — tutorial in the fixed 8-section order (see below)
   - `<topic>.py` — the main demo script AND the learning material itself; self-contained, **zero third-party imports**

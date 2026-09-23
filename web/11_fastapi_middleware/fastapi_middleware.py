@@ -15,8 +15,6 @@ Web 框架清单项目 11：不碰业务代码，把横切关注点挂到管道�
 
 用法:
 - source ../.venv/bin/activate && python3 fastapi_middleware.py
-
-交互示意图: 用浏览器打开 images/fastapi_middleware.html
 """
 
 import sys

@@ -15,8 +15,6 @@
 用法:
 - python3 thread_lifecycle.py           # 完整演示（5 个小节，含内置验收断言）
 - python3 thread_lifecycle.py --daemon  # 只跑 daemon 截断演示（验收点 2）
-
-交互示意图: 用浏览器打开 images/thread_lifecycle.archify.html
 """
 
 import argparse

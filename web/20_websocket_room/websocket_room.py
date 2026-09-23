@@ -17,8 +17,6 @@ WebSocket 与 HTTP 的本质差异（对应 images/websocket_room.svg）:
 用法:
 - source ../.venv/bin/activate && python3 websocket_room.py
 - 浏览器手测: 起服务后打开 / 的极简聊天页
-
-交互示意图: 用浏览器打开 images/websocket_room.html
 """
 
 import sys

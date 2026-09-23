@@ -15,8 +15,6 @@ Depends 的三种玩法（对应 images/fastapi_di.svg）:
 
 用法:
 - source ../.venv/bin/activate && python3 fastapi_di.py
-
-交互示意图: 用浏览器打开 images/fastapi_di.html
 """
 
 import sys
