@@ -36,7 +36,7 @@
 |:---|:---|
 | **核心考点** | 装饰器本质是高阶函数，带参装饰器需三层嵌套（参数 → 函数 → wrapper）并用 `functools.wraps` 保留元信息 |
 | **验收标准** | 实现 `@retry` / `@cache` / `@log_level` 三个带参装饰器，main 演示调用链与运行时行为 |
-| **可视化** | `decorator_arch.png`（架构图）、`decorator_runtime.png`（运行时行为） |
+| **可视化** | `core/01_decorator_factory/images/decorator_factory.svg`（架构图）+ `core/01_decorator_factory/images/decorator_factory.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：不加 `functools.wraps` 会让 `__name__` 变成 wrapper，调试日志无法识别原函数
@@ -48,7 +48,7 @@
 |:---|:---|
 | **核心考点** | with 背后是 `__enter__`/`__exit__` 协议，`__exit__` 返回 True 吞异常，`@contextmanager` 是函数式实现 |
 | **验收标准** | 实现 Timer / FileLock / Transaction 等类式与函数式上下文管理器，含 `contextlib` 工具对比 |
-| **可视化** | `context_manager.png` |
+| **可视化** | `core/02_context_manager/images/context_manager.svg`（架构图）+ `core/02_context_manager/images/context_manager.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：`@contextmanager` 里无法吞异常，要吞异常控制异常传播必须用类式实现并 `return True`
@@ -60,7 +60,7 @@
 |:---|:---|
 | **核心考点** | `__get__`/`__set__`/`__delete__` 是属性访问底层机制，数据描述符优先级高于实例 `__dict__` |
 | **验收标准** | 实现 TypedField / CachedProperty / LazyField / LoggedField 四种描述符，演示属性查找优先级 |
-| **可视化** | `descriptor.png` |
+| **可视化** | `core/03_descriptor/images/descriptor.svg`（架构图）+ `core/03_descriptor/images/descriptor.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：只定义 `__get__` 的非数据描述符可被实例 `__dict__` 覆盖，只有数据描述符才始终拦截读写
@@ -72,7 +72,7 @@
 |:---|:---|
 | **核心考点** | yield 惰性求值并保存完整栈帧实现暂停/恢复；send 双向通信、yield from 委托子生成器 |
 | **验收标准** | 手写迭代器 vs 生成器、斐波那契、send 累加器、yield from 扁平化、O(1) 内存惰性管道 |
-| **可视化** | `generator_iterator.png` |
+| **可视化** | `core/04_generator_iterator/images/generator_iterator.svg`（架构图）+ `core/04_generator_iterator/images/generator_iterator.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：生成器是单向迭代器，耗尽后无法重置，需要再次遍历必须重新创建
@@ -84,7 +84,7 @@
 |:---|:---|
 | **核心考点** | 元类是"类的类"，class 语句本质是 `type()` 调用；`__call__` 控制实例创建、`__new__` 控制类创建 |
 | **验收标准** | `type()` 建类、单例元类、ORM 字段映射元类、`__init_subclass__` 子类注册 |
-| **可视化** | `metaclass.png` |
+| **可视化** | `core/05_metaclass/images/metaclass.svg`（架构图）+ `core/05_metaclass/images/metaclass.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：能用轻量的 `__init_subclass__` 就别用元类，元类易过度设计
@@ -96,7 +96,7 @@
 |:---|:---|
 | **核心考点** | `__slots__` 用描述符数组替代 `__dict__` 哈希表，内存省 40-60% 并禁用动态属性 |
 | **验收标准** | RegularPoint vs SlotPoint 内存对比、继承中 slots、weakref 支持、访问速度基准测试 |
-| **可视化** | `slots_memory.png` |
+| **可视化** | `core/06_slots_memory/images/slots_memory.svg`（架构图）+ `core/06_slots_memory/images/slots_memory.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：子类不继承父类 slots 需重新声明，否则自动获得 `__dict__`；支持弱引用须显式声明 `__weakref__`
@@ -112,7 +112,7 @@
 |:---|:---|
 | **核心考点** | MRO 由 C3 线性化决定，`super()` 调用的是 MRO 中的下一个而非语义上的"父类" |
 | **验收标准** | 钻石继承 D(B,C) 的 MRO、`super()` 调用链、JSON/Repr/Validate 三个 Mixin 组合 |
-| **可视化** | `mro_mixin.png` |
+| **可视化** | `core/07_mro_mixin/images/mro_mixin.svg`（架构图）+ `core/07_mro_mixin/images/mro_mixin.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：Mixin 里用 `ClassName.__init__(self)` 会破坏 MRO 链，必须始终用 `super()`
@@ -123,8 +123,8 @@
 | 项目信息 | 详情 |
 |:---|:---|
 | **核心考点** | GIL 同一时刻只允许一个线程执行字节码；CPU 密集用 multiprocessing、I/O 密集用 threading/asyncio |
-| **验收标准** | 串行 / threading / multiprocessing 三方案的 CPU 与 I/O 密集基准对比并绘图 |
-| **可视化** | `gil_concurrency.png` |
+| **验收标准** | 串行 / threading / multiprocessing 三方案的 CPU 与 I/O 密集基准对比，附小任务粒度倒挂对照 |
+| **可视化** | `core/08_gil_concurrency/images/gil_concurrency.svg`（架构图）+ `core/08_gil_concurrency/images/gil_concurrency.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：threading 做 CPU 密集因 GIL 争用比串行更慢；纯 Python 循环不释放 GIL，只有 C 扩展能释放
@@ -136,7 +136,7 @@
 |:---|:---|
 | **核心考点** | 运算符与内置函数背后都是魔术方法，`__repr__` 给调试、`__str__` 给显示 |
 | **验收标准** | Point 完整魔术方法、`@total_ordering`、`@dataclass`、自实现 RingBuffer 容器 |
-| **可视化** | `magic_methods.png` |
+| **可视化** | `core/09_magic_methods/images/magic_methods.svg`（架构图）+ `core/09_magic_methods/images/magic_methods.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：定义了 `__eq__` 却不定义 `__hash__` 时对象自动不可哈希，不能当作 dict key
@@ -148,7 +148,7 @@
 |:---|:---|
 | **核心考点** | 多态是 Duck Typing（关注行为不关注类型）；ABC 用 `@abstractmethod` 强制实现，Protocol 提供结构化子类型 |
 | **验收标准** | Duck/Robot 鸭子类型、Transport 抽象基类、`register()` 虚拟子类、isinstance 检查 |
-| **可视化** | `abc_duck_typing.png` |
+| **可视化** | `core/10_abc_duck_typing/images/abc_duck_typing.svg`（架构图）+ `core/10_abc_duck_typing/images/abc_duck_typing.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：`@abstractmethod` 在实例化时检查，而 `raise NotImplementedError` 要到方法调用时才会暴露
@@ -160,7 +160,7 @@
 |:---|:---|
 | **核心考点** | `__getattribute__` 每次访问都触发，`__getattr__` 仅在常规查找失败后才触发；代理用 `__getattr__` 透明转发 |
 | **验收标准** | 动态属性、访问日志、Proxy 转发、LazyConfig 懒加载四种模式 |
-| **可视化** | `getattr_proxy.png` |
+| **可视化** | `core/11_getattr_proxy/images/getattr_proxy.svg`（架构图）+ `core/11_getattr_proxy/images/getattr_proxy.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：在 `__getattribute__` 里写 `self.xxx` 会无限递归，必须用 `object.__getattribute__(self, 'xxx')`
@@ -176,7 +176,7 @@
 |:---|:---|
 | **核心考点** | `__new__` 分配内存返回实例、`__init__` 初始化属性；`__new__` 返回非 cls 实例时 `__init__` 不被调用 |
 | **验收标准** | 调用顺序追踪、实例缓存、不可变类型子类化（UpperStr/LimitedInt）、工厂模式 |
-| **可视化** | `new_vs_init.png` |
+| **可视化** | `core/12_new_vs_init/images/new_vs_init.svg`（架构图）+ `core/12_new_vs_init/images/new_vs_init.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：`__new__` 命中缓存返回已有实例时 `__init__` 仍会被调用，需注意重复初始化
@@ -188,7 +188,7 @@
 |:---|:---|
 | **核心考点** | `obj(args)` 等价于 `obj.__call__(args)`；可调用对象 = 函数能力 + 对象状态，支撑策略模式与类装饰器 |
 | **验收标准** | Multiplier/Accumulator 有状态可调用、Formatter 策略切换、Validator 验证器链 |
-| **可视化** | `callable.png` |
+| **可视化** | `core/13_callable/images/callable.svg`（架构图）+ `core/13_callable/images/callable.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：普通函数不能添加自定义属性（`fn.custom = 1` 报错），跨调用保持状态只能靠可调用对象或闭包
@@ -200,7 +200,7 @@
 |:---|:---|
 | **核心考点** | `=` 赋值不建副本，`copy.copy()` 外层独立内层共享，`deepcopy` 递归全独立，靠 memo 字典处理循环引用 |
 | **验收标准** | 6 组 demo 对比嵌套列表 / 不可变对象 / 自定义 `__copy__` / 循环引用场景 |
-| **可视化** | `copy_deepcopy.png` |
+| **可视化** | `core/14_copy_deepcopy/images/copy_deepcopy.svg`（架构图）+ `core/14_copy_deepcopy/images/copy_deepcopy.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：浅拷贝修改内层可变对象会同时影响原对象，这是浅拷贝最易忽视的坑
@@ -212,7 +212,7 @@
 |:---|:---|
 | **核心考点** | 定义时 `*args` 收集 tuple / `**kwargs` 收集 dict，调用时解包；打包与解包是对偶操作 |
 | **验收标准** | 8 组演示：参数顺序、kw_only/pos_only 分隔符、字面量解包与字典合并 |
-| **可视化** | `args_kwargs.png` |
+| **可视化** | `core/15_args_kwargs/images/args_kwargs.svg`（架构图）+ `core/15_args_kwargs/images/args_kwargs.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：参数顺序 pos-only → `*args` → `**kwargs` 违反直接 SyntaxError；`/` 与 `*` 分隔符方向别搞混
@@ -224,7 +224,7 @@
 |:---|:---|
 | **核心考点** | 引用计数为主、分代 GC 为辅，循环引用靠 gc 可达性分析回收；weakref 不增加引用计数 |
 | **验收标准** | refcount、循环引用 `gc.collect()`、`weakref.ref/finalize`、WeakKeyDictionary 自动清理 |
-| **可视化** | `gc_weakref.png` |
+| **可视化** | `core/16_gc_weakref/images/gc_weakref.svg`（架构图）+ `core/16_gc_weakref/images/gc_weakref.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：`__del__` 在循环引用下可能不被调用且异常被静默忽略，清理资源应优先用 with 上下文管理器
@@ -240,7 +240,7 @@
 |:---|:---|
 | **核心考点** | `@property` 本质是数据描述符（优先级高于实例 `__dict__`），setter 做验证、无 setter 即只读 |
 | **验收标准** | Circle 验证/deleter、Rectangle 只读计算属性、Temperature 摄氏华氏同步、描述符本质揭示 |
-| **可视化** | `property.png` |
+| **可视化** | `core/17_property/images/property.svg`（架构图）+ `core/17_property/images/property.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：只读 property 赋值抛 `AttributeError`；`cached_property` 是非数据描述符，可被实例字典覆盖
@@ -252,7 +252,7 @@
 |:---|:---|
 | **核心考点** | 类型注解不影响运行时；TypeVar 参数化、`Generic[T]` 泛型类、Protocol 只检查方法签名 |
 | **验收标准** | 泛型 Stack、Sized/Readable 协议 isinstance 检查、Union/Optional、泛型函数 |
-| **可视化** | `typing_generic.png` |
+| **可视化** | `core/18_typing_generic/images/typing_generic.svg`（架构图）+ `core/18_typing_generic/images/typing_generic.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：注解运行时完全不检查，`Stack[int].push("wrong")` 不报错，必须靠 mypy/pyright 把关
@@ -264,7 +264,7 @@
 |:---|:---|
 | **核心考点** | namedtuple 不可变轻量、dataclass 自动生成样板代码，`default_factory` 避免可变默认值陷阱 |
 | **验收标准** | namedtuple / 冻结 dataclass / 嵌套 dataclass / `asdict()` 序列化（含 `__post_init__`） |
-| **可视化** | `collections.png` |
+| **可视化** | `core/19_collections/images/collections.svg`（架构图）+ `core/19_collections/images/collections.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：`field(default=[])` 会让所有实例共享同一 list，必须用 `default_factory=list`
@@ -276,7 +276,7 @@
 |:---|:---|
 | **核心考点** | itertools 惰性求值、`lru_cache`、`partial`、`reduce`、`singledispatch`、operator 替代 lambda |
 | **验收标准** | chain/islice/accumulate/combinations/groupby、缓存与排序、三面板可视化 |
-| **可视化** | `itertools_func.png` |
+| **可视化** | `core/20_itertools_func/images/itertools_func.svg`（架构图）+ `core/20_itertools_func/images/itertools_func.html`（交互版） |
 
 **完成日期**：2026-08-14
 **踩坑记录**：`groupby` 只能分组连续相同元素，未排序数据必须先 `sorted()`

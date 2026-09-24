@@ -132,26 +132,31 @@ def run_demo():
         print(f"  Switch interval: {sys.getswitchinterval()*1000:.0f}ms")
     print(f"  CPU count: {os.cpu_count()}")
 
-    # 2) CPU-bound benchmark
-    print("\n[2] CPU-bound (prime counting, 5000, 4 workers):")
-    print("  This may take a few seconds...")
-    cpu_results = bench_cpu(n=5000, workers=4)
+    # 2) CPU-bound benchmark —— 主结果：任务够大，multiprocessing 真并行
+    print("\n[2] CPU-bound（n=200,000，4 个任务）: multiprocessing 真并行")
+    print("  serial / threading(4) / process(4)，耗时含进程池启动……")
+    cpu_results = bench_cpu(n=200000, workers=4)
     for name, t in cpu_results.items():
         print(f"  {name:>20s}: {t:.3f}s")
-    # 比值 >1 表示比串行更慢（耗时比）；结论按实测动态判断, 不硬编码
     t_ratio = cpu_results["threading"] / cpu_results["serial"]
     p_ratio = cpu_results["multiprocessing"] / cpu_results["serial"]
-    print(f"\n  Threading/Serial time ratio:       {t_ratio:.2f}  (>1 = slower)")
-    print(f"  Multiprocessing/Serial time ratio: {p_ratio:.2f}  (>1 = slower)")
+    print(f"\n  Threading/Serial time ratio:       {t_ratio:.2f}（GIL 串行化，不加速）")
+    print(f"  Multiprocessing/Serial time ratio: {p_ratio:.2f}（<1 = 真并行加速）")
     if t_ratio > 1.05:
         print("  → Threading SLOWER (GIL contention)")
     else:
         print("  → Threading ≈ Serial (GIL: no CPU parallel gain)")
     if p_ratio < 0.75:
-        print("  → Multiprocessing FASTER (parallel execution)")
-    else:
-        print("  → Multiprocessing looks SLOWER at n=5000: process startup cost")
-        print("    dominates this tiny workload (try bench_cpu(n=200000) for real speedup)")
+        print("  → Multiprocessing FASTER: 每进程一把独立 GIL，字节码真并行")
+
+    # 2b) 对照实验：任务粒度太小，多进程反而倒挂
+    print("\n[2b] 对照：任务缩小到 n=5,000（粒度 < 进程通信成本）:")
+    small = bench_cpu(n=5000, workers=4)
+    for name, t in small.items():
+        print(f"  {name:>20s}: {t:.3f}s")
+    s_ratio = small["multiprocessing"] / max(small["serial"], 1e-9)
+    print(f"  Multiprocessing/Serial time ratio: {s_ratio:.2f}（>1 = 倒挂）")
+    print("  → 任务粒度小于进程启动/序列化成本时，多进程必然倒挂——粒度也是选型的一部分")
 
     # 3) I/O-bound benchmark
     print("\n[3] I/O-bound (8 x 100ms sleep):")
@@ -193,5 +198,4 @@ def run_demo():
 
 
 if __name__ == "__main__":
-    # 只跑 demo; 
     run_demo()

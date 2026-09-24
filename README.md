@@ -1,12 +1,12 @@
 # hands-on-python
 
-Python 语言核心机制 hands-on 系列：20 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等核心主题。每个实验目录包含 README 教程（五段式：What / Why / How / Core / Q&A）与零依赖的主演示脚本，读完第 1 个就知道其余 19 个怎么跑、去哪读原理。
+Python 语言核心机制 hands-on 系列：23 个可独立运行的实验，覆盖装饰器、描述符、元类、GIL 与并发、内存管理等核心主题。每个实验目录包含 README 教程（五段式：What / Why / How / Deep Dive / Q&A）与零依赖的主演示脚本，读完第 1 个就知道其余 22 个怎么跑、去哪读原理。
 
 ## 环境要求
 
 - **Python 3.8+**（推荐 3.10+；使用 `python3 --version` 探测实际版本）
-- 主演示脚本 `python3 <topic>.py` **零第三方依赖**
-- 每篇 README 按五段式组织：What（它是什么）/ Why（为什么需要）/ How（实现与使用，含真实输出与"诚实预期"）/ Core（核心概念与坑清单）/ Q&A（深入要点）
+- 主演示脚本 `python3 <topic>.py`：**core 系列全部零第三方依赖**；concurrency 仅 lab 11 需 aiohttp；web 框架阶段（04+）运行在 `web/.venv`
+- 每篇 README 按五段式组织：What（它是什么）/ Why（为什么需要）/ How（实现与使用，含真实输出与"诚实预期"）/ Deep Dive（机制精讲与踩坑清单）/ Q&A（深入要点）
 
 ## 目录结构
 
@@ -20,17 +20,17 @@ hands-on-python/
 │   ├── python_concurrency.md     # 第二系列（并发）清单与进度
 │   └── python_web_frameworks.md  # 第三系列（Web 框架）清单、环境配置与版本矩阵
 ├── core/
-│   └── NN_short_name/         # 第一系列：两位编号 + 小写主题名，共 20 个实验
-│       ├── README.md          # 五段式教程：What / Why / How / Core / Q&A
+│   └── NN_short_name/         # 第一系列：两位编号 + 小写主题名，共 23 个实验
+│       ├── README.md          # 五段式教程：What / Why / How / Deep Dive / Q&A
 │       ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
 │       └── images/               # 架构图（历史产物，当前 README 不引用）
 │           ├── <topic>.json
 │           ├── <topic>.html
 │           └── <topic>.svg
 ├── concurrency/
-│   └── NN_topic/              # 第二系列：16 个并发实验，同"五件套"规范
+│   └── NN_topic/              # 第二系列：16 个并发实验，同 core 系列的五段式 README 规范
 └── web/
-    └── NN_topic/              # 第三系列：20 个 Web 框架实验，同"五件套"规范（框架阶段跑在 web/.venv）
+    └── NN_topic/              # 第三系列：20 个 Web 框架实验，同 core 系列的五段式 README 规范（框架阶段跑在 web/.venv）
 ```
 
 ## 实验列表
@@ -57,11 +57,14 @@ hands-on-python/
 | 18 | [typing 与泛型](core/18_typing_generic/README.md) | TypeVar / Generic / Protocol 静态类型 |
 | 19 | [collections 与 dataclass](core/19_collections/README.md) | namedtuple / dataclass / dict 选型 |
 | 20 | [itertools / functools / operator](core/20_itertools_func/README.md) | 标准库函数式工具三件套 |
+| 21 | [作用域与闭包](core/21_scope_closure/README.md) | LEGB、nonlocal、cell 与循环变量闭包陷阱 |
+| 22 | [模块与导入系统](core/22_import_system/README.md) | sys.modules 缓存、`__main__` 守卫、循环导入 |
+| 23 | [异常机制与异常链](core/23_exceptions/README.md) | EAFP、raise from、except* 与自定义异常体系 |
 
 ## 🧵 第二系列：Python 并发 16 站（2026-09 新增）
 
 继 20 个语言机制实验之后的完整并发专题：线程地基 → 多进程 → asyncio → 诊断与模式 → 终极串联。
-每个实验同为本仓库"五件套"规范（教程 README + 主演示脚本 + 架构图三件套），
+每个实验 = README 教程（五段式）+ 主演示脚本（images/ 架构图保留在目录中，当前 README 不引用），
 清单与进度见 [python_concurrency.md](docs/python_concurrency.md)。
 
 | 编号 | 实验名 | 一句话主题 |
@@ -83,7 +86,7 @@ hands-on-python/
 | 15 | [🏁 可切换执行模型并发下载器](concurrency/15_downloader/README.md) | 四后端一键切换、限流重试、断点续传、SHA256 |
 | 16 | [⚠️ free-threading 无 GIL 实测](concurrency/16_free_threading/README.md) | PEP 703 双构建对比：0.97× vs 3.73×（选做） |
 
-并发系列学习路线（每站 README §8 有上下篇链接）：
+并发系列学习路线：
 
 1. **线程地基**（01 → 02 → 03 → 04）：线程生命周期、竞态与 GIL、同步原语、消息传递
 2. **多核与执行器**（05 → 06 → 07）：多进程真并行、四条 IPC、统一执行器
@@ -124,10 +127,10 @@ hands-on-python/
 
 建议按四个阶段推进，每阶段内编号即推荐顺序：
 
-1. **函数与装饰器**（01 → 02 → 15 → 04）：先拿下使用频率最高的装饰器与参数传递，再进入生成器协议
+1. **函数与装饰器**（01 → 02 → 15 → 04 → 21）：装饰器、参数传递、生成器协议，最后补上它们的地基——作用域与闭包
 2. **面向对象**（03 → 05 → 07 → 09 → 10 → 13 → 12）：从属性访问底层（描述符）到类创建（元类）、方法解析（MRO）、可调用对象与对象生命周期
 3. **内存与运行时**（06 → 14 → 16 → 11）：`__slots__` 内存优化、拷贝语义、垃圾回收与属性查找链
-4. **并发与标准库**（08 → 18 → 19 → 20）：GIL 与三种并发模型，收尾于 typing 与函数式工具库
+4. **并发、标准库与运行时**（08 → 18 → 19 → 20 → 22 → 23）：GIL 与并发模型、标准库工具、导入系统与异常机制
 
 ## 如何运行一个实验
 

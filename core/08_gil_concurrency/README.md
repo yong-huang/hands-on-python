@@ -23,34 +23,66 @@ python3 gil_concurrency.py          # 运行全部基准测试 demo
 
 ```
 [1] GIL info:
-  Python: 3.10.20
+  Python: 3.14.7
   Implementation: cpython
+  GIL exists: True
   Switch interval: 5ms
+  CPU count: 18
 
-[2] CPU-bound (prime counting, 5000, 4 workers):
-              serial: 0.005s
-           threading: 0.005s
-     multiprocessing: 0.046s
+[2] CPU-bound（n=200,000，4 个任务）: multiprocessing 真并行
+  serial / threading(4) / process(4)，耗时含进程池启动……
+                serial: 0.353s
+             threading: 0.359s
+       multiprocessing: 0.164s
 
-  Threading/Serial time ratio:       1.01  (>1 = slower)
-  Multiprocessing/Serial time ratio: 8.49  (>1 = slower)
+  Threading/Serial time ratio:       1.02（GIL 串行化，不加速）
+  Multiprocessing/Serial time ratio: 0.46（<1 = 真并行加速）
   → Threading ≈ Serial (GIL: no CPU parallel gain)
-  → Multiprocessing looks SLOWER at n=5000: process startup cost
-    dominates this tiny workload (try bench_cpu(n=200000) for real speedup)
+  → Multiprocessing FASTER: 每进程一把独立 GIL，字节码真并行
+
+[2b] 对照：任务缩小到 n=5,000（粒度 < 进程通信成本）:
+                serial: 0.003s
+             threading: 0.003s
+       multiprocessing: 0.057s
+  Multiprocessing/Serial time ratio: 17.30（>1 = 倒挂）
+  → 任务粒度小于进程启动/序列化成本时，多进程必然倒挂——粒度也是选型的一部分
 
 [3] I/O-bound (8 x 100ms sleep):
-              serial: 0.827s
-           threading: 0.106s
-             asyncio: 0.102s
-  Threading vs Serial: 7.82x speedup
-  asyncio vs Serial:   8.12x speedup
+                serial: 0.828s
+             threading: 0.106s
+               asyncio: 0.101s
+
+  Threading vs Serial: 7.84x speedup
+  asyncio vs Serial:   8.19x speedup
   → Both FASTER (GIL released during I/O)
+
+[4] When GIL is released:
+  Operation                      GIL Released   Why
+  ------------------------------ -------------- --------------------
+  time.sleep()                   Yes            I/O wait
+  socket.recv()                  Yes            Network I/O
+  open().read()                  Yes            File I/O
+  for x in range(10**9)          No             Pure Python
+  numpy.sum(arr)                 Yes            C ext, explicit release
+  re.match(pattern, text)        No             C ext, no release
+
+[5] Decision guide:
+  CPU-bound (heavy computation):
+    → multiprocessing (bypass GIL)
+    → or C extension / numpy (release GIL in C)
+  I/O-bound (network, file, DB):
+    → asyncio (most efficient, single thread)
+    → threading (simple, works well)
+  Mixed:
+    → asyncio + run_in_executor for CPU parts
+
 ```
 
 诚实预期（本机实测）：
 
 - **I/O 密集加速稳定可复现**：8 × 100ms sleep 的串行耗时 ~0.83s，threading/asyncio 都 ~0.10s，接近 8x 理论上限
-- **CPU 密集的默认规模太小，看不到 multiprocessing 优势**：demo 用 n=5000 时串行只要 ~5ms，进程池的启动/序列化开销（~48ms）反而让它显得更慢 —— 这不是故障，是任务粒度小于进程通信成本的预期行为。把 `bench_cpu(n=200000)` 调大后才能看到 multiprocessing 的并行加速
+- **CPU 密集主结果：multiprocessing 实测约 2.2~2.4× 加速**（比值 0.42~0.46，两次运行波动；M 系列性能核/能效核混排所致）——每进程独立 GIL，字节码真并行
+- **[2b] 对照段演示粒度倒挂**：任务缩到 n=5,000 时，进程池启动/序列化成本（~50ms）远超计算本体（~3ms），多进程/串行实测 ≈15~17× 倒挂——倍数随机器浮动，方向稳定
 - threading 在 CPU 密集下约等于串行（1.0x 上下浮动），小幅波动来自 GIL 切换的时机，不是加速
 
 ### GIL 的工作方式
@@ -104,7 +136,7 @@ def bench_io(workers=8, duration=0.1):
 
 踩坑清单：
 
-- **任务粒度小于进程通信成本**：n=5000 时进程池启动/序列化开销（~48ms）远超计算本体（~5ms），multiprocessing 必然"看起来更慢"——粒度要远大于通信成本才能收益并行
+- **任务粒度小于进程通信成本**：计算本体 ~3ms 时进程池启动/序列化开销（~50ms）占绝对大头，multiprocessing 必然倒挂（[2b] 实测 ≈15×）——粒度要远大于通信成本才能收益并行
 - **"是 C 扩展"≠"释放 GIL"**：`re`、`json` 这类直接操作 Python 对象的 C 实现并不释放 GIL；numpy 之快在于它在 C 层显式使用了 `Py_BEGIN_ALLOW_THREADS`
 
 ## Q&A

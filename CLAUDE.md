@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A Python hands-on tutorial series ("hands-on-python") focused on Python core language internals: 20 self-contained labs under `core/`. Lab conventions follow the `hands-on-series` skill (`~/.agents/skills/hands-on-series/SKILL.md`) — read that skill before creating new labs or restructuring existing ones.
+A Python hands-on tutorial series ("hands-on-python") focused on Python core language internals: 23 self-contained labs under `core/`. Lab conventions follow the `hands-on-series` skill (`~/.agents/skills/hands-on-series/SKILL.md`) — read that skill before creating new labs or restructuring existing ones.
 
 Content language is Chinese (正文中文，命令/代码/术语保留英文).
 
@@ -13,7 +13,7 @@ Content language is Chinese (正文中文，命令/代码/术语保留英文).
 - `LICENSE` — MIT.
 - `README.md` — series index: intro, environment requirements, lab table, learning path, how to run.
 - `docs/` — per-series planning/checklist documents (root keeps only README): `python_interview.md`, `python_concurrency.md`, `python_web_frameworks.md`.
-- `core/NN_topic/` — 20 numbered labs (01_decorator_factory … 20_itertools_func), one Python core-mechanics topic each. The directory is named `core/` (not the skill's `labs/`) — a deliberate deviation to match this repo's theme.
+- `core/NN_topic/` — 23 numbered labs (01_decorator_factory … 23_exceptions), one Python core-mechanics topic each. The directory is named `core/` (not the skill's `labs/`) — a deliberate deviation to match this repo's theme.
 - `concurrency/NN_topic/` — second series (2026-09): 16 Python concurrency labs, planned by `docs/python_concurrency.md` (learning-list skill) and built via the hands-on-series skill. Same five-section README order as `core/`.
 - `web/NN_topic/` — third series (2026-09): 20 Python web-framework labs (WSGI/HTTP/cookie foundations → Flask → FastAPI → Django → comparison/capstone), planned by `docs/python_web_frameworks.md`. Same five-section README order as `core/`. Stage-1 labs (01-03) are stdlib-only; framework labs (04+) run in `web/.venv` — setup commands and the 2026-09-10 smoke-tested version matrix live in docs/python_web_frameworks.md 环境配置.
 - Each lab is a "五件套":
