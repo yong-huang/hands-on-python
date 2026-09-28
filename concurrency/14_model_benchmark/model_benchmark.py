@@ -147,7 +147,8 @@ def main() -> None:
     section("C. 三条方向性结论")
     c1 = p_cpu < s_cpu * 0.6
     c2 = a_io < s_io * 0.4
-    c3 = t_cpu >= s_cpu * 0.99
+    # 容差 10%（与 B 区一致）：调度涨落会让线程偶发 0.95~0.99×，方向性结论不变
+    c3 = t_cpu >= s_cpu * 0.9
     print(f"  [{'✓' if c1 else '✗'}] CPU 密集 → 进程版最快（{s_cpu / p_cpu:.2f}× 加速）")
     print(f"  [{'✓' if c2 else '✗'}] IO 密集 → 协程版最快（{s_io / a_io:.1f}× 加速）")
     print(f"  [{'✓' if c3 else '✗'}] CPU 密集 → 线程版不快于串行（{t_cpu / s_cpu:.2f}×，GIL）")
