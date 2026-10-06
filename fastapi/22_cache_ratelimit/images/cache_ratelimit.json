@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 22 · 缓存与限流:备忘录与取号机",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/cache_ratelimit.html"
+  },
+  "components": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "并发客户端",
+      "sublabel": "20 个同时未命中",
+      "pos": [
+        40,
+        190
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "plain",
+      "type": "backend",
+      "label": "无锁 TTLCache",
+      "tag": "击穿现场: 20 次真实计算",
+      "sublabel": "await 空档各自查到未命中",
+      "pos": [
+        565,
+        60
+      ],
+      "size": [
+        230,
+        78
+      ]
+    },
+    {
+      "id": "safe",
+      "type": "backend",
+      "label": "带锁 SafeCache",
+      "tag": "收敛: 1 次真实计算",
+      "sublabel": "asyncio.Lock 锁住查算写",
+      "pos": [
+        280,
+        260
+      ],
+      "size": [
+        230,
+        78
+      ]
+    },
+    {
+      "id": "backend",
+      "type": "database",
+      "label": "慢后端",
+      "tag": "0.3s/次 · 有计数",
+      "sublabel": "被打垮前先被限流",
+      "pos": [
+        600,
+        170
+      ],
+      "size": [
+        160,
+        78
+      ]
+    },
+    {
+      "id": "bucket",
+      "type": "security",
+      "label": "令牌桶限流",
+      "tag": "容量 3 · rate 2/s",
+      "sublabel": "不足则 429 + Retry-After",
+      "pos": [
+        585,
+        330
+      ],
+      "size": [
+        190,
+        78
+      ]
+    },
+    {
+      "id": "ok",
+      "type": "frontend",
+      "label": "放行",
+      "sublabel": "拿到令牌的请求",
+      "pos": [
+        880,
+        200
+      ],
+      "size": [
+        110,
+        60
+      ]
+    },
+    {
+      "id": "deny",
+      "type": "security",
+      "label": "429",
+      "sublabel": "Retry-After 头",
+      "pos": [
+        880,
+        339
+      ],
+      "size": [
+        110,
+        60
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "c-plain",
+      "from": "client",
+      "to": "plain",
+      "label": "并发未命中",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c-safe",
+      "from": "client",
+      "to": "safe",
+      "label": "并发未命中",
+      "variant": "emphasis"
+    },
+    {
+      "id": "plain-b",
+      "from": "plain",
+      "to": "backend",
+      "variant": "dashed",
+      "route": "straight",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "safe-b",
+      "from": "safe",
+      "to": "backend",
+      "label": "1 次",
+      "route": "straight",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          555,
+          299
+        ],
+        [
+          555,
+          209
+        ]
+      ]
+    },
+    {
+      "id": "b-bucket",
+      "from": "backend",
+      "to": "bucket",
+      "label": "出站前取号",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          680,
+          290
+        ]
+      ]
+    },
+    {
+      "id": "bucket-ok",
+      "from": "bucket",
+      "to": "ok",
+      "label": "有令牌",
+      "route": "straight",
+      "labelAt": [
+        810,
+        250
+      ],
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          835,
+          369
+        ],
+        [
+          835,
+          230
+        ]
+      ]
+    },
+    {
+      "id": "bucket-deny",
+      "from": "bucket",
+      "to": "deny",
+      "label": "无令牌",
+      "variant": "dashed",
+      "route": "straight",
+      "labelAt": [
+        800,
+        398
+      ],
+      "fromSide": "right",
+      "toSide": "left"
+    }
+  ]
+}

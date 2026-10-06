@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 20 · 测试金字塔:底层厚,顶层深",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/testing.html"
+  },
+  "components": [
+    {
+      "id": "unit",
+      "type": "backend",
+      "label": "单元层 test_unit.py",
+      "tag": "最厚 · 4 条",
+      "sublabel": "纯函数直测 · 不起 HTTP",
+      "pos": [
+        120,
+        300
+      ],
+      "size": [
+        260,
+        78
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "端点层 test_api.py",
+      "tag": "3 条",
+      "sublabel": "TestClient 行为测试",
+      "pos": [
+        300,
+        180
+      ],
+      "size": [
+        260,
+        78
+      ]
+    },
+    {
+      "id": "contract",
+      "type": "security",
+      "label": "契约层 test_contract.py",
+      "tag": "最深 · 1 条 xfail",
+      "sublabel": "响应 keys 清单 · 抓泄漏",
+      "pos": [
+        480,
+        60
+      ],
+      "size": [
+        260,
+        78
+      ]
+    },
+    {
+      "id": "fixture",
+      "type": "database",
+      "label": "conftest 夹具",
+      "tag": "app / client / autouse 清场",
+      "sublabel": "隔离不靠用例自觉",
+      "pos": [
+        830,
+        180
+      ],
+      "size": [
+        240,
+        78
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "u-a",
+      "from": "unit",
+      "to": "api",
+      "label": "同一条提交流水线",
+      "route": "straight",
+      "labelAt": [
+        335,
+        290
+      ],
+      "fromSide": "top",
+      "toSide": "bottom",
+      "via": [
+        [
+          250,
+          278
+        ],
+        [
+          430,
+          278
+        ]
+      ]
+    },
+    {
+      "id": "a-c",
+      "from": "api",
+      "to": "contract",
+      "label": "形状由契约守卫",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelAt": [
+        520,
+        155
+      ],
+      "fromSide": "top",
+      "toSide": "bottom",
+      "via": [
+        [
+          430,
+          158
+        ],
+        [
+          610,
+          158
+        ]
+      ]
+    },
+    {
+      "id": "f-both",
+      "from": "fixture",
+      "to": "api",
+      "label": "装配与隔离",
+      "labelAt": [
+        720,
+        150
+      ]
+    }
+  ]
+}

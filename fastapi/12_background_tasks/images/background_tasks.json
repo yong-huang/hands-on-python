@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Lab 12 · 后台任务三形态:同样的 202,不同的执行时机与异常去向",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/background_tasks.html"
+  },
+  "lanes": [
+    { "id": "bg", "label": "BackgroundTasks" },
+    { "id": "task", "label": "asyncio.create_task" },
+    { "id": "queue", "label": "进程内队列" }
+  ],
+  "phases": [
+    { "id": "accept", "label": "接受请求", "fromCol": 0, "toCol": 0 },
+    { "id": "run", "label": "执行时机", "fromCol": 1, "toCol": 1 },
+    { "id": "evidence", "label": "完成证据与边界", "fromCol": 2, "toCol": 2 }
+  ],
+  "mainPath": ["bg_req", "bg_run", "bg_out"],
+  "nodes": [
+    { "id": "bg_req", "lane": "bg", "col": 0, "type": "backend", "label": "POST /notify-bg", "sublabel": "202 立即返回", "width": 150 },
+    { "id": "bg_run", "lane": "bg", "col": 1, "type": "backend", "label": "响应发送后执行", "sublabel": "同请求上下文 · sleep 0.5", "tag": "框架托管", "width": 160 },
+    { "id": "bg_out", "lane": "bg", "col": 2, "type": "frontend", "label": "GET /outbox 落账", "sublabel": "异常 → 服务端 traceback", "tag": "失败可见", "width": 165 },
+    { "id": "task_req", "lane": "task", "col": 0, "type": "backend", "label": "POST /notify-task", "sublabel": "202 立即返回", "width": 150 },
+    { "id": "task_run", "lane": "task", "col": 1, "type": "backend", "label": "create_task 立即调度", "sublabel": "与响应并行推进", "tag": "fire-and-forget", "width": 160 },
+    { "id": "task_out", "lane": "task", "col": 2, "type": "security", "label": "异常被 Task 对象持有", "sublabel": "无人 await → 静默消失", "tag": "失败不可见", "width": 165 },
+    { "id": "q_req", "lane": "queue", "col": 0, "type": "backend", "label": "POST /notify-queue", "sublabel": "投递 asyncio.Queue", "width": 150 },
+    { "id": "q_run", "lane": "queue", "col": 1, "type": "database", "label": "常驻 worker 消费", "sublabel": "lifespan 启动 · 逐件处理", "tag": "FIFO", "width": 160 },
+    { "id": "q_out", "lane": "queue", "col": 2, "type": "security", "label": "进程重启 → 队列清空", "sublabel": "可靠投递交给外部队列", "tag": "重启即丢", "width": 165 }
+  ],
+  "edges": [
+    { "id": "bg-main", "from": "bg_req", "to": "bg_run", "role": "main" },
+    { "id": "bg-out", "from": "bg_run", "to": "bg_out", "role": "main" },
+    { "id": "task-main", "from": "task_req", "to": "task_run", "role": "main" },
+    { "id": "task-out", "from": "task_run", "to": "task_out", "role": "main" },
+    { "id": "q-main", "from": "q_req", "to": "q_run", "role": "main" },
+    { "id": "q-out", "from": "q_run", "to": "q_out", "role": "main" }
+  ]
+}

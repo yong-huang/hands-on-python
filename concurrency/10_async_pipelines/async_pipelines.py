@@ -74,7 +74,7 @@ def demo_pipeline() -> None:
     assert len(results) == N_TASKS, f"应处理 {N_TASKS} 条，实际 {len(results)}"
     assert all(c == 1 for c in results.values()), "存在重复处理"
     assert all(c == 1 for c in produced.values()), "生产侧重复"
-    print(f"  {len(results):,} 条全部恰好处理一次，耗时 {secs:.2f}s（≈{N_TASKS / secs:,.0f} 条/秒）")
+    print(f"  {len(results):,} 条全部恰好处理一次，耗时 {secs:.4f}s（≈{N_TASKS / secs:,.0f} 条/秒）")
     print("  单线程跑流水线：没有锁、没有 GIL 争用，只有 await 让出")
 
 

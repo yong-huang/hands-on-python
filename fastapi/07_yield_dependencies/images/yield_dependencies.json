@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 07 · yield 依赖生命周期与异常穿越",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1300,
+      720
+    ],
+    "output": "images/yield_dependencies.html"
+  },
+  "participants": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "客户端"
+    },
+    {
+      "id": "route",
+      "type": "backend",
+      "label": "FastAPI 路由"
+    },
+    {
+      "id": "tx",
+      "type": "database",
+      "label": "transaction 依赖"
+    },
+    {
+      "id": "audit",
+      "type": "messagebus",
+      "label": "audit 依赖"
+    },
+    {
+      "id": "endpoint",
+      "type": "backend",
+      "label": "端点函数"
+    }
+  ],
+  "segments": [
+    {
+      "from": 146,
+      "to": 466,
+      "label": "正常路径 · teardown 后进先出,晚于响应发送"
+    },
+    {
+      "from": 478,
+      "to": 664,
+      "label": "失败路径 · 异常穿越 yield 点,teardown 先于错误响应"
+    }
+  ],
+  "messages": [
+    {
+      "id": "request",
+      "from": "client",
+      "to": "route",
+      "y": 172,
+      "label": "POST /orders",
+      "variant": "emphasis"
+    },
+    {
+      "id": "tx-setup",
+      "from": "route",
+      "to": "tx",
+      "y": 202,
+      "label": "setup · tx:begin"
+    },
+    {
+      "id": "tx-yield",
+      "from": "tx",
+      "to": "route",
+      "y": 230,
+      "label": "yield \"tx#1\"",
+      "variant": "return"
+    },
+    {
+      "id": "audit-setup",
+      "from": "route",
+      "to": "audit",
+      "y": 260,
+      "label": "setup · audit:setup"
+    },
+    {
+      "id": "audit-yield",
+      "from": "audit",
+      "to": "route",
+      "y": 288,
+      "label": "yield \"audit\"",
+      "variant": "return"
+    },
+    {
+      "id": "call-endpoint",
+      "from": "route",
+      "to": "endpoint",
+      "y": 320,
+      "label": "调用端点(setup 全部完成)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "endpoint-return",
+      "from": "endpoint",
+      "to": "route",
+      "y": 348,
+      "label": "return 响应对象",
+      "variant": "return"
+    },
+    {
+      "id": "response",
+      "from": "route",
+      "to": "client",
+      "y": 380,
+      "label": "200 响应已发送",
+      "variant": "return",
+      "note": "此刻 teardown 还没跑:audit 的 0.5s sleep 不拖慢响应"
+    },
+    {
+      "id": "audit-teardown",
+      "from": "route",
+      "to": "audit",
+      "y": 416,
+      "label": "teardown · audit:teardown",
+      "note": "后进先出:后 setup 的先收尾"
+    },
+    {
+      "id": "tx-teardown",
+      "from": "route",
+      "to": "tx",
+      "y": 444,
+      "label": "teardown · else 分支 tx:commit"
+    },
+    {
+      "id": "boom-request",
+      "from": "client",
+      "to": "route",
+      "y": 492,
+      "label": "POST /boom"
+    },
+    {
+      "id": "boom-call",
+      "from": "route",
+      "to": "endpoint",
+      "y": 520,
+      "label": "调用端点"
+    },
+    {
+      "id": "boom-raise",
+      "from": "endpoint",
+      "to": "route",
+      "y": 550,
+      "label": "抛 HTTPException(418)",
+      "variant": "emphasis",
+      "note": "异常从 yield 点穿回两个生成器"
+    },
+    {
+      "id": "boom-audit",
+      "from": "route",
+      "to": "audit",
+      "y": 580,
+      "label": "teardown · audit:teardown",
+      "note": "异常路径:先于错误响应执行"
+    },
+    {
+      "id": "boom-rollback",
+      "from": "route",
+      "to": "tx",
+      "y": 608,
+      "label": "except 分支 · tx:rollback 后原样 re-raise"
+    },
+    {
+      "id": "boom-response",
+      "from": "route",
+      "to": "client",
+      "y": 636,
+      "label": "418 错误响应(等 teardown 跑完才发出)",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "route",
+      "from": 166,
+      "to": 642,
+      "type": "backend"
+    },
+    {
+      "participant": "tx",
+      "from": 196,
+      "to": 450,
+      "type": "database"
+    },
+    {
+      "participant": "tx",
+      "from": 486,
+      "to": 614,
+      "type": "database"
+    },
+    {
+      "participant": "audit",
+      "from": 254,
+      "to": 422,
+      "type": "messagebus"
+    },
+    {
+      "participant": "audit",
+      "from": 486,
+      "to": 586,
+      "type": "messagebus"
+    },
+    {
+      "participant": "endpoint",
+      "from": 314,
+      "to": 354,
+      "type": "backend"
+    },
+    {
+      "participant": "endpoint",
+      "from": 486,
+      "to": 556,
+      "type": "backend"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "正常路径",
+      "items": [
+        "setup 顺序 = 声明顺序:transaction 先 BEGIN,audit 后登记",
+        "端点运行在所有 setup 之后、任何 teardown 之前",
+        "teardown 后进先出:先 audit:teardown,再 tx:commit"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "时序关键点",
+      "items": [
+        "正常路径 teardown 在响应发送之后执行",
+        "audit 的 0.5s sleep 不拖慢响应,只推迟事件记录",
+        "端点异常时 teardown 抢在错误响应之前执行"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "失败路径",
+      "items": [
+        "端点抛 HTTPException 从 yield 点穿回生成器",
+        "transaction 的 except 记录 ROLLBACK 并原样 re-raise",
+        "错误响应等 teardown 全部跑完才发出"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Lab 10 · 工厂铸造与缓存键:一铸一键,别名分发",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/annotated_factories.html",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": { "label": "Annotated 别名" },
+        "backend": { "label": "函数对象 / 路由" },
+        "database": { "label": "进程内计数器" }
+      }
+    },
+    "views": [
+      { "id": "cast-alias", "label": "铸造与别名", "focus": ["factory", "dep50", "dep200", "page", "adminpage"], "note": "工厂每次调用铸出新函数对象;Annotated 别名把类型与依赖合成一条声明。" },
+      { "id": "cache-keys", "label": "缓存键分野", "focus": ["dep50", "page", "dup", "trace"], "note": "别名复用同一个函数对象:同键去重,同请求只执行一次;再铸的各算各键。" }
+    ]
+  },
+  "lanes": [
+    { "id": "flow", "label": "依赖工厂流水:铸造 → 别名 → 路由 → 证据" }
+  ],
+  "mainPath": ["factory", "dep50", "page", "dup", "trace"],
+  "nodes": [
+    { "id": "factory", "lane": "flow", "col": 0, "type": "backend", "label": "make_pagination", "sublabel": "收参数,返回依赖函数", "tag": "模具", "width": 140 },
+    { "id": "dep200", "lane": "flow", "col": 1, "type": "backend", "label": "pagination_200", "sublabel": "make_pagination(200) 铸出", "tag": "缓存键:函数对象 B", "width": 140, "yOffset": -80 },
+    { "id": "dep50", "lane": "flow", "col": 1, "type": "backend", "label": "pagination_50", "sublabel": "make_pagination(50) 铸出", "tag": "缓存键:函数对象 A", "width": 140, "yOffset": 0 },
+    { "id": "twice", "lane": "flow", "col": 1, "type": "backend", "label": "再铸 make_pagination(50)", "sublabel": "同参数也是新函数对象", "tag": "再铸50#3 / #4", "width": 170, "yOffset": 80 },
+    { "id": "adminpage", "lane": "flow", "col": 2, "type": "frontend", "label": "AdminPage 别名", "sublabel": "类型 + Depends(分页200) 合一", "width": 140, "yOffset": -80 },
+    { "id": "page", "lane": "flow", "col": 2, "type": "frontend", "label": "Page 别名", "sublabel": "类型 + Depends(分页50) 合一", "width": 140, "yOffset": 0 },
+    { "id": "dup", "lane": "flow", "col": 2, "type": "backend", "label": "GET /reports/dup", "sublabel": "直连+嵌套同键,只执行一次", "width": 140, "yOffset": 96 },
+    { "id": "admin", "lane": "flow", "col": 3, "type": "backend", "label": "GET /admin/reports", "sublabel": "pg: AdminPage · 上限 200", "width": 140, "yOffset": -80 },
+    { "id": "reports", "lane": "flow", "col": 3, "type": "backend", "label": "GET /reports", "sublabel": "pg: Page", "width": 140, "yOffset": 0 },
+    { "id": "trace", "lane": "flow", "col": 4, "type": "database", "label": "GET /trace 计数", "sublabel": "分页50#1=5 · 再铸各 1", "tag": "证据", "width": 140, "yOffset": 0 }
+  ],
+  "edges": [
+    { "id": "cast200", "from": "factory", "to": "dep200", "label": "max_size=200" },
+    { "id": "cast50", "from": "factory", "to": "dep50", "label": "max_size=50", "variant": "emphasis", "route": "straight" },
+    { "id": "recast", "from": "factory", "to": "twice", "label": "同参数调用两次", "variant": "dashed" },
+    { "id": "alias200", "from": "dep200", "to": "adminpage", "label": "注册为子依赖" },
+    { "id": "alias50", "from": "dep50", "to": "page", "label": "注册为子依赖" },
+    { "id": "use200", "from": "adminpage", "to": "admin" },
+    { "id": "use50", "from": "page", "to": "reports", "label": "别名声明依赖", "variant": "emphasis" },
+    { "id": "use-dup", "from": "page", "to": "dup", "label": "出现两次" },
+    { "id": "count-reports", "from": "reports", "to": "trace", "label": "每请求 +1" },
+    { "id": "count-dup", "from": "dup", "to": "trace", "label": "同键只 +1" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "一条主线:铸造 → 别名 → 路由",
+      "items": [
+        "make_pagination 收下 max_size,闭包里铸出新函数对象返回",
+        "Page / AdminPage 用 Annotated 把参数类型与依赖合成一条声明",
+        "路由的参数位只写别名,FastAPI 注册时展开成它指向的依赖"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "缓存键规则",
+      "items": [
+        "缓存键是依赖的可调用对象本身,不是工厂参数",
+        "A(50) 与 B(200) 天然不同键:两套上限互不干涉,每请求各执行一次",
+        "同一函数对象在同请求的依赖树里无论出现几次,只执行一次"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "常见误用对照",
+      "items": [
+        "同参数把工厂调用两次(再铸50#3/#4):两个对象两个键,并不合并",
+        "GET /reports/twice-made 实测 A/B 各执行一次,计数见 /trace",
+        "一个 Annotated 只放一个 Depends,叠放时只有最后一个生效"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "异常分发链：四种错误，一个信封",
+    "locale": "zh-CN",
+    "output": "labs/04_error_handling/images/error_handling.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "backend": { "label": "应用代码 · handler" },
+        "security": { "label": "兜底防线" },
+        "external": { "label": "HTTP 错误响应" }
+      }
+    }
+  },
+  "lanes": [
+    { "id": "app", "label": "端点 · 应用代码" },
+    { "id": "mw", "label": "ExceptionMiddleware · 按异常类继承链分发" },
+    { "id": "fb", "label": "兜底层 · 无人接住才到这里", "variant": "exception" },
+    { "id": "out", "label": "统一错误信封 · code/message/details/request_id" }
+  ],
+  "mainPath": ["endpoint", "biz", "env409"],
+  "nodes": [
+    {
+      "id": "endpoint",
+      "lane": "app",
+      "col": 0,
+      "type": "backend",
+      "label": "视图函数",
+      "sublabel": "只管 raise",
+      "width": 130
+    },
+    {
+      "id": "biz",
+      "lane": "mw",
+      "col": 1,
+      "type": "backend",
+      "label": "业务 handler",
+      "sublabel": "InventoryShortage",
+      "width": 140
+    },
+    {
+      "id": "http",
+      "lane": "mw",
+      "col": 2,
+      "type": "backend",
+      "label": "HTTP handler",
+      "sublabel": "HTTPException",
+      "width": 140
+    },
+    {
+      "id": "valid",
+      "lane": "mw",
+      "col": 3,
+      "type": "backend",
+      "label": "校验 handler",
+      "sublabel": "RequestValidationError",
+      "width": 150
+    },
+    {
+      "id": "fbmw",
+      "lane": "fb",
+      "col": 4,
+      "type": "security",
+      "label": "ServerErrorMiddleware",
+      "sublabel": "Exception 兜底 handler",
+      "width": 165
+    },
+    {
+      "id": "env409",
+      "lane": "out",
+      "col": 1,
+      "type": "external",
+      "label": "409 信封",
+      "sublabel": "code=INVENTORY_SHORTAGE",
+      "width": 150
+    },
+    {
+      "id": "env404",
+      "lane": "out",
+      "col": 2,
+      "type": "external",
+      "label": "404 / 401 信封",
+      "sublabel": "headers 原样透传",
+      "width": 150
+    },
+    {
+      "id": "env422",
+      "lane": "out",
+      "col": 3,
+      "type": "external",
+      "label": "422 信封",
+      "sublabel": "loc/msg/type 进 details",
+      "width": 150
+    },
+    {
+      "id": "env500",
+      "lane": "out",
+      "col": 4,
+      "type": "external",
+      "label": "500 信封",
+      "sublabel": "堆栈只进服务端日志",
+      "width": 150
+    }
+  ],
+  "edges": [
+    { "id": "e-biz", "from": "endpoint", "to": "biz", "label": "业务异常", "role": "main" },
+    { "id": "e-http", "from": "endpoint", "to": "http", "label": "HTTP 语义错误", "role": "branch" },
+    { "id": "e-valid", "from": "endpoint", "to": "valid", "label": "参数校验失败", "role": "branch" },
+    {
+      "id": "e-escape",
+      "from": "endpoint",
+      "to": "fbmw",
+      "label": "其他异常 · 无人接住",
+      "role": "error",
+      "variant": "security"
+    },
+    {
+      "id": "e-env409",
+      "from": "biz",
+      "to": "env409",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e-env404",
+      "from": "http",
+      "to": "env404",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e-env422",
+      "from": "valid",
+      "to": "env422",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e-env500",
+      "from": "fbmw",
+      "to": "env500",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "反向的路由",
+      "items": [
+        "正向路由按 URL 路径匹配函数，错误处理按异常类的继承链匹配 handler",
+        "异常只会被第一个能处理的层接住，子类先于父类命中，与注册先后无关"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "500 的两层分包",
+      "items": [
+        "客户端只拿一句模糊话的信封，完整 traceback 由 uvicorn 记进服务端日志",
+        "注册 exception_handler(Exception) 等于接管最外层兜底的翻译权"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "信封四字段",
+      "items": [
+        "code 给调用方做程序化分支，message 给人读",
+        "details 装结构化补充，request_id 串起客户端错误与服务端日志"
+      ]
+    }
+  ]
+}

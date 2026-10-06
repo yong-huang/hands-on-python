@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "multipart 文件上传时序：先内存、溢落盘、分块写",
+    "locale": "zh-CN",
+    "output": "labs/05_forms_files/images/forms_files.html",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1080,
+      590
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "curl 客户端",
+      "sublabel": "浏览器等价提交"
+    },
+    {
+      "id": "server",
+      "type": "backend",
+      "label": "uvicorn + Starlette",
+      "sublabel": "HTTP 服务层"
+    },
+    {
+      "id": "parser",
+      "type": "backend",
+      "label": "python-multipart",
+      "sublabel": "boundary 解析器"
+    },
+    {
+      "id": "spool",
+      "type": "messagebus",
+      "label": "UploadFile",
+      "sublabel": "SpooledTemporaryFile"
+    },
+    {
+      "id": "view",
+      "type": "backend",
+      "label": "视图函数",
+      "sublabel": "分块读 + 两道防线"
+    },
+    {
+      "id": "disk",
+      "type": "database",
+      "label": "磁盘",
+      "sublabel": "溢出托盘与上传目录"
+    }
+  ],
+  "segments": [
+    {
+      "from": 152,
+      "to": 264,
+      "label": "解析：boundary 切分进临时区"
+    },
+    {
+      "from": 270,
+      "to": 428,
+      "label": "端点：防线与分块落盘"
+    },
+    {
+      "from": 434,
+      "to": 526,
+      "label": "收尾与响应"
+    }
+  ],
+  "messages": [
+    {
+      "from": "client",
+      "to": "server",
+      "y": 164,
+      "label": "POST /upload · multipart（boundary 随机）",
+      "variant": "emphasis"
+    },
+    {
+      "from": "server",
+      "to": "parser",
+      "y": 195,
+      "label": "端点声明 File() → request.form() 触发解析"
+    },
+    {
+      "from": "parser",
+      "to": "spool",
+      "y": 226,
+      "label": "文件段流入：≤1MB 留在内存",
+      "variant": "emphasis"
+    },
+    {
+      "from": "spool",
+      "to": "disk",
+      "y": 257,
+      "label": "溢出写临时文件，此后读取全走磁盘",
+      "variant": "dashed"
+    },
+    {
+      "from": "server",
+      "to": "view",
+      "y": 288,
+      "label": "解析完成，交出 UploadFile（filename/content_type）"
+    },
+    {
+      "from": "view",
+      "to": "client",
+      "y": 319,
+      "label": "415 分支 · 扩展名不在白名单：读之前就断",
+      "variant": "security"
+    },
+    {
+      "from": "view",
+      "to": "spool",
+      "y": 350,
+      "label": "await file.read(1MB) · 分块循环",
+      "variant": "emphasis"
+    },
+    {
+      "from": "view",
+      "to": "disk",
+      "y": 381,
+      "label": "out.write(block) 逐块写进上传目录"
+    },
+    {
+      "from": "view",
+      "to": "client",
+      "y": 412,
+      "label": "413 分支 · 边读边计数超限：中途截断并删半成品",
+      "variant": "security"
+    },
+    {
+      "from": "view",
+      "to": "spool",
+      "y": 443,
+      "label": "read() 空块 = EOF；close() 收走临时文件",
+      "variant": "dashed"
+    },
+    {
+      "from": "view",
+      "to": "server",
+      "y": 474,
+      "label": "JSONResponse(200)",
+      "variant": "return"
+    },
+    {
+      "from": "server",
+      "to": "client",
+      "y": 505,
+      "label": "200 · filename / size / chunks / saved_to",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "server",
+      "from": 164,
+      "to": 511,
+      "type": "backend"
+    },
+    {
+      "participant": "parser",
+      "from": 195,
+      "to": 270,
+      "type": "backend"
+    },
+    {
+      "participant": "spool",
+      "from": 226,
+      "to": 451,
+      "type": "messagebus"
+    },
+    {
+      "participant": "view",
+      "from": 288,
+      "to": 483,
+      "type": "backend"
+    },
+    {
+      "participant": "disk",
+      "from": 257,
+      "to": 273,
+      "type": "database"
+    },
+    {
+      "participant": "disk",
+      "from": 381,
+      "to": 397,
+      "type": "database"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "两个 1MB 是两回事",
+      "items": [
+        "写入侧：SpooledTemporaryFile 的溢出阈值，决定内容放内存还是磁盘",
+        "读取侧：视图 read 的分块大小，只影响 read() 调用几次，互不依赖"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "防线要挂在读完之前",
+      "items": [
+        "415 白名单在读之前断；413 边读边计数，中途断并删半成品",
+        "multipart 解析在端点运行前已完成，网络边界的拦截要靠反向代理"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "元数据是声称不是事实",
+      "items": [
+        "filename / content_type 由客户端声明，可伪造，白名单要看扩展名与魔数",
+        "size 以边读边数为准，与磁盘字节数对照，不单独当凭据"
+      ]
+    }
+  ]
+}

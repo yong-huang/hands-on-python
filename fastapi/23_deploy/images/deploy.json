@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 23 · workers 模型:master 管生死,worker 干活,状态各一本账",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/deploy.html"
+  },
+  "components": [
+    {
+      "id": "master",
+      "type": "backend",
+      "label": "master / 父进程",
+      "tag": "只管生死",
+      "sublabel": "fork worker · 监控补位",
+      "pos": [
+        60,
+        180
+      ],
+      "size": [
+        190,
+        80
+      ]
+    },
+    {
+      "id": "w1",
+      "type": "backend",
+      "label": "worker 1",
+      "tag": "PID 各异",
+      "sublabel": "计数: 自己的一本账",
+      "pos": [
+        360,
+        60
+      ],
+      "size": [
+        170,
+        70
+      ]
+    },
+    {
+      "id": "w2",
+      "type": "backend",
+      "label": "worker 2",
+      "tag": "PID 各异",
+      "sublabel": "计数: 自己的一本账",
+      "pos": [
+        360,
+        180
+      ],
+      "size": [
+        170,
+        70
+      ]
+    },
+    {
+      "id": "w3",
+      "type": "backend",
+      "label": "worker N",
+      "tag": "--workers N",
+      "sublabel": "互不共享内存",
+      "pos": [
+        360,
+        300
+      ],
+      "size": [
+        170,
+        70
+      ]
+    },
+    {
+      "id": "container",
+      "type": "cloud",
+      "label": "容器 × 副本",
+      "tag": "1 容器 1 进程",
+      "sublabel": "横向扩展交给编排层",
+      "pos": [
+        640,
+        180
+      ],
+      "size": [
+        200,
+        80
+      ]
+    },
+    {
+      "id": "external",
+      "type": "database",
+      "label": "外置状态",
+      "tag": "权威数据放这里",
+      "sublabel": "Redis / 数据库",
+      "pos": [
+        930,
+        180
+      ],
+      "size": [
+        160,
+        80
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "m-w1",
+      "from": "master",
+      "to": "w1",
+      "label": "fork"
+    },
+    {
+      "id": "m-w2",
+      "from": "master",
+      "to": "w2"
+    },
+    {
+      "id": "m-w3",
+      "from": "master",
+      "to": "w3"
+    },
+    {
+      "id": "w-c",
+      "from": "w2",
+      "to": "container",
+      "label": "装进镜像"
+    },
+    {
+      "id": "c-e",
+      "from": "container",
+      "to": "external",
+      "label": "共享状态外置",
+      "variant": "emphasis",
+      "route": "straight"
+    }
+  ]
+}

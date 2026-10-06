@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Lab 18 · RBAC 三层闸门:登录、角色、对象归属",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/rbac.html"
+  },
+  "lanes": [
+    { "id": "login", "label": "第一层 · 登录" },
+    { "id": "role", "label": "第二层 · 角色" },
+    { "id": "own", "label": "第三层 · 对象归属" }
+  ],
+  "phases": [
+    { "id": "arrive", "label": "请求到达", "fromCol": 0, "toCol": 0 },
+    { "id": "check", "label": "依赖校验", "fromCol": 1, "toCol": 1 },
+    { "id": "verdict", "label": "裁决", "fromCol": 2, "toCol": 2 }
+  ],
+  "mainPath": ["anon", "login_dep", "e401"],
+  "nodes": [
+    { "id": "anon", "lane": "login", "col": 0, "type": "external", "label": "无令牌请求", "sublabel": "GET /docs-list", "width": 145 },
+    { "id": "login_dep", "lane": "login", "col": 1, "type": "security", "label": "require_login", "sublabel": "router 级 · 解码 JWT", "tag": "认证", "width": 155 },
+    { "id": "e401", "lane": "login", "col": 2, "type": "security", "label": "401 未登录", "sublabel": "WWW-Authenticate: Bearer", "width": 170 },
+    { "id": "logged", "lane": "role", "col": 0, "type": "external", "label": "bob 已登录", "sublabel": "POST /docs 建文档", "width": 145 },
+    { "id": "role_dep", "lane": "role", "col": 1, "type": "security", "label": "require_role(\"admin\")", "sublabel": "端点级 · 工厂参数化", "tag": "授权", "width": 175 },
+    { "id": "e403", "lane": "role", "col": 2, "type": "security", "label": "403 角色不足", "sublabel": "需要 admin · 你是 user", "width": 170 },
+    { "id": "delreq", "lane": "own", "col": 0, "type": "external", "label": "DELETE /docs/{id}", "sublabel": "bob 删文档", "width": 145 },
+    { "id": "own_dep", "lane": "own", "col": 1, "type": "security", "label": "get_doc_and_check_owner", "sublabel": "对象级 · 路径参数 + 用户", "tag": "归属", "width": 185 },
+    { "id": "ok204", "lane": "own", "col": 2, "type": "frontend", "label": "204 / 403 分流", "sublabel": "owner 或 admin 放行", "width": 160 }
+  ],
+  "edges": [
+    { "id": "l1", "from": "anon", "to": "login_dep", "role": "main" },
+    { "id": "l1-out", "from": "login_dep", "to": "e401", "label": "无令牌", "variant": "dashed", "role": "branch" },
+    { "id": "l2", "from": "logged", "to": "role_dep", "role": "main" },
+    { "id": "l2-out", "from": "role_dep", "to": "e403", "label": "角色不够", "variant": "dashed", "role": "branch" },
+    { "id": "l3", "from": "delreq", "to": "own_dep", "role": "main" },
+    { "id": "l3-out", "from": "own_dep", "to": "ok204", "label": "归属判定", "role": "main" }
+  ]
+}

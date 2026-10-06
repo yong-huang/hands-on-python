@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 11 · async def 与 def 的执行真相:两个家,一条停摆路径",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/async_truth.html",
+    "views": [
+      {
+        "id": "two-homes",
+        "label": "两个执行位置",
+        "focus": [
+          "request",
+          "loop",
+          "io_async",
+          "pool",
+          "io_def"
+        ],
+        "note": "跟着 20 个并发请求看:① async def 全程在事件循环(主线程);② def 被 anyio 派给线程池 worker,上限 40 令牌。"
+      },
+      {
+        "id": "blocked-loop",
+        "label": "循环停摆路径",
+        "focus": [
+          "loop",
+          "blocking",
+          "healthz"
+        ],
+        "note": "async def 里混入 time.sleep:不让出、不换人,整个事件循环被卡住,healthz 一起遭殃。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "request",
+      "type": "external",
+      "label": "客户端并发 20 发",
+      "sublabel": "httpx.AsyncClient",
+      "pos": [
+        40,
+        158
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "loop",
+      "type": "backend",
+      "label": "事件循环",
+      "tag": "① async def 的家",
+      "sublabel": "单线程 · MainThread · await 处让出",
+      "pos": [
+        300,
+        150
+      ],
+      "size": [
+        180,
+        80
+      ]
+    },
+    {
+      "id": "io_async",
+      "type": "backend",
+      "label": "/io-async",
+      "tag": "20 并发 0.33s",
+      "sublabel": "线程名集合 = {MainThread}",
+      "pos": [
+        570,
+        150
+      ],
+      "size": [
+        180,
+        80
+      ]
+    },
+    {
+      "id": "pool",
+      "type": "database",
+      "label": "anyio 线程池",
+      "tag": "② def 的家 · 上限 40 令牌",
+      "sublabel": "worker 线程执行同步函数",
+      "pos": [
+        300,
+        330
+      ],
+      "size": [
+        180,
+        80
+      ]
+    },
+    {
+      "id": "io_def",
+      "type": "backend",
+      "label": "/io-def",
+      "tag": "20 并发 0.34s",
+      "sublabel": "20 个 worker 并行等待",
+      "pos": [
+        570,
+        330
+      ],
+      "size": [
+        180,
+        80
+      ]
+    },
+    {
+      "id": "blocking",
+      "type": "security",
+      "label": "/blocking(反面教材)",
+      "tag": "async 里写 time.sleep",
+      "sublabel": "阻塞 1s · 不让出",
+      "pos": [
+        780,
+        330
+      ],
+      "size": [
+        180,
+        80
+      ]
+    },
+    {
+      "id": "healthz",
+      "type": "external",
+      "label": "/healthz",
+      "tag": "被卡 2.8s 才响应",
+      "sublabel": "循环停摆的受害者",
+      "pos": [
+        1020,
+        334
+      ],
+      "size": [
+        150,
+        72
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "req-loop",
+      "from": "request",
+      "to": "loop",
+      "label": "async def",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "req-pool",
+      "from": "request",
+      "to": "pool",
+      "label": "def",
+      "variant": "emphasis"
+    },
+    {
+      "id": "loop-async",
+      "from": "loop",
+      "to": "io_async",
+      "label": "await 0.3s",
+      "route": "straight"
+    },
+    {
+      "id": "pool-def",
+      "from": "pool",
+      "to": "io_def",
+      "label": "sleep 0.3s",
+      "route": "straight"
+    },
+    {
+      "id": "loop-block",
+      "from": "loop",
+      "to": "blocking",
+      "label": "混入阻塞调用",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "top",
+      "via": [
+        [
+          390,
+          110
+        ],
+        [
+          870,
+          110
+        ]
+      ]
+    },
+    {
+      "id": "block-health",
+      "from": "blocking",
+      "to": "healthz",
+      "label": "整条循环排队",
+      "variant": "dashed",
+      "route": "straight",
+      "labelAt": [
+        950,
+        440
+      ]
+    }
+  ]
+}

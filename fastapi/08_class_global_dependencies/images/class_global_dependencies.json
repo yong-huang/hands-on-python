@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 08 · 三层挂载:app 级 → router 级 → 端点级",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/class_global_dependencies.html",
+    "views": [
+      {
+        "id": "mount-order",
+        "label": "三层执行顺序",
+        "focus": [
+          "request",
+          "app_level",
+          "router_level",
+          "guard_call",
+          "endpoint"
+        ],
+        "note": "跟着一次 GET /admin/heavy 看三层依赖的执行顺序:① app 级 → ② router 级 → ③ 端点级。"
+      },
+      {
+        "id": "class-deps",
+        "label": "两类类依赖",
+        "focus": [
+          "guard_init",
+          "pagination",
+          "guard_call"
+        ],
+        "note": "实例依赖的 __init__ 在启动期跑一次;类依赖的 __init__ 每请求现场执行。"
+      },
+      {
+        "id": "reject",
+        "label": "拦截出口",
+        "focus": [
+          "router_level",
+          "err403",
+          "guard_call",
+          "err429"
+        ],
+        "note": "两层闸门各自的拒绝路径:403 拦在端点级之前,429 由守卫计数决定。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "request",
+      "type": "external",
+      "label": "客户端请求",
+      "sublabel": "GET /admin/*",
+      "pos": [
+        40,
+        204
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "app_level",
+      "type": "backend",
+      "label": "track_request",
+      "tag": "① app 级 · 每请求",
+      "sublabel": "全局计数 +1 · 开 trace",
+      "pos": [
+        264,
+        200
+      ],
+      "size": [
+        180,
+        72
+      ]
+    },
+    {
+      "id": "router_level",
+      "type": "security",
+      "label": "require_api_key",
+      "tag": "② router 级 · 每请求",
+      "sublabel": "X-API-Key 校验",
+      "pos": [
+        528,
+        200
+      ],
+      "size": [
+        180,
+        72
+      ]
+    },
+    {
+      "id": "guard_init",
+      "type": "backend",
+      "label": "RateLimitGuard(limit=2)",
+      "tag": "启动期 · __init__ 一次",
+      "sublabel": "import 期实例化,计数表就位",
+      "pos": [
+        792,
+        36
+      ],
+      "size": [
+        230,
+        64
+      ]
+    },
+    {
+      "id": "pagination",
+      "type": "backend",
+      "label": "Pagination.__init__",
+      "tag": "类依赖 · __init__ 每请求",
+      "sublabel": "按 query 现场实例化",
+      "pos": [
+        792,
+        136
+      ],
+      "size": [
+        210,
+        72
+      ]
+    },
+    {
+      "id": "guard_call",
+      "type": "security",
+      "label": "RateLimitGuard.__call__",
+      "tag": "实例依赖 · __call__ 每请求",
+      "sublabel": "按 IP 计数,超限 429",
+      "pos": [
+        792,
+        266
+      ],
+      "size": [
+        210,
+        72
+      ]
+    },
+    {
+      "id": "endpoint",
+      "type": "backend",
+      "label": "端点函数",
+      "sublabel": "三层就绪后执行",
+      "pos": [
+        1090,
+        200
+      ],
+      "size": [
+        150,
+        72
+      ],
+      "tag": "③ 端点级 · 每请求"
+    },
+    {
+      "id": "err403",
+      "type": "security",
+      "label": "403 凭证无效",
+      "sublabel": "请求到不了端点级",
+      "pos": [
+        304,
+        392
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "err429",
+      "type": "security",
+      "label": "429 超出限流",
+      "sublabel": "计数表跨请求存活",
+      "pos": [
+        582,
+        402
+      ],
+      "size": [
+        150,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "app 级 · 全局",
+      "wraps": [
+        "app_level"
+      ],
+      "pad": 16
+    },
+    {
+      "kind": "region",
+      "label": "router 级 · /admin 组",
+      "wraps": [
+        "router_level"
+      ],
+      "pad": 16
+    },
+    {
+      "kind": "region",
+      "label": "端点级依赖 · 只作用于单条路由",
+      "wraps": [
+        "guard_init",
+        "pagination",
+        "guard_call"
+      ],
+      "pad": 16
+    }
+  ],
+  "connections": [
+    {
+      "id": "req",
+      "from": "request",
+      "to": "app_level",
+      "label": "全局最先",
+      "variant": "emphasis"
+    },
+    {
+      "id": "to-router",
+      "from": "app_level",
+      "to": "router_level"
+    },
+    {
+      "id": "to-pagination",
+      "from": "router_level",
+      "to": "pagination"
+    },
+    {
+      "id": "to-guard",
+      "from": "router_level",
+      "to": "guard_call"
+    },
+    {
+      "id": "page-inject",
+      "from": "pagination",
+      "to": "endpoint",
+      "label": "实例注入"
+    },
+    {
+      "id": "guard-pass",
+      "from": "guard_call",
+      "to": "endpoint",
+      "label": "放行"
+    },
+    {
+      "id": "reject403",
+      "from": "router_level",
+      "to": "err403",
+      "label": "校验失败",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "reject429",
+      "from": "guard_call",
+      "to": "err429",
+      "label": "超限",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三层执行顺序",
+      "items": [
+        "① app 级 track_request → ② router 级 require_api_key → ③ 端点级,外层先于内层",
+        "被 403/429 拒掉的请求也计入 ① 的全局计数",
+        "GET /admin/trace 回显真实顺序 [\"global\", \"router\", \"endpoint\"]"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "两类类依赖",
+      "items": [
+        "实例依赖 Depends(HEAVY_GUARD):import 期实例化一次,__call__ 每请求执行",
+        "类依赖 Depends(Pagination):类交给框架,每请求按 query 现场 __init__",
+        "同一个类可实例化多份配置,计数表互不相通"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "拦截出口",
+      "items": [
+        "router 级校验失败:403,请求到不了端点级",
+        "端点级守卫超限:429",
+        "dependencies 列表只认副作用,返回值被框架丢弃"
+      ]
+    }
+  ]
+}

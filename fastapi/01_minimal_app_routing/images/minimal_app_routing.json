@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 01 · 请求管线：四类参数的声明式校验",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/minimal_app_routing.html",
+    "views": [
+      { "id": "request-path", "label": "主路径：curl 到视图函数", "focus": ["client", "uvicorn", "middleware", "router", "validate", "handler"], "note": "跟随一次成功请求穿过服务器栈，校验全部通过才进入函数体。" },
+      { "id": "failure-branch", "label": "失败出口：422", "focus": ["validate", "fail422", "client"], "note": "任一参数不合法，请求被拦在视图函数之外，返回带 loc/msg/type 的 422。" }
+    ]
+  },
+  "components": [
+    { "id": "client", "type": "external", "label": "客户端 curl", "sublabel": "GET /books/abc", "pos": [40, 190], "size": [130, 64] },
+    { "id": "uvicorn", "type": "backend", "label": "uvicorn", "sublabel": "ASGI 服务器", "pos": [250, 190], "size": [130, 64] },
+    { "id": "middleware", "type": "backend", "label": "Starlette 中间件栈", "sublabel": "请求/响应横切处理", "pos": [460, 190], "size": [160, 64] },
+    { "id": "router", "type": "backend", "label": "FastAPI 路由匹配", "sublabel": "路径模板 /books/{book_id}", "pos": [700, 190], "size": [170, 64] },
+    { "id": "validate", "type": "security", "label": "参数校验层", "sublabel": "Path/Query/Header/Cookie", "tag": "pydantic", "pos": [950, 186], "size": [170, 72] },
+    { "id": "handler", "type": "backend", "label": "视图函数", "sublabel": "业务逻辑执行", "pos": [1200, 190], "size": [130, 64] },
+    { "id": "fail422", "type": "security", "label": "422 校验失败", "sublabel": "loc · msg · type", "pos": [955, 330], "size": [160, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "FastAPI 应用进程（uvicorn 加载）", "wraps": ["uvicorn", "middleware", "router", "validate", "handler", "fail422"], "pad": 24 }
+  ],
+  "connections": [
+    { "id": "req", "from": "client", "to": "uvicorn", "label": "HTTP 请求", "variant": "emphasis" },
+    { "id": "asgi", "from": "uvicorn", "to": "middleware" },
+    { "id": "dispatch", "from": "middleware", "to": "router" },
+    { "id": "extract", "from": "router", "to": "validate", "label": "按签名取参" },
+    { "id": "pass", "from": "validate", "to": "handler", "label": "全部通过", "variant": "emphasis" },
+    { "id": "reject", "from": "validate", "to": "fail422", "label": "任一失败", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelAt": [1035, 272] },
+    { "id": "respond", "from": "handler", "to": "client", "label": "JSON 响应", "fromSide": "top", "toSide": "top" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "主路径", "items": ["路由命中 /books/{book_id} 后，框架按函数签名取参", "四类参数全部通过 pydantic 校验，函数体才执行", "JSON 响应原路经中间件栈返回客户端"] },
+    { "dot": "rose", "title": "失败出口", "items": ["任一参数转换或约束失败，立即返回 422", "loc 标明来源与参数名，msg/type 供调用方判读"] },
+    { "dot": "amber", "title": "四类参数来源", "items": ["路径 book_id、查询 page、请求头 X-Request-Source、Cookie last_topic", "声明写在函数签名上，转换与校验都在进函数之前完成"] }
+  ]
+}

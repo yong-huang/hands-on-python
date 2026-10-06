@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 17 · OAuth2 + JWT:颁发链与使用链的三道关卡",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/oauth2_jwt.html",
+    "viewBox": [
+      1080,
+      540
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "emphasis": {
+          "label": "主路径:颁发与放行"
+        },
+        "dashed": {
+          "label": "任一关卡不过 → 401"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "客户端"
+    },
+    {
+      "label": "校验"
+    },
+    {
+      "label": "结果"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "form",
+      "type": "external",
+      "label": "POST /token 表单",
+      "sublabel": "username + password",
+      "stage": 0,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "bcrypt",
+      "type": "security",
+      "label": "bcrypt 校验哈希",
+      "sublabel": "慢哈希 + 盐 · 不存明文",
+      "stage": 1,
+      "row": 0,
+      "width": 160
+    },
+    {
+      "id": "issue",
+      "type": "backend",
+      "label": "签发双令牌",
+      "sublabel": "access 60s + refresh 1h",
+      "tag": "HMAC 签名",
+      "stage": 2,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "call",
+      "type": "external",
+      "label": "GET /me 带 Bearer",
+      "sublabel": "Authorization 头",
+      "stage": 0,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "gates",
+      "type": "security",
+      "label": "三道关卡",
+      "sublabel": "签名 → exp → type",
+      "tag": "decode 顺序",
+      "stage": 1,
+      "row": 1,
+      "width": 160
+    },
+    {
+      "id": "ok",
+      "type": "frontend",
+      "label": "200 · sub=alice",
+      "sublabel": "带类型令牌放行",
+      "stage": 2,
+      "row": 1,
+      "width": 140
+    },
+    {
+      "id": "deny",
+      "type": "security",
+      "label": "401 · WWW-Authenticate",
+      "sublabel": "篡改/过期/type 不符都到这",
+      "stage": 2,
+      "row": 2,
+      "width": 180
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-verify",
+      "from": "form",
+      "to": "bcrypt",
+      "label": "提交凭据",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f-issue",
+      "from": "bcrypt",
+      "to": "issue",
+      "label": "签发",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelAt": [
+        430,
+        105
+      ]
+    },
+    {
+      "id": "f-gates",
+      "from": "call",
+      "to": "gates",
+      "label": "携带令牌",
+      "route": "straight"
+    },
+    {
+      "id": "f-ok",
+      "from": "gates",
+      "to": "ok",
+      "label": "全过 → 放行",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f-deny",
+      "from": "gates",
+      "to": "deny",
+      "label": "任一不过",
+      "variant": "dashed"
+    }
+  ]
+}

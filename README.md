@@ -12,25 +12,28 @@ Python 语言核心机制 hands-on 系列：23 个可独立运行的实验，覆
 
 ```
 hands-on-python/
-├── README.md                  # 本总目录：三个系列的实验表格 + 学习路线
+├── README.md                  # 本总目录：四个系列的实验表格 + 学习路线
 ├── LICENSE                    # MIT
 ├── CLAUDE.md                  # 仓库约定（面向 AI 协作工具）
 ├── docs/                      # 各系列清单与规划文档（根目录只留 README）
 │   ├── python_interview.md       # 第一系列（语言机制）清单与进度
 │   ├── python_concurrency.md     # 第二系列（并发）清单与进度
-│   └── python_web_frameworks.md  # 第三系列（Web 框架）清单、环境配置与版本矩阵
+│   ├── python_web_frameworks.md  # 第三系列（Web 框架）清单、环境配置与版本矩阵
+│   └── fastapi.md                # 第四系列（FastAPI）清单与进度
 ├── core/
 │   └── NN_short_name/         # 第一系列：两位编号 + 小写主题名，共 23 个实验
-│       ├── README.md          # 五段式教程：What / Why / How / Deep Dive / Q&A
+│       ├── README.md          # 六段式教程：Background / What / When to Use / Quick Start / How It Works / Pitfalls & Q&A
 │       ├── <topic>.py         # 主演示脚本（零第三方依赖，任意 cwd 可跑）
 │       └── images/               # 架构图（历史产物，当前 README 不引用）
 │           ├── <topic>.json
 │           ├── <topic>.html
 │           └── <topic>.svg
 ├── concurrency/
-│   └── NN_topic/              # 第二系列：16 个并发实验，同 core 系列的五段式 README 规范
-└── web/
-    └── NN_topic/              # 第三系列：20 个 Web 框架实验，同 core 系列的五段式 README 规范（框架阶段跑在 web/.venv）
+│   └── NN_topic/              # 第二系列：16 个并发实验，同 core 系列的六段式 README 规范
+├── web/
+│   └── NN_topic/              # 第三系列：20 个 Web 框架实验，同 core 系列的六段式 README 规范（框架阶段跑在 web/.venv）
+└── fastapi/
+    └── NN_topic/              # 第四系列：25 个 FastAPI 深潜实验，六段式 README + 交互架构图（跑在 fastapi/.venv）
 ```
 
 ## 实验列表
@@ -123,6 +126,40 @@ hands-on-python/
 | 19 | [🏁 综合项目：短链接服务](web/19_url_shortener/README.md) | 302 点击计数、200 并发码无碰撞、19 条 pytest、容器化交付 |
 | 20 | [⚠️ WebSocket 实时聊天室](web/20_websocket_room/README.md) | 双客户端广播、断开减员（选做，全系列收官） |
 
+## ⚡ 第四系列：FastAPI 25 站（2026-10 新增，25/25 完成）
+
+从"会用 FastAPI"到"内部机制与生产化"：路由地基 → 依赖注入深水区 → 异步并发 → 数据认证 → 生产化交付。
+每实验 = 生命周期演示脚本（start/demo/clean，确定性断言）+ 六段式 README（含真实输出与诚实预期）+ 交互架构图。
+运行于 `fastapi/.venv`（一条命令装好：`fastapi/scripts/load_resources.sh`）；清单与进度见 [fastapi.md](docs/fastapi.md)。
+
+| 编号 | 实验名 | 一句话主题 |
+|:---|:---|:---|
+| 01 | [最小应用与参数系统](fastapi/01_minimal_app_routing/README.md) | 路径/查询/头/Cookie 四类参数声明式校验，422 三字段解剖 |
+| 02 | [Pydantic 模型与校验体系](fastapi/02_pydantic_validation/README.md) | 嵌套模型/validator 改写数据/loc 路径逐层指认 |
+| 03 | [响应建模](fastapi/03_response_modeling/README.md) | response_model 出口闸裁剪、五类响应形态 |
+| 04 | [错误处理体系](fastapi/04_error_handling/README.md) | 异常分发链、统一错误信封、覆盖默认 422 |
+| 05 | [表单与文件上传](fastapi/05_forms_files/README.md) | multipart 解析、SpooledTemporaryFile 流式落盘、大小/类型防线 |
+| 06 | [Depends 依赖链](fastapi/06_depends_chain/README.md) | 三层深度优先解析、每请求缓存、use_cache=False 对照 |
+| 07 | [yield 依赖与生命周期](fastapi/07_yield_dependencies/README.md) | setup/teardown 时序实测、异常穿越 yield 点、teardown 异常去向 |
+| 08 | [类依赖与全局依赖](fastapi/08_class_global_dependencies/README.md) | callable 类依赖、三层挂载顺序实测、限流守卫各自计数 |
+| 09 | [测试替身](fastapi/09_dependency_overrides/README.md) | overrides 精确替换、真依赖零调用证明、clear 恢复 |
+| 10 | [Annotated 与依赖工厂](fastapi/10_annotated_factories/README.md) | 缓存键=函数对象、同工厂异参各铸一键 |
+| 11 | [async 与 def 的执行真相](fastapi/11_async_truth/README.md) | 线程名实证执行位置、阻塞调用卡死循环现场 |
+| 12 | [后台任务三形态](fastapi/12_background_tasks/README.md) | BackgroundTasks/create_task/队列的时序与异常去向实测 |
+| 13 | [WebSocket 长连接](fastapi/13_websocket/README.md) | 握手升级、房间广播、断线 finally 清理 |
+| 14 | [流式响应与 SSE](fastapi/14_streaming_sse/README.md) | chunked 逐块到达、SSE 四类行协议解析 |
+| 15 | [SQLAlchemy async](fastapi/15_async_sqlalchemy/README.md) | yield 会话依赖、SQLite 单写者并发写串行化实测 |
+| 16 | [Alembic 迁移](fastapi/16_alembic_migrations/README.md) | autogenerate 双迁移、upgrade/downgrade、PRAGMA 对账 |
+| 17 | [OAuth2 + JWT 完整链](fastapi/17_oauth2_jwt/README.md) | bcrypt 校验、三段解码、篡改/过期/type 三路 401 |
+| 18 | [依赖链做 RBAC](fastapi/18_rbac/README.md) | 认证/角色/对象归属三层闸门，401 与 403 语义分界 |
+| 19 | [中间件与可观测性](fastapi/19_observability/README.md) | 洋葱顺序实测（注册序≠直觉）、request_id 贯穿日志 |
+| 20 | [测试体系](fastapi/20_testing/README.md) | 三层金字塔、fixture 蓝图、xfail 契约抓泄漏 |
+| 21 | [配置管理与多环境](fastapi/21_settings/README.md) | 优先级链实测、非法值启动即炸、三环境切换 |
+| 22 | [缓存与限流](fastapi/22_cache_ratelimit/README.md) | 缓存击穿 20 次 vs 1 次、令牌桶突发与补充 |
+| 23 | [workers 模型与 Docker](fastapi/23_deploy/README.md) | 多 PID 分摊实测、keep-alive 粘进程、各一本账现场 |
+| 24 | [🏁 综合交付：短链接服务](fastapi/24_url_shortener/README.md) | 串联 8 个实验件的完整服务，错误信封+热点缓存 |
+| 25 | [压测基准](fastapi/25_benchmark/README.md) | 串行/线程池/异步对决，/slow 等待重叠 60 倍 |
+
 ## 学习路线
 
 建议按四个阶段推进，每阶段内编号即推荐顺序：
@@ -139,4 +176,9 @@ cd core/01_decorator_factory
 python3 decorator_factory.py      # 主演示：分步打印 demo 输出（零第三方依赖）
 ```
 
-主演示脚本从任意 cwd 调用都正确。每个实验的 README「How」一节有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。
+```bash
+cd fastapi/01_minimal_app_routing
+./01_minimal_app_routing.sh all   # 第四系列：start/demo/clean 生命周期脚本（先装 fastapi/.venv）
+```
+
+主演示脚本从任意 cwd 调用都正确。每个实验的 README 有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。

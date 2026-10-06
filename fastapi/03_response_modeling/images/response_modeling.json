@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Lab 03 · 响应决策流：一道出口闸，五类形态",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/response_modeling.html"
+  },
+  "lanes": [
+    { "id": "pipeline", "label": "出口闸管线" },
+    { "id": "bypass", "label": "Response 旁路" }
+  ],
+  "phases": [
+    { "id": "decide", "label": "出口决策", "fromCol": 0, "toCol": 1 },
+    { "id": "filtering", "label": "过滤 · 编码", "fromCol": 2, "toCol": 4 },
+    { "id": "emit", "label": "五形态出口", "fromCol": 5, "toCol": 5 }
+  ],
+  "mainPath": ["ret", "gate", "filter", "encoder", "encode", "out"],
+  "nodes": [
+    { "id": "ret", "lane": "pipeline", "col": 0, "type": "backend", "label": "视图函数返回值", "sublabel": "dict · 模型 · Response", "width": 150 },
+    { "id": "gate", "lane": "pipeline", "col": 1, "type": "security", "label": "Response 实例？", "sublabel": "唯一的分支判断", "tag": "出口闸", "width": 150 },
+    { "id": "filter", "lane": "pipeline", "col": 2, "type": "security", "label": "response_model 过滤", "sublabel": "白名单裁剪敏感字段", "tag": "UserOut", "width": 170 },
+    { "id": "encoder", "lane": "pipeline", "col": 3, "type": "backend", "label": "jsonable_encoder", "sublabel": "datetime · UUID → 纯字典", "width": 180 },
+    { "id": "encode", "lane": "pipeline", "col": 4, "type": "backend", "label": "响应类编码", "sublabel": "字典 → UTF-8 字节", "width": 150 },
+    { "id": "out", "lane": "pipeline", "col": 5, "type": "frontend", "label": "五形态出口", "sublabel": "JSON / HTML / 重定向 / 流式 / 文件", "width": 210 },
+    { "id": "bypass", "lane": "bypass", "col": 3, "type": "frontend", "label": "Response 直出", "sublabel": "状态码 · 头 · 正文全接管", "width": 170 }
+  ],
+  "edges": [
+    { "id": "ret-gate", "from": "ret", "to": "gate", "role": "main" },
+    { "id": "gate-bypass", "from": "gate", "to": "bypass", "label": "是", "variant": "emphasis", "role": "branch" },
+    { "id": "gate-filter", "from": "gate", "to": "filter", "label": "否", "role": "main" },
+    { "id": "filter-encoder", "from": "filter", "to": "encoder", "role": "main" },
+    { "id": "encoder-encode", "from": "encoder", "to": "encode", "role": "main" },
+    { "id": "encode-out", "from": "encode", "to": "out", "role": "main" },
+    { "id": "bypass-out", "from": "bypass", "to": "out", "label": "接管最终响应", "variant": "dashed", "role": "return" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "主路径：先过滤后编码", "items": ["response_model 过滤发生在序列化之前，白名单外的键直接丢弃", "jsonable_encoder 把 datetime、UUID、模型实例转成 JSON 兼容类型", "响应类最后一步把字典写成 UTF-8 字节，配上 Content-Type"] },
+    { "dot": "rose", "title": "Response 旁路", "items": ["返回 Response 实例时，过滤与编码两步整体跳过", "对象的状态码、响应头、正文就是最终响应，塞什么自己负责"] }
+  ]
+}

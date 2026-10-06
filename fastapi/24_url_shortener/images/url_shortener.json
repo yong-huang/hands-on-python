@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 24 · 短链接服务:一次跳转的数据流与三道边界",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/url_shortener.html",
+    "viewBox": [
+      1085,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "客户端"
+    },
+    {
+      "label": "服务边界"
+    },
+    {
+      "label": "服务内部"
+    },
+    {
+      "label": "出口"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "create",
+      "type": "external",
+      "label": "POST /links",
+      "sublabel": "长 URL 入参校验(422)",
+      "stage": 0,
+      "row": 0,
+      "width": 140
+    },
+    {
+      "id": "envelope",
+      "type": "security",
+      "label": "统一错误信封",
+      "sublabel": "422 / 404 / 403 一个形状",
+      "tag": "lab 04",
+      "stage": 1,
+      "row": 2,
+      "width": 160
+    },
+    {
+      "id": "dup",
+      "type": "backend",
+      "label": "查重",
+      "sublabel": "同 URL 复用同码",
+      "stage": 2,
+      "row": 0,
+      "width": 120
+    },
+    {
+      "id": "gen",
+      "type": "backend",
+      "label": "base62 短码",
+      "sublabel": "依赖工厂按长度参数化",
+      "tag": "lab 10",
+      "stage": 2,
+      "row": 1,
+      "width": 140
+    },
+    {
+      "id": "links",
+      "type": "database",
+      "label": "LINKS 主表",
+      "sublabel": "进程内存 · 计数必执行",
+      "stage": 3,
+      "row": 0,
+      "width": 130
+    },
+    {
+      "id": "cache",
+      "type": "database",
+      "label": "热点缓存",
+      "sublabel": "TTL 5s · 只存 URL",
+      "tag": "lab 22",
+      "stage": 3,
+      "row": 2,
+      "width": 130
+    },
+    {
+      "id": "redirect",
+      "type": "frontend",
+      "label": "307 跳转",
+      "sublabel": "X-Request-ID 回显",
+      "tag": "lab 19",
+      "stage": 3,
+      "row": 1,
+      "width": 130
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-dup",
+      "from": "create",
+      "to": "dup",
+      "label": "合法 URL",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelAt": [
+        430,
+        120
+      ]
+    },
+    {
+      "id": "f-bad",
+      "from": "create",
+      "to": "envelope",
+      "label": "非法协议 → 422"
+    },
+    {
+      "id": "f-gen",
+      "from": "dup",
+      "to": "gen",
+      "label": "新 URL 才发码",
+      "route": "straight",
+      "labelAt": [
+        500,
+        118
+      ]
+    },
+    {
+      "id": "f-links",
+      "from": "gen",
+      "to": "links",
+      "label": "落主表",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-cache",
+      "from": "links",
+      "to": "cache",
+      "label": "热点进缓存",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          960,
+          157
+        ],
+        [
+          960,
+          385
+        ]
+      ],
+      "labelAt": [
+        860,
+        300
+      ]
+    },
+    {
+      "id": "f-redirect",
+      "from": "cache",
+      "to": "redirect",
+      "label": "命中缓存",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f-links-redirect",
+      "from": "links",
+      "to": "redirect",
+      "label": "未命中查表",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        880,
+        214
+      ]
+    },
+    {
+      "id": "f-404",
+      "from": "links",
+      "to": "envelope",
+      "label": "短码不存在 → 404",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          945,
+          157
+        ],
+        [
+          945,
+          470
+        ],
+        [
+          315,
+          470
+        ]
+      ],
+      "labelAt": [
+        640,
+        485
+      ]
+    }
+  ]
+}

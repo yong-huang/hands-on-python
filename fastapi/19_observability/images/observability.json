@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 19 · 中间件洋葱:request_id 外层,timing 内层",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1150,
+      500
+    ],
+    "output": "images/observability.html"
+  },
+  "participants": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "客户端"
+    },
+    {
+      "id": "rid",
+      "type": "backend",
+      "label": "request_id 中间件"
+    },
+    {
+      "id": "timing",
+      "type": "backend",
+      "label": "timing 中间件"
+    },
+    {
+      "id": "endpoint",
+      "type": "backend",
+      "label": "端点函数"
+    }
+  ],
+  "segments": [
+    {
+      "from": 130,
+      "to": 250,
+      "label": "进入段 · 外层先入,内层后入"
+    },
+    {
+      "from": 270,
+      "to": 400,
+      "label": "离开段 · 内层先出,外层后出"
+    }
+  ],
+  "messages": [
+    {
+      "id": "req",
+      "from": "client",
+      "to": "rid",
+      "y": 162,
+      "label": "GET /slow",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rid-in",
+      "from": "rid",
+      "to": "timing",
+      "y": 194,
+      "label": "进入外层 · 生成 request_id"
+    },
+    {
+      "id": "timing-in",
+      "from": "timing",
+      "to": "endpoint",
+      "y": 226,
+      "label": "进入内层 · 开始计时"
+    },
+    {
+      "id": "ep-out",
+      "from": "endpoint",
+      "to": "timing",
+      "y": 300,
+      "label": "return 响应",
+      "variant": "return"
+    },
+    {
+      "id": "timing-out",
+      "from": "timing",
+      "to": "rid",
+      "y": 332,
+      "label": "离开内层 · X-Process-Time-ms",
+      "variant": "return"
+    },
+    {
+      "id": "rid-out",
+      "from": "rid",
+      "to": "client",
+      "y": 364,
+      "label": "离开外层 · X-Request-ID 回显",
+      "variant": "return"
+    }
+  ]
+}

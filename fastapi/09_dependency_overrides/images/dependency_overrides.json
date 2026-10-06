@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 09 · 替身替换机制:解析期的一次字典查找",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/dependency_overrides.html",
+    "viewBox": [1068, 524],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "emphasis": { "label": "主路径:替身上场" },
+        "dashed": { "label": "计数证据 / clear() 恢复" }
+      }
+    },
+    "views": [
+      { "id": "double-path", "label": "主路径:替身上场", "focus": ["test", "overrides", "resolver", "fake", "pay"], "note": "注册替身后,解析期查表命中,FakeGateway 服务请求,真函数一次都不执行。" },
+      { "id": "real-path", "label": "对照:未命中走真身", "focus": ["resolver", "real", "stats"], "note": "未注册或 clear() 清空后,解析器按原函数对象求解,真网关计数 +1。" }
+    ]
+  },
+  "stages": [
+    { "label": "测试进程" },
+    { "label": "替换配置" },
+    { "label": "依赖解析" },
+    { "label": "两条路径" },
+    { "label": "端点与证据" }
+  ],
+  "nodes": [
+    { "id": "test", "type": "external", "label": "pytest 测试", "sublabel": "TestClient 进程内直发", "stage": 0, "row": 1, "width": 130 },
+    { "id": "overrides", "type": "security", "label": "dependency_overrides", "sublabel": "键=原函数对象 · 值=替身", "tag": "app 上的字典", "stage": 1, "row": 1, "width": 150 },
+    { "id": "resolver", "type": "backend", "label": "依赖解析器", "sublabel": "先查表,再调用", "stage": 2, "row": 1, "width": 130 },
+    { "id": "fake", "type": "cloud", "label": "替身 FakeGateway", "sublabel": "零等待 · 零脏数据", "tag": "charge_calls 自计数", "stage": 3, "row": 0, "width": 140 },
+    { "id": "real", "type": "cloud", "label": "真网关链", "sublabel": "gateway → config 子依赖", "tag": "计数+1 · sleep 0.1s", "stage": 3, "row": 2, "width": 150 },
+    { "id": "pay", "type": "backend", "label": "POST /pay", "sublabel": "provider 标明谁在服务", "stage": 4, "row": 0, "width": 130 },
+    { "id": "stats", "type": "backend", "label": "/gateway-stats", "sublabel": "真依赖计数:纹丝不动", "tag": "证据", "stage": 4, "row": 2, "width": 130 }
+  ],
+  "flows": [
+    { "id": "register", "from": "test", "to": "overrides", "label": "注册替身", "variant": "emphasis", "route": "straight" },
+    { "id": "consult", "from": "overrides", "to": "resolver", "label": "命中→替身", "variant": "emphasis", "route": "straight" },
+    { "id": "fake-path", "from": "resolver", "to": "fake", "label": "替身上场" },
+    { "id": "real-path", "from": "resolver", "to": "real", "label": "未命中 → 真依赖树", "toSide": "left" },
+    { "id": "fake-serve", "from": "fake", "to": "pay", "label": "fake-gateway", "route": "straight" },
+    { "id": "real-serve", "from": "real", "to": "pay", "label": "替换前:真网关计数+1", "fromSide": "top", "toSide": "bottom", "via": [[745, 240], [960, 240]] },
+    { "id": "evidence", "from": "real", "to": "stats", "label": "模块级计数", "variant": "dashed", "route": "straight" },
+    { "id": "restore", "from": "overrides", "to": "real", "label": "clear() 清空 → 恢复真身", "variant": "dashed", "fromSide": "bottom", "toSide": "bottom", "via": [[315, 440], [745, 440]] }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "主路径:替身上场",
+      "items": [
+        "autouse fixture 把替身注册进 dependency_overrides,键是 import 进来的函数对象",
+        "解析 Depends 时先查这张表,命中就以替身的返回值顶替真依赖",
+        "响应里 provider=fake-gateway,真网关的 sleep 与计数全都没发生"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "对照:真网关路径",
+      "items": [
+        "替换前或 clear() 之后,查找未命中,框架按原函数对象求解真依赖树",
+        "真网关每解析一次计数 +1,还要付出 0.1s 的模拟网络往返",
+        "/gateway-stats 读模块级计数器,替身上场时它纹丝不动,就是证据"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "边界与恢复",
+      "items": [
+        "只管经 Depends 声明的依赖;绕过框架直接 GATEWAY.charge(...) 不受管辖",
+        "按函数对象精确制导:只换 gateway 时,未注册的真风控照常执行",
+        "autouse fixture 在 yield 后 clear(),同进程的其他用例不背替身"
+      ]
+    }
+  ]
+}

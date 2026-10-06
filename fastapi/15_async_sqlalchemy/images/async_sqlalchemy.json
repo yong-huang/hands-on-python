@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 15 · yield 会话依赖:借出、使用、归还",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [1150, 540],
+    "output": "images/async_sqlalchemy.html"
+  },
+  "participants": [
+    { "id": "client", "type": "external", "label": "客户端" },
+    { "id": "endpoint", "type": "backend", "label": "端点函数" },
+    { "id": "session", "type": "backend", "label": "get_session 依赖" },
+    { "id": "db", "type": "database", "label": "连接池 + SQLite" }
+  ],
+  "segments": [
+    { "from": 130, "to": 370, "label": "请求处理段 · yield 前借出,端点用完提交" },
+    { "from": 390, "to": 480, "label": "归还段 · 响应发送后 finally 关闭" }
+  ],
+  "messages": [
+    { "id": "post", "from": "client", "to": "endpoint", "y": 162, "label": "POST /notes", "variant": "emphasis" },
+    { "id": "borrow", "from": "endpoint", "to": "session", "y": 192, "label": "进入依赖 · yield 前借出 AsyncSession" },
+    { "id": "yield-out", "from": "session", "to": "endpoint", "y": 220, "label": "yield session", "variant": "return" },
+    { "id": "insert", "from": "endpoint", "to": "db", "y": 252, "label": "INSERT notes + commit" },
+    { "id": "refresh", "from": "endpoint", "to": "db", "y": 282, "label": "refresh 回读 id" },
+    { "id": "resp", "from": "endpoint", "to": "client", "y": 314, "label": "201 JSON", "variant": "return" },
+    { "id": "close", "from": "endpoint", "to": "session", "y": 424, "label": "finally · session.close()" },
+    { "id": "give-back", "from": "session", "to": "db", "y": 452, "label": "连接归还池" }
+  ]
+}

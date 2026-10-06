@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 13 · WebSocket 聊天室:握手、广播与断线清理",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1150,
+      560
+    ],
+    "output": "images/websocket.html"
+  },
+  "participants": [
+    {
+      "id": "alice",
+      "type": "external",
+      "label": "alice 客户端"
+    },
+    {
+      "id": "bob",
+      "type": "external",
+      "label": "bob 客户端"
+    },
+    {
+      "id": "app",
+      "type": "backend",
+      "label": "/ws/{room} 端点"
+    },
+    {
+      "id": "mgr",
+      "type": "database",
+      "label": "ConnectionManager"
+    }
+  ],
+  "segments": [
+    {
+      "from": 140,
+      "to": 404,
+      "label": "聊天段 · 握手进房、广播互发"
+    },
+    {
+      "from": 410,
+      "to": 496,
+      "label": "断线清理段 · 异常触发 finally 摘除"
+    }
+  ],
+  "messages": [
+    {
+      "id": "hs-alice",
+      "from": "alice",
+      "to": "app",
+      "y": 162,
+      "label": "GET /ws/lobby · Upgrade: websocket",
+      "variant": "emphasis"
+    },
+    {
+      "id": "accept-alice",
+      "from": "app",
+      "to": "alice",
+      "y": 196,
+      "label": "101 · accept",
+      "variant": "return"
+    },
+    {
+      "id": "join-alice",
+      "from": "app",
+      "to": "mgr",
+      "y": 226,
+      "label": "join lobby · 计数 1"
+    },
+    {
+      "id": "hs-bob",
+      "from": "bob",
+      "to": "app",
+      "y": 258,
+      "label": "握手加入 lobby"
+    },
+    {
+      "id": "join-bob",
+      "from": "app",
+      "to": "mgr",
+      "y": 288,
+      "label": "join lobby · 计数 2"
+    },
+    {
+      "id": "chat-alice",
+      "from": "alice",
+      "to": "app",
+      "y": 320,
+      "label": "send chat: hi"
+    },
+    {
+      "id": "bc-bob",
+      "from": "app",
+      "to": "bob",
+      "y": 352,
+      "label": "broadcast: hi",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rooms",
+      "from": "mgr",
+      "to": "app",
+      "y": 384,
+      "label": "GET /rooms → {lobby: 2}",
+      "variant": "return"
+    },
+    {
+      "id": "disconnect",
+      "from": "alice",
+      "to": "app",
+      "y": 424,
+      "label": "TCP 断开 · WebSocketDisconnect",
+      "variant": "dashed"
+    },
+    {
+      "id": "cleanup",
+      "from": "app",
+      "to": "mgr",
+      "y": 448,
+      "label": "finally 摘除 alice · 计数 2→1"
+    },
+    {
+      "id": "sysmsg",
+      "from": "app",
+      "to": "bob",
+      "y": 474,
+      "label": "系统消息: alice left",
+      "variant": "dashed"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 16 · Alembic 迁移:对比差异,生成可重放的脚本链",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/alembic_migrations.html",
+    "viewBox": [
+      1080,
+      480
+    ],
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "emphasis": {
+          "label": "主路径:演进向前"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "两侧输入"
+    },
+    {
+      "label": "对比与生成"
+    },
+    {
+      "label": "脚本链"
+    },
+    {
+      "label": "应用到库"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "models.py 演进",
+      "sublabel": "初版 → 加 views/author 列",
+      "stage": 0,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "dbstate",
+      "type": "database",
+      "label": "库内现状",
+      "sublabel": "alembic_version 表记录进度",
+      "stage": 0,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "autogen",
+      "type": "backend",
+      "label": "alembic autogenerate",
+      "sublabel": "对比元数据与库的差异",
+      "tag": "diff",
+      "stage": 1,
+      "row": 0,
+      "width": 175
+    },
+    {
+      "id": "script",
+      "type": "backend",
+      "label": "versions/ 迁移脚本链",
+      "sublabel": "upgrade() / downgrade()",
+      "stage": 2,
+      "row": 0,
+      "width": 165
+    },
+    {
+      "id": "applied",
+      "type": "database",
+      "label": "upgrade head",
+      "sublabel": "CREATE TABLE / ADD COLUMN",
+      "stage": 3,
+      "row": 0,
+      "width": 165
+    },
+    {
+      "id": "verify",
+      "type": "frontend",
+      "label": "PRAGMA 验证",
+      "sublabel": "新列存在 · current == head",
+      "stage": 4,
+      "row": 0,
+      "width": 150
+    }
+  ],
+  "flows": [
+    {
+      "id": "model-in",
+      "from": "model",
+      "to": "autogen",
+      "label": "元数据",
+      "route": "straight",
+      "labelAt": [
+        228,
+        218
+      ]
+    },
+    {
+      "id": "db-in",
+      "from": "dbstate",
+      "to": "autogen",
+      "label": "读库内状态",
+      "labelAt": [
+        225,
+        262
+      ]
+    },
+    {
+      "id": "gen",
+      "from": "autogen",
+      "to": "script",
+      "label": "生成 diff 脚本",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelAt": [
+        460,
+        215
+      ]
+    },
+    {
+      "id": "apply",
+      "from": "script",
+      "to": "applied",
+      "label": "upgrade head",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelAt": [
+        760,
+        215
+      ]
+    },
+    {
+      "id": "check",
+      "from": "applied",
+      "to": "verify",
+      "label": "PRAGMA 对账",
+      "route": "straight",
+      "labelAt": [
+        1010,
+        215
+      ]
+    }
+  ]
+}

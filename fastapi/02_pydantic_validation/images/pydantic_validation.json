@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 02 · 请求体校验管线：从 JSON 文本到模型实例",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/pydantic_validation.html",
+    "viewBox": [
+      1080,
+      560
+    ],
+    "views": [
+      {
+        "id": "happy-path",
+        "label": "主路径：逐层放行",
+        "focus": [
+          "json",
+          "parse",
+          "constraints",
+          "fvalidator",
+          "mvalidator",
+          "computed",
+          "result"
+        ],
+        "note": "任一层都不拦，视图函数拿到带类型的模型实例，201 响应含演生字段。"
+      },
+      {
+        "id": "failure-fanin",
+        "label": "失败出口：422",
+        "focus": [
+          "constraints",
+          "fvalidator",
+          "mvalidator",
+          "fail422"
+        ],
+        "note": "任一层失败都汇入同一个 422 出口，loc 路径逐层指认字段。"
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "请求进入"
+    },
+    {
+      "label": "解析"
+    },
+    {
+      "label": "字段级校验"
+    },
+    {
+      "label": "模型级校验"
+    },
+    {
+      "label": "响应产出"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "json",
+      "type": "external",
+      "label": "JSON 请求体",
+      "sublabel": "POST /orders",
+      "stage": 0,
+      "row": 1,
+      "width": 140
+    },
+    {
+      "id": "parse",
+      "type": "backend",
+      "label": "类型解析",
+      "sublabel": "非法 JSON → 400",
+      "stage": 1,
+      "row": 1,
+      "width": 140
+    },
+    {
+      "id": "constraints",
+      "type": "security",
+      "label": "Field 约束",
+      "sublabel": "gt / ge / le / pattern",
+      "stage": 2,
+      "row": 2,
+      "width": 150
+    },
+    {
+      "id": "fvalidator",
+      "type": "security",
+      "label": "field_validator",
+      "sublabel": "可改写数据",
+      "stage": 2,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "mvalidator",
+      "type": "security",
+      "label": "model_validator",
+      "sublabel": "跨字段：总价上限",
+      "stage": 3,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "computed",
+      "type": "backend",
+      "label": "computed_field",
+      "sublabel": "序列化时演生",
+      "tag": "total · discount",
+      "stage": 4,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "result",
+      "type": "frontend",
+      "label": "201 模型实例",
+      "sublabel": "响应含演生字段",
+      "stage": 4,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "fail422",
+      "type": "security",
+      "label": "422 错误响应",
+      "sublabel": "loc 逐层指认字段",
+      "stage": 3,
+      "row": 2,
+      "width": 150
+    }
+  ],
+  "flows": [
+    {
+      "id": "raw-body",
+      "from": "json",
+      "to": "parse",
+      "label": "请求字节流"
+    },
+    {
+      "id": "parsed-tree",
+      "from": "parse",
+      "to": "constraints",
+      "label": "Python 对象树"
+    },
+    {
+      "id": "to-fvalidator",
+      "from": "constraints",
+      "to": "fvalidator",
+      "label": "单字段定制检查",
+      "labelAt": [
+        530,
+        200
+      ]
+    },
+    {
+      "id": "to-mvalidator",
+      "from": "fvalidator",
+      "to": "mvalidator",
+      "label": "字段级全过"
+    },
+    {
+      "id": "to-computed",
+      "from": "mvalidator",
+      "to": "computed",
+      "label": "整棵树合规"
+    },
+    {
+      "id": "to-result",
+      "from": "computed",
+      "to": "result",
+      "label": "序列化输出",
+      "labelAt": [
+        960,
+        200
+      ]
+    },
+    {
+      "id": "constraint-violation",
+      "from": "constraints",
+      "to": "fail422",
+      "label": "约束违约",
+      "variant": "dashed"
+    },
+    {
+      "id": "model-violation",
+      "from": "mvalidator",
+      "to": "fail422",
+      "label": "跨字段违约",
+      "variant": "dashed",
+      "labelAt": [
+        745,
+        314
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "主路径",
+      "items": [
+        "四层闸门全过，视图函数拿到的是带类型的模型实例",
+        "total 与 discount 不是客户端传的，由 computed_field 现场算出"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "失败出口",
+      "items": [
+        "约束违约、校验器报错、跨字段违约，统一汇入 422",
+        "loc 从 body 起逐层下钻，嵌套列表精确到数字下标"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "顺序考点",
+      "items": [
+        "field_validator(mode=before) 先改写数据，pattern 才能通过",
+        "model_validator(mode=after) 在整棵模型树构造完成后运行"
+      ]
+    }
+  ]
+}

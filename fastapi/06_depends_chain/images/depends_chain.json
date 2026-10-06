@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 06 · Depends 依赖链:深度优先解析与每请求缓存",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/depends_chain.html",
+    "views": [
+      { "id": "depth-first", "label": "深度优先解析序", "focus": ["request", "resolver", "settings", "db", "user", "endpoint"], "note": "跟随一次 GET /posts:解析从链的根开始,①→②→③ 依次执行,端点函数最后运行。" },
+      { "id": "cache-bypass", "label": "缓存与绕过", "focus": ["user", "nocache", "cache"], "note": "默认同一函数一次请求只执行一次;use_cache=False 的那次重跑,多出第 ④ 条记录。" }
+    ]
+  },
+  "components": [
+    { "id": "request", "type": "external", "label": "客户端请求", "sublabel": "GET /posts", "pos": [40, 188], "size": [120, 64] },
+    { "id": "resolver", "type": "backend", "label": "依赖解析器", "tag": "每请求运行", "sublabel": "按声明深度优先递归", "pos": [240, 184], "size": [160, 72] },
+    { "id": "settings", "type": "backend", "label": "get_settings", "tag": "① 最先执行", "sublabel": "第一层 · 读配置", "pos": [480, 184], "size": [150, 72] },
+    { "id": "db", "type": "database", "label": "get_db", "tag": "② 随后执行", "sublabel": "第二层 · 数据库会话", "pos": [710, 184], "size": [150, 72] },
+    { "id": "user", "type": "backend", "label": "get_current_user", "tag": "③ 最后执行", "sublabel": "第三层 · 当前用户", "pos": [940, 184], "size": [160, 72] },
+    { "id": "endpoint", "type": "backend", "label": "端点函数", "sublabel": "业务逻辑执行", "pos": [1180, 184], "size": [130, 72] },
+    { "id": "nocache", "type": "security", "label": "get_current_user", "tag": "第 ④ 条记录", "sublabel": "use_cache=False 重跑一遍", "pos": [925, 350], "size": [190, 64] },
+    { "id": "cache", "type": "database", "label": "每请求缓存", "tag": "键 = 函数本身", "sublabel": "同一函数一次请求内只执行一次", "pos": [500, 350], "size": [210, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "依赖树 · 虚线箭头指向被依赖者", "wraps": ["settings", "db", "user"], "pad": 24 }
+  ],
+  "connections": [
+    { "id": "req", "from": "request", "to": "resolver", "label": "HTTP 请求", "variant": "emphasis" },
+    { "id": "enter", "from": "resolver", "to": "settings", "label": "从根开始", "variant": "emphasis" },
+    { "id": "dep-db", "from": "db", "to": "settings", "label": "依赖", "variant": "dashed", "fromSide": "left", "toSide": "right" },
+    { "id": "dep-user", "from": "user", "to": "db", "label": "依赖", "variant": "dashed", "fromSide": "left", "toSide": "right" },
+    { "id": "ready", "from": "user", "to": "endpoint", "label": "三层就绪", "variant": "emphasis" },
+    { "id": "bypass", "from": "user", "to": "nocache", "label": "use_cache=False", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "深度优先执行序", "items": ["端点只声明 get_current_user,框架沿链递归补齐 db、settings", "执行序 ① settings → ② db → ③ user,先解析到最底层再逐层返回", "全部就绪后端点函数体才执行;一次 GET /posts 的 TRACE 恰好三条"] },
+    { "dot": "amber", "title": "每请求缓存", "items": ["缓存键是函数本身,生命周期是单个请求", "GET /posts 同时要 user 与 db:链上同一函数只执行一次", "下个请求从根重新解析,缓存不跨请求复用"] },
+    { "dot": "rose", "title": "use_cache=False", "items": ["同一函数再次声明时绕过缓存,重新执行一遍", "GET /posts/draft 的 TRACE 多出第 ④ 条重复的 user", "它子链上的 db、settings 默认仍命中缓存"] }
+  ]
+}

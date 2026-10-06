@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 21 · 配置优先级链:环境变量压过文件,文件压过默认值",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/settings.html",
+    "viewBox": [
+      1080,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "三个来源"
+    },
+    {
+      "label": "Settings 门卫"
+    },
+    {
+      "label": "进程内单例"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "env",
+      "type": "security",
+      "label": "环境变量 LAB21_*",
+      "sublabel": "优先级最高 · 运维临时调整",
+      "tag": "① 最先查",
+      "stage": 0,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "file",
+      "type": "database",
+      "label": ".env 文件",
+      "sublabel": "dev / test / prod 各一套",
+      "tag": "② 其次",
+      "stage": 0,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "default",
+      "type": "backend",
+      "label": "字段默认值",
+      "sublabel": "代码里的兜底",
+      "tag": "③ 兜底",
+      "stage": 0,
+      "row": 2,
+      "width": 140
+    },
+    {
+      "id": "guard",
+      "type": "security",
+      "label": "Settings 校验",
+      "sublabel": "类型转换 + Field 约束",
+      "tag": "不合格拒收",
+      "stage": 1,
+      "row": 1,
+      "width": 160
+    },
+    {
+      "id": "singleton",
+      "type": "frontend",
+      "label": "get_settings() 单例",
+      "sublabel": "lru_cache · 全程一份",
+      "stage": 2,
+      "row": 2,
+      "width": 165
+    }
+  ],
+  "flows": [
+    {
+      "id": "e-g",
+      "from": "env",
+      "to": "guard",
+      "variant": "emphasis",
+      "label": "优先①"
+    },
+    {
+      "id": "f-g",
+      "from": "file",
+      "to": "guard",
+      "label": "优先②",
+      "labelAt": [
+        150,
+        218
+      ]
+    },
+    {
+      "id": "d-g",
+      "from": "default",
+      "to": "guard",
+      "label": "优先③"
+    },
+    {
+      "id": "g-s",
+      "from": "guard",
+      "to": "singleton",
+      "variant": "emphasis",
+      "label": "缓存为单例"
+    }
+  ]
+}
