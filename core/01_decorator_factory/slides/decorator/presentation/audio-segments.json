@@ -1,0 +1,194 @@
+[
+  {
+    "chapter": "hook",
+    "step": 1,
+    "text": "今天讲 Python 装饰器。就两件事：它是什么，为什么你需要它。",
+    "audio": "hook/1.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "假设你写了十个函数。产品说：每个都要加耗时统计。",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "怎么办？复制粘贴，十遍。明天要改成毫秒呢？再改十遍。",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "Python 里有个符号，专门治这个。一个艾特。它叫装饰器。",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 1,
+    "text": "拆开看，它就是个普通的函数。特别的地方就一条：输入是函数，返回值还是函数。",
+    "audio": "what-is/1.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 2,
+    "text": "你在函数头上写艾特 timer，Python 会悄悄把原函数换掉。换成被 timer 包了一层的新函数。",
+    "audio": "what-is/2.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 3,
+    "text": "艾特 timer 这一行，翻译过来就是一句赋值。把函数喂给 timer，再把结果存回去。没有魔法，就是普通的函数调用。但你赚到了：代码一行没改，功能多了一层。",
+    "audio": "what-is/3.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 4,
+    "text": "两个装饰器叠一起呢？艾特 a 在上、艾特 b 在下，等价于 a 包 b、b 包函数。包的时候从下往上，执行的时候从上往下。跟洋葱一样，一层套一层。",
+    "audio": "what-is/4.mp3"
+  },
+  {
+    "chapter": "why-cutting",
+    "step": 1,
+    "text": "有人会说：加个计时而已，直接写进函数里不就完了。行。但你瞅瞅这几行。它们跟函数的本职工作，没有半点关系。",
+    "audio": "why-cutting/1.mp3"
+  },
+  {
+    "chapter": "why-cutting",
+    "step": 2,
+    "text": "函数的本职是干活，计时是额外的监视。这种逻辑，跟业务无关，又到处都需要。它有个名字，叫横切逻辑。",
+    "audio": "why-cutting/2.mp3"
+  },
+  {
+    "chapter": "why-cutting",
+    "step": 3,
+    "text": "计时。这个函数到底跑了多久，一眼看到。",
+    "audio": "why-cutting/3.mp3"
+  },
+  {
+    "chapter": "why-cutting",
+    "step": 4,
+    "text": "日志。谁调用过、传了什么参数，留个痕。",
+    "audio": "why-cutting/4.mp3"
+  },
+  {
+    "chapter": "why-cutting",
+    "step": 5,
+    "text": "重试呢，网络抖一下，让它自己再试一次。",
+    "audio": "why-cutting/5.mp3"
+  },
+  {
+    "chapter": "why-cutting",
+    "step": 6,
+    "text": "缓存更实在，算过的结果，凭什么算第二遍。",
+    "audio": "why-cutting/6.mp3"
+  },
+  {
+    "chapter": "why-cutting",
+    "step": 7,
+    "text": "还有鉴权。没登录？后面免谈。",
+    "audio": "why-cutting/7.mp3"
+  },
+  {
+    "chapter": "why-answer",
+    "step": 1,
+    "text": "这些逻辑一股脑写进业务函数，两个下场。",
+    "audio": "why-answer/1.mp3"
+  },
+  {
+    "chapter": "why-answer",
+    "step": 2,
+    "text": "第一个，重复。十个函数，同一份逻辑抄十遍。",
+    "audio": "why-answer/2.mp3"
+  },
+  {
+    "chapter": "why-answer",
+    "step": 3,
+    "text": "第二个，改起来要命。明天日志要加时间戳，你找遍十个函数挨个改。漏一个，排查的时候日志对不上，慢慢捞吧。",
+    "audio": "why-answer/3.mp3"
+  },
+  {
+    "chapter": "why-answer",
+    "step": 4,
+    "text": "装饰器，就是这件事的标准答案。把横切逻辑抽出来，单独写一遍。然后艾特到需要的函数头上。",
+    "audio": "why-answer/4.mp3"
+  },
+  {
+    "chapter": "why-answer",
+    "step": 5,
+    "text": "业务代码一行不动。功能说加就加，说摘就摘。",
+    "audio": "why-answer/5.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 1,
+    "text": "工程里的需求，还会更刁钻一点。重试几次？缓存存多久？日志开到什么级别？",
+    "audio": "family/1.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 2,
+    "text": "参数一出现，装饰器外面就得多包一层。最外层接参数，中间层接函数。最里层，才是真正干活的。这就是装饰器工厂。名字唬人，其实就是函数套函数。",
+    "audio": "family/2.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 3,
+    "text": "整个家族摊开，一共五种形态。函数版、工厂版、类版。还有装饰类的，和标准库的现成货。不用背，知道有这张地图就行。",
+    "audio": "family/3.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 4,
+    "text": "装饰器还能拿类开刀。比如艾特 singleton，一行下去，这个类全局就只有一个实例。再比如自动给类补个打印格式，print 出来直接能看。",
+    "audio": "family/4.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 1,
+    "text": "现成货里，最值得认识的是 functools 的 lru cache。一行艾特，函数就带上了缓存。",
+    "audio": "stdlib/1.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 2,
+    "text": "值多少钱？算斐波那契第三十项。裸算，0.3 秒。挂上缓存，第二次 0.00 秒。",
+    "audio": "stdlib/2.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 3,
+    "text": "而且函数本身一行没改，就多了头上那一行艾特。",
+    "audio": "stdlib/3.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 4,
+    "text": "真要自己动手写，有个标配动作别忘了。第一行写 functools 的 wraps，把原函数的名字、文档都保住。",
+    "audio": "stdlib/4.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 5,
+    "text": "不加会怎样？函数名全变成 wrapper。日志一打，满屏 wrapper，排查问题是真灾难。",
+    "audio": "stdlib/5.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 1,
+    "text": "为什么值得花时间搞懂它？框架的路由，头上是艾特。pydantic 的校验，头上是艾特。你天天在用的 functools，也是。",
+    "audio": "closing/1.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 2,
+    "text": "框架的注册、校验，玩的就是这一套。把艾特后面发生的事想明白。那些魔法，你一眼就能看穿。",
+    "audio": "closing/2.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 3,
+    "text": "这套全家桶的完整代码，在 hands on python 仓库里。零依赖，python3 一跑就有体感。链接在评论区，下期见。",
+    "audio": "closing/3.mp3"
+  }
+]

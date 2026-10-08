@@ -1,0 +1,295 @@
+/* ── ch02 what-is · CSS prefix: wi- ─────────────────────────────── */
+
+.wi-scene {
+  justify-content: center;
+  gap: 56px;
+}
+
+.wi-rise {
+  opacity: 0;
+  animation: wi-rise 620ms var(--ease-quart) both;
+}
+@keyframes wi-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.wi-em { color: var(--accent); }
+
+/* mono code line (shared inside this chapter) */
+.wi-cl {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  line-height: 1.9;
+  color: var(--text-2);
+  white-space: pre;
+}
+.wi-cl-indent { padding-left: 56px; }
+.wi-cl-deco { color: var(--accent); }
+
+/* ── step 0 · 加工盒子 pipeline ── */
+.wi-pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.wi-endpoint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.wi-endpoint-name {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  padding: 30px 44px;
+  border: 1.5px dashed var(--text-faint);
+  background: var(--surface-2);
+  color: var(--text);
+}
+.wi-endpoint-tag {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+.wi-tag-accent { color: var(--accent); }
+.wi-endpoint-out .wi-endpoint-name { border-color: var(--accent); }
+
+.wi-wire {
+  width: 130px;
+  height: 0;
+  border-top: 2px dashed var(--rule);
+  position: relative;
+  transform-origin: left;
+  animation: wi-wire 480ms var(--ease-soft) both;
+}
+.wi-wire-l { animation-delay: 450ms; }
+.wi-wire-r { animation-delay: 1450ms; }
+.wi-wire::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -7px;
+  border-left: 12px solid var(--accent);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+@keyframes wi-wire {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.wi-box {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  padding: 44px 64px;
+  text-align: center;
+}
+.wi-box-name {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  color: var(--accent);
+}
+.wi-box-sub {
+  margin-top: 10px;
+  font-size: 17px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+
+.wi-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-2);
+}
+.wi-foot-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ── step 1 · before / after swap ── */
+.wi-swap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+}
+.wi-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.wi-panel-tag {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.wi-panel-code {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 30px 40px;
+}
+.wi-panel-note {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.wi-note-accent { color: var(--accent); }
+
+.wi-swap-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.wi-swap-at {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  color: var(--accent);
+}
+.wi-swap-arrow {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  color: var(--text-mute);
+}
+
+.wi-wrapped {
+  border: 2px dashed var(--accent);
+  padding: 22px;
+  position: relative;
+  background: var(--accent-soft);
+}
+.wi-wrapped-layer {
+  position: relative;
+}
+.wi-wrapped-label {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--accent);
+}
+.wi-panel-code-inner {
+  border: 1px dashed var(--text-faint);
+}
+
+/* ── step 2 · 语法糖 ── */
+.wi-sugar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+}
+.wi-sugar-left {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 34px 44px;
+}
+.wi-sugar-eq {
+  font-family: var(--font-mono);
+  font-size: 84px;
+  color: var(--text-mute);
+}
+.wi-sugar-right {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  color: var(--text);
+  border-bottom: 2px dashed var(--accent);
+  padding: 0 12px 18px;
+}
+.wi-var { color: var(--text); }
+.wi-op { color: var(--text-mute); }
+.wi-fn { color: var(--accent); }
+
+.wi-sugar-notes {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+.wi-notechip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 30px;
+  border: 1.5px dashed var(--rule);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.wi-notechip i {
+  font-style: normal;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+.wi-sugar-foot {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+/* shared footer chip */
+.wi-foot-chip {
+  padding: 16px 34px;
+  border: 1.5px dashed var(--rule);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.wi-foot-chip b { color: var(--text); font-weight: 700; }
+.wi-foot-chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ── step 3 · 洋葱 ── */
+.wi-onion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 120px;
+}
+.wi-onion-code {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 38px 46px;
+}
+.wi-ord {
+  display: inline-block;
+  width: 52px;
+  color: var(--accent);
+}
+.wi-onion-stack { display: flex; }
+
+.wi-layer {
+  border: 2px dashed;
+  padding: 30px 36px;
+}
+.wi-layer-a { border-color: var(--accent); }
+.wi-layer-b { border-color: var(--text-mute); margin-top: 34px; }
+.wi-layer-core {
+  border-color: var(--text-faint);
+  margin: 34px 0 0;
+  padding: 26px 40px;
+}
+.wi-layer-name {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.wi-layer-a > .wi-layer-name { color: var(--accent); }
+
+.wi-onion-foot {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}

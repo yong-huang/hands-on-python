@@ -1,0 +1,166 @@
+/* ── ch03 why-cutting · CSS prefix: wc- ─────────────────────────── */
+
+.wc-scene {
+  justify-content: center;
+  gap: 64px;
+}
+.wc-horizontal {
+  flex-direction: row;
+  align-items: center;
+  gap: 90px;
+}
+
+.wc-rise {
+  opacity: 0;
+  animation: wc-rise 620ms var(--ease-quart) both;
+}
+@keyframes wc-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── step 0 · 反例代码 ── */
+.wc-codecard {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+.wc-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.wc-code {
+  padding: 30px 36px;
+  font-family: var(--font-mono);
+  font-size: 27px;
+  line-height: 2.0;
+  color: var(--text-2);
+}
+.wc-line { white-space: pre; }
+.wc-line-indent { padding-left: 52px; }
+.wc-line-marked {
+  background: var(--accent-soft);
+  box-shadow: inset 4px 0 0 var(--accent);
+  color: var(--text);
+}
+
+.wc-verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  max-width: 560px;
+}
+.wc-question {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-mute);
+  border: 1.5px dashed var(--rule);
+  align-self: flex-start;
+  padding: 16px 28px;
+}
+.wc-verdict-text {
+  font-size: 62px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+}
+.wc-verdict-text em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* ── step 1 · 命名 ── */
+.wc-duo {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+}
+.wc-duo-chip {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+  border: 1.5px dashed var(--rule);
+  padding: 14px 32px;
+}
+.wc-name-hero {
+  text-align: center;
+  font-size: 128px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-shadow: 0 0 80px var(--accent-glow);
+  line-height: 1.2;
+}
+.wc-duo-bottom {
+  align-items: center;
+}
+.wc-duo-attr {
+  font-size: 34px;
+  color: var(--text);
+  border: 2px dashed var(--accent);
+  padding: 16px 38px;
+  background: var(--accent-soft);
+}
+.wc-duo-x {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  color: var(--text-mute);
+}
+
+/* ── step 2~6 · 点名 ── */
+.wc-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin: auto 0;
+}
+.wc-icon {
+  width: 190px;
+  height: 190px;
+}
+.wc-icon svg {
+  width: 100%;
+  height: 100%;
+}
+.wc-icon-in {
+  animation: wc-icon-in 700ms var(--ease-quart) both;
+}
+@keyframes wc-icon-in {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.wc-item-name {
+  font-size: 84px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wc-item-desc {
+  font-size: 32px;
+  color: var(--text-2);
+}
+
+.wc-rail {
+  display: flex;
+  justify-content: center;
+  gap: 44px;
+  padding-top: 28px;
+  border-top: var(--rule-w) var(--rule-style) var(--rule);
+}
+.wc-rail-item {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  padding-bottom: 10px;
+}
+.wc-rail-past { color: var(--text-mute); }
+.wc-rail-lit {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}

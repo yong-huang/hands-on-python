@@ -1,0 +1,294 @@
+/* ── ch04 why-answer · CSS prefix: wa- ──────────────────────────── */
+
+.wa-scene {
+  justify-content: center;
+  gap: 56px;
+}
+
+.wa-rise {
+  opacity: 0;
+  animation: wa-rise 620ms var(--ease-quart) both;
+}
+@keyframes wa-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── step 0 · 两个下场 ── */
+.wa-preview-title {
+  text-align: center;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wa-slots {
+  display: flex;
+  justify-content: center;
+  gap: 56px;
+  margin-top: 30px;
+}
+.wa-slot {
+  width: 300px;
+  height: 340px;
+  border: 2px dashed var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--surface-2);
+}
+.wa-slot-ord {
+  font-family: var(--font-mono);
+  font-size: 110px;
+  color: var(--accent);
+  line-height: 1;
+}
+.wa-slot-hint {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+
+/* ── shared fn grid ── */
+.wa-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 220px);
+  gap: 26px 30px;
+  justify-content: center;
+}
+.wa-grid-roomy { margin-top: 10px; }
+.wa-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed var(--text-faint);
+  background: var(--surface-2);
+  padding: 24px 0;
+  font-family: var(--font-mono);
+}
+.wa-cell-name {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.wa-cell-miss {
+  border-color: var(--accent);
+}
+.wa-cell-name-mini { font-size: 19px; }
+.wa-grid-mini {
+  grid-template-columns: repeat(5, 150px);
+  gap: 18px 20px;
+}
+.wa-grid-mini .wa-cell-name {
+  border: 1px dashed var(--text-faint);
+  padding: 12px 0;
+  text-align: center;
+  display: block;
+}
+
+.wa-mark {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  min-width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 0 8px;
+}
+.wa-mark-plain {
+  position: static;
+  margin-left: 14px;
+  min-width: 0;
+  height: auto;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-faint);
+  border-left: 1px solid var(--text-faint);
+  padding: 2px 0 2px 12px;
+}
+.wa-mark-edit {
+  background: var(--accent);
+  color: var(--surface);
+  opacity: 0;
+  animation: wa-mark-pop 380ms var(--ease-overshoot) both;
+}
+.wa-mark-miss {
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+  background: var(--surface);
+  animation: wa-mark-shake 600ms var(--ease-soft) 4.2s both;
+}
+@keyframes wa-mark-pop {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes wa-mark-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+/* ── step 1 · 重复 ── */
+.wa-repeat-stamp {
+  text-align: center;
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wa-repeat-x {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+/* ── step 2 · 改动要命 ── */
+.wa-change {
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--accent);
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  padding: 16px 40px;
+}
+.wa-consequence {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── step 3 · 标准答案 ── */
+.wa-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.wa-module {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  padding: 44px 56px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.wa-module-name {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  color: var(--accent);
+}
+.wa-module-sub {
+  margin-top: 12px;
+  font-size: 20px;
+  color: var(--text-2);
+}
+.wa-fan {
+  position: relative;
+  width: 190px;
+  height: 560px;
+  margin: 0 -30px;
+  flex-shrink: 0;
+}
+.wa-fan-bar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 210px;
+  height: 0;
+  border-top: 2px dashed var(--accent);
+  opacity: 0.55;
+  transform-origin: left center;
+  animation: wa-fan 420ms var(--ease-soft) both;
+}
+@keyframes wa-fan {
+  from { transform: var(--rot) scaleX(0); }
+  to   { transform: var(--rot) scaleX(1); }
+}
+.wa-answer-foot {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+/* shared footer chip（本章节自有一份，避免跨章引用） */
+.wa-foot-chip {
+  padding: 16px 34px;
+  border: 1.5px dashed var(--rule);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.wa-foot-chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ── step 4 · 开关 ── */
+.wa-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 72px;
+}
+.wa-toggle-card {
+  width: 360px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 40px 0 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.wa-toggle-at {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  color: var(--accent);
+  text-shadow: 0 0 46px var(--accent-glow);
+}
+.wa-toggle-fn {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  color: var(--text);
+  border: 1.5px dashed var(--text-faint);
+  padding: 18px 52px;
+}
+.wa-toggle-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+}
+.wa-label-on { color: var(--accent); }
+
+.wa-toggle-off .wa-toggle-at {
+  color: var(--text-faint);
+  text-shadow: none;
+  position: relative;
+}
+.wa-toggle-off .wa-toggle-at::after {
+  content: "";
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  top: 52%;
+  border-top: 2px solid var(--text-mute);
+  transform: rotate(-8deg);
+}
+.wa-toggle-off .wa-toggle-fn {
+  color: var(--text-mute);
+  border-style: dashed;
+}
+
+.wa-zero {
+  text-align: center;
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--accent);
+}

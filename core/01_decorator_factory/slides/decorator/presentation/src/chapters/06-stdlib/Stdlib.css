@@ -1,0 +1,225 @@
+/* ── ch06 stdlib · CSS prefix: sd- ──────────────────────────────── */
+
+.sd-scene {
+  justify-content: center;
+  gap: 54px;
+}
+.sd-horizontal {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 90px;
+}
+
+.sd-rise {
+  opacity: 0;
+  animation: sd-rise 620ms var(--ease-quart) both;
+}
+@keyframes sd-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── shared code card ── */
+.sd-codecard {
+  align-self: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 38px 52px;
+  font-family: var(--font-mono);
+  font-size: 29px;
+  line-height: 1.95;
+}
+.sd-line {
+  white-space: pre;
+  color: var(--text-2);
+}
+.sd-line-blank { line-height: 0.6; }
+.sd-line-indent { padding-left: 52px; }
+.sd-line-indent2 { padding-left: 104px; }
+.sd-line-deco {
+  color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 4px 0 0 var(--accent);
+  padding-left: 12px;
+  margin-left: -16px;
+}
+
+.sd-kicker-row {
+  display: flex;
+  justify-content: center;
+}
+.sd-kicker-badge {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1.5px dashed var(--accent);
+  padding: 12px 30px;
+}
+.sd-one-line {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-at {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+/* ── step 1 · 对比条 ── */
+.sd-fib-title {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 62px;
+  color: var(--text);
+}
+.sd-fib-result {
+  color: var(--text-mute);
+  font-size: 44px;
+}
+.sd-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+  width: 1360px;
+  align-self: center;
+}
+.sd-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.sd-bar-label {
+  width: 300px;
+  font-size: 27px;
+  color: var(--text-2);
+  text-align: right;
+  flex-shrink: 0;
+}
+.sd-bar-track {
+  flex: 1;
+  height: 58px;
+  border: 1px dashed var(--rule);
+  position: relative;
+}
+.sd-bar {
+  position: absolute;
+  inset: 7px;
+  transform-origin: left;
+}
+.sd-bar-slow {
+  width: 92%;
+  background: var(--accent-soft);
+  border: 2px solid var(--accent);
+  animation: sd-grow 900ms var(--ease-soft) 1100ms both;
+}
+.sd-bar-fast {
+  width: 2.5%;
+  min-width: 8px;
+  background: var(--accent);
+  animation: sd-grow 500ms var(--ease-soft) 3200ms both;
+}
+@keyframes sd-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.sd-bar-num {
+  width: 150px;
+  font-family: var(--font-mono);
+  font-size: 34px;
+  color: var(--text);
+}
+.sd-bar-num-accent { color: var(--accent); }
+
+/* ── step 2 · 零改动 ── */
+.sd-codecard-dim .sd-line { transition: none; }
+.sd-dim { opacity: 0.32; }
+.sd-line-focus {
+  animation: sd-focus 900ms var(--ease-soft) 300ms both;
+}
+@keyframes sd-focus {
+  0% { opacity: 0.32; }
+  45% { opacity: 1; }
+  100% { opacity: 1; }
+}
+.sd-zero {
+  text-align: center;
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-zero-num {
+  font-family: var(--font-mono);
+  font-size: 74px;
+  color: var(--accent);
+}
+
+/* ── step 3 · wraps ── */
+.sd-wraps-notes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+}
+.sd-wraps-item {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-wraps-item code {
+  font-family: var(--font-mono);
+  font-size: 34px;
+  color: var(--accent);
+  border: 1.5px dashed var(--accent);
+  padding: 6px 18px;
+  margin-left: 12px;
+}
+
+/* ── step 4 · 满屏 wrapper ── */
+.sd-warn-title {
+  text-align: center;
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-term {
+  align-self: center;
+  width: 880px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sd-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.sd-term-body {
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.sd-log {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.sd-log-tag { color: var(--text-mute); }
+.sd-log-name {
+  color: var(--accent);
+  border: 1.5px dashed var(--accent);
+  padding: 2px 12px;
+}
+.sd-warn-foot {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text);
+}

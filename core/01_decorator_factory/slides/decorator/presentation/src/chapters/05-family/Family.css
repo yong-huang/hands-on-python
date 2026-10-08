@@ -1,0 +1,229 @@
+/* ── ch05 family · CSS prefix: fm- ──────────────────────────────── */
+
+.fm-scene {
+  justify-content: center;
+  gap: 52px;
+}
+.fm-classes {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+}
+
+.fm-rise {
+  opacity: 0;
+  animation: fm-rise 620ms var(--ease-quart) both;
+}
+@keyframes fm-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* shared footer chip */
+.fm-foot-chip {
+  padding: 16px 34px;
+  border: 1.5px dashed var(--rule);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.fm-foot-chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+
+/* ── step 0 · 参数三连问 ── */
+.fm-lead {
+  text-align: center;
+  font-size: 58px;
+  font-weight: 700;
+  color: var(--text);
+}
+.fm-lead-sub {
+  text-align: center;
+  font-size: 28px;
+  color: var(--text-2);
+}
+.fm-term {
+  align-self: center;
+  width: 760px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.fm-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.fm-term-body {
+  padding: 34px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.fm-q {
+  font-family: var(--font-mono);
+  font-size: 31px;
+  color: var(--text-2);
+}
+.fm-q b {
+  color: var(--text);
+  font-weight: 700;
+  border-bottom: 2px dashed var(--accent);
+}
+.fm-q-mark {
+  display: inline-block;
+  width: 52px;
+  color: var(--accent);
+}
+
+/* ── step 1 · 三层嵌套 ── */
+.fm-layers {
+  display: flex;
+  justify-content: center;
+}
+.fm-layer {
+  border: 2px dashed;
+  padding: 26px 34px 34px;
+}
+.fm-layer-1 {
+  border-color: var(--accent);
+  min-width: 880px;
+}
+.fm-layer-2 {
+  border-color: var(--text-mute);
+  margin-top: 44px;
+}
+.fm-layer-3 {
+  border-color: var(--text-faint);
+  margin-top: 44px;
+}
+.fm-layer-tag {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-2);
+  margin-bottom: 26px;
+}
+.fm-layer-ord {
+  display: inline-block;
+  min-width: 118px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.fm-layer-core {
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  padding: 34px 0;
+}
+.fm-factory-foot {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+/* ── step 2 · 五形态谱系 ── */
+.fm-spectrum {
+  display: flex;
+  justify-content: center;
+  gap: 44px;
+  margin-top: 26px;
+}
+.fm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent);
+  background: var(--surface-2);
+  padding: 30px 34px 26px;
+  min-width: 250px;
+}
+.fm-form-ord {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+.fm-form-name {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.fm-form-tag {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-mute);
+}
+.fm-spectrum-rail {
+  align-self: center;
+  width: 1400px;
+  border-top: var(--rule-w) var(--rule-style) var(--rule);
+}
+.fm-spectrum-foot {
+  text-align: center;
+  font-size: 28px;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 装饰类 ── */
+.fm-classdemo {
+  width: 640px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 30px 38px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.fm-classdemo-head {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.fm-classdemo-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 27px;
+  line-height: 1.8;
+  color: var(--text-2);
+  white-space: pre;
+}
+.fm-classdemo-code::first-line {
+  color: var(--accent);
+}
+.fm-classdemo-out {
+  font-family: var(--font-mono);
+  font-size: 23px;
+  color: var(--text-2);
+  border-top: 1px dashed var(--rule);
+  padding-top: 20px;
+}
+.fm-prompt {
+  color: var(--text-mute);
+}
+.fm-out-true {
+  display: block;
+  margin-top: 10px;
+  margin-left: 52px;
+  color: var(--accent);
+  font-size: 25px;
+}
+.fm-out-in {
+  animation: fm-rise 560ms var(--ease-quart) both;
+}
+.fm-classdemo-note {
+  font-size: 21px;
+  color: var(--text-2);
+}
