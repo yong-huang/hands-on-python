@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 03 · 电商订单域四表地图:JOIN 的路线与 NULL 的埋伏",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/join_aggregation.html",
+    "views": [
+      {
+        "id": "join-path",
+        "label": "主路径:客户到商品的连接链",
+        "focus": ["customers", "orders", "items", "products"],
+        "note": "多数查询沿 客户→订单→明细←商品 的关系链拼装,聚合在各表分组后进行。"
+      },
+      {
+        "id": "null-trap",
+        "label": "NULL 埋伏:散客订单",
+        "focus": ["guest", "orders"],
+        "note": "散客单 customer_id 为 NULL:内连接直接滤掉,NOT IN 子查询遇上它全军覆没。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "customers",
+      "type": "database",
+      "label": "customers 客户",
+      "sublabel": "6 人 · city 可做 SELF JOIN",
+      "pos": [40, 190],
+      "size": [180, 64]
+    },
+    {
+      "id": "orders",
+      "type": "database",
+      "label": "orders 订单",
+      "sublabel": "6 笔 · coupon 有 3 个 NULL",
+      "tag": "Q5",
+      "pos": [320, 190],
+      "size": [180, 64]
+    },
+    {
+      "id": "items",
+      "type": "database",
+      "label": "order_items 明细",
+      "sublabel": "10 行 · 快照价算金额",
+      "pos": [600, 190],
+      "size": [180, 64]
+    },
+    {
+      "id": "products",
+      "type": "database",
+      "label": "products 商品",
+      "sublabel": "5 款 · category 供分组",
+      "pos": [880, 190],
+      "size": [180, 64]
+    },
+    {
+      "id": "guest",
+      "type": "external",
+      "label": "散客(无账户)",
+      "sublabel": "customer_id = NULL",
+      "pos": [300, 40],
+      "size": [170, 56]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "电商订单域(实验 03 数据底座)",
+      "wraps": ["customers", "orders", "items", "products"],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "id": "c-o",
+      "from": "customers",
+      "to": "orders",
+      "label": "一客多单 Q1/Q3/Q4",
+      "variant": "emphasis"
+    },
+    {
+      "id": "o-i",
+      "from": "orders",
+      "to": "items",
+      "label": "一单多行 Q2/Q6/Q7"
+    },
+    {
+      "id": "p-i",
+      "from": "products",
+      "to": "items",
+      "label": "Q9 按类目筛买家"
+    },
+    {
+      "id": "g-o",
+      "from": "guest",
+      "to": "orders",
+      "label": "Q10 陷阱源",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "只有外连接能答的两问",
+      "items": [
+        "Q3 未下单客户:内连接写法 0 行,LEFT JOIN 找到 3 人",
+        "Q4 每客户单量:LEFT JOIN 后 COUNT(o.id) 让零单客户现身计 0"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "NULL 的两处埋伏",
+      "items": [
+        "散客单被内连接悄悄滤掉:6 笔订单连完只剩 5 笔",
+        "NOT IN 子查询混入一个 NULL,整个 NOT IN 永假(0 行)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "COUNT 家族对账",
+      "items": [
+        "COUNT(*)=6 数行,COUNT(coupon)=3 跳过 NULL",
+        "LEFT JOIN 后 COUNT(*) 把 NULL 行也数成 1,须 COUNT(右表.id)",
+        "聚合后筛分组用 HAVING,筛原始行用 WHERE"
+      ]
+    }
+  ]
+}

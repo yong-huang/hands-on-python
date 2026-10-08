@@ -1,0 +1,119 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Lab 24 · Mongo 索引与 explain:扫描方式、覆盖查询与最左前缀",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "output": "images/mongo_index_explain.html"
+ },
+ "components": [
+  {
+   "id": "app",
+   "type": "external",
+   "label": "查询",
+   "sublabel": "find + explain",
+   "pos": [
+    40,
+    180
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "planner",
+   "type": "backend",
+   "label": "Mongo 规划器",
+   "sublabel": "选扫描方式",
+   "tag": "hint 可强制",
+   "pos": [
+    290,
+    180
+   ],
+   "size": [
+    190,
+    64
+   ]
+  },
+  {
+   "id": "scans",
+   "type": "database",
+   "label": "COLLSCAN vs IXSCAN",
+   "sublabel": "全表扫 vs 索引扫",
+   "pos": [
+    580,
+    180
+   ],
+   "size": [
+    210,
+    64
+   ]
+  },
+  {
+   "id": "matrix",
+   "type": "database",
+   "label": "覆盖查询 + 复合索引矩阵",
+   "sublabel": "最左前缀 · region ✓ status ✗",
+   "pos": [
+    870,
+    180
+   ],
+   "size": [
+    210,
+    64
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "app",
+   "to": "planner",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "planner",
+   "to": "scans",
+   "label": "扫描方式"
+  },
+  {
+   "id": "c3",
+   "from": "scans",
+   "to": "matrix",
+   "label": "实测峰值与矩阵",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "扫描方式三形态",
+   "items": [
+    "COLLSCAN:全集合扫,100 万行 159ms",
+    "IXSCAN:索引扫描,同查询 15ms(10x)",
+    "PROJECTION_COVERED:不回表,覆盖查询"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "explain 与 hint",
+   "items": [
+    "explain() 返回执行计划含扫描方式和耗时",
+    "hint 可强制走/绕开指定索引(排障利器)",
+    "Mongo explain 的 IXSCAN ~ PG 的 Index Scan"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "复合索引最左前缀",
+   "items": [
+    "(region, status):region ✓ · region+status ✓",
+    "status 单独 ✗(缺最左列)",
+    "与 PG 最左前缀规则一致"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Lab 23 · 聚合管道与 SQL 的对应:同数据双实现逐行 diff",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "viewBox": [
+   950,
+   620
+  ]
+ },
+ "stages": [
+  {
+   "label": "同构数据"
+  },
+  {
+   "label": "SQL 实现"
+  },
+  {
+   "label": "聚合管道"
+  },
+  {
+   "label": "逐行 diff"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "seed",
+   "type": "database",
+   "label": "810 行销售",
+   "sublabel": "灌入 SQLite 与 Mongo",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "impl",
+   "type": "backend",
+   "label": "双实现并行",
+   "sublabel": "SQL 三问 · 管道三问",
+   "stage": 1,
+   "row": 1,
+   "tag": "$match/$group/$lookup"
+  },
+  {
+   "id": "diff",
+   "type": "security",
+   "label": "逐行 diff = 0",
+   "sublabel": "两版必须完全一致",
+   "stage": 2,
+   "row": 1
+  }
+ ],
+ "flows": [
+  {
+   "id": "f1",
+   "from": "seed",
+   "to": "impl",
+   "label": "同一数据",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f2",
+   "from": "impl",
+   "to": "diff",
+   "label": "结果集 A/B"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "SQL ↔ 管道映射",
+   "items": [
+    "WHERE ↔ $match(尽早过滤,减少下游数据)",
+    "GROUP BY + SUM ↔ $group + $sum",
+    "JOIN ↔ $lookup + $unwind(一 对 多 展开)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "diff=0 的前提",
+   "items": [
+    "两库数据必须同构同量(种子一次生成灌两库)",
+    "JOIN 两侧的分组维度要一致(cat_group 同源)",
+    "数值比较前 round,浮点误差不吃掉断言"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "实测沉淀",
+   "items": [
+    "cat_group 不同源会让 Q3 静默少行(SQL 缺 north)",
+    "管道结果 total 是 float,len() 会炸,计数用循环",
+    "种子数据 3x3x90=810 行,断言写具体值"
+   ]
+  }
+ ]
+}

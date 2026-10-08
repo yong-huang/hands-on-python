@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 07 · 一条查询的两条路:规划器怎么在 Seq Scan 与 Index Scan 之间选",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/btree_explain.html",
+    "views": [
+      {
+        "id": "fast-path",
+        "label": "主路径:走 B-tree",
+        "focus": [
+          "query",
+          "planner",
+          "btree",
+          "idxscan",
+          "result"
+        ],
+        "note": "有索引且谓词能用上时,规划器选 Index Scan:树高 3~4 层直达目标行。"
+      },
+      {
+        "id": "fallback",
+        "label": "回退:全表顺序扫",
+        "focus": [
+          "planner",
+          "seqscan"
+        ],
+        "note": "无索引、或列上套函数让索引失认时,退回 Seq Scan 一行行翻。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "query",
+      "type": "external",
+      "label": "点查语句",
+      "sublabel": "WHERE customer_id = 777777",
+      "pos": [
+        40,
+        190
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "planner",
+      "type": "backend",
+      "label": "查询规划器",
+      "sublabel": "统计信息 + 代价模型",
+      "tag": "EXPLAIN",
+      "pos": [
+        320,
+        186
+      ],
+      "size": [
+        180,
+        72
+      ]
+    },
+    {
+      "id": "btree",
+      "type": "database",
+      "label": "B-tree 索引",
+      "sublabel": "按键排序 · 树高 3~4 层",
+      "pos": [
+        600,
+        120
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "idxscan",
+      "type": "backend",
+      "label": "Index Scan",
+      "sublabel": "百万行点查 0.05 ms",
+      "pos": [
+        880,
+        120
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "seqscan",
+      "type": "security",
+      "label": "Seq Scan",
+      "sublabel": "全表顺序扫 13 ms",
+      "pos": [
+        620,
+        330
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "result",
+      "type": "database",
+      "label": "结果行",
+      "sublabel": "实际 rows=1",
+      "pos": [
+        1070,
+        190
+      ],
+      "size": [
+        140,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "PostgreSQL 16 容器(端口 55433)",
+      "wraps": [
+        "planner",
+        "btree",
+        "idxscan",
+        "seqscan",
+        "result"
+      ],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "query",
+      "to": "planner",
+      "label": "解析 + 规划",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c2",
+      "from": "planner",
+      "to": "btree",
+      "label": "谓词能用索引"
+    },
+    {
+      "id": "c3",
+      "from": "btree",
+      "to": "idxscan",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c4",
+      "from": "idxscan",
+      "to": "result",
+      "label": "取行"
+    },
+    {
+      "id": "c5",
+      "from": "planner",
+      "to": "seqscan",
+      "label": "无索引或失效",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "B-tree 为什么快",
+      "items": [
+        "按键排序的多叉树,树高 3~4 层即覆盖百万行",
+        "点查沿树一趟直达,不碰无关页",
+        "本实验实测:12.6 ms 全表扫 → 0.044 ms 索引扫,286x"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "索引什么时候失灵",
+      "items": [
+        "B-tree 按原值排序,列上套 upper() 它就不认",
+        "表达式索引 CREATE INDEX ON t (upper(email)) 可救",
+        "SQL 里的取模 % 在 psycopg 参数化下要写 %%"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "规划器靠统计做选择",
+      "items": [
+        "无统计时按默认选择性瞎估:200000 行估成 1000",
+        "ANALYZE 采样后估 2227,对实际 2000 误差 11%",
+        "看计划先看 rows 估得准不准,再谈代价"
+      ]
+    }
+  ]
+}

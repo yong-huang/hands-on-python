@@ -1,0 +1,184 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Lab 17 · Redis 五大结构:每个结构对准一个真实场景",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "output": "images/redis_datastructures.html"
+ },
+ "components": [
+  {
+   "id": "app",
+   "type": "external",
+   "label": "应用",
+   "sublabel": "redis-py",
+   "pos": [
+    40,
+    180
+   ],
+   "size": [
+    140,
+    64
+   ]
+  },
+  {
+   "id": "redis",
+   "type": "database",
+   "label": "Redis",
+   "sublabel": "单线程事件循环 · 内存",
+   "tag": "原子命令",
+   "pos": [
+    270,
+    180
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "zset",
+   "type": "backend",
+   "label": "Zset 排行榜",
+   "sublabel": "ZINCRBY/ZREVRANK",
+   "pos": [
+    520,
+    60
+   ],
+   "size": [
+    180,
+    56
+   ]
+  },
+  {
+   "id": "hash",
+   "type": "backend",
+   "label": "Hash 购物车",
+   "sublabel": "HSET/HINCRBY/HDEL",
+   "pos": [
+    520,
+    170
+   ],
+   "size": [
+    180,
+    56
+   ]
+  },
+  {
+   "id": "set",
+   "type": "backend",
+   "label": "Set 共同关注",
+   "sublabel": "SINTER/SUNION/SDIFF",
+   "pos": [
+    520,
+    280
+   ],
+   "size": [
+    180,
+    56
+   ]
+  },
+  {
+   "id": "string",
+   "type": "backend",
+   "label": "String 计数器",
+   "sublabel": "INCR 原子自增",
+   "pos": [
+    820,
+    150
+   ],
+   "size": [
+    180,
+    56
+   ]
+  },
+  {
+   "id": "ttl",
+   "type": "security",
+   "label": "TTL 生命周期",
+   "sublabel": "SET EX 到期自动删",
+   "pos": [
+    820,
+    260
+   ],
+   "size": [
+    180,
+    56
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c0",
+   "from": "app",
+   "to": "redis",
+   "variant": "emphasis",
+   "label": "命令往返"
+  },
+  {
+   "id": "c1",
+   "from": "redis",
+   "to": "zset",
+   "fromSide": "top",
+   "toSide": "left"
+  },
+  {
+   "id": "c2",
+   "from": "redis",
+   "to": "hash",
+   "fromSide": "top",
+   "toSide": "left"
+  },
+  {
+   "id": "c3",
+   "from": "redis",
+   "to": "set",
+   "fromSide": "bottom",
+   "toSide": "left"
+  },
+  {
+   "id": "c4",
+   "from": "redis",
+   "to": "string",
+   "fromSide": "bottom",
+   "toSide": "left"
+  },
+  {
+   "id": "c5",
+   "from": "redis",
+   "to": "ttl",
+   "fromSide": "bottom",
+   "toSide": "left"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "结构即接口",
+   "items": [
+    "排行榜要名次 → Zset 按分数有序",
+    "购物车要整车读 → Hash 的 field 各自增删",
+    "共同关注要交集 → Set 的集合运算现成"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "原子性来自单线程",
+   "items": [
+    "100 线程并发 INCR 结果恰为 100",
+    "对照:读-改-写两步不是原子,实测 50 线程丢到只剩 9",
+    "要安全要么用原子命令,要么 WATCH/锁"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "TTL 是键的生命周期",
+   "items": [
+    "SET EX 2 → 2 秒后自动删除,轮询实测消失",
+    "不存在键 TTL 返回 -2,无过期键返回 -1",
+    "验证码/限流器/临时锁都靠它自清理"
+   ]
+  }
+ ]
+}

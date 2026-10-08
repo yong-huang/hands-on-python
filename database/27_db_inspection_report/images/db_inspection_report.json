@@ -1,0 +1,135 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Lab 27 · 一键巡检:种子→压测→四大指标→优化→可复跑报告",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "output": "images/db_inspection_report.html"
+ },
+ "components": [
+  {
+   "id": "seed",
+   "type": "database",
+   "label": "100 万行订单",
+   "sublabel": "generate_series",
+   "pos": [
+    40,
+    180
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "bench",
+   "type": "backend",
+   "label": "pgbench 压测",
+   "sublabel": "TPS 数字产出",
+   "pos": [
+    300,
+    180
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "inspect",
+   "type": "messagebus",
+   "label": "四大巡检指标",
+   "sublabel": "命中率/索引/连接/大小",
+   "pos": [
+    560,
+    180
+   ],
+   "size": [
+    200,
+    64
+   ]
+  },
+  {
+   "id": "optimize",
+   "type": "backend",
+   "label": "优化对比",
+   "sublabel": "索引前后 >=2x",
+   "pos": [
+    850,
+    180
+   ],
+   "size": [
+    170,
+    64
+   ]
+  },
+  {
+   "id": "report",
+   "type": "security",
+   "label": "巡检报告",
+   "sublabel": "inspection_report.md",
+   "pos": [
+    850,
+    320
+   ],
+   "size": [
+    180,
+    56
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "seed",
+   "to": "bench",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "bench",
+   "to": "inspect",
+   "label": "采集指标"
+  },
+  {
+   "id": "c3",
+   "from": "inspect",
+   "to": "optimize",
+   "label": "找到慢查询"
+  },
+  {
+   "id": "c4",
+   "from": "optimize",
+   "to": "report",
+   "label": "汇总产出",
+   "variant": "emphasis",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "labelAt": [
+    950,
+    270
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "一键巡检产出",
+   "items": [
+    "pgbench TPS > 100 (实测 670~846)",
+    "缓存命中率 100%、索引使用率、连接数",
+    "优化对比 412~488x(无索引 LIKE vs text_pattern_ops)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "可复跑报告",
+   "items": [
+    "inspection_report.md 4 章节自动生成",
+    "数字随机器波动但结构不变",
+    "clean 后重跑从零开始, 报告重新生成"
+   ]
+  }
+ ]
+}

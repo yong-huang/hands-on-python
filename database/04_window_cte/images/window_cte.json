@@ -1,0 +1,100 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Lab 04 · 从明细到报表:窗口开在行旁,CTE 命名分步",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "报表管线(设计演进)"
+    }
+  ],
+  "mainPath": ["detail", "over", "cte", "report"],
+  "nodes": [
+    {
+      "id": "detail",
+      "lane": "main",
+      "col": 0,
+      "type": "database",
+      "label": "订单明细 11 行",
+      "width": 150
+    },
+    {
+      "id": "over",
+      "lane": "main",
+      "col": 1,
+      "type": "backend",
+      "label": "OVER 开窗:排序不合并",
+      "width": 190
+    },
+    {
+      "id": "cte",
+      "lane": "main",
+      "col": 2,
+      "type": "backend",
+      "label": "CTE 命名分步",
+      "width": 150
+    },
+    {
+      "id": "report",
+      "lane": "main",
+      "col": 3,
+      "type": "database",
+      "label": "四报表 + 组织树",
+      "width": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "detail",
+      "to": "over",
+      "label": "PARTITION 分组",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "over",
+      "to": "cte",
+      "label": "窗口列贴在行旁"
+    },
+    {
+      "id": "e3",
+      "from": "cte",
+      "to": "report",
+      "label": "WHERE 取 rn=1 等组装"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三排序函数对同分 750 的处理",
+      "items": [
+        "RANK 并列同名次但跳号:2,2 之后跳 4",
+        "DENSE_RANK 并列不跳号:2,2 之后接 3",
+        "ROW_NUMBER 靠 tiebreaker 强排先后,序随排序键走"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "两个高频模板",
+      "items": [
+        "TopN:PARTITION BY 人 + ROW_NUMBER 排序,外层取 rn=1",
+        "环比:CTE 先聚出月度,LAG 看上月、LEAD 看下月,到边即 NULL"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "边界与陷阱",
+      "items": [
+        "窗口列不能进 WHERE(执行顺序),先用 CTE 包一层",
+        "WITH RECURSIVE = 锚(顶层)+递归(找下属)两段 UNION ALL",
+        "数据成环会让递归跑不完,加深度上限兜底"
+      ]
+    }
+  ]
+}

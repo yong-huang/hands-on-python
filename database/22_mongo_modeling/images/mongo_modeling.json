@@ -1,0 +1,170 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Lab 22 · 同一博客的两种建模:内嵌一次拿全 vs 引用随取随查",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "output": "images/mongo_modeling.html"
+ },
+ "components": [
+  {
+   "id": "app",
+   "type": "external",
+   "label": "应用",
+   "sublabel": "pymongo",
+   "pos": [
+    40,
+    180
+   ],
+   "size": [
+    140,
+    64
+   ]
+  },
+  {
+   "id": "emb",
+   "type": "database",
+   "label": "内嵌版",
+   "sublabel": "评论在文章文档内",
+   "tag": "1 次查询",
+   "pos": [
+    280,
+    90
+   ],
+   "size": [
+    190,
+    64
+   ]
+  },
+  {
+   "id": "ref",
+   "type": "database",
+   "label": "引用版",
+   "sublabel": "评论独立集合 + post_id",
+   "tag": "N+1",
+   "pos": [
+    280,
+    290
+   ],
+   "size": [
+    190,
+    64
+   ]
+  },
+  {
+   "id": "authors",
+   "type": "database",
+   "label": "authors 作者",
+   "sublabel": "改昵称只动 1 处",
+   "pos": [
+    830,
+    290
+   ],
+   "size": [
+    180,
+    56
+   ]
+  },
+  {
+   "id": "read",
+   "type": "backend",
+   "label": "读放大对比",
+   "sublabel": "内嵌 1 次 · 引用 2 次",
+   "pos": [
+    570,
+    90
+   ],
+   "size": [
+    180,
+    56
+   ]
+  },
+  {
+   "id": "filter",
+   "type": "backend",
+   "label": "filter 语法",
+   "sublabel": "$gt/$or/投影/upsert",
+   "pos": [
+    570,
+    290
+   ],
+   "size": [
+    180,
+    56
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "app",
+   "to": "emb",
+   "label": "读文章+评论",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "app",
+   "to": "ref",
+   "label": "文章→逐条查评论"
+  },
+  {
+   "id": "c3",
+   "from": "ref",
+   "to": "authors",
+   "label": "改昵称只 1 处",
+   "fromSide": "bottom",
+   "toSide": "bottom"
+  },
+  {
+   "id": "c4",
+   "from": "emb",
+   "to": "read",
+   "label": "20 篇都要改",
+   "fromSide": "right",
+   "toSide": "left",
+   "labelAt": [
+    494,
+    168
+   ]
+  },
+  {
+   "id": "c5",
+   "from": "ref",
+   "to": "filter",
+   "label": "字典序坑",
+   "fromSide": "right",
+   "toSide": "left"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "读多:内嵌赢",
+   "items": [
+    "评论跟着文章走,1 次查询拿全",
+    "引用版要文章一次 + 评论逐条(N+1 形态)",
+    "读多写少的评论场景内嵌是默认选择"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "写多:引用赢",
+   "items": [
+    "改作者昵称:内嵌版 20 篇全要改(读写放大)",
+    "引用版改 authors 一处,文章引用不受影响",
+    "建模前先数:哪类操作更高频"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "字符串 id 字典序坑",
+   "items": [
+    "$gt 'post-15' 会命中 post-2..9(字符比较)",
+    "倒序第一条是 post-9 而非 post-20",
+    "需要数值序就用数字 id 或补零对齐"
+   ]
+  }
+ ]
+}

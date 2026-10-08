@@ -1,0 +1,108 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Lab 26 · 三库协作:PG 主存储 + Redis 缓存计数 + Mongo 评论",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "output": "images/tri_store_platform.html"
+ },
+ "components": [
+  {
+   "id": "app",
+   "type": "external",
+   "label": "内容平台",
+   "sublabel": "发布 · 浏览 · 评论",
+   "pos": [
+    40,
+    180
+   ],
+   "size": [
+    160,
+    64
+   ]
+  },
+  {
+   "id": "pg",
+   "type": "database",
+   "label": "PostgreSQL",
+   "sublabel": "文章主存储 · 唯一事实源",
+   "tag": "主存储",
+   "pos": [
+    310,
+    180
+   ],
+   "size": [
+    190,
+    64
+   ]
+  },
+  {
+   "id": "redis",
+   "type": "database",
+   "label": "Redis",
+   "sublabel": "缓存 + INCR 计数",
+   "tag": "可降级",
+   "pos": [
+    600,
+    90
+   ],
+   "size": [
+    180,
+    64
+   ]
+  },
+  {
+   "id": "mongo",
+   "type": "database",
+   "label": "MongoDB",
+   "sublabel": "评论 · 文档查询",
+   "pos": [
+    600,
+    280
+   ],
+   "size": [
+    180,
+    64
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "app",
+   "to": "pg",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "app",
+   "to": "redis"
+  },
+  {
+   "id": "c3",
+   "from": "app",
+   "to": "mongo"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "三库分工",
+   "items": [
+    "PG:文章主存储,唯一事实源",
+    "Redis:缓存正文 + INCR 浏览计数,命中率 ≥90%",
+    "Mongo:评论文档,按文章 id 可查"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "降级演练",
+   "items": [
+    "kill Redis 后 PG 直读 20/20 篇可用",
+    "Redis 恢复后逐篇回填,命中率回到 100%",
+    "降级不影响数据完整性——PG 是唯一事实源"
+   ]
+  }
+ ]
+}

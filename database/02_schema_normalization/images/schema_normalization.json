@@ -1,0 +1,106 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Lab 02 · 从单表到 3NF:规范化阶梯与外键兜底",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "规范化阶梯(设计演进)"
+    }
+  ],
+  "mainPath": [
+    "single",
+    "atomic",
+    "three",
+    "guard"
+  ],
+  "nodes": [
+    {
+      "id": "single",
+      "lane": "main",
+      "col": 0,
+      "type": "database",
+      "label": "单表:课程塞一格",
+      "width": 160
+    },
+    {
+      "id": "atomic",
+      "lane": "main",
+      "col": 1,
+      "type": "database",
+      "label": "平铺表:一行一条",
+      "width": 160
+    },
+    {
+      "id": "three",
+      "lane": "main",
+      "col": 2,
+      "type": "database",
+      "label": "3NF 三表",
+      "width": 130
+    },
+    {
+      "id": "guard",
+      "lane": "main",
+      "col": 3,
+      "type": "security",
+      "label": "外键级联兜底",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "single",
+      "to": "atomic",
+      "label": "拆原子(1NF)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e2",
+      "from": "atomic",
+      "to": "three",
+      "label": "拆重复(2NF/3NF)"
+    },
+    {
+      "id": "e3",
+      "from": "three",
+      "to": "guard",
+      "label": "引用交给引擎"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "三类异常同源:事实被重复登记",
+      "items": [
+        "更新异常:改课名要 REPLACE 多行,漏一行就脏数据",
+        "插入异常:新课没人选,只能伪造占位学生行驮着",
+        "删除异常:唯一选课人退学,课在校内蒸发"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "只修 1NF 不够",
+      "items": [
+        "拆开逗号后,教师仍随每条选课行重复",
+        "换一次教师仍要 UPDATE N 行",
+        "把课程拆成独立表,事实只登记一处才根治"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "外键的两种删除行为",
+      "items": [
+        "ON DELETE CASCADE:删学生,其选课行自动清除",
+        "ON DELETE RESTRICT:有人选的课,删除被拒",
+        "两种行为都要求 PRAGMA foreign_keys=ON"
+      ]
+    }
+  ]
+}

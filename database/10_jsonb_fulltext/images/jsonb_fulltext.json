@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 10 · 半结构化检索三件套:JSONB、全文、数组各配一把钥匙",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/jsonb_fulltext.html",
+    "views": [
+      {
+        "id": "gin-path",
+        "label": "主路径:GIN 加速",
+        "focus": [
+          "app",
+          "gin",
+          "products"
+        ],
+        "note": "@> 包含查询与数组查询共用 GIN 索引,20 万行从 10ms 到亚毫秒。"
+      },
+      {
+        "id": "fts-path",
+        "label": "支线:全文检索",
+        "focus": [
+          "app",
+          "tsv",
+          "articles"
+        ],
+        "note": "body 经 to_tsvector 预处理后 @@ tsquery 匹配,ts_rank 定序。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "app",
+      "type": "external",
+      "label": "检索请求",
+      "sublabel": "@> · @@ · = ANY",
+      "pos": [
+        40,
+        190
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "gin",
+      "type": "database",
+      "label": "GIN 索引",
+      "sublabel": "倒排:键值/词素 → 行号",
+      "tag": "JSONB + 数组共用",
+      "pos": [
+        300,
+        160
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "products",
+      "type": "database",
+      "label": "products 商品表",
+      "sublabel": "attrs JSONB · tags TEXT[]",
+      "pos": [
+        600,
+        90
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "tsv",
+      "type": "backend",
+      "label": "to_tsvector 预处理",
+      "sublabel": "正文 → 词素集合落列",
+      "pos": [
+        300,
+        320
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "articles",
+      "type": "database",
+      "label": "articles 文章表",
+      "sublabel": "body_tsv @@ tsquery · ts_rank",
+      "pos": [
+        600,
+        320
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "zh",
+      "type": "security",
+      "label": "中文边界",
+      "sublabel": "原生分词不切中文",
+      "pos": [
+        900,
+        324
+      ],
+      "size": [
+        170,
+        56
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "PostgreSQL 16 容器(端口 55436)",
+      "wraps": [
+        "gin",
+        "products",
+        "tsv",
+        "articles",
+        "zh"
+      ],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "app",
+      "to": "gin",
+      "label": "JSONB/数组走 GIN",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c2",
+      "from": "gin",
+      "to": "products",
+      "label": "倒排直达"
+    },
+    {
+      "id": "c3",
+      "from": "app",
+      "to": "tsv",
+      "label": "正文检索走 tsquery"
+    },
+    {
+      "id": "c4",
+      "from": "tsv",
+      "to": "articles",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c5",
+      "from": "articles",
+      "to": "zh",
+      "label": "中文整串成单 token",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelAt": [
+        865,
+        300
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "GIN 为什么通吃",
+      "items": [
+        "JSONB 键值、数组元素、全文词素都是'一值对多行'",
+        "倒排索引天然适配,20 万行 @> 查询 10ms → 亚毫秒",
+        "本实验实测 GIN 前后 8~9x(前取最好后取最差的保守口径)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "全文检索的四个动作",
+      "items": [
+        "入库时 to_tsvector 预处理正文落 tsvector 列",
+        "查询用 tsquery:& 是硬过滤,| 配 ts_rank 比相关性",
+        "双词文章 rank 0.0608,单词文章 0.0304,严格两倍"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "中文是原生方案的边界",
+      "items": [
+        "默认分词器把整串中文当一个 token",
+        "查'索引'对'数据库索引与查询优化'零命中",
+        "生产方案:pg_jieba/zhparser 扩展或外置搜索引擎"
+      ]
+    }
+  ]
+}

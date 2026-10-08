@@ -1,0 +1,152 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Lab 21 · 断线窗口的两种命运:Pub/Sub 丢失 vs Stream 补读",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "output": "images/redis_stream.html"
+ },
+ "components": [
+  {
+   "id": "pub",
+   "type": "external",
+   "label": "发布方",
+   "sublabel": "PUBLISH / XADD",
+   "pos": [
+    40,
+    180
+   ],
+   "size": [
+    150,
+    64
+   ]
+  },
+  {
+   "id": "psub",
+   "type": "backend",
+   "label": "Pub/Sub 通道",
+   "sublabel": "即发即弃 · 无存储",
+   "tag": "断线丢",
+   "pos": [
+    290,
+    90
+   ],
+   "size": [
+    190,
+    56
+   ]
+  },
+  {
+   "id": "stream",
+   "type": "database",
+   "label": "Stream 追加日志",
+   "sublabel": "XADD 持久落条",
+   "tag": "断线留档",
+   "pos": [
+    290,
+    280
+   ],
+   "size": [
+    190,
+    64
+   ]
+  },
+  {
+   "id": "psubclient",
+   "type": "external",
+   "label": "重连订阅端",
+   "sublabel": "收到 0 条",
+   "pos": [
+    580,
+    90
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "group",
+   "type": "backend",
+   "label": "消费组",
+   "sublabel": "XREADGROUP 重连补读",
+   "pos": [
+    580,
+    280
+   ],
+   "size": [
+    190,
+    56
+   ]
+  },
+  {
+   "id": "pending",
+   "type": "database",
+   "label": "pending 列表",
+   "sublabel": "未 ACK 可重认领 · XACK 清",
+   "pos": [
+    860,
+    280
+   ],
+   "size": [
+    200,
+    64
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "pub",
+   "to": "psub",
+   "label": "PUBLISH",
+   "variant": "security"
+  },
+  {
+   "id": "c2",
+   "from": "pub",
+   "to": "stream",
+   "label": "XADD",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c3",
+   "from": "psub",
+   "to": "psubclient",
+   "label": "仅在线可收"
+  },
+  {
+   "id": "c4",
+   "from": "stream",
+   "to": "group",
+   "label": "断线后补读"
+  },
+  {
+   "id": "c5",
+   "from": "group",
+   "to": "pending",
+   "label": "未 ACK 留档"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "两种通道的本质差异",
+   "items": [
+    "Pub/Sub:不落盘,只投给当前在线的订阅者",
+    "Stream:追加日志落盘,消费组按游标补读",
+    "断线 10 条:Pub/Sub 丢光,Stream 全部补回"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "at-least-once 三要素",
+   "items": [
+    "XREADGROUP '>' 取新消息,XREADGROUP '0' 认领 pending",
+    "处理成功后 XACK 才移除;崩溃未 ACK 可被重新认领",
+    "代价:业务必须幂等,重复投递是常态而非异常"
+   ]
+  }
+ ]
+}

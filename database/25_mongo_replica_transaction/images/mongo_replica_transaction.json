@@ -1,0 +1,72 @@
+{
+ "schema_version": 1,
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "Lab 25 · 跨集合转账事务:abort 全回滚 vs commit 双集合一致",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "viewBox": [
+   860,
+   480
+  ]
+ },
+ "participants": [
+  {
+   "id": "app",
+   "type": "external",
+   "label": "应用(session)"
+  },
+  {
+   "id": "rs",
+   "type": "database",
+   "label": "Mongo rs0"
+  }
+ ],
+ "messages": [
+  {
+   "id": "m1",
+   "from": "app",
+   "to": "rs",
+   "y": 160,
+   "label": "start_session + start_transaction",
+   "variant": "emphasis"
+  },
+  {
+   "id": "m2",
+   "from": "app",
+   "to": "rs",
+   "y": 195,
+   "label": "扣阿里 −100"
+  },
+  {
+   "id": "m3",
+   "from": "app",
+   "to": "rs",
+   "y": 230,
+   "label": "加小熊 +100"
+  },
+  {
+   "id": "m4",
+   "from": "app",
+   "to": "rs",
+   "y": 265,
+   "label": "写 ledger 流水"
+  },
+  {
+   "id": "m5",
+   "from": "app",
+   "to": "rs",
+   "y": 300,
+   "label": "commit / abort",
+   "variant": "security"
+  },
+  {
+   "id": "m6",
+   "from": "rs",
+   "to": "app",
+   "y": 335,
+   "label": "commit: 全部生效 / abort: 全部回滚",
+   "variant": "return"
+  }
+ ]
+}

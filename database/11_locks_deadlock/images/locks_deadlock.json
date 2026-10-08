@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Lab 11 · 两个事务的死锁一生:互相等待,一方被牺牲",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      900,
+      570
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "事务 A / 事务 B 交叉路径"
+    },
+    {
+      "id": "dead",
+      "label": "死锁出口"
+    }
+  ],
+  "states": [
+    {
+      "id": "begin",
+      "type": "start",
+      "label": "BEGIN",
+      "lane": "main",
+      "col": 0
+    },
+    {
+      "id": "lock-a",
+      "type": "active",
+      "label": "A 锁行1 · B 锁行2",
+      "lane": "main",
+      "col": 1
+    },
+    {
+      "id": "cross",
+      "type": "active",
+      "label": "A 等行2 · B 等行1",
+      "lane": "main",
+      "col": 2
+    },
+    {
+      "id": "detect",
+      "type": "decision",
+      "label": "1 秒后死锁检测",
+      "lane": "main",
+      "col": 3
+    },
+    {
+      "id": "commit",
+      "type": "success",
+      "label": "幸存者继续 COMMIT",
+      "lane": "main",
+      "col": 4
+    },
+    {
+      "id": "victim",
+      "type": "failure",
+      "label": "牺牲者 40P01 整体回滚",
+      "lane": "dead",
+      "col": 2
+    },
+    {
+      "id": "blocked",
+      "type": "failure",
+      "label": "单向阻塞:查 pg_blocking_pids",
+      "lane": "dead",
+      "col": 0,
+      "width": 230
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t1",
+      "from": "begin",
+      "to": "lock-a",
+      "label": "各更新一行",
+      "labelDy": 70
+    },
+    {
+      "id": "t2",
+      "from": "lock-a",
+      "to": "cross",
+      "label": "交叉要对方的行",
+      "labelDy": 70
+    },
+    {
+      "id": "t3",
+      "from": "cross",
+      "to": "detect",
+      "label": "循环等待成环",
+      "labelDy": 70
+    },
+    {
+      "id": "t4",
+      "from": "detect",
+      "to": "commit",
+      "label": "挑代价小者回滚",
+      "labelDy": 70
+    },
+    {
+      "id": "t5",
+      "from": "detect",
+      "to": "victim",
+      "label": "SQLSTATE 40P01",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        760,
+        350
+      ]
+    },
+    {
+      "id": "t6",
+      "from": "lock-a",
+      "to": "blocked",
+      "label": "单向等待不成环",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        325,
+        352
+      ]
+    }
+  ]
+}

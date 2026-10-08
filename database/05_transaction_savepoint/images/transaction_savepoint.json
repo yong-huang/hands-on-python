@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 05 · 崩溃路径时序:kill -9 之后,未提交的改动如何消失",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      860,
+      480
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "app",
+      "type": "external",
+      "label": "应用(子进程)"
+    },
+    {
+      "id": "engine",
+      "type": "backend",
+      "label": "SQLite 引擎"
+    },
+    {
+      "id": "disk",
+      "type": "database",
+      "label": "磁盘(库 + -journal)"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "app",
+      "to": "engine",
+      "y": 165,
+      "label": "BEGIN",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "app",
+      "to": "engine",
+      "y": 194,
+      "label": "UPDATE 阿里 −100"
+    },
+    {
+      "id": "m3",
+      "from": "engine",
+      "to": "disk",
+      "y": 223,
+      "label": "旧值先写 -journal",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m4",
+      "from": "app",
+      "to": "engine",
+      "y": 252,
+      "label": "UPDATE 小熊 +100"
+    },
+    {
+      "id": "m5",
+      "from": "engine",
+      "to": "disk",
+      "y": 281,
+      "label": "journal 记录未提交改动",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m6",
+      "from": "app",
+      "to": "engine",
+      "y": 310,
+      "label": "进程被 kill -9(未提交)",
+      "variant": "security"
+    },
+    {
+      "id": "m7",
+      "from": "engine",
+      "to": "disk",
+      "y": 339,
+      "label": "下次打开:发现残留 -journal"
+    },
+    {
+      "id": "m8",
+      "from": "disk",
+      "to": "engine",
+      "y": 368,
+      "label": "回放日志,撤销未提交改动",
+      "variant": "return"
+    },
+    {
+      "id": "m9",
+      "from": "engine",
+      "to": "app",
+      "y": 397,
+      "label": "数据回到 BEGIN 前,总额守恒",
+      "variant": "return"
+    }
+  ]
+}

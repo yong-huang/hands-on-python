@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 12 · MVCC 的一条更新:新旧版本共存,快照决定谁看见",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      950,
+      500
+    ]
+  },
+  "stages": [
+    {
+      "label": "事务开始"
+    },
+    {
+      "label": "写入"
+    },
+    {
+      "label": "存储"
+    },
+    {
+      "label": "读取"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "begin",
+      "type": "frontend",
+      "label": "BEGIN + 取快照",
+      "sublabel": "快照时机由隔离级别定",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "write",
+      "type": "backend",
+      "label": "UPDATE = 追加新版本",
+      "sublabel": "旧版本标 xmax, 不原地覆盖",
+      "stage": 1,
+      "row": 1,
+      "tag": "RC 语句级 · RR 事务级",
+      "width": 190
+    },
+    {
+      "id": "versions",
+      "type": "database",
+      "label": "版本链",
+      "sublabel": "xmin 出生 · xmax 消亡",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "read",
+      "type": "messagebus",
+      "label": "读 = 按快照筛版本",
+      "sublabel": "RC 见新 · RR 旧快照见旧",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "begin",
+      "to": "write",
+      "label": "改前先追加",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f2",
+      "from": "write",
+      "to": "versions",
+      "label": "新旧共存"
+    },
+    {
+      "id": "f3",
+      "from": "versions",
+      "to": "read",
+      "label": "快照筛选",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "矩阵结论(PG 16 实测 9/9)",
+      "items": [
+        "脏读:任何级别都防住——未提交对他会话不可见",
+        "不可重复读/幻读:READ COMMITTED 复现,RR 与 SERIALIZABLE 防住",
+        "PG 的 RR 快照在事务第一条语句取,天然含幻读保护"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "快照时机是分水岭",
+      "items": [
+        "RC:每条语句取新快照,看得见别人刚提交的",
+        "RR/SERIALIZABLE:整个事务用第一条语句的快照",
+        "本实验 RR 会话在 b 提交前取快照,提交后仍读 10"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "SERIALIZABLE 的代价",
+      "items": [
+        "写撞上并发提交:SQLSTATE 40001 序列化失败",
+        "应用标准动作:捕获后整事务重试(刷新快照)",
+        "本实验首次重试即成功(v=50 → 55)"
+      ]
+    }
+  ]
+}

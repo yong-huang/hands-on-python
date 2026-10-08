@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 08 · 复合索引这道电话簿:最左前缀决定谁走谁不走",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/composite_index.html",
+    "views": [
+      {
+        "id": "prefix-hit",
+        "label": "主路径:最左列命中",
+        "focus": ["q", "planner", "idx", "ioscan"],
+        "note": "WHERE 含最左列 region 时,规划器走复合索引;只取索引列还能免回表。"
+      },
+      {
+        "id": "prefix-miss",
+        "label": "回退:缺最左列",
+        "focus": ["q", "planner", "seq"],
+        "note": "WHERE 只有 status 或 created_at 时,索引帮不上忙,退回全表扫。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "q",
+      "type": "external",
+      "label": "7 种 WHERE 组合",
+      "sublabel": "region / status / created_at 排列",
+      "pos": [40, 190],
+      "size": [190, 64]
+    },
+    {
+      "id": "planner",
+      "type": "backend",
+      "label": "查询规划器",
+      "sublabel": "最左前缀够不够用",
+      "tag": "EXPLAIN",
+      "pos": [330, 186],
+      "size": [170, 72]
+    },
+    {
+      "id": "idx",
+      "type": "database",
+      "label": "复合索引",
+      "sublabel": "(region, status, created_at)",
+      "tag": "电话簿",
+      "pos": [610, 120],
+      "size": [210, 64]
+    },
+    {
+      "id": "ioscan",
+      "type": "backend",
+      "label": "Index Only Scan",
+      "sublabel": "只取索引列,免回表",
+      "pos": [920, 60],
+      "size": [180, 64]
+    },
+    {
+      "id": "seq",
+      "type": "security",
+      "label": "Seq Scan",
+      "sublabel": "全表顺序扫",
+      "pos": [630, 330],
+      "size": [160, 64]
+    },
+    {
+      "id": "stats",
+      "type": "database",
+      "label": "pg_stat_user_indexes",
+      "sublabel": "idx_scan 用没用,计数说话",
+      "pos": [920, 190],
+      "size": [210, 64]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "PostgreSQL 16 容器(端口 55434)",
+      "wraps": ["planner", "idx", "ioscan", "seq"],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "q",
+      "to": "planner",
+      "label": "逐个组合实测",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c2",
+      "from": "planner",
+      "to": "idx",
+      "label": "含最左列 region",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c3",
+      "from": "planner",
+      "to": "seq",
+      "label": "缺最左列",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "c4",
+      "from": "idx",
+      "to": "ioscan",
+      "label": "VACUUM 后可免回表"
+    },
+    {
+      "id": "c5",
+      "from": "idx",
+      "to": "stats",
+      "label": "idx_scan 计数"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "最左前缀矩阵(实测 7/7)",
+      "items": [
+        "region ✓ · region+status ✓ · 全三列 ✓",
+        "status 单独 ✗ · status+created_at ✗ · created_at 单独 ✗",
+        "region+created_at 跳列仍走:索引用上半段,余下条件当过滤器"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Index Only Scan 的两个前提",
+      "items": [
+        "查询只碰索引里有的列,不必回主表",
+        "表的可见性地图就绪——新灌数据的表要先 VACUUM",
+        "VACUUM 不能在事务块里跑,要独立 autocommit 连接"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "死索引现形记",
+      "items": [
+        "EXPLAIN ANALYZE 不计入 idx_scan,真实执行才计",
+        "pg_stat_force_next_flush 让本后端立刻上报统计",
+        "从没人用的索引照样吃写放大,idx_scan=0 一眼识破"
+      ]
+    }
+  ]
+}

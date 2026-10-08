@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Lab 09 · 慢查询的体检流程:pg_stat_statements 定位,两条改写收尾",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "viewBox": [
+      950,
+      500
+    ]
+  },
+  "stages": [
+    {
+      "label": "嫌疑查询"
+    },
+    {
+      "label": "统计账本"
+    },
+    {
+      "label": "Top 榜"
+    },
+    {
+      "label": "改写验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "queries",
+      "type": "external",
+      "label": "三类慢查询",
+      "sublabel": "深分页 · 子查询 · SELECT *",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "stats",
+      "type": "database",
+      "label": "pg_stat_statements",
+      "sublabel": "归一化 SQL 的耗时账本",
+      "stage": 1,
+      "row": 1,
+      "tag": "需预载"
+    },
+    {
+      "id": "top",
+      "type": "messagebus",
+      "label": "Top 榜断言",
+      "sublabel": "total_exec_time 降序",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "rewrite",
+      "type": "backend",
+      "label": "两条改写验证",
+      "sublabel": "keyset ≤1/10 · JOIN 等值",
+      "stage": 3,
+      "row": 1,
+      "tag": "先比结果再比快"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "queries",
+      "to": "stats",
+      "label": "每条执行都被记账",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f2",
+      "from": "stats",
+      "to": "top",
+      "label": "reset 后读榜"
+    },
+    {
+      "id": "f3",
+      "from": "top",
+      "to": "rewrite",
+      "label": "对最慢者下刀"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三类慢查询的病灶",
+      "items": [
+        "深分页:OFFSET 15 万 = 扫过并丢掉 15 万行",
+        "相关子查询:每个客户单独探一次订单表,2000 次往返",
+        "SELECT *:宽行(note ~100B)原样搬运,12k 行也不轻"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "两条改写要点",
+      "items": [
+        "keyset:WHERE id > 上页末尾 LIMIT 10,有序列就能用",
+        "JOIN:LEFT JOIN + GROUP BY 一次算完 2000 个计数",
+        "验证标准:结果逐行一致,再谈快了多少"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "统计账本的脾气",
+      "items": [
+        "归一化后字面量变 $1,指纹要按结构找",
+        "reset 后立刻跑嫌疑查询,榜单才干净",
+        "本实验实测 keyset 提速 11~12x,JOIN 快约一倍"
+      ]
+    }
+  ]
+}

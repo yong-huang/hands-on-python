@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 15 · 一主一从的切换演练:建从库、验延迟、25006、promote",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [860, 480]
+  },
+  "participants": [
+    { "id": "ops", "type": "external", "label": "演练脚本" },
+    { "id": "primary", "type": "database", "label": "主库 55442" },
+    { "id": "standby", "type": "database", "label": "从库 55443" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "ops", "to": "primary", "y": 160, "label": "basebackup -R 建从库目录", "variant": "emphasis" },
+    { "id": "m2", "from": "ops", "to": "standby", "y": 195, "label": "拉起从库(挂 standby.signal)" },
+    { "id": "m3", "from": "primary", "to": "standby", "y": 230, "label": "WAL 流式推送(异步)", "variant": "emphasis" },
+    { "id": "m4", "from": "ops", "to": "primary", "y": 265, "label": "主写 → 从读, 延迟 9~26ms" },
+    { "id": "m5", "from": "ops", "to": "standby", "y": 300, "label": "从库 INSERT → 25006 只读拒绝", "variant": "security" },
+    { "id": "m6", "from": "ops", "to": "standby", "y": 335, "label": "pg_promote()" },
+    { "id": "m7", "from": "ops", "to": "standby", "y": 370, "label": "新主可写:插入读回 1 行", "variant": "return" }
+  ]
+}

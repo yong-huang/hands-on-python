@@ -19,7 +19,8 @@ hands-on-python/
 │   ├── python_interview.md       # 第一系列（语言机制）清单与进度
 │   ├── python_concurrency.md     # 第二系列（并发）清单与进度
 │   ├── python_web_frameworks.md  # 第三系列（Web 框架）清单、环境配置与版本矩阵
-│   └── fastapi.md                # 第四系列（FastAPI）清单与进度
+│   ├── fastapi.md                # 第四系列（FastAPI）清单与进度
+│   └── python_database.md        # 第五系列（数据库）清单与进度
 ├── core/
 │   └── NN_short_name/         # 第一系列：两位编号 + 小写主题名，共 23 个实验
 │       ├── README.md          # 六段式教程：Background / What / When to Use / Quick Start / How It Works / Pitfalls & Q&A
@@ -32,8 +33,10 @@ hands-on-python/
 │   └── NN_topic/              # 第二系列：16 个并发实验，同 core 系列的六段式 README 规范
 ├── web/
 │   └── NN_topic/              # 第三系列：20 个 Web 框架实验，同 core 系列的六段式 README 规范（框架阶段跑在 web/.venv）
-└── fastapi/
-    └── NN_topic/              # 第四系列：25 个 FastAPI 深潜实验，六段式 README + 交互架构图（跑在 fastapi/.venv）
+├── fastapi/
+│   └── NN_topic/              # 第四系列：25 个 FastAPI 深潜实验，六段式 README + 交互架构图（跑在 fastapi/.venv）
+└── database/
+    └── NN_topic/              # 第五系列：27 个数据库实验（SQLite/PostgreSQL/Redis/Mongo），同第四系列规范
 ```
 
 ## 实验列表
@@ -160,6 +163,42 @@ hands-on-python/
 | 24 | [🏁 综合交付：短链接服务](fastapi/24_url_shortener/README.md) | 串联 8 个实验件的完整服务，错误信封+热点缓存 |
 | 25 | [压测基准](fastapi/25_benchmark/README.md) | 串行/线程池/异步对决，/slow 等待重叠 60 倍 |
 
+## 🗄️ 第五系列：Python 数据库 27 站（2026-10 新增，26/27 完成）
+
+从 SQL 地基到三库协作：SQLite 零依赖起步 → PostgreSQL 主线（索引/慢查询/锁/隔离级别实测）→ 可靠性与规模化（WAL/备份/复制/连接池）→ Redis 缓存 → MongoDB 文档库 → 三库串联交付。
+每实验 = 零依赖或容器化的生命周期演示脚本（确定性断言）+ 六段式 README + 交互架构图；容器实验跑在 OrbStack。
+清单与进度见 [python_database.md](docs/python_database.md)。
+
+| 编号 | 实验名 | 一句话主题 |
+|:---|:---|:---|
+| 01 | [SQL CRUD 与约束系统](database/01_sql_crud/README.md) | 一条 SQL 的生命周期、五类约束逐个违反、参数绑定防注入对比 |
+| 02 | [表设计与三范式](database/02_schema_normalization/README.md) | 单表/平铺/3NF 三表对比实测、三类异常同源、CASCADE 与 RESTRICT |
+| 03 | [JOIN 与聚合查询手册](database/03_join_aggregation/README.md) | 电商订单域十问、外连接必解题、NOT IN 遇 NULL 全空陷阱 |
+| 04 | [窗口函数与 CTE](database/04_window_cte/README.md) | 三排序函数同分对比、TopN-per-group、LAG 环比、递归组织树 5 层 4 叶 |
+| 05 | [事务与 SAVEPOINT](database/05_transaction_savepoint/README.md) | kill -9 崩溃原子性实测、存档点部分回滚、隐式事务陷阱 |
+| 06 | [PostgreSQL 上手与 SQLite 迁移](database/06_pg_migration/README.md) | 容器生命周期、跨库逐表对账、JSONB/数组/NUMERIC 精度实测 |
+| 07 | [B-tree 索引与 EXPLAIN ANALYZE](database/07_btree_explain/README.md) | 百万行 258~324x 提速实测、upper() 失效与表达式索引、统计准度 |
+| 08 | [复合索引与最左前缀](database/08_composite_index/README.md) | 7 组合矩阵 7/7、Index Only Scan 免回表、死索引 idx_scan=0 现形 |
+| 09 | [慢查询诊断与重写](database/09_slow_query_tuning/README.md) | pg_stat_statements 抓 Top、keyset 分页 11-13x、子查询改 JOIN 等值 |
+| 10 | [JSONB 与全文检索](database/10_jsonb_fulltext/README.md) | GIN 倒排 8-11x、tsquery 十词召回、rank 两倍排序、中文边界实录 |
+| 11 | [锁与死锁诊断](database/11_locks_deadlock/README.md) | 死锁 40P01 五连复现、20 线程零超卖、SKIP LOCKED 队列、阻塞链指认 |
+| 12 | [隔离级别与 MVCC 实测](database/12_isolation_mvcc/README.md) | 3×3 异常矩阵 9/9、xmin/xmax 版本链、40001 冲突重试 |
+| 13 | WAL 与崩溃恢复 | kill -9 断电零丢失、synchronous_commit 两档 TPS |
+| 14 | [备份与时间点恢复](database/14_backup_pitr/README.md) | pg_dump 对账、basebackup+WAL 重放 500/500 找回误删 |
+| 15 | [流复制与故障切换](database/15_stream_replication/README.md) | 一主一从 9-26ms 延迟、25006 只读、promote 演练时间线 |
+| 16 | 连接池与连接风暴 | 直连被拒 vs PgBouncer 全过、后端峰值 ≤ 池大小 |
+| 17 | [Redis 五大结构与 TTL](database/17_redis_datastructures/README.md) | 五结构五场景、100 线程 INCR 恰 100、非原子读改写丢更新对照 |
+| 18 | 缓存穿透/击穿/雪崩 | 三问题复现与修复的数字级对比（1000→1、50→≤3） |
+| 19 | [缓存一致性](database/19_cache_consistency/README.md) | 先删缓存 993/2000 轮不一致复现、标准写法 0 轮、延迟双删 |
+| 20 | Redis 持久化与分布式锁 | AOF ≤1s 丢失窗口、SET NX PX 恰 1 成功、TTL 兜底 |
+| 21 | Stream 与 Pub/Sub（选做） | 断线丢消息复现、消费组补读、pending 可见 |
+| 22 | MongoDB 文档建模与 CRUD | 内嵌 1 次 vs 引用 N+1、改昵称 1 处 vs M 篇 |
+| 23 | 聚合管道 | 同一报表 SQL 与管道逐行 diff 为 0 |
+| 24 | Mongo 索引与 explain | COLLSCAN→IXSCAN ≥10×、覆盖查询、最左前缀对齐 PG |
+| 25 | 副本集与多文档事务 | 单节点副本集、跨集合转账 abort/commit、w:majority |
+| 26 | ⛓️ 三库协作内容平台 | PG 主存储 + Redis 缓存 + Mongo 评论、kill 降级演练 |
+| 27 | 🏁 数据库巡检与压测报告 | pgbench TPS、慢查询优化 ≥2×、三指标巡检、可复跑报告 |
+
 ## 学习路线
 
 建议按四个阶段推进，每阶段内编号即推荐顺序：
@@ -179,6 +218,11 @@ python3 decorator_factory.py      # 主演示：分步打印 demo 输出（零�
 ```bash
 cd fastapi/01_minimal_app_routing
 ./01_minimal_app_routing.sh all   # 第四系列：start/demo/clean 生命周期脚本（先装 fastapi/.venv）
+```
+
+```bash
+cd database/01_sql_crud
+python3 sql_crud.py               # 第五系列：零依赖单文件生命周期演示（17 项断言）
 ```
 
 主演示脚本从任意 cwd 调用都正确。每个实验的 README 有真实输出示例与"诚实预期"——哪些现象在本机稳定复现、哪些数值波动属正常。

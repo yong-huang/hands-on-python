@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 14 · 误删之后:PITR 沿时间轴重放 WAL,停在误删前一秒",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      860,
+      480
+    ]
+  },
+  "participants": [
+    {
+      "id": "ops",
+      "type": "external",
+      "label": "运维脚本"
+    },
+    {
+      "id": "primary",
+      "type": "database",
+      "label": "主库 lab14-pg"
+    },
+    {
+      "id": "archive",
+      "type": "database",
+      "label": "WAL 归档"
+    },
+    {
+      "id": "restore",
+      "type": "database",
+      "label": "恢复容器"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "ops",
+      "to": "primary",
+      "y": 160,
+      "label": "basebackup 基础备份",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "primary",
+      "to": "archive",
+      "y": 189,
+      "label": "WAL 段持续归档(archive_command)"
+    },
+    {
+      "id": "m3",
+      "from": "ops",
+      "to": "primary",
+      "y": 218,
+      "label": "写入 treasure 500 行"
+    },
+    {
+      "id": "m4",
+      "from": "ops",
+      "to": "primary",
+      "y": 247,
+      "label": "误删:TRUNCATE + 50 行新写入",
+      "variant": "security"
+    },
+    {
+      "id": "m5",
+      "from": "ops",
+      "to": "primary",
+      "y": 276,
+      "label": "主库下线"
+    },
+    {
+      "id": "m6",
+      "from": "ops",
+      "to": "restore",
+      "y": 305,
+      "label": "还原基准 + recovery.signal + 目标时刻",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m7",
+      "from": "restore",
+      "to": "archive",
+      "y": 334,
+      "label": "拉取 WAL 重放"
+    },
+    {
+      "id": "m8",
+      "from": "restore",
+      "to": "ops",
+      "y": 363,
+      "label": "到点 promote,treasure 回归",
+      "variant": "return"
+    }
+  ]
+}

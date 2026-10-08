@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 16 · 200 并发的两条路:每请求新建 vs 复用连接池",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/connection_pool.html",
+    "views": [
+      {
+        "id": "bouncer-path",
+        "label": "主路径:PgBouncer 服务端池",
+        "focus": ["clients", "bouncer", "pg", "activity"],
+        "note": "200 客户端复用 20 条后端连接,pg_stat_activity 峰值 21。"
+      },
+      {
+        "id": "client-pool",
+        "label": "支线:客户端池直连",
+        "focus": ["clients", "clientpool", "pg"],
+        "note": "psycopg_pool 在应用侧复用 20 条直连,峰值 19,不经过代理。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "clients",
+      "type": "external",
+      "label": "200 并发请求",
+      "sublabel": "每请求都要一条连接",
+      "pos": [40, 180],
+      "size": [180, 64]
+    },
+    {
+      "id": "bouncer",
+      "type": "messagebus",
+      "label": "PgBouncer",
+      "sublabel": "transaction 池 · 池大小 20",
+      "tag": "服务端池",
+      "pos": [320, 120],
+      "size": [190, 64]
+    },
+    {
+      "id": "clientpool",
+      "type": "messagebus",
+      "label": "psycopg_pool",
+      "sublabel": "应用内复用 20 条",
+      "tag": "客户端池",
+      "pos": [320, 330],
+      "size": [190, 64]
+    },
+    {
+      "id": "pg",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "max_connections=100",
+      "pos": [630, 180],
+      "size": [180, 64]
+    },
+    {
+      "id": "activity",
+      "type": "database",
+      "label": "pg_stat_activity",
+      "sublabel": "实测后端峰值 21/19",
+      "pos": [900, 180],
+      "size": [190, 64]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "PostgreSQL 16 容器(端口 55444)",
+      "wraps": ["pg", "activity"],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "clients",
+      "to": "bouncer",
+      "label": "200 客户端连接",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c2",
+      "from": "bouncer",
+      "to": "pg",
+      "label": "最多 20 条后端"
+    },
+    {
+      "id": "c3",
+      "from": "clients",
+      "to": "clientpool",
+      "label": "应用内复用",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "left"
+    },
+    {
+      "id": "c4",
+      "from": "clientpool",
+      "to": "pg",
+      "label": "20 条直连",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "c5",
+      "from": "pg",
+      "to": "activity",
+      "label": "峰值可见"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "池化实测数字",
+      "items": [
+        "200 并发经 PgBouncer:200/200 成功,后端峰值 21",
+        "客户端池同压:200/200,后端峰值 19",
+        "建连 5.1ms/次,池化取用近 0——风暴里差距被并发放大"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "两种池的分界",
+      "items": [
+        "PgBouncer:语言无关,事务级池,应用照旧短连接",
+        "psycopg_pool:随应用部署,会话级亲和,少一跳代理",
+        "共同点:后端连接数被池大小钳住,PG 不再直面风暴"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "排障实录",
+      "items": [
+        "userlist 明文密码对 SCRAM 服务端:wrong password type",
+        "镜像默认 auth_type=md5,要显式 scram-sha-256",
+        "采样连接必须 autocommit,峰值才不会被长事务挡成 0"
+      ]
+    }
+  ]
+}

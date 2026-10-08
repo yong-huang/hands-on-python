@@ -1,0 +1,113 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Lab 18 · 缓存三大问题:裸奔的代价与三种修法",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "viewBox": [
+   950,
+   470
+  ]
+ },
+ "stages": [
+  {
+   "label": "请求风暴"
+  },
+  {
+   "label": "缓存层"
+  },
+  {
+   "label": "数据库"
+  },
+  {
+   "label": "修法"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "storm",
+   "type": "external",
+   "label": "三类请求风暴",
+   "sublabel": "三类 miss 源",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "cache",
+   "type": "database",
+   "label": "Redis 缓存",
+   "sublabel": "空值 · 互斥 · 随机TTL",
+   "stage": 1,
+   "row": 1,
+   "tag": "三道闸"
+  },
+  {
+   "id": "db",
+   "type": "database",
+   "label": "PostgreSQL",
+   "sublabel": "带查询计数器",
+   "stage": 2,
+   "row": 1
+  },
+  {
+   "id": "fixes",
+   "type": "backend",
+   "label": "实测对比",
+   "sublabel": "1000→1 · 50→1 · 200→113",
+   "stage": 3,
+   "row": 1
+  }
+ ],
+ "flows": [
+  {
+   "id": "f1",
+   "from": "storm",
+   "to": "cache",
+   "label": "miss 的部分",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f3",
+   "from": "cache",
+   "to": "db",
+   "label": "miss 才放行"
+  },
+  {
+   "id": "f4",
+   "from": "db",
+   "to": "fixes",
+   "label": "计数对比",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "穿透:不存在的数据",
+   "items": [
+    "同一 id 连查 1000 次,裸奔时 DB 1000 次",
+    "修法:空值缓存 10 秒,DB 只 1 次",
+    "前提:此 id 确实不存在于库"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "击穿:热点过期瞬间",
+   "items": [
+    "50 并发齐打刚过期的 key,50 次重建",
+    "修法:SET NX 互斥锁,只放 1 人去 DB,实测 1 次",
+    "锁要带过期时间,持有者崩了也能自愈"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "雪崩:集体过期",
+   "items": [
+    "200 键同 TTL,到期后齐打 DB 200 次",
+    "修法:TTL 加随机偏移(2~5s),错峰后 113 次(56%)",
+    "破案实录:hammer 前误 flush 刚重建的键,数字永远 200"
+   ]
+  }
+ ]
+}

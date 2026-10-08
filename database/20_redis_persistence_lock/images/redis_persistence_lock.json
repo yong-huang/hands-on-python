@@ -1,0 +1,93 @@
+{
+ "schema_version": 1,
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "Lab 20 · 分布式锁的一生:抢锁、用锁、释放或崩溃",
+  "locale": "zh-CN",
+  "quality_profile": "showcase",
+  "viewBox": [
+   860,
+   480
+  ]
+ },
+ "participants": [
+  {
+   "id": "w1",
+   "type": "external",
+   "label": "节点 A"
+  },
+  {
+   "id": "w2",
+   "type": "external",
+   "label": "节点 B"
+  },
+  {
+   "id": "r",
+   "type": "database",
+   "label": "Redis"
+  }
+ ],
+ "messages": [
+  {
+   "id": "m1",
+   "from": "w1",
+   "to": "r",
+   "y": 160,
+   "label": "SET lock t1 NX PX 3000",
+   "variant": "emphasis"
+  },
+  {
+   "id": "m2",
+   "from": "r",
+   "to": "w1",
+   "y": 189,
+   "label": "OK(A 获得锁)"
+  },
+  {
+   "id": "m3",
+   "from": "w2",
+   "to": "r",
+   "y": 218,
+   "label": "SET lock t2 NX PX 3000"
+  },
+  {
+   "id": "m4",
+   "from": "r",
+   "to": "w2",
+   "y": 247,
+   "label": "nil(B 被互斥挡下)",
+   "variant": "security"
+  },
+  {
+   "id": "m5",
+   "from": "w1",
+   "to": "r",
+   "y": 276,
+   "label": "Lua: token 匹配才 DEL"
+  },
+  {
+   "id": "m6",
+   "from": "r",
+   "to": "w1",
+   "y": 305,
+   "label": "释放成功",
+   "variant": "return"
+  },
+  {
+   "id": "m7",
+   "from": "w1",
+   "to": "r",
+   "y": 334,
+   "label": "(崩溃分支)不释放",
+   "variant": "security"
+  },
+  {
+   "id": "m8",
+   "from": "r",
+   "to": "w2",
+   "y": 363,
+   "label": "TTL 到期, B 抢锁成功",
+   "variant": "return"
+  }
+ ]
+}

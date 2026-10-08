@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lab 06 · 一次跨库迁移:SQLite 文件进,PostgreSQL 容器出",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "images/pg_migration.html",
+    "views": [
+      {
+        "id": "migrate-path",
+        "label": "主路径:数据迁移",
+        "focus": [
+          "sqlite",
+          "psycopg",
+          "pg",
+          "tables"
+        ],
+        "note": "三张表逐行搬进容器里的 PostgreSQL,逐表行数对账。"
+      },
+      {
+        "id": "types-path",
+        "label": "进阶:三种专有类型",
+        "focus": [
+          "psycopg",
+          "pg",
+          "types"
+        ],
+        "note": "JSONB / text[] / NUMERIC 是 SQLite 没有的类型,写入读回精度无损。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "sqlite",
+      "type": "database",
+      "label": "SQLite 内存库",
+      "sublabel": "students · courses · enrollments",
+      "pos": [
+        40,
+        190
+      ],
+      "size": [
+        190,
+        64
+      ]
+    },
+    {
+      "id": "psycopg",
+      "type": "backend",
+      "label": "psycopg 3 管线",
+      "sublabel": "executemany 参数化搬运",
+      "pos": [
+        330,
+        190
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "pg",
+      "type": "database",
+      "label": "PostgreSQL 16 容器",
+      "sublabel": "postgres:16-alpine · 端口 55432",
+      "tag": "Docker",
+      "pos": [
+        610,
+        186
+      ],
+      "size": [
+        200,
+        72
+      ]
+    },
+    {
+      "id": "tables",
+      "type": "database",
+      "label": "三表 + IDENTITY 主键",
+      "sublabel": "逐表行数对账",
+      "pos": [
+        900,
+        190
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "types",
+      "type": "backend",
+      "label": "JSONB · text[] · NUMERIC",
+      "sublabel": "GIN 索引 · Decimal 精度",
+      "pos": [
+        330,
+        330
+      ],
+      "size": [
+        200,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "容器边界(即抛即弃:--rm 一停全回收)",
+      "wraps": [
+        "pg"
+      ],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "sqlite",
+      "to": "psycopg",
+      "label": "SELECT 取数",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c2",
+      "from": "psycopg",
+      "to": "pg",
+      "label": "INSERT 写入",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c3",
+      "from": "pg",
+      "to": "tables",
+      "label": "COUNT(*) 对账"
+    },
+    {
+      "id": "c4",
+      "from": "pg",
+      "to": "types",
+      "label": "专有类型写入读回",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        700,
+        330
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "迁移对账两条腿",
+      "items": [
+        "逐表 COUNT(*):SQLite 与 PG 行数必须一致",
+        "内容抽查:关联查询确认'数学分析=张教授'原样抵达"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "三种 SQLite 没有的类型",
+      "items": [
+        "JSONB:二进制 JSON,GIN 索引支持 @> 包含查询",
+        "text[]:数组列,ANY 查询即得",
+        "NUMERIC(10,2):十进制精确存,读回就是 Decimal"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "容器生命周期三个坑",
+      "items": [
+        "initdb 阶段的临时实例会骗过 pg_isready,连接要重试",
+        "同名容器残留会撞 run 冲突,start 前先 rm -f",
+        "--rm 模式一停全回收,数据随容器走,不占卷"
+      ]
+    }
+  ]
+}

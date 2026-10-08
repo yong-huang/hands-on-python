@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# 实验 20 · Redis 持久化与分布式锁 —— AOF 丢失窗口 + NX 锁三连
+# 用法: ./redis_persistence_lock.sh start | demo | clean | all(默认)
+set -euo pipefail
+cd "$(dirname "$0")"
+
+REDIS=lab20-redis
+PORT=55452
+PY=../.venv/bin/python
+DATA=/tmp/lab20_redis_data
+
+step() { echo; echo "=====> [$1] $2"; }
+
+do_start() {
+    step "start" "拉起 redis:7-alpine (${PORT}, AOF everysec + 数据目录挂载, 无 --rm)"
+    docker rm -f "$REDIS" >/dev/null 2>&1 || true
+    rm -rf "$DATA" && mkdir -p "$DATA" && chmod 777 "$DATA"
+    docker run -d --name "$REDIS" \
+        -v "$DATA:/data" \
+        -p "${PORT}:6379" redis:7-alpine \
+        redis-server --appendonly yes --appendfsync everysec
+    for _ in $(seq 1 30); do
+        if "$PY" -c "
+import redis
+redis.Redis(host='127.0.0.1', port=${PORT}).ping()" 2>/dev/null; then
+            echo "redis 就绪(AOF 已开启)"; break
+        fi
+        sleep 0.5
+    done
+}
+
+do_demo() {
+    step "demo" "AOF 丢失窗口实测 + NX 锁三连(互斥/释放校验/崩溃兜底)"
+    "$PY" redis_persistence_lock.py
+}
+
+do_clean() {
+    step "clean" "删除容器与数据目录"
+    docker rm -f "$REDIS"
+    rm -rf "$DATA"
+}
+
+main() {
+    case "${1:-all}" in
+        start) do_start ;;
+        demo)  do_demo ;;
+        clean) do_clean ;;
+        all)   do_start; rc=0; do_demo || rc=$?; do_clean; exit $rc ;;
+        *) echo "可用: start | demo | clean | all" >&2; exit 1 ;;
+    esac
+}
+main "$@"

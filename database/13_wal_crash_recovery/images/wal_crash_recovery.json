@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Lab 13 · 一笔提交的持久性:WAL 落盘才回 ACK,断电后回放",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      860,
+      480
+    ]
+  },
+  "participants": [
+    {
+      "id": "app",
+      "type": "external",
+      "label": "写入线程"
+    },
+    {
+      "id": "pg",
+      "type": "backend",
+      "label": "PostgreSQL"
+    },
+    {
+      "id": "wal",
+      "type": "database",
+      "label": "WAL(顺序日志)"
+    },
+    {
+      "id": "heap",
+      "type": "database",
+      "label": "数据页(堆)"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "app",
+      "to": "pg",
+      "y": 160,
+      "label": "INSERT + COMMIT",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "pg",
+      "to": "wal",
+      "y": 189,
+      "label": "先追加 WAL 记录并 fsync"
+    },
+    {
+      "id": "m3",
+      "from": "pg",
+      "to": "app",
+      "y": 218,
+      "label": "提交确认返回(synchronous_commit=on)",
+      "variant": "return"
+    },
+    {
+      "id": "m4",
+      "from": "pg",
+      "to": "heap",
+      "y": 247,
+      "label": "数据页稍后由后台刷盘"
+    },
+    {
+      "id": "m5",
+      "from": "app",
+      "to": "pg",
+      "y": 276,
+      "label": "…持续写入中 docker kill",
+      "variant": "security"
+    },
+    {
+      "id": "m6",
+      "from": "pg",
+      "to": "wal",
+      "y": 305,
+      "label": "重启:发现未刷盘的 WAL"
+    },
+    {
+      "id": "m7",
+      "from": "wal",
+      "to": "heap",
+      "y": 334,
+      "label": "前滚回放,重建已提交改动",
+      "variant": "return"
+    },
+    {
+      "id": "m8",
+      "from": "pg",
+      "to": "app",
+      "y": 363,
+      "label": "已确认的提交 100% 存活",
+      "variant": "return"
+    }
+  ]
+}
