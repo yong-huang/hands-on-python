@@ -1,0 +1,287 @@
+/* ch02 · background — 独立前缀 bg-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.bg-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* 入场原语（自含定义，键帧用全局 rise-in / pop-in） */
+.bg-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.bg-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 线程时代 ── */
+.bg-free-scene { gap: 36px; }
+.bg-free-head,
+.bg-wall-head,
+.bg-roads-head,
+.bg-base-head {
+  width: 100%;
+  color: var(--text-faint);
+}
+.bg-free-title,
+.bg-wall-title,
+.bg-roads-title,
+.bg-base-title {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bg-free-title b,
+.bg-wall-title b,
+.bg-roads-title b,
+.bg-base-title b { color: var(--accent); }
+.bg-free-diagram { display: flex; justify-content: center; width: 100%; }
+.bg-free-proc {
+  width: 760px;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  background: var(--surface);
+}
+.bg-free-proc-tag { color: var(--text-faint); }
+.bg-free-threads { display: flex; gap: 22px; }
+.bg-thread {
+  padding: 14px 26px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 26px;
+  color: var(--text);
+}
+.bg-free-counter {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.bg-free-counter .label-mono { color: var(--text-faint); }
+.bg-counter-val {
+  padding: 12px 26px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  color: var(--accent);
+  font-size: 38px;
+  font-weight: 600;
+}
+.bg-free-note { font-size: 24px; color: var(--text-mute); }
+
+/* ── step 1 · GIL 与代价 ── */
+.bg-gil-scene { gap: 34px; }
+.bg-gil-band {
+  width: 100%;
+  padding: 30px 44px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  background: var(--surface);
+}
+.bg-gil-name {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bg-gil-cn {
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bg-gil-talk { margin-top: 6px; font-size: 24px; color: var(--text-mute); }
+.bg-gil-lead {
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  color: var(--text-2);
+}
+.bg-gil-lead b { color: var(--accent); }
+.bg-gil-halves {
+  width: 100%;
+  display: flex;
+  gap: 36px;
+}
+.bg-half {
+  flex: 1;
+  padding: 34px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  background: var(--surface);
+}
+.bg-half-tag { font-size: 20px; }
+.bg-half-tag.bg-ok { color: var(--accent); }
+.bg-half-tag.bg-lose { color: var(--text-mute); }
+.bg-half-title {
+  font-family: var(--font-display-cn);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bg-half-cores,
+.bg-half-mems { display: flex; gap: 18px; }
+.bg-core,
+.bg-mem {
+  padding: 12px 22px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 24px;
+  color: var(--text);
+}
+.bg-core { border-color: var(--accent); color: var(--accent); }
+.bg-half-note { font-size: 23px; color: var(--text-mute); }
+
+/* ── step 2 · 撞墙演示 ── */
+.bg-wall-scene { gap: 30px; }
+.bg-wall-diagram {
+  display: flex;
+  align-items: stretch;
+  gap: 40px;
+}
+.bg-wall-proc {
+  width: 430px;
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+}
+.bg-wall-proc .label-mono { color: var(--text-faint); }
+.bg-wall-child { border-color: var(--accent-glow); }
+.bg-wall-val {
+  position: relative;
+  font-size: 46px;
+  color: var(--text);
+}
+.bg-wall-flip {
+  position: absolute;
+  right: -70px;
+  bottom: -8px;
+  font-size: 46px;
+  color: var(--accent);
+}
+.bg-wall-still { font-size: 24px; color: var(--text-mute); }
+.bg-wall-flipped { color: var(--accent); }
+.bg-wall-gap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.bg-wall-link { width: 130px; border-top: 2px dashed var(--text-faint); }
+.bg-wall-block { font-size: 30px; font-weight: 600; color: var(--accent); }
+.bg-wall-punch { font-size: 28px; color: var(--text-mute); }
+
+/* ── step 3 · 两条路 ── */
+.bg-roads-scene { gap: 36px; }
+.bg-roads-row {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+.bg-road {
+  width: 620px;
+  padding: 38px 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background: var(--surface);
+}
+.bg-road-ord {
+  font-size: 22px;
+  color: var(--text-faint);
+  letter-spacing: 0.12em;
+}
+.bg-road-title {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bg-road-demo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.bg-road-box {
+  padding: 18px 26px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 28px;
+  color: var(--text);
+}
+.bg-road-lone { border-style: dashed; background: var(--surface); }
+.bg-road-arrow {
+  width: 110px;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: bg-road-grow 1100ms var(--ease-expo) forwards;
+  animation-delay: 1500ms;
+  transform: scaleX(0);
+}
+@keyframes bg-road-grow {
+  to { transform: scaleX(1); }
+}
+.bg-road-x {
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.bg-road-note { font-size: 23px; color: var(--text-mute); }
+
+/* ── step 4 · 设施打底 ── */
+.bg-base-scene { gap: 30px; }
+.bg-base-stack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+.bg-base-layer {
+  padding: 30px 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background: var(--surface);
+}
+.bg-base-os { background: var(--surface-3); }
+.bg-base-tag { color: var(--text-faint); }
+.bg-base-chs { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.bg-ch {
+  padding: 14px 28px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  color: var(--accent);
+  font-size: 27px;
+  font-weight: 600;
+}
+.bg-oschip {
+  padding: 14px 26px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.bg-base-arrow {
+  text-align: center;
+  font-size: 24px;
+  color: var(--text-mute);
+}

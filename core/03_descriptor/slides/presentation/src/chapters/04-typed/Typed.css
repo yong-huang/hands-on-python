@@ -1,0 +1,289 @@
+/* ── ch04 typed · CSS prefix: tp- ────────────────────────────────── */
+
+.tp-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.tp-rise {
+  opacity: 0;
+  animation: tp-rise 620ms var(--ease-quart) both;
+}
+@keyframes tp-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tp-pop {
+  opacity: 0;
+  animation: tp-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes tp-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.tp-fade {
+  opacity: 0;
+  animation: tp-fade 420ms var(--ease-soft) both;
+}
+@keyframes tp-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.tp-stamp-in {
+  animation: tp-stamp 460ms var(--ease-overshoot) both;
+}
+@keyframes tp-stamp {
+  0%   { opacity: 0; transform: rotate(-6deg) scale(1.7); }
+  100% { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+.tp-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+.tp-codecard {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.tp-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* ── step 0 · 需求卡 ── */
+.tp-req-scene { gap: 36px; }
+.tp-req-head {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.tp-req-head b { color: var(--text); }
+.tp-req-sub {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.tp-req-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.tp-req-rule {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  padding: 22px 44px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 34px;
+  color: var(--text);
+}
+.tp-req-rule code {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.tp-req-rule-k {
+  width: 70px;
+  font-size: 21px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+}
+
+/* ── step 1 / 2 · 代码走读 ── */
+.tp-walk-scene { gap: 46px; }
+.tp-walk-head {
+  align-self: flex-start;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.tp-walk-ord {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-right: 20px;
+  vertical-align: middle;
+}
+.tp-codecard .tp-code {
+  padding: 32px 46px;
+  font-size: 27px;
+  line-height: 1.95;
+}
+.tp-code-sm {
+  font-size: 25px;
+  line-height: 1.9;
+}
+.tp-exit {
+  position: absolute;
+  width: 280px;
+  padding: 10px 0;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  text-align: center;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.tp-exit-1 { right: -300px; top: 120px; }
+.tp-exit-2 { right: -300px; top: 218px; }
+.tp-exit-3 { right: -300px; top: 316px; }
+.tp-walk-scene .tp-codecard { position: relative; }
+
+/* ── step 3 · 真机终端 ── */
+.tp-term-scene { gap: 44px; }
+.tp-term {
+  width: 900px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.tp-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.tp-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 34px;
+}
+.tp-term-line {
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.tp-term-err { color: var(--accent); }
+.tp-line-in {
+  opacity: 0;
+  animation: tp-fade 420ms var(--ease-soft) both;
+}
+.tp-term-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.tp-term-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · 塞 dict 拦得住 ── */
+.tp-bypass-scene { gap: 66px; }
+.tp-bypass-lead {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.tp-bypass-mono {
+  font-family: var(--font-mono);
+  font-size: 33px;
+  color: var(--text);
+}
+.tp-bypass-flow {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.tp-bypass-node,
+.tp-bypass-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 26px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.tp-bypass-node-k,
+.tp-bypass-gate-sub {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.tp-bypass-node-v,
+.tp-bypass-gate-mono {
+  font-family: var(--font-mono);
+  font-size: 29px;
+  color: var(--text);
+}
+.tp-bypass-gate {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.tp-bypass-gate-acc .tp-bypass-gate-mono {
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent-glow);
+}
+.tp-bypass-arrow {
+  font-family: var(--font-mono);
+  font-size: 42px;
+  color: var(--text-mute);
+}
+.tp-bypass-stamp {
+  padding: 14px 38px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+/* ── step 5 · 降级坑 ── */
+.tp-fall-scene { gap: 70px; }
+.tp-fall-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.tp-fall-lead b { color: var(--accent); }
+.tp-fall-cols {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  align-items: center;
+}
+.tp-fall-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.tp-fall-tag {
+  padding: 8px 26px;
+  border: 1px dashed var(--rule);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.tp-fall-tag-bad {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.tp-fall-lane {
+  padding: 20px 54px;
+  font-family: var(--font-mono);
+  font-size: 27px;
+}
+.tp-fall-lane-ok {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+.tp-fall-lane-bad {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.tp-fall-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.tp-fall-foot b { color: var(--text); font-weight: 700; }

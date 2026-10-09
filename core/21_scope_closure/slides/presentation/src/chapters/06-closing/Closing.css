@@ -1,0 +1,455 @@
+/* ch06 · closing — 独立前缀 cz-。颜色/字体只走 token（indigo-porcelain）。 */
+
+/* 场景根：只写布局属性（不碰 position，定位锚点在子元素） */
+.cz-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语（叠加在 animations.css 的 rise-in / scale-in 上） ── */
+.cz-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.cz-pop {
+  opacity: 0;
+  animation: scale-in 560ms var(--ease-expo) forwards;
+}
+
+/* ────────────────────────────────────────────────
+   step 0 · 回望装饰器 —— 自由变量飞越「装饰那一刻」落进 cell
+   ──────────────────────────────────────────────── */
+.cz-open-scene {
+  gap: 24px;
+}
+.cz-open-lead {
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--text-mute);
+}
+.cz-open-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 800;
+  font-size: 84px;
+  line-height: 1.2;
+  letter-spacing: 0.015em;
+  color: var(--text);
+}
+.cz-open-mono {
+  font-family: var(--font-mono);
+  font-size: 0.72em;
+  font-weight: 500;
+  color: var(--accent);
+}
+.cz-open-accent {
+  color: var(--accent);
+}
+
+/* 示意图容器：1460×330，居中；内部锚点全部 absolute */
+.cz-diagram {
+  position: relative;
+  width: 1460px;
+  height: 330px;
+  margin-top: 10px;
+}
+/* 「装饰那一刻」边界：竖直虚线，自上而下画出 */
+.cz-dg-line {
+  position: absolute;
+  left: 560px;
+  top: 44px;
+  bottom: 0;
+  border-left: 2px dashed var(--accent-glow);
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: cz-line-y 800ms var(--ease-expo) 1600ms forwards;
+}
+.cz-dg-tag {
+  position: absolute;
+  left: 578px;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+/* 装饰器一侧：名字 + 变量（幽灵虚线框，变量被带走后消隐） */
+.cz-src {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.cz-src-name {
+  flex: 0 0 150px;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-mute);
+}
+.cz-ghost {
+  padding: 10px 18px;
+  border: 1.5px dashed var(--rule);
+  font-size: 20px;
+  color: var(--text-faint);
+  white-space: pre;
+  animation: cz-vanish 500ms var(--ease-soft) forwards;
+}
+/* wrapper 闭包卡：两个 cell 槽位 */
+.cz-wrap {
+  position: absolute;
+  left: 720px;
+  top: 36px;
+  width: 660px;
+  padding: 30px 44px 34px;
+}
+.cz-wrap-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.cz-wrap-name {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text);
+}
+.cz-slot {
+  position: relative;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  border: 1.5px dashed var(--rule);
+}
+.cz-slot + .cz-slot {
+  margin-top: 20px;
+}
+.cz-slot-hint {
+  margin-left: auto;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+/* 落位的 cell 芯片：从装饰器一侧平移飞入（主导动画） */
+.cz-chip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 22px;
+  border: 1.5px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 500;
+  opacity: 0;
+  animation: cz-fly 950ms var(--ease-expo) forwards;
+}
+.cz-cell-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+.cz-open-cap {
+  font-family: var(--font-display-cn);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text);
+}
+.cz-cap-mono {
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--accent);
+}
+.cz-open-foot {
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  color: var(--text-mute);
+}
+
+/* ────────────────────────────────────────────────
+   step 1 · 四件套收拢 —— 「这一路」行进式：站点逐个点亮
+   ──────────────────────────────────────────────── */
+.cz-road-scene {
+  align-items: stretch;
+  gap: 26px;
+}
+.cz-road-head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cz-road-title {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 96px;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.cz-head-rule {
+  width: 88px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: cz-line-x 700ms var(--ease-expo) forwards;
+}
+.cz-rows {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-top: 18px;
+}
+.cz-rail {
+  position: absolute;
+  left: 31px;
+  top: 16px;
+  bottom: 16px;
+  width: 1px;
+  background: var(--rule);
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: cz-line-y 900ms var(--ease-expo) forwards;
+}
+.cz-road-row {
+  display: grid;
+  grid-template-columns: 64px 400px 1fr;
+  align-items: center;
+  padding: 25px 0;
+  opacity: 0;
+  animation: cz-march 750ms var(--ease-expo) forwards;
+}
+.cz-road-row + .cz-road-row {
+  border-top: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cz-dot {
+  justify-self: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 5px var(--accent-soft);
+}
+.cz-term {
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+.cz-term-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 800;
+}
+.cz-role {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cz-role-main {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text);
+}
+.cz-role-sub {
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+
+/* ────────────────────────────────────────────────
+   step 2 · CTA —— 仓库图签 + 终端逐字运行 + 下期见
+   ──────────────────────────────────────────────── */
+.cz-cta-scene {
+  gap: 12px;
+}
+.cz-cta-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 90px;
+}
+/* 仓库图签：呼应第 1 章标题页 titleblock（Subj / Repo / Lab 三行 mono） */
+.cz-repo {
+  min-width: 470px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 26px 32px 24px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cz-repo-head {
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cz-tb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 28px;
+  font-family: var(--font-mono);
+  font-size: 18px;
+}
+.cz-tb-row span {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  font-size: 13px;
+}
+.cz-tb-row b {
+  color: var(--text);
+  font-weight: 500;
+}
+.cz-repo-rule {
+  margin: 8px 0 2px;
+}
+.cz-repo-foot {
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+.cz-repo-link {
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+/* 终端卡：命令逐字打出（steps 打字机，主导动画），光标有界闪烁 */
+.cz-cli {
+  width: 640px;
+  padding: 26px 34px 30px;
+}
+.cz-cli-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cz-cli-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.cz-cli-line {
+  display: flex;
+  align-items: center;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.cz-cli-line + .cz-cli-line {
+  margin-top: 14px;
+}
+.cz-prompt {
+  margin-right: 14px;
+  color: var(--accent);
+}
+.cz-type {
+  display: inline-block;
+  overflow: hidden;
+  white-space: pre;
+  vertical-align: bottom;
+  width: 0;
+  animation: cz-type-in 950ms steps(24, end) forwards;
+}
+.cz-caret {
+  display: inline-block;
+  width: 13px;
+  height: 30px;
+  margin-left: 4px;
+  background: var(--accent);
+  opacity: 0;
+  /* 有界：仅打字窗口内闪 2 次，之后随基态消失，无 infinite */
+  animation: cz-caret 500ms steps(1, end) 2;
+}
+.cz-cli-out {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cz-out-head {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.cz-out-sub {
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+/* 收尾：下期见 */
+.cz-cta-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 6px;
+}
+.cz-end-rule {
+  width: 72px;
+  border: 0;
+  border-top: 2px solid var(--accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: cz-line-x 700ms var(--ease-expo) forwards;
+}
+.cz-end-main {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 128px;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+.cz-end-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 36px;
+  color: var(--text-mute);
+}
+
+/* ── 章节自定义 keyframes ── */
+@keyframes cz-line-y {
+  to { transform: scaleY(1); }
+}
+@keyframes cz-line-x {
+  to { transform: scaleX(1); }
+}
+/* cell 芯片：从装饰器一侧（x≈-620px）飞越边界落进槽位 */
+@keyframes cz-fly {
+  0%   { opacity: 0; transform: translateX(-620px); }
+  12%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes cz-vanish {
+  to { opacity: 0; }
+}
+/* 四件套行进：自左入场 */
+@keyframes cz-march {
+  from { opacity: 0; transform: translateX(-36px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+/* 打字机：两条命令均为 24 字符 */
+@keyframes cz-type-in {
+  to { width: 24ch; }
+}
+@keyframes cz-caret {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
+}

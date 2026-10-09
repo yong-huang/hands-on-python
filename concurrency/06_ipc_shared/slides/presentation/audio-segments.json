@@ -1,0 +1,278 @@
+[
+  {
+    "chapter": "hook",
+    "step": 1,
+    "text": "今天讲进程间通信。进程各有各的内存——这一节，把传话的路重新接上。",
+    "audio": "hook/1.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "写多进程的人，多半踩过这个坑：子进程里明明改了那个变量，父进程怎么就是看不见？",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "或者是：50 M B 的数组传给子进程，怎么要等小半秒？",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "更隐蔽的：共享计数器更新一万次，怎么悄悄丢了六千四百多次？",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 5,
+    "text": "三个问题，对应多进程的三道坎。第一：内存互相隔离——你改的是自己的那份副本，对方永远看不见。",
+    "audio": "hook/5.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 6,
+    "text": "第二：想传数据，只能搬字节——大对象每传一次，都要先打包、再拆包。",
+    "audio": "hook/6.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 7,
+    "text": "第三：共享有代价——要么每次访问绕远路，要么不设防，更新可能会丢掉。",
+    "audio": "hook/7.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 8,
+    "text": "标准库给了四条通道。哪条快、哪条有坑，我们挨个分析。",
+    "audio": "hook/8.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 1,
+    "text": "先说共享是怎么丢掉的。线程时代，一个进程里的所有线程，共用同一份内存。一个全局计数器，谁都能直接读写——共享是免费的。",
+    "audio": "background/1.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 2,
+    "text": "而多进程，是为了绕开 G I L——Python 的全局解释器锁，同一时刻只有一个线程真正干活。绕开它，使用真并行；但真并行有个代价：内存也跟着隔离了。",
+    "audio": "background/2.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 3,
+    "text": "顺着老思路来写，第一个坑马上出现：子进程里改全局变量，改的是它自己的那份副本。父进程手里的那份，纹丝不动。",
+    "audio": "background/3.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 4,
+    "text": "进程，就是各自独立运行的程序，每个进程都分配独立的内存。想让它们协作，只剩两条路：要么把数据打包运来运去，要么退回单进程。",
+    "audio": "background/4.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 5,
+    "text": "好消息：操作系统早就备好了管道、共享内存这些设施。标准库把它们包装成 Python 对象，并给出了四条通道。",
+    "audio": "background/5.mp3"
+  },
+  {
+    "chapter": "channels",
+    "step": 1,
+    "text": "四条通道，三条路线。Pipe 和 Queue 走第一条：打包成字节流，从一根一边进一边出的管子里传过去——每个字节都要拷贝。",
+    "audio": "channels/1.mp3"
+  },
+  {
+    "chapter": "channels",
+    "step": 2,
+    "text": "SharedMemory 走第二条：几个进程连到同一块物理内存，零拷贝，直接读。",
+    "audio": "channels/2.mp3"
+  },
+  {
+    "chapter": "channels",
+    "step": 3,
+    "text": "Manager 走第三条：雇一个中间人，共享对象都放在它手里——每次访问，都是一个来回。",
+    "audio": "channels/3.mp3"
+  },
+  {
+    "chapter": "channels",
+    "step": 4,
+    "text": "想象四间互相隔音的办公室。Pipe 和 Queue 是互传纸条——内容要先抄一遍，图越大，抄得越久。",
+    "audio": "channels/4.mp3"
+  },
+  {
+    "chapter": "channels",
+    "step": 5,
+    "text": "SharedMemory 是共用一块白板——大家看到的，是同一块板面。",
+    "audio": "channels/5.mp3"
+  },
+  {
+    "chapter": "channels",
+    "step": 6,
+    "text": "Manager 是雇一位秘书——每句吩咐，都是一趟来回。",
+    "audio": "channels/6.mp3"
+  },
+  {
+    "chapter": "channels",
+    "step": 7,
+    "text": "但白板不会拦着两个人同时擦同一格——同步要自己解决。纸条抄大图纸很慢——大块数据走纸条，代价按字节算。",
+    "audio": "channels/7.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 1,
+    "text": "跑几个实验，四个小节，跑完自动核对结果。",
+    "audio": "live-demo/1.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 2,
+    "text": "第一小节，Pipe 父子双向一来一回。父进程发一句，子进程回一句，来回全部对上。",
+    "audio": "live-demo/2.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 3,
+    "text": "第二小节，Queue 批量传十万条消息。0.39 秒，一秒二十多万条——每条都过打包、拷贝、拆包，依然够用。",
+    "audio": "live-demo/3.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 4,
+    "text": "第三小节，50 M B 大数组，两条通道对跑。SharedMemory 这边：20 毫秒，零拷贝直接读。",
+    "audio": "live-demo/4.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 5,
+    "text": "pickle 加 Pipe 那边：366 毫秒。差了 18.5 倍——两边校验和一致，数据完好。",
+    "audio": "live-demo/5.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 6,
+    "text": "第四小节，四个进程并发更新同一个数，一万次。不加锁：只剩三千五百九十六——丢了六千四百多次。",
+    "audio": "live-demo/6.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 7,
+    "text": "如果加上 Manager 自带的锁：一万次，分毫不差。同一份代码，截然不同的结果，其实就差一把锁。",
+    "audio": "live-demo/7.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 1,
+    "text": "三条路线拆开看。Pipe 和 Queue 传的都是打包后的副本——改副本，不影响原件。Queue 内部就是一条管道，加把锁，再配一个后台搬运线程。",
+    "audio": "mechanism/1.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 2,
+    "text": "SharedMemory 没有打包、没有管道。写进去、读出来，各是一次内存复制——没有第三份拷贝。",
+    "audio": "mechanism/2.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 3,
+    "text": "它有两条纪律：生命周期自己管，用完要显式删掉；自己上锁保持同步——它只共享内存，不共享原子性。",
+    "audio": "mechanism/3.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 4,
+    "text": "Manager 的每一次访问，都是一次远程调用。改一个共享的数，先读回来、再写回去——两次访问，两个来回，窗口大开，才丢得掉六千多次。",
+    "audio": "mechanism/4.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 5,
+    "text": "实验里还有两条基准方法。第一，探针必须比被测物便宜。第一版校验和用逐字节求和，两秒起步，把 18.5 倍淹没到 1.2 倍。",
+    "audio": "mechanism/5.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 6,
+    "text": "换成 C 实现的毫秒级校验和，差异立刻显形——测量的尺子，不能比量到的东西还贵。",
+    "audio": "mechanism/6.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 7,
+    "text": "第二，把对称成本从计时里剥掉。spawn 一个子进程要 0.3 到 0.5 秒，两边各付一遍，加速比就被稀释。",
+    "audio": "mechanism/7.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 8,
+    "text": "子进程先挂载好、停在起跑线上，发令之后再计时——只测纯传输，差异才可见。",
+    "audio": "mechanism/8.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 1,
+    "text": "五个真实踩过的坑。一，忘了删共享内存块——它在系统里一直泄漏，重启才清得掉。断开和删除是两个动作，删除要显式做。",
+    "audio": "pitfalls/1.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 2,
+    "text": "二，用完的一端不关——对端以为还在写，永远等不到结束信号。",
+    "audio": "pitfalls/2.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 3,
+    "text": "三，把 Manager 代理当本地对象遍历——每迭代一项，都是一个来回，大字典慢成灾难。先一次性拷回来，再遍历。",
+    "audio": "pitfalls/3.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 4,
+    "text": "四，在共享内存上留引用——删除块之后变成悬空内存，读出来全是错的。要留存，先拷成字节串。",
+    "audio": "pitfalls/4.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 5,
+    "text": "五，以为 Queue 传过去的是原对象——改「传过去的」，原件纹丝不动。这些全是副本。要真正共享，用 SharedMemory 或 Manager。",
+    "audio": "pitfalls/5.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 1,
+    "text": "最后几个选型问题。Pipe 和 Queue 怎么选？两点对话用 Pipe，更轻；多人分发任务、回收结果，用 Queue。",
+    "audio": "qa-closing/1.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 2,
+    "text": "大数组怎么传最快？能不传就不传——只读数据在开进程之前放好，子进程整份复刻父进程的内存，零通信。",
+    "audio": "qa-closing/2.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 3,
+    "text": "要传：SharedMemory 零拷贝最快；pickle 加 Pipe，最通用也最慢，是兜底。",
+    "audio": "qa-closing/3.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 4,
+    "text": "Manager 和 SharedMemory 都能共享，怎么选？高频小状态，Manager 加锁，可读性优先。",
+    "audio": "qa-closing/4.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 5,
+    "text": "大块二进制，SharedMemory，性能优先。生产系统里，通常是分工共存。",
+    "audio": "qa-closing/5.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 6,
+    "text": "完整代码在仓库第六讲目录。下一讲：把开线程、开进程换成统一接口——下期见。",
+    "audio": "qa-closing/6.mp3"
+  }
+]

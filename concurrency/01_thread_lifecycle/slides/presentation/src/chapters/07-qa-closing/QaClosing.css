@@ -1,0 +1,164 @@
+/* ch07 · qa-closing — 独立前缀 qa-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.qa-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.qa-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.qa-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.qa-thesis {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.qa-name-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+.qa-bad {
+  color: var(--accent);
+}
+
+/* ── step 0 · append vs counter ── */
+.qa-vs-scene {
+  gap: 66px;
+}
+.qa-vs-cols {
+  display: flex;
+  align-items: stretch;
+  gap: 44px;
+}
+.qa-vs-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  width: 660px;
+  padding: 42px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.qa-vs-card--bad {
+  border-style: dashed;
+  background: var(--surface);
+}
+.qa-vs-head {
+  font-size: 32px;
+  color: var(--accent);
+}
+.qa-vs-card--bad .qa-vs-head {
+  color: var(--text-mute);
+}
+.qa-vs-demo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 96px;
+}
+.qa-vs-cell--one {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 44px;
+  color: var(--accent);
+}
+.qa-vs-ok {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.qa-vs-step {
+  padding: 22px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 32px;
+  color: var(--text-2);
+}
+.qa-vs-cut {
+  align-self: flex-end;
+  font-size: 19px;
+  color: var(--accent);
+}
+.qa-vs-why {
+  font-size: 26px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 竞态命名 ── */
+.qa-name-scene {
+  gap: 40px;
+}
+.qa-name-sub {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text-2);
+}
+.qa-name-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 190px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.qa-name-en {
+  font-size: 22px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+.qa-name-next {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 27px;
+  color: var(--text-2);
+}
+.qa-name-next .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 2 · 收尾 ── */
+.qa-end-scene {
+  gap: 42px;
+}
+.qa-end-repo {
+  padding: 20px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.qa-end-cmd {
+  font-size: 34px;
+  color: var(--text);
+}
+.qa-end-prompt {
+  color: var(--accent);
+  margin-right: 16px;
+}
+.qa-end-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 92px;
+  color: var(--text);
+}
+.qa-end-byeline {
+  font-size: 26px;
+  color: var(--text-mute);
+}

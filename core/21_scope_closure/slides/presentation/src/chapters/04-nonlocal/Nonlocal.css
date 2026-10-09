@@ -1,0 +1,571 @@
+/* ch04 · nonlocal — 独立前缀 nl-。颜色/字体只走 token（indigo-porcelain）。
+   实际生效 pad 96/80（base.css 后加载覆盖 theme 值），内容区 1728 × 920；下方按更窄的 1660 × 896 保守验算。 */
+
+/* 场景根：只写布局属性（不碰 position） */
+.nl-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语（复用 animations.css 的 rise-in / pop-in keyframes） ── */
+.nl-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.nl-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+/* 淡现（不打扰的次级入场，与 nl-rise 区分节奏） */
+.nl-tfade {
+  opacity: 0;
+  animation: nl-fade 460ms var(--ease-quart) forwards;
+}
+@keyframes nl-fade {
+  to { opacity: 1; }
+}
+.nl-accent {
+  color: var(--accent);
+}
+
+/* 盖章（step 1 规矩回扣 / step 4 实例收束共用） */
+.nl-stamp {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 30px;
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+  animation: nl-stamp-in 560ms var(--ease-expo) forwards;
+}
+.nl-stamp .label-mono {
+  color: var(--accent);
+}
+.nl-stamp-text {
+  font-family: var(--font-display-cn);
+  font-size: 34px;
+  font-weight: 700;
+}
+@keyframes nl-stamp-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-2deg) scale(1.25);
+  }
+  62% {
+    opacity: 1;
+    transform: rotate(-2deg) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-2deg) scale(1);
+  }
+}
+
+/* ════════ step 0 · 提问 → 答案一行 nonlocal ════════ */
+.nl-q-scene {
+  gap: 34px;
+}
+.nl-q-kicker {
+  font-size: 15px;
+}
+.nl-q-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 100px;
+  line-height: 1.15;
+  color: var(--text);
+}
+.nl-q-rule {
+  width: 140px;
+  height: 0;
+  border: 0;
+  border-top: 2px solid var(--accent);
+  transform: scaleX(0);
+  animation: nl-grow-x 700ms var(--ease-expo) forwards;
+  animation-delay: 620ms;
+}
+@keyframes nl-grow-x {
+  to { transform: scaleX(1); }
+}
+.nl-q-answer {
+  font-family: var(--font-mono);
+  font-size: 132px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: var(--accent);
+}
+.nl-q-cue {
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+
+/* ════════ step 1 · 反例终端 UnboundLocalError ════════ */
+.nl-err-scene {
+  justify-content: center;
+}
+.nl-err-cols {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 64px;
+  width: 100%;
+}
+.nl-err-left {
+  width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.nl-err-right {
+  width: 780px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+}
+
+/* 代码卡（nl- 自有实现，风格对齐 ch01 hk-code） */
+.nl-code-card {
+  padding: 30px 44px 36px;
+}
+.nl-code-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.nl-code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.nl-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 29px;
+  line-height: 1.8;
+  color: var(--text-2);
+}
+.nl-code code {
+  font-family: inherit;
+}
+.nl-ln {
+  display: block;
+  white-space: pre;
+}
+.nl-ln-del {
+  color: var(--text-faint);
+}
+.nl-ln-mark {
+  color: var(--accent);
+}
+.nl-ln-hot {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 500;
+  margin: 0 -14px;
+  padding: 0 14px;
+}
+.nl-rule-stamp {
+  align-self: flex-start;
+}
+
+/* 终端卡：警示态 = accent 光圈 + 反色报错行 */
+.nl-term-card {
+  padding: 26px 40px 32px;
+  box-shadow:
+    0 0 0 1px var(--accent-glow),
+    var(--card-shadow);
+}
+.nl-term {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  line-height: 1.75;
+  color: var(--text-2);
+}
+.nl-term code {
+  font-family: inherit;
+}
+.nl-tln {
+  display: block;
+  white-space: pre;
+}
+.nl-tln-mute { color: var(--text-mute); }
+.nl-tln-faint { color: var(--text-faint); }
+.nl-tln-err {
+  width: fit-content;
+  background: var(--accent);
+  color: var(--surface);
+  font-weight: 600;
+  margin: 6px -16px 0;
+  padding: 3px 16px;
+}
+/* REPL 提示行打字机：光标 = 移动中的右边框 */
+.nl-tln-type {
+  width: 0;
+  overflow: hidden;
+  border-right: 3px solid var(--text-faint);
+  animation: nl-type 520ms steps(13, end) 2000ms forwards;
+}
+@keyframes nl-type {
+  to { width: 13ch; }
+}
+
+.nl-err-note {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 22px;
+  border-left: 3px solid var(--rule);
+}
+.nl-note-text {
+  font-family: var(--font-display-cn);
+  font-size: 29px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* ════════ step 2 · nonlocal 语义图（箭头自绘） ════════ */
+.nl-decl-scene {
+  gap: 16px;
+}
+.nl-diagram-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.nl-diagram-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.nl-decl-diagram {
+  position: relative;
+  width: 1240px;
+  height: 560px;
+  margin-top: 6px;
+}
+.nl-mod-band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: var(--surface-3);
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-xs);
+}
+.nl-mod-badge {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  border: 1.5px dashed var(--accent);
+  border-radius: var(--r-xs);
+  padding: 8px 16px;
+}
+.nl-decl-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1240px;
+  height: 560px;
+  overflow: visible;
+}
+.nl-block-line {
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 2;
+  stroke-dasharray: 5 7;
+  opacity: 0;
+  animation: nl-fade 500ms var(--ease-quart) 1200ms forwards;
+}
+.nl-block-cross {
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0;
+  animation: nl-fade 500ms var(--ease-quart) 1350ms forwards;
+}
+.nl-arrow-path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: nl-draw 900ms var(--ease-quart) 1600ms forwards;
+}
+@keyframes nl-draw {
+  to { stroke-dashoffset: 0; }
+}
+.nl-arrow-head {
+  fill: var(--accent);
+}
+.nl-enc-card {
+  position: absolute;
+  top: 150px;
+  left: 70px;
+  width: 1100px;
+  padding: 24px 40px 32px;
+}
+.nl-enc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.nl-enc-fn {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.nl-cell-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 12px 22px;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-xs);
+  background: var(--accent-soft);
+}
+.nl-cell-chip .label-mono {
+  color: var(--accent);
+  font-size: 12px;
+}
+.nl-cell-val {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.nl-inner-card {
+  width: 640px;
+  background: var(--surface);
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-xs);
+  padding: 22px 30px;
+}
+.nl-code-sm {
+  font-size: 26px;
+  line-height: 1.75;
+}
+.nl-ln-key {
+  color: var(--accent);
+  font-weight: 500;
+  background: var(--accent-soft);
+  margin: 0 -12px;
+  padding: 0 12px;
+}
+
+/* ════════ step 3 · global 模块级总线（总线生长 + 支线点亮） ════════ */
+.nl-bus-scene {
+  gap: 20px;
+}
+.nl-bus-diagram {
+  position: relative;
+  width: 1460px;
+  height: 430px;
+  margin-top: 10px;
+}
+.nl-bus-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 120px;
+  height: 5px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: nl-bus-grow 850ms var(--ease-expo) 300ms forwards;
+}
+@keyframes nl-bus-grow {
+  to { transform: scaleX(1); }
+}
+.nl-bus-chip {
+  position: absolute;
+  left: 36px;
+  top: 56px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 12px 22px;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.nl-bus-name {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.nl-bus-mod {
+  position: absolute;
+  right: 0;
+  top: 88px;
+  font-size: 14px;
+}
+.nl-tap {
+  position: absolute;
+  top: 125px;
+  width: 3px;
+  height: 132px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top center;
+  animation: nl-tap-grow 480ms var(--ease-quart) forwards;
+}
+@keyframes nl-tap-grow {
+  to { transform: scaleY(1); }
+}
+.nl-tap-1 { left: 338px; animation-delay: 1250ms; }
+.nl-tap-2 { left: 728px; animation-delay: 1550ms; }
+.nl-tap-3 { left: 1118px; animation-delay: 1850ms; }
+.nl-bus-node {
+  position: absolute;
+  top: 257px;
+  width: 250px;
+  margin-left: -125px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 14px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+}
+.nl-node-fn {
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.nl-bus-caption {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+
+/* ════════ step 4 · 两个计数器实例 A/B 独立跳数（签名画面） ════════ */
+.nl-inst-scene {
+  gap: 26px;
+}
+.nl-inst-maker {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+}
+.nl-maker-chip {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+  padding: 10px 24px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+}
+.nl-inst-row {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+}
+.nl-inst-panel {
+  width: 640px;
+  padding: 26px 36px 30px;
+  display: flex;
+  flex-direction: column;
+}
+.nl-inst-head {
+  padding-bottom: 14px;
+  margin-bottom: 12px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.nl-inst-head .label-mono {
+  font-size: 14px;
+}
+.nl-call-row {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  padding: 4px 0;
+}
+.nl-call-prompt {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  color: var(--text-mute);
+}
+.nl-call-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+.nl-call-num {
+  font-size: 116px;
+  color: var(--accent);
+}
+.nl-cellbox {
+  margin-top: auto;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 24px;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-xs);
+  background: var(--accent-soft);
+}
+.nl-cellbox .label-mono {
+  color: var(--accent);
+  font-size: 12px;
+}
+.nl-cellbox-val {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.nl-inst-divider {
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 0;
+}
+.nl-inst-dline {
+  flex: 1;
+  width: 0;
+  border-left: 1px dashed var(--rule);
+}
+.nl-inst-dlabel {
+  writing-mode: vertical-rl;
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+.nl-inst-stamp {
+  align-self: center;
+}

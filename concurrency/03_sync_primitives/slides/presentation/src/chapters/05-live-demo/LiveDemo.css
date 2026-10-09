@@ -1,0 +1,224 @@
+/* ch05 · live-demo — 独立前缀 ld-。颜色/字体只走 token（monochrome-print）。 */
+
+.ld-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 46px;
+}
+
+/* ── 入场原语 ── */
+.ld-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ld-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 转场 ── */
+.ld-go-scene {
+  gap: 40px;
+}
+.ld-go-top {
+  font-size: 44px;
+  color: var(--text-mute);
+}
+.ld-go-mid {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--text-2);
+}
+.ld-go-mute {
+  color: var(--text-faint);
+}
+.ld-go-rule {
+  width: 120px;
+  border-top-color: var(--accent);
+  border-top-width: 2px;
+}
+.ld-go-bottom {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}
+.ld-go-acc {
+  color: var(--accent);
+}
+
+/* ── 模拟终端 ── */
+.ld-term {
+  width: 1500px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.ld-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.ld-term-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--text-faint);
+}
+.ld-term-title {
+  margin-left: 16px;
+  font-size: 17px;
+  color: var(--text-faint);
+}
+.ld-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 30px 34px;
+}
+.ld-term-line {
+  font-size: 29px;
+  line-height: 1.5;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.ld-term-line--dim {
+  color: var(--text-mute);
+  font-size: 25px;
+}
+.ld-term-line--hot {
+  padding-left: 18px;
+  border-left: 4px solid var(--accent);
+  color: var(--text);
+}
+.ld-prompt {
+  margin-right: 14px;
+  color: var(--accent);
+}
+.ld-caret {
+  display: inline-block;
+  width: 15px;
+  height: 30px;
+  margin-left: 8px;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: caret-blink 900ms step-end infinite;
+}
+.ld-mag {
+  margin-left: 26px;
+  padding: 4px 14px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 21px;
+  white-space: nowrap;
+}
+
+/* ── step 1 · 元信息 chips ── */
+.ld-meta {
+  display: flex;
+  gap: 26px;
+}
+.ld-chip {
+  padding: 14px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.ld-chip--acc {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── step 2 · 0.00 秒之谜 ── */
+.ld-zoom {
+  display: flex;
+  align-items: stretch;
+  gap: 34px;
+}
+.ld-zoom-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 26px 46px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 58px;
+  color: var(--text-2);
+}
+.ld-zoom-cell--true {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+.ld-zoom-note {
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-mute);
+}
+.ld-zoom-arrow {
+  align-self: center;
+  font-size: 50px;
+  color: var(--text-faint);
+}
+
+/* ── step 3 · GIL 拆解 ── */
+.ld-gil {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+.ld-stamps {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.ld-stamp {
+  padding: 18px 32px;
+  background: var(--text);
+  color: var(--surface);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 36px;
+  white-space: nowrap;
+}
+.ld-stamp--acc {
+  background: var(--accent);
+}
+.ld-gil-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 760px;
+  padding: 44px 50px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-gil-head .label-mono {
+  color: var(--accent);
+}
+.ld-gil-talk {
+  font-size: 34px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.ld-gil-talk b {
+  color: var(--accent);
+  font-weight: 700;
+}
+.ld-gil-verdict {
+  align-self: flex-start;
+  padding: 12px 24px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 24px;
+}

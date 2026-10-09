@@ -1,0 +1,27 @@
+.md-scene { justify-content: center; align-items: center; gap: 52px; }
+.md-rise { opacity: 0; animation: md-rise 620ms var(--ease-quart) both; }
+@keyframes md-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.md-fade { opacity: 0; animation: md-fade 420ms var(--ease-soft) both; }
+@keyframes md-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.md-table-scene { gap: 48px; }
+.md-table-lead { font-size: 46px; font-weight: 700; color: var(--text); }
+.md-table { display: flex; flex-direction: column; width: 1420px; }
+.md-row { display: grid; grid-template-columns: 300px 1fr 1fr 160px; gap: 24px; padding: 18px 32px; border-top: 1px dashed var(--rule); background: var(--surface-2); font-size: 24px; color: var(--text-2); }
+.md-row-head { font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mute); border-top: 0; border-bottom: 1px dashed var(--rule); }
+.md-row-name { font-family: var(--font-mono); font-weight: 600; color: var(--text); }
+.md-row-gil { font-size: 22px; }
+
+.md-fine-scene { gap: 40px; }
+.md-fine-lead { font-size: 42px; font-weight: 700; color: var(--text); }
+.md-fine-list { display: flex; flex-direction: column; gap: 20px; }
+.md-fine-item { display: flex; align-items: baseline; gap: 24px; padding: 20px 40px; border: 1px solid var(--rule); background: var(--surface-2); font-size: 27px; color: var(--text-2); }
+.md-fine-k { width: 180px; font-family: var(--font-mono); font-size: 24px; font-weight: 600; color: var(--accent); }
+
+.md-ft-scene { gap: 50px; }
+.md-ft-lead { font-size: 46px; font-weight: 700; color: var(--text); }
+.md-ft-body { font-size: 32px; color: var(--text-2); }
+.md-ft-body b { color: var(--text); font-weight: 700; }
+.md-ft-timeline { display: flex; align-items: center; gap: 18px; }
+.md-ft-node { padding: 14px 30px; border: 1px dashed var(--rule); background: var(--surface-2); font-size: 22px; color: var(--text-2); white-space: nowrap; }
+.md-ft-node-acc { border-color: var(--accent); color: var(--accent); }

@@ -1,0 +1,9 @@
+// AUTO-GENERATED from audio-segments.json (ffprobe durations).
+// Step k (global) starts at TRACK_STARTS[k] on the full narration track.
+export const TRACK_FILE = "audio/track-full.m4a";
+export const TRACK_LEAD = 0.4;
+export const TRACK_GAP = 0.2;
+export const TRACK_STARTS: number[] = [
+0.400,5.184,11.288,20.632,27.360,35.384,40.072,48.744,56.960,67.240,75.456,94.640,112.192,121.680,136.880,148.672,164.232,177.392,182.200,184.920,188.192,196.024,207.648,214.136,224.296,234.576,242.336,252.208,263.856,277.424,287.224,292.368,302.408,310.312,319.848,330.320,343.672,356.160,364.952,373.936,379.776,399.224,406.816,420.192,427.400
+];
+export const TRACK_TOTAL = 433.416;

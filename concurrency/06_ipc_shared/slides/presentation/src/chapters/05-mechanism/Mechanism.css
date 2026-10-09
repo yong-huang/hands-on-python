@@ -1,0 +1,503 @@
+/* ch05 · mechanism — 独立前缀 mc-。颜色/字体只走 token（monochrome-print）。 */
+
+.mc-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 38px;
+}
+.mc-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.mc-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.mc-head { width: 100%; color: var(--text-faint); }
+
+/* 共用元件 */
+.mc-box {
+  padding: 24px 32px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 30px;
+  color: var(--text);
+}
+.mc-box-solid { border-width: 2px; }
+.mc-cap { color: var(--text-faint); }
+.mc-step {
+  padding: 8px 20px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  color: var(--accent);
+  font-size: 24px;
+  font-weight: 600;
+}
+.mc-btn {
+  padding: 10px 22px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 23px;
+  color: var(--text);
+}
+.mc-btn-danger { border: 2px solid var(--accent); color: var(--accent); font-weight: 600; }
+.mc-btn-word { font-size: 28px; color: var(--text-faint); }
+.mc-plus { font-size: 26px; color: var(--text-faint); }
+.mc-probe-meta { font-size: 19px; color: var(--text-faint); }
+
+/* ── step 0 · 副本流动 ── */
+.mc-copy-scene { gap: 30px; }
+.mc-copy-flow {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.mc-copy-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.mc-copy-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.mc-copy-wire {
+  width: 260px;
+  height: 44px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-top: var(--rule-w) var(--rule-style) var(--rule);
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.mc-copy-ghost {
+  font-size: 22px;
+  color: var(--text-mute);
+  border: var(--rule-w) dashed var(--text-faint);
+  border-radius: var(--r-card);
+  padding: 2px 14px;
+}
+.mc-ghost-run { animation: mc-ghost 1800ms linear infinite; animation-delay: 1600ms; }
+@keyframes mc-ghost {
+  from { transform: translateX(-140px); }
+  to   { transform: translateX(140px); }
+}
+.mc-copy-note { font-size: 21px; color: var(--text-mute); }
+.mc-copy-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-copy-verdict b { color: var(--accent); }
+.mc-queue {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.mc-queue .label-mono { color: var(--text-faint); margin-right: 10px; }
+.mc-qchip {
+  padding: 10px 22px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 23px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 两次 memcpy ── */
+.mc-mem-scene { gap: 34px; }
+.mc-mem-flow {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.mc-mem-actor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.mc-mem-op {
+  padding: 8px 20px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  color: var(--accent);
+  font-size: 24px;
+  font-weight: 600;
+}
+.mc-mem-block {
+  width: 460px;
+  padding: 24px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+}
+.mc-mem-block .label-mono { color: var(--accent); }
+.mc-mem-cells { display: flex; gap: 10px; }
+.mc-mem-cell {
+  width: 48px;
+  height: 34px;
+  border: var(--rule-w) solid var(--accent);
+  border-radius: 3px;
+  background: var(--surface-2);
+}
+.mc-mem-fill {
+  opacity: 0;
+  animation: mc-fill 500ms var(--ease-expo) forwards;
+}
+@keyframes mc-fill {
+  from { opacity: 0; background: var(--surface-2); }
+  to   { opacity: 1; background: var(--accent); }
+}
+.mc-mem-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-align: center;
+}
+.mc-mem-verdict b { color: var(--accent); }
+
+/* ── step 2 · 两条纪律 ── */
+.mc-disc-scene { gap: 40px; }
+.mc-disc-row {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+.mc-disc {
+  width: 620px;
+  padding: 34px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background: var(--surface);
+}
+.mc-disc-ord { font-size: 21px; color: var(--text-faint); letter-spacing: 0.12em; }
+.mc-disc-title {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-disc-demo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.mc-disc-hands {
+  padding: 12px 24px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 24px;
+  color: var(--text);
+}
+.mc-disc-note { font-size: 22px; color: var(--text-mute); text-align: center; }
+
+/* ── step 3 · Manager 两个来回 ── */
+.mc-rpc-scene { gap: 32px; }
+.mc-rpc-title {
+  font-family: var(--font-display-cn);
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-rpc-title b { color: var(--accent); }
+.mc-rpc-lane {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.mc-rpc-actor {
+  padding: 18px 26px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 25px;
+  color: var(--text);
+}
+.mc-rpc-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mc-rpc-step {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.mc-rpc-tag {
+  padding: 6px 16px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 21px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.mc-rpc-talk { font-size: 26px; color: var(--text); }
+.mc-rpc-window {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 22px;
+  border: 2px dashed var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+}
+.mc-rpc-window-tag {
+  padding: 4px 14px;
+  border-radius: var(--r-card);
+  background: var(--accent);
+  color: var(--surface-2);
+  font-size: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.mc-rpc-intrude { font-size: 25px; font-weight: 600; color: var(--accent); }
+.mc-rpc-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.mc-rpc-verdict b { color: var(--accent); }
+
+/* ── step 4/5 · 探针时间条 ── */
+.mc-probe-scene { gap: 34px; }
+.mc-probe-lead {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.mc-probe-lead b { color: var(--accent); }
+.mc-probe-bars {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  align-items: flex-start;
+}
+.mc-probe-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.mc-probe-name {
+  width: 400px;
+  text-align: right;
+  font-size: 24px;
+  color: var(--text-2);
+  flex: 0 0 auto;
+}
+.mc-probe-bar {
+  display: flex;
+  align-items: center;
+  padding: 0 26px;
+  height: 66px;
+  border-radius: var(--r-card);
+  font-size: 27px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.mc-probe-heavy { width: 62%; background: var(--accent); color: var(--surface-2); }
+.mc-probe-light { width: 13%; background: var(--text-2); color: var(--surface-2); }
+.mc-probe-fast { width: 7%; background: var(--accent); color: var(--surface-2); }
+.mc-bar-grow {
+  transform-origin: left;
+  animation: mc-bar 900ms var(--ease-expo) forwards;
+  transform: scaleX(0);
+}
+@keyframes mc-bar {
+  to { transform: scaleX(1); }
+}
+.mc-probe-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-probe-verdict b { color: var(--accent); }
+.mc-probe-slogan {
+  font-family: var(--font-display-cn);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-probe-slogan b { color: var(--accent); }
+
+/* step 4 · 总账堆叠条：验货 + 运输 */
+.mc-acct {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.mc-acct-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.mc-acct-name {
+  width: 300px;
+  text-align: right;
+  font-size: 24px;
+  color: var(--text);
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.mc-acct-bar {
+  flex: 1;
+  display: flex;
+  gap: 4px;
+  height: 64px;
+}
+.mc-acct-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-card);
+  font-size: 25px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.mc-acct-probe {
+  width: 72%;
+  background: var(--text-2);
+  color: var(--surface-2);
+}
+.mc-acct-run {
+  width: 3%;
+  min-width: 14px;
+  background: var(--accent);
+}
+.mc-acct-seg-b {
+  width: 13%;
+  background: var(--accent);
+}
+.mc-acct-total {
+  width: 150px;
+  font-size: 26px;
+  color: var(--text-2);
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.mc-acct-legend { padding-left: 324px; }
+.mc-acct-legend .label-mono { font-size: 18px; color: var(--text-faint); }
+
+/* ── step 6 · spawn 对称成本 ── */
+.mc-spawn-scene { gap: 32px; }
+.mc-spawn-lead {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-spawn-lead b { color: var(--accent); }
+.mc-spawn-lanes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+.mc-spawn-lane {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.mc-spawn-name {
+  width: 220px;
+  text-align: right;
+  font-size: 25px;
+  color: var(--text);
+  flex: 0 0 auto;
+}
+.mc-spawn-track {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.mc-spawn-fee {
+  padding: 10px 20px;
+  border: 2px dashed var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.mc-spawn-run {
+  width: 220px;
+  height: 2px;
+  background: var(--text-faint);
+}
+.mc-spawn-note { font-size: 21px; color: var(--text-mute); }
+.mc-spawn-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-spawn-verdict b { color: var(--accent); }
+
+/* ── step 7 · 起跑线 ── */
+.mc-start-scene { gap: 36px; }
+.mc-start-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  border-top: 2px dashed var(--accent);
+  padding-top: 30px;
+}
+.mc-start-runner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.mc-start-card {
+  padding: 16px 28px;
+  border: 2px solid var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 27px;
+  color: var(--text);
+}
+.mc-start-ready { font-size: 23px; color: var(--text-mute); }
+.mc-start-flag {
+  padding: 12px 28px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent);
+  color: var(--surface-2);
+  font-size: 25px;
+  font-weight: 600;
+}
+.mc-start-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mc-start-verdict b { color: var(--accent); }

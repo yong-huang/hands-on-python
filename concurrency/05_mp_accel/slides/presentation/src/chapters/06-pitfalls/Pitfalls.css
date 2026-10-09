@@ -1,0 +1,211 @@
+/* ch06 · pitfalls — 独立前缀 pt-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.pt-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+/* ── 入场原语 ── */
+.pt-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pt-pop {
+  opacity: 0;
+  animation: pop-in 480ms var(--ease-expo) forwards;
+}
+.pt-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: pt-grow-x 900ms var(--ease-expo) forwards;
+}
+@keyframes pt-grow-x {
+  to { transform: scaleX(1); }
+}
+.pt-scene em { font-style: normal; color: var(--accent); }
+
+/* ── 坑头 ── */
+.pt-head {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.pt-head-no {
+  padding: 8px 20px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 24px;
+  letter-spacing: 0.1em;
+}
+.pt-head-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+
+/* ── 代码卡 / 错误行 ── */
+.pt-code {
+  padding: 34px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 36px;
+  line-height: 2;
+  color: var(--text-2);
+}
+.pt-code-big { font-size: 44px; }
+.pt-code-bad { color: var(--accent); text-decoration: underline wavy var(--accent); text-underline-offset: 8px; }
+.pt-code-kw { color: var(--accent); }
+.pt-code-ok { color: var(--text-faint); font-size: 26px; }
+.pt-code-str { color: var(--text-mute); }
+.pt-error {
+  padding: 24px 44px;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 32px;
+  color: var(--text);
+}
+
+/* ── 白话注 / 角标 ── */
+.pt-gloss {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.pt-gloss .label-mono { color: var(--accent); }
+.pt-corner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.pt-corner .label-mono { color: var(--accent); }
+.pt-why {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── 坑 3 · 倒挂时间条 ── */
+.pt-bench {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 1250px;
+}
+.pt-bench-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.pt-bench-name {
+  flex: 0 0 170px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--text-2);
+}
+.pt-bench-track {
+  flex: 1;
+  height: 44px;
+  border-left: 2px solid var(--rule);
+}
+.pt-bench-bar { height: 100%; }
+.pt-bench-bar--serial { background: var(--surface-3); border: 1px solid var(--rule); }
+.pt-bench-bar--slow {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-3),
+    var(--surface-3) 8px,
+    var(--rule) 8px,
+    var(--rule) 10px
+  );
+  border: 1px solid var(--rule);
+}
+.pt-bench-sec { flex: 0 0 260px; font-size: 28px; color: var(--text-2); }
+
+/* ── 坑 4 · 撕裂输出 ── */
+.pt-torn {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 1350px;
+  padding: 40px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pt-torn-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.pt-torn-src {
+  font-size: 20px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 2px 10px;
+}
+.pt-torn-a,
+.pt-torn-b { font-family: var(--font-mono); }
+
+/* ── 坑 5 · map vs imap 双车道 ── */
+.pt-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 1250px;
+}
+.pt-lane {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.pt-lane-name {
+  flex: 0 0 150px;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.pt-lane-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 76px;
+  padding: 0 20px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pt-lane-wait {
+  flex: 1;
+  height: 14px;
+  background: var(--surface-3);
+}
+.pt-lane-chip {
+  padding: 10px 20px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 22px;
+  color: var(--text-2);
+}
+.pt-lane-chip--stream { border-color: var(--accent); color: var(--accent); background: var(--surface); }
+.pt-lane-note {
+  flex: 0 0 300px;
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.pt-lane-note--on { color: var(--text); font-weight: 600; }

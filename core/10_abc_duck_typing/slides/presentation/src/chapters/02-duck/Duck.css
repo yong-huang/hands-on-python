@@ -1,0 +1,25 @@
+.dk-scene { justify-content: center; align-items: center; gap: 48px; }
+.dk-rise { opacity: 0; animation: dk-rise 620ms var(--ease-quart) both; }
+@keyframes dk-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.dk-dim { color: var(--text-mute); }
+.dk-def-scene { gap: 26px; }
+.dk-def-name { font-family: var(--font-mono); font-size: 72px; font-weight: 700; color: var(--text); }
+.dk-def-quote { font-size: 36px; color: var(--accent); }
+.dk-def-body { font-size: 30px; color: var(--text-2); }
+.dk-def-body b { color: var(--text); font-weight: 700; }
+.dk-code-scene { gap: 30px; }
+.dk-code-lead { align-self: flex-start; font-size: 30px; color: var(--text-mute); }
+.dk-code { border: 1px solid var(--rule); background: var(--surface-2); padding: 28px 40px; font-family: var(--font-mono); font-size: 25px; line-height: 1.9; color: var(--text-2); white-space: pre; }
+.dk-vs-scene { gap: 0; }
+.dk-vs-cols { display: flex; gap: 70px; }
+.dk-vs-card { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 420px; padding: 36px 42px; border: 1px solid var(--rule); background: var(--surface-2); }
+.dk-vs-good { border-left: 3px solid var(--accent); }
+.dk-vs-bad { border-left: 3px solid var(--text-mute); opacity: 0.6; }
+.dk-vs-mono { font-family: var(--font-mono); font-size: 34px; font-weight: 600; color: var(--text); }
+.dk-vs-ok { font-size: 30px; color: var(--accent); }
+.dk-vs-err { font-size: 30px; color: var(--text-mute); }
+.dk-vs-note { font-size: 22px; color: var(--text-mute); }
+.dk-bound-scene { gap: 24px; }
+.dk-bound-line { font-size: 42px; font-weight: 700; color: var(--text); }
+.dk-bound-sub { font-size: 30px; color: var(--text-2); }
+.dk-bound-sub b { color: var(--accent); font-weight: 700; }

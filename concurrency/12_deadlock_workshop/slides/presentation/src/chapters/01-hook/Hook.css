@@ -1,0 +1,471 @@
+/* ch01 · hook — 独立前缀 dk-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（不碰 position） */
+.dk-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.dk-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.dk-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 片头标题页 ── */
+.dk-title-scene {
+  gap: 0;
+}
+.dk-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.dk-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.dk-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 200px;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.dk-title-accent {
+  color: var(--accent);
+}
+.dk-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 38px;
+  color: var(--text-mute);
+}
+.dk-title-sub {
+  font-size: 27px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.dk-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 22px;
+  border-left: 1px solid var(--rule);
+}
+.dk-tb-row {
+  display: flex;
+  gap: 18px;
+  font-size: 19px;
+}
+.dk-tb-row span {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.dk-tb-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 冷开场告警引用 ── */
+.dk-quote-scene {
+  gap: 36px;
+}
+.dk-quote-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.dk-quote-flag {
+  color: var(--accent);
+}
+.dk-quote-rule {
+  align-self: stretch;
+  border-top-color: var(--rule);
+}
+.dk-quote {
+  margin: 0;
+  max-width: 1400px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 1.42;
+  color: var(--text);
+}
+.dk-quote-meta {
+  display: flex;
+  gap: 56px;
+  font-size: 22px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+.dk-quote-meta-hit {
+  color: var(--accent);
+}
+.dk-quote-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 27px;
+  color: var(--text-2);
+}
+.dk-quote-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 2 · 监控三读数 ── */
+.dk-gauge-scene {
+  gap: 52px;
+}
+.dk-gauge-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.dk-gauges {
+  display: flex;
+  gap: 44px;
+}
+.dk-gauge {
+  width: 380px;
+  padding: 44px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.dk-gauge-label {
+  align-self: flex-start;
+}
+.dk-gauge-value {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.dk-gauge-sub {
+  font-size: 17px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+.dk-cpu-ring {
+  width: 150px;
+  height: 150px;
+}
+.dk-ring-track {
+  fill: none;
+  stroke: var(--surface-3);
+  stroke-width: 10;
+}
+.dk-ring-arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 10;
+  stroke-linecap: butt;
+}
+.dk-proc-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin: 62px 0;
+}
+.dk-log-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 40px 0 44px;
+  align-self: stretch;
+}
+.dk-log-rows i {
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ── step 3 · 重启循环 ── */
+.dk-loop-scene {
+  gap: 90px;
+}
+.dk-loop-row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.dk-loop-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 34px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.dk-loop-node--bad {
+  border-color: var(--accent);
+}
+.dk-loop-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text);
+}
+.dk-loop-node--bad .dk-loop-cn {
+  color: var(--accent);
+}
+.dk-loop-en {
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.dk-loop-arrow {
+  font-size: 46px;
+  color: var(--text-faint);
+}
+.dk-loop-back {
+  position: relative;
+  align-self: center;
+  width: 720px;
+  display: flex;
+  justify-content: center;
+}
+.dk-loop-backline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px dashed var(--text-faint);
+}
+.dk-loop-backlabel {
+  position: relative;
+  background: var(--surface);
+  padding: 0 26px;
+  font-size: 21px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 症状三连 ── */
+.dk-stamp-scene {
+  gap: 70px;
+}
+.dk-stamp-kicker {
+  color: var(--text-mute);
+}
+.dk-stamps {
+  display: flex;
+  gap: 40px;
+}
+.dk-stamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 52px 64px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.dk-stamp--hit {
+  border: 2px solid var(--accent);
+}
+.dk-stamp-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 88px;
+  color: var(--text);
+}
+.dk-stamp--hit .dk-stamp-cn {
+  color: var(--accent);
+}
+.dk-stamp-en {
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.dk-stamp--hit .dk-stamp-en {
+  color: var(--accent);
+}
+
+/* ── step 5 · 现场缺失 ── */
+.dk-miss-scene {
+  gap: 48px;
+}
+.dk-miss-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.dk-miss-card {
+  width: 1180px;
+  padding: 60px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+.dk-miss-row,
+.dk-miss-log {
+  display: flex;
+  align-items: baseline;
+  gap: 40px;
+  font-size: 30px;
+}
+.dk-miss-thread {
+  width: 190px;
+  color: var(--text-mute);
+}
+.dk-miss-wait {
+  width: 300px;
+  color: var(--text-2);
+}
+.dk-miss-line {
+  color: var(--text-2);
+}
+.dk-miss-q {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--accent);
+}
+.dk-miss-log {
+  border-top: 1px solid var(--rule);
+  padding-top: 30px;
+  color: var(--text-faint);
+}
+
+/* ── step 6 · 概率性 ── */
+.dk-race-scene {
+  gap: 66px;
+}
+.dk-race-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.dk-race-track-wrap {
+  position: relative;
+  align-self: stretch;
+  height: 210px;
+}
+.dk-race-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 150px;
+  border-top: 2px solid var(--rule);
+}
+.dk-race-window {
+  position: absolute;
+  top: 0;
+  height: 150px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  display: flex;
+  justify-content: center;
+}
+.dk-race-window-label {
+  margin-top: 18px;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.dk-race-dot {
+  position: absolute;
+  top: 143px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  margin-left: -8px;
+}
+.dk-race-dot--hit {
+  top: 138px;
+  width: 26px;
+  height: 26px;
+  background: var(--accent);
+  box-shadow: 0 0 0 10px var(--accent-glow);
+  margin-left: -13px;
+}
+.dk-race-count {
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.dk-race-count b {
+  color: var(--accent);
+  font-weight: 600;
+}
+.dk-race-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--text);
+}
+.dk-tag-accent {
+  color: var(--accent);
+}
+
+/* ── step 7 · 四步路线图 ── */
+.dk-road-scene {
+  gap: 64px;
+}
+.dk-road-kicker {
+  color: var(--text-mute);
+}
+.dk-pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dk-pipe-item {
+  display: flex;
+  align-items: center;
+}
+.dk-pipe-arrow {
+  margin: 0 36px;
+  font-size: 44px;
+  color: var(--text-faint);
+}
+.dk-pipe-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 34px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.dk-pipe-ord {
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.dk-pipe-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text);
+}
+.dk-pipe-en {
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.dk-road-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--text-mute);
+}

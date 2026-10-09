@@ -1,0 +1,205 @@
+/* ch02 · background — 独立前缀 bg-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.bg-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.bg-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.bg-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.bg-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+.bg-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 76px;
+  color: var(--text);
+}
+
+/* ── step 0 · 跑一百遍 ── */
+.bg-same-scene {
+  gap: 66px;
+}
+.bg-same-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.bg-same-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 30px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-same-line {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.bg-same-result {
+  padding: 10px 26px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 26px;
+  color: var(--accent);
+}
+.bg-same-more {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+
+/* ── step 1 · 三步连做 ── */
+.bg-plus-scene {
+  gap: 64px;
+}
+.bg-plus-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 64px;
+  color: var(--text);
+}
+.bg-plus-flow {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.bg-plus-item {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.bg-plus-arrow {
+  font-size: 44px;
+  color: var(--text-faint);
+}
+.bg-plus-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 34px 46px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-plus-ord {
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.bg-plus-text {
+  font-size: 32px;
+  color: var(--text);
+}
+.bg-plus-brace {
+  align-self: center;
+  margin-top: 14px;
+  font-size: 24px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · 假设碎裂 ── */
+.bg-break-scene {
+  gap: 46px;
+}
+.bg-break-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--text);
+}
+.bg-break-box {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 42px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-break-lane {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.bg-break-name {
+  min-width: 130px;
+  font-size: 22px;
+  color: var(--text-2);
+}
+.bg-break-ops {
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.bg-break-shared {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px 30px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.bg-break-shared .label-mono {
+  color: var(--accent);
+}
+.bg-break-var {
+  font-size: 28px;
+  color: var(--text);
+}
+.bg-break-foot {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text);
+}
+
+/* ── step 3 · 竞态命名 ── */
+.bg-name-scene {
+  gap: 30px;
+}
+.bg-name-pre {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.bg-name-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 180px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.bg-name-en {
+  font-size: 22px;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+}
+.bg-name-pain {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 22px;
+}
+.bg-name-painitem {
+  font-size: 28px;
+  color: var(--text-2);
+}
+.bg-name-painitem::before {
+  content: "— ";
+  color: var(--text-faint);
+}

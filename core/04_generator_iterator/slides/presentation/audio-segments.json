@@ -1,0 +1,206 @@
+[
+  {
+    "chapter": "hook",
+    "step": 1,
+    "text": "今天讲 Python 生成器。暂停恢复、双向通信、惰性管道，一层层拆开。",
+    "audio": "hook/1.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "处理一份千万行的日志。第一反应：先全读进来，存个列表？内存当场爆掉。",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "再来个需求：自己写一个能被 for 遍历的东西。__iter__、__next__、状态变量，二十行起步。",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "这两个麻烦，Python 用一个小小的 yield 一起解决。它叫生成器。",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 1,
+    "text": "函数里只要含一个 yield，它就不再是普通函数，是生成器函数。",
+    "audio": "what-is/1.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 2,
+    "text": "心智模型：一个可暂停、可恢复的函数。next() 推它跑，跑到下一个 yield 就停。",
+    "audio": "what-is/2.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 3,
+    "text": "停的时候，栈帧连局部变量原封不动冻在原地。下次从暂停处，精确恢复。",
+    "audio": "what-is/3.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 4,
+    "text": "它的一生是一台状态机。刚创建，调用不执行；运行中；已暂停；函数返回，抛 StopIteration。",
+    "audio": "what-is/4.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 5,
+    "text": "真机看状态：type 是 generator。暂停时 gi_frame 在；耗尽后，gi_frame 变 None。",
+    "audio": "what-is/5.mp3"
+  },
+  {
+    "chapter": "iter-gen",
+    "step": 1,
+    "text": "为什么说它简洁？先看迭代器协议——for 循环的底层，就是不断调 __next__，直到 StopIteration。",
+    "audio": "iter-gen/1.mp3"
+  },
+  {
+    "chapter": "iter-gen",
+    "step": 2,
+    "text": "手写一个迭代器：__iter__ 返回自己，__next__ 推进状态。再维护一个 done 变量，二十多行起步。",
+    "audio": "iter-gen/2.mp3"
+  },
+  {
+    "chapter": "iter-gen",
+    "step": 3,
+    "text": "生成器版，斐波那契：a, b = 0, 1，while 循环里一个 yield。五行。",
+    "audio": "iter-gen/3.mp3"
+  },
+  {
+    "chapter": "iter-gen",
+    "step": 4,
+    "text": "两者等价。这两个方法，生成器自动就有。",
+    "audio": "iter-gen/4.mp3"
+  },
+  {
+    "chapter": "send",
+    "step": 1,
+    "text": "yield 只出不进？不是。它能双向通信。",
+    "audio": "send/1.mp3"
+  },
+  {
+    "chapter": "send",
+    "step": 2,
+    "text": "看这个累加器：received = yield total。收到一个数，加进 total。",
+    "audio": "send/2.mp3"
+  },
+  {
+    "chapter": "send",
+    "step": 3,
+    "text": "核心就是这一行：等号右边向外产出 total，函数暂停。send 一个值过来，赋给 received，恢复执行。",
+    "audio": "send/3.mp3"
+  },
+  {
+    "chapter": "send",
+    "step": 4,
+    "text": "规矩也有一条：先 next(gen) 启动，跑到 yield 暂停住。这叫 priming。",
+    "audio": "send/4.mp3"
+  },
+  {
+    "chapter": "send",
+    "step": 5,
+    "text": "跳过启动，直接 send(10)？直接 TypeError。",
+    "audio": "send/5.mp3"
+  },
+  {
+    "chapter": "send",
+    "step": 6,
+    "text": "真机：send(10) -> total=10。send(20) -> total=30。send(30) -> total=60。",
+    "audio": "send/6.mp3"
+  },
+  {
+    "chapter": "yield-from",
+    "step": 1,
+    "text": "生成器里还能委托给另一个生成器：yield from。",
+    "audio": "yield-from/1.mp3"
+  },
+  {
+    "chapter": "yield-from",
+    "step": 2,
+    "text": "展平一个多层列表：遇到子列表，就 yield from 递归下去。遇到值，就 yield 出来。",
+    "audio": "yield-from/2.mp3"
+  },
+  {
+    "chapter": "yield-from",
+    "step": 3,
+    "text": "它做了三件事：值透传、异常透传、子生成器的返回值捕获。",
+    "audio": "yield-from/3.mp3"
+  },
+  {
+    "chapter": "yield-from",
+    "step": 4,
+    "text": "真机：[1, [2, 3, [4, 5]], 6, [7, 8, 9]]，展平成 1 到 9。",
+    "audio": "yield-from/4.mp3"
+  },
+  {
+    "chapter": "yield-from",
+    "step": 5,
+    "text": "这套暂停加委托，就是后来 async/await 的前身。",
+    "audio": "yield-from/5.mp3"
+  },
+  {
+    "chapter": "lazy",
+    "step": 1,
+    "text": "真正的大杀器：惰性管道。integers() 是个无限流——不用怕，它不会算完。",
+    "audio": "lazy/1.mp3"
+  },
+  {
+    "chapter": "lazy",
+    "step": 2,
+    "text": "管道串起来：integers 生成，map 平方，filter 留偶数，take 取十个。",
+    "audio": "lazy/2.mp3"
+  },
+  {
+    "chapter": "lazy",
+    "step": 3,
+    "text": "真机：前十个偶数的平方，0 到 324。每个值，都是要一个才算一个。",
+    "audio": "lazy/3.mp3"
+  },
+  {
+    "chapter": "lazy",
+    "step": 4,
+    "text": "日志管道同理：log_lines → parse → filter_errors → take(5)。每个环节，一次只处理一个元素。",
+    "audio": "lazy/4.mp3"
+  },
+  {
+    "chapter": "memory",
+    "step": 1,
+    "text": "值多少钱？同一份数据，列表推导 3,516 KB。生成器表达式，104 bytes。",
+    "audio": "memory/1.mp3"
+  },
+  {
+    "chapter": "memory",
+    "step": 2,
+    "text": "三万四千倍的差距。",
+    "audio": "memory/2.mp3"
+  },
+  {
+    "chapter": "memory",
+    "step": 3,
+    "text": "诚实说：具体数值随版本变。但这个数量级的差距，稳定。",
+    "audio": "memory/3.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 1,
+    "text": "迭代器是遍历的协议，生成器是它最省的写法。这套暂停恢复，后来长成了协程——async/await 的前身。",
+    "audio": "closing/1.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 2,
+    "text": "不提前算好，按需生成。理解了这一点，零内存管道、协程，你都能看懂。",
+    "audio": "closing/2.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 3,
+    "text": "完整代码在 hands-on-python 仓库。零依赖，python3 一跑就有体感。链接在评论区，下期见。",
+    "audio": "closing/3.mp3"
+  }
+]

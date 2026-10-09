@@ -1,0 +1,524 @@
+/* ── ch03 why · CSS prefix: wy- ──────────────────────────────────── */
+
+.wy-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.wy-rise {
+  opacity: 0;
+  animation: wy-rise 620ms var(--ease-quart) both;
+}
+@keyframes wy-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.wy-pop {
+  opacity: 0;
+  animation: wy-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes wy-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.wy-fade {
+  opacity: 0;
+  animation: wy-fade 420ms var(--ease-soft) both;
+}
+@keyframes wy-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.wy-stamp-in {
+  animation: wy-stamp 460ms var(--ease-overshoot) both;
+}
+@keyframes wy-stamp {
+  0%   { opacity: 0; transform: rotate(-6deg) scale(1.7); }
+  100% { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+/* shared code card */
+.wy-codecard {
+  min-width: 620px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wy-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.wy-code {
+  margin: 0;
+  padding: 26px 30px;
+  font-family: var(--font-mono);
+  font-size: 23px;
+  line-height: 1.75;
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 0 · 反问 ── */
+.wy-ask-scene { gap: 30px; }
+.wy-ask-line {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text-2);
+  line-height: 1.25;
+}
+.wy-ask-big {
+  font-size: 104px;
+  color: var(--text);
+}
+.wy-ask-q {
+  color: var(--accent);
+  text-shadow: 0 0 60px var(--accent-glow);
+  display: inline-block;
+  animation: wy-pop 520ms var(--ease-overshoot) 1500ms both;
+}
+
+/* ── step 1 · 句柄泄漏 ── */
+.wy-leak-scene { gap: 44px; }
+.wy-term-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.wy-term-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+.wy-leak-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 14px;
+}
+.wy-leak-cell {
+  padding: 16px 10px;
+  border: 1px dashed var(--text-faint);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 17px;
+  text-align: center;
+  color: var(--text-mute);
+  opacity: 0;
+  animation: wy-fade 300ms var(--ease-soft) both;
+}
+.wy-refuse {
+  padding: 18px 46px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.wy-leak-foot {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.wy-leak-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 锁挂死 ── */
+.wy-lock-scene { gap: 64px; }
+.wy-lock-row {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+.wy-lock-holder {
+  padding: 40px 56px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  text-align: center;
+}
+.wy-lock-badge {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+.wy-lock-name {
+  margin-top: 10px;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wy-lock-state {
+  margin-top: 8px;
+  font-size: 24px;
+  color: var(--text-2);
+}
+.wy-lock-queue {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.wy-lock-waiter {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wy-lock-waiter-name {
+  width: 120px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.wy-lock-dots {
+  display: inline-flex;
+  gap: 8px;
+}
+.wy-lock-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-mute);
+  animation: wy-dot-blink 1.2s var(--ease-soft) infinite;
+}
+.wy-lock-dots i:nth-child(2) { animation-delay: 200ms; }
+.wy-lock-dots i:nth-child(3) { animation-delay: 400ms; }
+@keyframes wy-dot-blink {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 1; }
+}
+.wy-lock-foot {
+  font-size: 40px;
+  color: var(--text-2);
+}
+.wy-lock-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 3 · 事务悬挂 ── */
+.wy-tx-scene { gap: 48px; }
+.wy-tx-flow {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.wy-tx-card {
+  padding: 24px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--text);
+}
+.wy-tx-begin { border-left: 4px solid var(--accent); }
+.wy-tx-arrow {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  color: var(--text-mute);
+}
+.wy-tx-crash {
+  position: relative;
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+}
+.wy-tx-crash-x {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 20px;
+  color: var(--accent);
+}
+.wy-tx-ends {
+  display: flex;
+  gap: 40px;
+}
+.wy-tx-end {
+  opacity: 0.4;
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.wy-tx-end-note {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.wy-tx-stamp {
+  padding: 14px 34px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.wy-tx-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.wy-tx-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · try/finally 能救 ── */
+.wy-finally-scene .wy-codecard {
+  position: relative;
+}
+.wy-finally-stamp {
+  position: absolute;
+  right: -40px;
+  bottom: -30px;
+  padding: 16px 40px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  transform: rotate(-6deg);
+}
+
+/* ── step 5 · 两个下场 ── */
+.wy-price-scene { gap: 40px; }
+.wy-price-cols {
+  display: flex;
+  gap: 120px;
+  align-items: flex-start;
+}
+.wy-price-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.wy-price-tag {
+  padding: 8px 24px;
+  border: 1px dashed var(--rule);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.wy-price-tag-2 { border-color: var(--accent); color: var(--accent); }
+
+.wy-dup {
+  position: relative;
+  width: 300px;
+  height: 220px;
+}
+.wy-dup-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  opacity: 0;
+  animation: wy-rise 620ms var(--ease-quart) both;
+  transform: translate(var(--tx), var(--ty));
+}
+.wy-dup-code {
+  margin: 0;
+  padding: 14px 18px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-mute);
+  white-space: pre;
+}
+
+.wy-miss {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.wy-miss-card {
+  margin: 0;
+  padding: 12px 20px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-mute);
+  white-space: pre;
+}
+.wy-miss-card-ohno {
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.wy-price-note {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.wy-price-note b { color: var(--text); font-weight: 700; }
+
+/* ── step 6 · 标准答案 ── */
+.wy-answer-scene { gap: 72px; }
+.wy-answer-kicker {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wy-answer-kicker b {
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+.wy-answer-flow {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.wy-answer-srcs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.wy-src {
+  padding: 12px 30px;
+  border: 1px dashed var(--text-faint);
+  background: var(--surface-2);
+  font-size: 27px;
+  color: var(--text-2);
+  text-align: center;
+}
+.wy-answer-leader {
+  width: 90px;
+  height: 0;
+  border-top: 2px dashed var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: wy-line 520ms var(--ease-soft) 900ms both;
+}
+@keyframes wy-line {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.wy-once-card {
+  position: relative;
+  padding: 30px 44px;
+  border: 1px solid var(--rule);
+  border-top: 2px dashed var(--accent);
+  background: var(--surface-2);
+  font-size: 33px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wy-once-badge {
+  position: absolute;
+  top: -20px;
+  right: -26px;
+  padding: 8px 18px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 21px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  transform: rotate(4deg);
+}
+.wy-answer-arrow {
+  font-family: var(--font-mono);
+  font-size: 54px;
+  color: var(--accent);
+}
+.wy-answer-with {
+  padding: 22px 48px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.wy-answer-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.wy-answer-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 7 · 出场兜底：代码卡 → 双路径下落 → 兜底网 ── */
+.wy-safe-scene { gap: 0; }
+.wy-safe-code {
+  width: 700px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wy-safe-code-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.wy-safe-drop {
+  position: relative;
+  width: 960px;
+  height: 112px;
+}
+.wy-safe-drop-lane {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.wy-safe-drop-lane { left: 150px; }
+.wy-safe-drop-lane-r { left: auto; right: 150px; flex-direction: row-reverse; }
+.wy-drop-line {
+  width: 0;
+  height: 100%;
+  border-left: 2px solid var(--accent);
+  transform-origin: top;
+}
+.wy-drop-line-fail {
+  border-left: 2px dashed var(--text-mute);
+}
+.wy-drop-grow {
+  transform: scaleY(0);
+  animation: wy-drop-grow 560ms var(--ease-soft) both;
+}
+@keyframes wy-drop-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+.wy-drop-label {
+  font-size: 24px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.wy-safe-band {
+  width: 960px;
+  padding: 28px 0;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 60px var(--accent-soft);
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wy-safe-band-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+  margin-right: 16px;
+}

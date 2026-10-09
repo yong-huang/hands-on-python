@@ -1,0 +1,290 @@
+[
+  {
+    "chapter": "hook",
+    "step": 1,
+    "text": "今天讲协程。一个线程，同时照看上万条等待中的任务。",
+    "audio": "hook/1.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "先看一件邪门的事。我写好了一个函数。注意，它不是普通函数——开头多了个 a sync，是协程函数。里面的活儿都备好了。现在，调用它。一行都没跑。不是卡住了。程序没报错、照常跑完，但函数里那摊活儿一行都没干。",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "这不是 bug。这是 Python 里一个叫 a sync i o 的工具，故意这么设计的。今天用一台机器、半秒钟，把这件事讲透。",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "四个问题挨个验证：协程到底是什么。",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 5,
+    "text": "a wait 到底把什么东西交了出去。",
+    "audio": "hook/5.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 6,
+    "text": "是不是偷偷开了新线程。",
+    "audio": "hook/6.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 7,
+    "text": "怎么写，才算真的同时干几件事。",
+    "audio": "hook/7.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 1,
+    "text": "在协程出现之前，上万条连接同时在等数据，靠谁处理？默认答案是线程：每个等待中的任务，各占一个线程，切换由操作系统负责。",
+    "audio": "background/1.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 2,
+    "text": "问题是，上千条连接就是上千个线程。绝大多数线程只是在干等。内存和来回切换的开销，跟着「同时要对付的任务数」直线上涨。",
+    "audio": "background/2.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 3,
+    "text": "还有第二个撞墙点：线程的切换，你的代码说了不算。它是抢占式调度——操作系统想切就切，你的代码根本拦不住。上面还压着 G I L，全局解释器锁，同一时刻只放一个线程干活。先执行哪句、后执行哪句，每次都不一样，出了问题根本没法查。",
+    "audio": "background/3.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 4,
+    "text": "Python 的思路：把切换权从操作系统手里拿回来。任务在等待点主动让出——就是自己喊一嗓子「我先歇会，你先上」。这么一来，一个线程就能同时照看上万条连接。",
+    "audio": "background/4.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 5,
+    "text": "这套思路，做成了 Python 自带的工具：a sync i o。它从 3.4 版本开始进入官方工具箱，3.5 起有了 a sync、a wait 这对专用写法。今天讲的整套机制，都架在它上面。",
+    "audio": "background/5.mp3"
+  },
+  {
+    "chapter": "mental-model",
+    "step": 1,
+    "text": "两个词先立住。协程：自己说了算的任务。跑到要等待的地方，就主动暂停，把「现在轮到我干」的机会交出去。切不切、什么时候切，你的代码说了算。",
+    "audio": "mental-model/1.mp3"
+  },
+  {
+    "chapter": "mental-model",
+    "step": 2,
+    "text": "事件循环：单线程里的管家，反复干三件事——取一个任务、执行、等消息，比如谁要的数据回来了。协程之间怎么切换，全归它管。",
+    "audio": "mental-model/2.mp3"
+  },
+  {
+    "chapter": "mental-model",
+    "step": 3,
+    "text": "整个机制，一句话：协程一到等待点——就是写 a wait 的地方——就主动交还控制权。事件循环在单线程里来回切换。睡着的任务记在一张闹钟表上，到点再放回待命队伍。全程，没有第二个线程。",
+    "audio": "mental-model/3.mp3"
+  },
+  {
+    "chapter": "mental-model",
+    "step": 4,
+    "text": "把这位管家，想象成一位独自看全店的服务员。哪桌菜好了——约好的时间到了、要的数据回来了——就去哪桌上菜。暂时没人喊，就先擦别的桌子，跑待命队伍里的下一个协程。但这家店只有一个服务员。任何一桌让他站着死等——一个卡住整店的调用——全店都得跟着停。",
+    "audio": "mental-model/4.mp3"
+  },
+  {
+    "chapter": "mental-model",
+    "step": 5,
+    "text": "这里有一对词要分清：并发，不等于并行。并发，是多件事在重叠的时间段里交错推进。并行，是多件事在同一瞬间真的同时执行。a sync i o 给的是并发。它从不创建线程，只是不让 CPU 闲着等数据。",
+    "audio": "mental-model/5.mp3"
+  },
+  {
+    "chapter": "when-to-use",
+    "step": 1,
+    "text": "那什么活该交给协程？第一种，等待特别多的活。一口气抓上万个网页的程序、守着上万条连接的网关——每件任务只占一小条记录，不用单独雇一个线程。",
+    "audio": "when-to-use/1.mp3"
+  },
+  {
+    "chapter": "when-to-use",
+    "step": 2,
+    "text": "第二种，需要可复现的交错。协程每次都在说好的地方停下，先后顺序每次都一模一样。你甚至能写一条自动核对：顺序必须正好是 A 干第一步、B 干第一步、A 干第二步……错一步就报警。这种写死的核对，行话叫断言。",
+    "audio": "when-to-use/2.mp3"
+  },
+  {
+    "chapter": "when-to-use",
+    "step": 3,
+    "text": "一会儿实验里就有活例子：两个任务交替着跑，序列精确等于 A 1 B 1 A 2 B 2 A 3 B 3——跑多少遍都一样。线程那种想切就切的跑法，给不了这个保证。",
+    "audio": "when-to-use/3.mp3"
+  },
+  {
+    "chapter": "when-to-use",
+    "step": 4,
+    "text": "第三种，一台机器上安排几十上百个有先后的步骤——比如先登录、再取数据、最后存盘。怎么排这些步骤，是下一讲的主角。",
+    "audio": "when-to-use/4.mp3"
+  },
+  {
+    "chapter": "boundaries",
+    "step": 1,
+    "text": "三种情况，别用协程。纯计算的活：协程不算完就不让位，别的任务全饿死。真并行，得靠多进程——多开几个独立的 Python 程序，各干各的。",
+    "audio": "boundaries/1.mp3"
+  },
+  {
+    "chapter": "boundaries",
+    "step": 2,
+    "text": "必须调那些不配合协程的库：它们一调用就卡住整个循环，用线程兜底更直接。就几个并发、逻辑又简单：开线程或按顺序一步步写，都更直观，不值得引入协程。",
+    "audio": "boundaries/2.mp3"
+  },
+  {
+    "chapter": "boundaries",
+    "step": 3,
+    "text": "一张表分清三者。线程：操作系统想切就切，上面压着 G I L 那把大锁——等待不多的活，或者非要用不支持协程的库时，拿它兜底。",
+    "audio": "boundaries/3.mp3"
+  },
+  {
+    "chapter": "boundaries",
+    "step": 4,
+    "text": "进程：多开几个独立的 Python，真的能同时干活——纯计算的活选它。协程：切换的开销，跟普通函数调用差不多——等待特别多的活选它。",
+    "audio": "boundaries/4.mp3"
+  },
+  {
+    "chapter": "boundaries",
+    "step": 5,
+    "text": "顺带一句：纯计算的活，线程和协程都不行，只有进程。",
+    "audio": "boundaries/5.mp3"
+  },
+  {
+    "chapter": "demo-lazy",
+    "step": 1,
+    "text": "口说无凭，跑实验。一行命令，四个小节，半秒跑完，全部断言自动核对。",
+    "audio": "demo-lazy/1.mp3"
+  },
+  {
+    "chapter": "demo-lazy",
+    "step": 2,
+    "text": "先看调用协程函数，到底发生了什么。调用 sample，拿回来的不是结果，是一个协程对象。此刻函数里的执行痕迹：空。一行都没跑。",
+    "audio": "demo-lazy/2.mp3"
+  },
+  {
+    "chapter": "demo-lazy",
+    "step": 3,
+    "text": "用 a sync i o.run 驱动它，才有返回值，执行痕迹也从「空」变成了「跑过了」。原来，调用协程函数只是打包：要干的活、用到的变量、干到了哪一行，装进一个对象。要等事件循环来驱动，才真正执行。",
+    "audio": "demo-lazy/3.mp3"
+  },
+  {
+    "chapter": "demo-lazy",
+    "step": 4,
+    "text": "那忘了 a wait 呢？这个没人管的协程对象，程序清理它的时候会报警：never a waited——从没被执行过。这是 a sync i o 第一大坑：启动那行 a sync i o.run 忘了写，或者协程里面又调的另一个协程忘了 a wait。程序什么都没干，就成功退出了。",
+    "audio": "demo-lazy/4.mp3"
+  },
+  {
+    "chapter": "single-thread",
+    "step": 1,
+    "text": "再看 a wait 让出的到底是什么：控制权。两个协程轮流干活，交错序列精确等于 A 1 B 1 A 2 B 2 A 3 B 3——跟断言里写的一字不差。睡眠设成零秒：让出控制权，但立刻排回队尾。顺序每次分毫不差，自动核对才写得住。",
+    "audio": "single-thread/1.mp3"
+  },
+  {
+    "chapter": "single-thread",
+    "step": 2,
+    "text": "断言还查了线程：全部协程代码，跑在同一条线程上。协程所在的线程：Main Thread，主线程——程序一启动自带的那个线程。a sync i o 从不创建新线程。并发，不等于并行——它只是不让 CPU 闲着等数据。",
+    "audio": "single-thread/2.mp3"
+  },
+  {
+    "chapter": "single-thread",
+    "step": 3,
+    "text": "这里还有一条设计心得。断言这种自动核对，要建立在分毫不差的机制上。零秒睡眠的轮转就是分毫不差的——每一次，都按同一个顺序跑，所以能拿来核对。换成真实的几十毫秒睡眠，就不行了：闹钟有误差，系统还时不时卡一下，顺序就会变——核对自己就会时好时坏。所以整个实验零随机，任何机器跑，都该百分百通过。",
+    "audio": "single-thread/3.mp3"
+  },
+  {
+    "chapter": "real-concurrency",
+    "step": 1,
+    "text": "接下来，最实用的一组对照：排着队挨个 a wait 的写法，对比 create_task 的写法。排着队跑两个 100 毫秒的任务：203 毫秒。",
+    "audio": "real-concurrency/1.mp3"
+  },
+  {
+    "chapter": "real-concurrency",
+    "step": 2,
+    "text": "create_task 真并发：101 毫秒。排队的 203 毫秒，就是它的 2.01 倍——多出来的那一点点，是事件循环自身的开销，小到可以忽略。",
+    "audio": "real-concurrency/2.mp3"
+  },
+  {
+    "chapter": "real-concurrency",
+    "step": 3,
+    "text": "差距不在写法，在并发。a wait 一个协程函数，就是普普通通按顺序调用，只不过中途允许别人插一脚——它不并发。",
+    "audio": "real-concurrency/3.mp3"
+  },
+  {
+    "chapter": "real-concurrency",
+    "step": 4,
+    "text": "想同时跑，先 create_task 把协程挂上循环，让它立刻参与调度。之后的 a wait，只负责收结果。",
+    "audio": "real-concurrency/4.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 1,
+    "text": "补两个机制细节。第一，a sync i o.run 到底做了什么。三步：新建事件循环，跑到结束，最后清理。实验里跟手动一步步建循环对照，结果完全一致——它只是替你把这几步打包好了，没有别的名堂。",
+    "audio": "mechanism/1.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 2,
+    "text": "第二，循环内部靠两样东西排班：一支「立刻能跑」的队伍，叫就绪队列——就是前面说的待命队伍；一张「睡着的人」的闹钟表，叫定时器堆，到点就搬回队伍。",
+    "audio": "mechanism/2.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 3,
+    "text": "还有一条铁律：一个线程，同时只能有一个运行中的事件循环。在协程里再调 a sync i o.run，直接报错。",
+    "audio": "mechanism/3.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 1,
+    "text": "最后，五个真坑，每个都有真实现象。",
+    "audio": "pitfalls/1.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 2,
+    "text": "坑一：以为调用协程函数就会执行。现象：程序什么都没做，成功退出。原因：只造了协程对象，没人驱动它。解法：a wait 它，或者 create_task 挂上循环。",
+    "audio": "pitfalls/2.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 3,
+    "text": "坑二：以为 a wait 会创建新线程。现象：按「多线程同时干活」的想象去找，怎么都找不到。原因：实测全部协程都在主线程。解法：记住单线程交错的模型，真并行交给进程。",
+    "audio": "pitfalls/3.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 4,
+    "text": "坑三：把 a wait 一个协程，当成并发。现象：总耗时等于各任务加起来。原因：a wait 链是挨个顺序执行。解法：先 create_task 挂上去，再收结果。",
+    "audio": "pitfalls/4.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 5,
+    "text": "坑四：在协程里调 time.sleep。现象：整个事件循环被卡死，所有协程一起停摆。原因：time.sleep 是站着死等，等的时候一步不让，别人全插不进来。解法：在 a sync i o 的世界里睡觉，只准用会谦让的 a sync i o.sleep。",
+    "audio": "pitfalls/5.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 6,
+    "text": "坑五：把纯计算的活放进协程。现象：循环被独占，其他协程全部饿死。原因：计算不结束，永远走不到让出的地方。解法：用 run_in_executor——一个外包窗口，把计算密集型的活儿转交给别的线程或进程——别堵在店里。",
+    "audio": "pitfalls/6.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 1,
+    "text": "常用入口就五个，收好。a sync def 用来定义协程。a wait 用来让出控制权。a sync i o.run 是程序主入口，一次就够。create_task 是真并发的入口。a sync i o.sleep 是会谦让的睡眠——换成 time.sleep，全店停摆。",
+    "audio": "closing/1.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 2,
+    "text": "完整代码在仓库里。下一讲：任务编排——Task Group、超时、取消。下期见。",
+    "audio": "closing/2.mp3"
+  }
+]

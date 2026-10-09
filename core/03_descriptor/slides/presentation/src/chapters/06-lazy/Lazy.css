@@ -1,0 +1,177 @@
+/* ── ch06 lazy · CSS prefix: lz- ─────────────────────────────────── */
+
+.lz-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.lz-rise {
+  opacity: 0;
+  animation: lz-rise 620ms var(--ease-quart) both;
+}
+@keyframes lz-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lz-pop {
+  opacity: 0;
+  animation: lz-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes lz-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.lz-line-in {
+  opacity: 0;
+  animation: lz-fade 420ms var(--ease-soft) both;
+}
+@keyframes lz-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lz-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+.lz-codecard {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.lz-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.lz-codecard .lz-code {
+  padding: 30px 44px;
+  font-size: 25px;
+  line-height: 1.85;
+}
+
+/* ── step 0 · 需求 ── */
+.lz-req-scene { gap: 40px; }
+.lz-req-head {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.lz-req-head b { color: var(--text); }
+.lz-req-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 36px 70px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.lz-req-mono {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.lz-req-note {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.lz-req-rule {
+  font-size: 32px;
+  color: var(--text-2);
+}
+.lz-req-rule b { color: var(--text); font-weight: 700; }
+
+/* ── step 1 · 代码走读 ── */
+.lz-code-scene { gap: 40px; }
+.lz-beats {
+  display: flex;
+  gap: 26px;
+}
+.lz-beat {
+  padding: 12px 30px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.lz-beat-acc {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.lz-name-note {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.lz-fade {
+  opacity: 0;
+  animation: lz-fade 420ms var(--ease-soft) both;
+}
+
+/* ── step 2 · 真机 ── */
+.lz-term {
+  width: 1020px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.lz-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.lz-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px 36px;
+}
+.lz-term-line {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.lz-term-dim { color: var(--text-mute); }
+.lz-term-acc { color: var(--accent); }
+
+/* ── step 3 · LoggedField ── */
+.lz-logged-scene { gap: 50px; }
+.lz-logged-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.lz-logged-card {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 32px 60px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.lz-logged-name {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  color: var(--text);
+}
+.lz-logged-tag {
+  padding: 6px 20px;
+  border: 1px dashed var(--accent);
+  font-size: 21px;
+  color: var(--accent);
+}
+.lz-logged-foot {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.lz-logged-foot b { color: var(--text); font-weight: 700; }

@@ -1,0 +1,431 @@
+/* ch01 · hook — 独立前缀 hp-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.hp-scene {
+  align-items: center;
+  justify-content: center;
+}
+.hp-scene .label-mono {
+  font-size: 15px;
+}
+
+/* ── 入场原语 ── */
+.hp-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.hp-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 片头标题页 ── */
+.hp-title-scene {
+  gap: 0;
+}
+.hp-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.hp-title-rule {
+  width: 76px;
+}
+.hp-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 126px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.hp-title-accent {
+  color: var(--accent);
+}
+.hp-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.hp-title-sub {
+  font-size: 27px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.hp-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 22px;
+  border-left: 1px solid var(--rule);
+}
+.hp-tb-row {
+  display: flex;
+  gap: 18px;
+  font-size: 19px;
+}
+.hp-tb-row span {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.hp-tb-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 承上一讲 ── */
+.hp-recall-scene {
+  gap: 40px;
+}
+.hp-recall-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.hp-recall-series {
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.hp-recall-quote {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1.3;
+  color: var(--text);
+}
+.hp-recall-accent {
+  color: var(--accent);
+}
+.hp-recall-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.hp-recall-note .label-mono {
+  color: var(--accent);
+}
+.hp-recall-diagram {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 10px;
+}
+.hp-rd-thread {
+  padding: 14px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 22px;
+  color: var(--text-2);
+}
+.hp-rd-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+.hp-rd-lock {
+  padding: 14px 26px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 22px;
+  background: var(--accent-soft);
+}
+.hp-rd-box {
+  padding: 14px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 22px;
+  color: var(--text-2);
+}
+.hp-recall-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text-mute);
+}
+
+/* ── step 2~4 · 三问引用卡 + 左侧进度轨 ── */
+.hp-ask-scene {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 72px;
+}
+.hp-ask-rail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 56px;
+}
+.hp-rail-ord {
+  font-size: 26px;
+  color: var(--text-faint);
+  transition: color 400ms var(--ease-quart);
+}
+.hp-rail-ord--past {
+  color: var(--rule);
+}
+.hp-rail-ord--on {
+  color: var(--accent);
+}
+.hp-ask-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 38px;
+}
+.hp-ask-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.hp-ask-ord {
+  font-size: 20px;
+  color: var(--accent);
+}
+.hp-ask-rule {
+  align-self: stretch;
+  border-top-color: var(--rule);
+}
+.hp-ask-quote {
+  margin: 0;
+  max-width: 1280px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 88px;
+  line-height: 1.4;
+  color: var(--text);
+}
+.hp-ask-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 1280px;
+  font-size: 26px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.hp-ask-note .label-mono {
+  color: var(--accent);
+}
+
+/* 三问各配的迷你演示（内容驱动，非纯入场）——通栏图示面板，撑起画面下半 */
+.hp-qvis {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-top: 10px;
+  padding: 40px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.hp-qv-node {
+  padding: 18px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 30px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.hp-qv-arrow {
+  font-size: 44px;
+  color: var(--text-faint);
+}
+.hp-qv-fence-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  flex: 1;
+  min-width: 220px;
+}
+.hp-qv-fence {
+  width: 100%;
+  border-top: 3px dashed var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: hp-fence-in 600ms var(--ease-expo) 600ms forwards;
+}
+@keyframes hp-fence-in {
+  to {
+    transform: scaleX(1);
+  }
+}
+.hp-qv-gap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  top: -27px;
+  padding: 10px 22px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 26px;
+  color: var(--accent);
+}
+.hp-qv-switch {
+  position: relative;
+  flex: none;
+  width: 160px;
+  height: 68px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.hp-qv-knob {
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  width: 52px;
+  height: 52px;
+  background: var(--accent);
+  animation: hp-knob-flip 700ms var(--ease-overshoot) 900ms forwards;
+}
+@keyframes hp-knob-flip {
+  to {
+    transform: translateX(92px);
+  }
+}
+.hp-qv-switch-label {
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.hp-qv-box {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 22px 22px 16px;
+  border: 1px solid var(--rule);
+  border-top: 3px dashed var(--accent);
+  background: var(--surface-3);
+}
+.hp-qv-slot {
+  width: 62px;
+  height: 62px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hp-qv-mark {
+  padding: 16px 30px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 28px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* ── step 5 · 转折：三问收束为消息传递 ── */
+.hp-turn-scene {
+  gap: 40px;
+}
+.hp-turn-chips {
+  display: flex;
+  gap: 24px;
+}
+.hp-chip {
+  padding: 14px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.hp-turn-arrow {
+  font-size: 44px;
+  line-height: 1;
+  color: var(--text-faint);
+}
+.hp-turn-answer {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 110px;
+  line-height: 1.2;
+  color: var(--accent);
+}
+.hp-turn-sub {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.hp-turn-accent {
+  color: var(--accent);
+}
+.hp-turn-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.hp-turn-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 6 · 预告：queue.Queue 打包了三件事 ── */
+.hp-pack-scene {
+  gap: 44px;
+}
+.hp-pack-kicker {
+  color: var(--text-mute);
+}
+.hp-pack-hero {
+  font-size: 92px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.hp-pack-box {
+  display: flex;
+  flex-direction: column;
+  min-width: 900px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.hp-pack-row {
+  display: flex;
+  align-items: baseline;
+  gap: 32px;
+  padding: 26px 44px;
+}
+.hp-pack-row + .hp-pack-row {
+  border-top: 1px solid var(--rule);
+}
+.hp-pack-name {
+  min-width: 220px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.hp-pack-talk {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.hp-pack-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 76px;
+  color: var(--text-mute);
+}
+.hp-pack-accent {
+  color: var(--accent);
+}

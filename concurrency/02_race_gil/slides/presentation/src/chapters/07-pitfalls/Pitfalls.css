@@ -1,0 +1,72 @@
+/* ch07 · pitfalls — 独立前缀 pf-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.pf-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.pf-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pf-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.pf-thesis {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+
+/* ── 统一坑卡（thread-lifecycle 同款骨架） ── */
+.pf-pit-scene {
+  gap: 52px;
+}
+.pf-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  width: 1240px;
+  padding: 44px 56px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.pf-card-tag {
+  font-size: 20px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+.pf-card-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.35;
+  color: var(--text);
+}
+.pf-card-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  align-self: stretch;
+}
+.pf-card-label {
+  min-width: 52px;
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.pf-card-text {
+  font-size: 27px;
+  line-height: 1.55;
+  color: var(--text-2);
+}

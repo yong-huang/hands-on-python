@@ -1,0 +1,211 @@
+/* ch01 · hook — 独立前缀 cb-（全仓库未占用）。颜色/字体只走 token（indigo-porcelain）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.cb-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.cb-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.cb-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.cb-stamp {
+  opacity: 0;
+  animation: scale-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 片头标题页 ── */
+.cb-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.cb-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.cb-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: cb-draw-line var(--dur-base) var(--ease-expo) 120ms forwards;
+}
+@keyframes cb-draw-line {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.cb-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 124px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.cb-title-accent {
+  color: var(--accent);
+}
+.cb-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 42px;
+  color: var(--text-mute);
+}
+.cb-title-sub {
+  font-size: 27px;
+  letter-spacing: 0.05em;
+  color: var(--text-mute);
+}
+.cb-mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--text);
+}
+.cb-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cb-tb-row {
+  display: flex;
+  gap: 14px;
+  font-size: 17px;
+}
+.cb-tb-row span {
+  font-family: var(--font-mono);
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+}
+.cb-tb-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 对照拷问 ── */
+.cb-kicker {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  margin-bottom: 56px;
+}
+.cb-duel {
+  display: flex;
+  align-items: stretch;
+  gap: 48px;
+}
+.cb-chip {
+  width: 520px;
+  padding: 46px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.cb-chip-known {
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  box-shadow: var(--card-shadow);
+}
+.cb-chip-unknown {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.cb-chip-code {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 500;
+  color: var(--text);
+}
+.cb-chip-cap {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.cb-chip-q {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* ── step 2 · 答案 ── */
+.cb-answer-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-size: 170px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+.cb-answer-sub {
+  margin-top: 48px;
+  font-family: var(--font-display-cn);
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--text);
+}
+.cb-answer-dunder {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 14px;
+}
+
+/* ── step 3 · 等价式 ── */
+.cb-eq-row {
+  display: flex;
+  justify-content: center;
+}
+.cb-eq-from {
+  font-family: var(--font-mono);
+  font-size: 60px;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+.cb-eq-arrow {
+  font-size: 52px;
+  line-height: 1.4;
+  color: var(--text-faint);
+}
+.cb-eq-to {
+  font-family: var(--font-mono);
+  font-size: 76px;
+  font-weight: 500;
+  color: var(--text);
+}
+/* 劈开看：插入的 .__call__ 段落用 accent 擦出 */
+.cb-eq-insert {
+  color: var(--accent);
+  background: var(--accent-soft);
+  clip-path: inset(0 100% 0 0);
+  animation: cb-insert-wipe 700ms var(--ease-quart) 1100ms forwards;
+}
+@keyframes cb-insert-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+.cb-eq-cap {
+  margin-top: 56px;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text-2);
+}

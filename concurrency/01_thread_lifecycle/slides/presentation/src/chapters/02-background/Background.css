@@ -1,0 +1,409 @@
+/* ch02 · background — 独立前缀 bg-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.bg-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.bg-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.bg-kicker {
+  color: var(--text-mute);
+  letter-spacing: 0.14em;
+}
+.bg-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1.22;
+  color: var(--text);
+}
+.bg-hero-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 串行世界 ── */
+.bg-serial-scene {
+  gap: 110px;
+}
+.bg-serial-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 42px;
+}
+.bg-term-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.bg-term-card .label-mono {
+  color: var(--accent);
+}
+.bg-serial-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bg-serial-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 60px;
+  min-width: 520px;
+  padding: 24px 32px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-serial-name {
+  font-size: 24px;
+  color: var(--text);
+}
+.bg-serial-state {
+  font-size: 20px;
+  color: var(--text-faint);
+}
+.bg-serial-arrow {
+  align-self: center;
+  font-size: 24px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · I/O 干等 ── */
+.bg-wait-scene {
+  gap: 56px;
+}
+.bg-wait-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.bg-wait-caption {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--text);
+}
+.bg-wait-track {
+  display: flex;
+  align-items: stretch;
+  gap: 18px;
+}
+.bg-wait-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.bg-wait-bar {
+  width: 118px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.bg-wait-dots {
+  font-size: 26px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+}
+.bg-wait-label {
+  font-size: 17px;
+  color: var(--text-mute);
+}
+.bg-cpu-note {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 28px;
+  color: var(--text-2);
+}
+.bg-cpu-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 2 · 多进程撞墙 ── */
+.bg-proc-scene {
+  gap: 52px;
+}
+.bg-proc-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.bg-proc-note {
+  font-size: 19px;
+  color: var(--text-faint);
+}
+.bg-proc-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.bg-proc-box {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 40px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-proc-title {
+  font-size: 26px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.bg-proc-mem {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 26px 30px;
+  border: 1px dashed var(--rule);
+}
+.bg-proc-mem .label-mono {
+  color: var(--text-faint);
+}
+.bg-proc-var {
+  font-size: 34px;
+  color: var(--text);
+}
+.bg-proc-channel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 34px;
+}
+.bg-proc-channel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px dashed var(--text-faint);
+}
+.bg-proc-wire-label {
+  position: relative;
+  text-align: center;
+  line-height: 1.8;
+  color: var(--text-mute);
+  background: var(--surface);
+  padding: 12px 18px;
+}
+.bg-proc-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text-mute);
+}
+
+/* ── step 3 · 线程小分队 ── */
+.bg-thread-scene {
+  gap: 46px;
+}
+.bg-thread-box {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  padding: 46px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-thread-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.bg-lane {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.bg-lane-name {
+  min-width: 150px;
+  font-size: 22px;
+  color: var(--text-2);
+}
+.bg-lane-bar {
+  height: 18px;
+  flex: 1;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+}
+.bg-shared-mem {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 32px;
+  border: 1px solid var(--accent);
+  background: var(--surface);
+}
+.bg-shared-mem .label-mono {
+  color: var(--accent);
+}
+.bg-shared-var {
+  font-size: 27px;
+  color: var(--text);
+}
+.bg-thread-cost {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 重叠对比 ── */
+.bg-overlap-scene {
+  gap: 44px;
+}
+.bg-overlap-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--text);
+}
+.bg-timeline-block {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.bg-tl-tag {
+  color: var(--text-mute);
+}
+.bg-tl-serial {
+  display: flex;
+  gap: 8px;
+}
+.bg-tl-cell {
+  width: 118px;
+  padding: 20px 0;
+  text-align: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.bg-tl-parallel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 150px;
+}
+.bg-tl-bar {
+  height: 22px;
+  background: var(--surface-3);
+  border-left: 3px solid var(--accent);
+  opacity: 0;
+  animation: rise-in 500ms var(--ease-expo) forwards;
+}
+.bg-tl-bar--slowest {
+  background: var(--accent-soft);
+}
+.bg-tl-maxline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 150px;
+  width: 0;
+  border-left: 2px solid var(--accent);
+}
+.bg-tl-maxlabel {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  color: var(--accent);
+  white-space: nowrap;
+}
+.bg-overlap-foot {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text-mute);
+}
+
+/* ── step 5 · GIL 边界 ── */
+.bg-gil-scene {
+  gap: 70px;
+}
+.bg-gil-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+}
+.bg-gil-out {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.bg-gil-out-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.bg-gil-out-when {
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.bg-gil-out-arrow {
+  color: var(--accent);
+}
+.bg-gil-gate {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.bg-gil-queue {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bg-gil-chip {
+  padding: 16px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.bg-gil-gatebox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 34px 44px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+}
+.bg-gil-gatebox .label-mono {
+  color: var(--text-mute);
+}
+.bg-gil-name {
+  font-size: 56px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.bg-gil-pass {
+  font-size: 24px;
+  color: var(--text);
+}

@@ -1,0 +1,671 @@
+/* ch04 · live-demo — 独立前缀 ld-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.ld-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.ld-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ld-pop {
+  opacity: 0;
+  animation: pop-in 420ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.ld-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+.ld-kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  color: var(--text-mute);
+}
+.ld-kicker-sub {
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.ld-cite {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.ld-cite--hit {
+  padding: 14px 22px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 24px;
+}
+.ld-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.ld-legend .label-mono {
+  color: var(--accent);
+}
+.ld-legend-row {
+  display: flex;
+  gap: 56px;
+}
+.ld-legend-row--col {
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── 模拟终端 ── */
+.ld-term {
+  width: 1240px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-term--wide {
+  width: 100%;
+}
+.ld-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 22px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.ld-term-dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--text-faint);
+}
+.ld-term-title {
+  margin-left: 14px;
+  font-size: 17px;
+  color: var(--text-mute);
+}
+.ld-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 30px 38px;
+  font-size: 26px;
+  line-height: 1.9;
+  color: var(--text-2);
+}
+.ld-term-line {
+  white-space: pre;
+}
+.ld-wrap {
+  white-space: normal;
+  font-size: 22px;
+  line-height: 1.7;
+}
+.ld-prompt {
+  margin-right: 14px;
+  color: var(--accent);
+}
+.ld-term-section {
+  color: var(--text-mute);
+}
+.ld-term-hit {
+  padding: 8px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* 打字机 + 光标（光标闪 6 次后自行消失，无持续闪烁） */
+.ld-typed {
+  display: inline-block;
+  overflow: hidden;
+  white-space: pre;
+  vertical-align: bottom;
+  width: 0;
+  animation: ld-typing 1000ms steps(28, end) 700ms forwards;
+}
+.ld-caret {
+  display: inline-block;
+  margin-left: 2px;
+  width: 0.55em;
+  height: 1.02em;
+  background: var(--accent);
+  vertical-align: bottom;
+  opacity: 0;
+  animation: ld-caret 350ms linear 700ms 6;
+}
+
+/* ── step 0 · 命令与三个场景 ── */
+.ld-cmd-scene {
+  gap: 48px;
+}
+
+/* ── step 1 · 1000/1000 + 计数账本 ── */
+.ld-total-scene {
+  flex-direction: row;
+  align-items: center;
+  gap: 90px;
+}
+.ld-total-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+}
+.ld-total-hero {
+  font-size: 168px;
+}
+.ld-total-slash {
+  margin: 0 20px;
+  color: var(--text-faint);
+}
+.ld-total-sub {
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.ld-total-sub i {
+  font-style: normal;
+  margin: 0 10px;
+  color: var(--text-faint);
+}
+.ld-total-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}
+.ld-total-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+.ld-ledger {
+  display: grid;
+  grid-template-columns: repeat(10, 54px);
+  gap: 8px;
+}
+.ld-ledger-cell {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 20px;
+  color: var(--text-2);
+}
+.ld-ledger-cap {
+  font-size: 24px;
+  color: var(--text-2);
+}
+
+/* ── step 2 · 归属条生长 ── */
+.ld-own-scene {
+  gap: 30px;
+}
+.ld-own-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 1400px;
+}
+.ld-own-row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.ld-own-name {
+  width: 70px;
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.ld-own-track {
+  flex: 1;
+  height: 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.ld-own-fill {
+  height: 100%;
+  background: var(--text-2);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: ld-grow 900ms var(--ease-expo) forwards;
+}
+.ld-own-count {
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ld-own-count i {
+  font-style: normal;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-mute);
+}
+.ld-own-sum {
+  font-size: 36px;
+  color: var(--text);
+}
+.ld-own-sum-note {
+  margin-left: 18px;
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.ld-own-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+
+/* ── step 3 · 事件迹线 + 计时读数 ── */
+.ld-exit-scene {
+  gap: 34px;
+}
+.ld-exit-main {
+  display: flex;
+  align-items: center;
+  gap: 110px;
+}
+.ld-trace {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.ld-trace-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 780px;
+  padding: 20px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-trace-row--pill {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.ld-trace-ord {
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.ld-trace-row--pill .ld-trace-ord {
+  color: var(--accent);
+}
+.ld-trace-text {
+  font-size: 28px;
+  color: var(--text);
+}
+.ld-exit-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.ld-exit-num {
+  font-size: 168px;
+}
+.ld-exit-cap {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 背压采样曲线 ── */
+.ld-bp-scene {
+  gap: 24px;
+}
+.ld-chips {
+  display: flex;
+  gap: 20px;
+}
+.ld-chip {
+  padding: 12px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 23px;
+  color: var(--text-2);
+}
+.ld-chip--accent {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.ld-chart {
+  width: 1500px;
+  padding: 20px;
+}
+.ld-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ld-chart-svg text {
+  font-family: var(--font-mono);
+}
+.ld-ax {
+  font-size: 19px;
+  fill: var(--text-faint);
+}
+.ld-axis {
+  stroke: var(--rule);
+  stroke-width: 1.5;
+}
+.ld-cap {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 12 10;
+  opacity: 0;
+  animation: fade-in 600ms var(--ease-quart) 1500ms forwards;
+}
+.ld-cap-label {
+  font-size: 21px;
+  fill: var(--accent);
+}
+.ld-curve {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ld-draw 6000ms linear 2000ms forwards;
+}
+.ld-samp {
+  fill: var(--accent);
+  opacity: 0;
+  animation: fade-in 200ms var(--ease-quart) forwards;
+}
+.ld-peak-tick {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+.ld-peak-label {
+  font-size: 23px;
+  font-weight: 600;
+  fill: var(--accent);
+}
+.ld-bp-caption {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.ld-bp-guarantees {
+  display: flex;
+  gap: 28px;
+}
+.ld-guarantee {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 34px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text);
+}
+.ld-guarantee-mark {
+  font-size: 26px;
+  color: var(--accent);
+}
+
+/* ── step 5 · 归因卡 + 反面教材检查单 ── */
+.ld-blame-scene {
+  flex-direction: row;
+  align-items: center;
+  gap: 56px;
+}
+.ld-blame-left {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  width: 640px;
+  padding: 48px;
+}
+.ld-blame-line {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 1.35;
+  color: var(--text);
+}
+.ld-blame-mute {
+  color: var(--text-mute);
+}
+.ld-blame-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.ld-check {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-self: stretch;
+}
+.ld-check-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 22px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text);
+}
+.ld-check-mark {
+  font-size: 26px;
+  color: var(--accent);
+}
+.ld-check-row--stuck {
+  opacity: 0;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  /* pop 入场 + 闪 3 次索命（有界，停在高亮上） */
+  animation:
+    pop-in 420ms var(--ease-expo) 6200ms forwards,
+    ld-flash 600ms steps(1, end) 6800ms 3;
+}
+
+/* ── step 6 · daemon 两栏 + 毒丸救援 ── */
+.ld-daemon-scene {
+  gap: 30px;
+}
+.ld-dm-cards {
+  display: flex;
+  gap: 40px;
+}
+.ld-dm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 600px;
+  padding: 36px 44px;
+}
+.ld-dm-card--accent {
+  border-color: var(--accent);
+}
+.ld-dm-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.ld-dm-en {
+  margin-left: 18px;
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.ld-dm-row {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-size: 27px;
+  color: var(--text-2);
+}
+.ld-dm-row .label-mono {
+  color: var(--accent);
+}
+.ld-dm-warning {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.ld-rescue {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.ld-rescue-pill {
+  padding: 14px 30px;
+  border: 1.5px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 26px;
+  color: var(--accent);
+}
+.ld-rescue-arrow {
+  font-size: 36px;
+  color: var(--text-faint);
+}
+.ld-rescue-stamp {
+  padding: 14px 30px;
+  border: 1.5px solid var(--accent);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── step 7 · 120 秒事故时间线 ── */
+.ld-war-scene {
+  gap: 44px;
+}
+.ld-tl {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 1500px;
+}
+.ld-tl-blocks {
+  display: flex;
+  gap: 10px;
+  height: 64px;
+}
+.ld-tl-a {
+  width: 16%;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.ld-tl-b {
+  width: 0;
+  border: 1px dashed var(--accent);
+  background: var(--accent-soft);
+  animation: ld-widen 1100ms var(--ease-soft) 1200ms forwards;
+}
+.ld-tl-c {
+  width: 28%;
+  border: 1px solid var(--accent);
+  background: var(--surface-2);
+}
+.ld-tl-labels {
+  display: flex;
+  gap: 10px;
+}
+.ld-tl-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ld-tl-label:nth-child(1) {
+  width: 16%;
+}
+.ld-tl-label:nth-child(2) {
+  width: 52%;
+}
+.ld-tl-label:nth-child(3) {
+  width: 28%;
+}
+.ld-tl-label b {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text);
+}
+.ld-tl-label span {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.ld-tl-label .mono {
+  font-size: 28px;
+  font-weight: 600;
+}
+.ld-war-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text);
+}
+.ld-war-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.ld-war-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── keyframes（本章私有） ── */
+@keyframes ld-typing {
+  to {
+    width: 28ch;
+  }
+}
+@keyframes ld-caret {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes ld-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes ld-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ld-widen {
+  to {
+    width: 52%;
+  }
+}
+@keyframes ld-flash {
+  0%,
+  100% {
+    background: var(--accent-soft);
+  }
+  50% {
+    background: var(--surface-2);
+  }
+}

@@ -1,0 +1,26 @@
+.pc-scene { justify-content: center; align-items: center; gap: 48px; }
+.pc-rise { opacity: 0; animation: pc-rise 620ms var(--ease-quart) both; }
+@keyframes pc-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.pc-dim { color: var(--text-mute); }
+.pc-code-scene { gap: 0; }
+.pc-code-lead { align-self: flex-start; font-size: 28px; color: var(--text-mute); margin-bottom: 24px; }
+.pc-code { border: 1px solid var(--rule); background: var(--surface-2); padding: 28px 40px; font-family: var(--font-mono); font-size: 25px; line-height: 1.85; color: var(--text-2); white-space: pre; }
+.pc-vs-scene { gap: 0; }
+.pc-vs-cols { display: flex; gap: 70px; }
+.pc-vs-card { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 420px; padding: 36px 42px; border: 1px solid var(--rule); background: var(--surface-2); }
+.pc-vs-good { border-left: 3px solid var(--accent); }
+.pc-vs-bad { border-left: 3px solid var(--text-mute); opacity: 0.6; }
+.pc-vs-mono { font-family: var(--font-mono); font-size: 31px; font-weight: 600; color: var(--text); }
+.pc-vs-res { font-family: var(--font-mono); font-size: 22px; }
+.pc-vs-good .pc-vs-res { color: var(--accent); }
+.pc-vs-bad .pc-vs-res { color: var(--text-mute); }
+.pc-combine-scene { gap: 34px; }
+.pc-combine-line { font-size: 42px; font-weight: 700; color: var(--text); }
+.pc-combine-pair { display: flex; align-items: center; gap: 24px; }
+.pc-combine-a { padding: 16px 36px; border: 1px dashed var(--rule); background: var(--surface-2); font-size: 26px; color: var(--text-2); }
+.pc-combine-plus { font-family: var(--font-mono); font-size: 32px; color: var(--accent); }
+.pc-combine-b { padding: 16px 36px; border: 1px dashed var(--accent); background: var(--accent-soft); font-size: 26px; color: var(--accent); }
+.pc-note-scene { gap: 22px; }
+.pc-note-line { font-size: 38px; font-weight: 700; color: var(--text); text-align: center; }
+.pc-note-line b { color: var(--accent); }
+.pc-note-sub { font-size: 26px; color: var(--text-mute); }

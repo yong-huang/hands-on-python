@@ -1,0 +1,264 @@
+/* ch04 · live-demo — 独立前缀 ld-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.ld-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 44px;
+}
+
+/* ── 入场原语 ── */
+.ld-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ld-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.ld-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: ld-grow-x 900ms var(--ease-expo) forwards;
+}
+@keyframes ld-grow-x {
+  to { transform: scaleX(1); }
+}
+.ld-scene em { font-style: normal; color: var(--accent); }
+
+/* ── 终端外壳 ── */
+.ld-term {
+  align-self: stretch;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.ld-term-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--rule);
+}
+.ld-dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.ld-term-title {
+  margin-left: 14px;
+  font-size: 18px;
+  color: var(--text-faint);
+}
+.ld-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 40px 48px;
+}
+.ld-line {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  font-size: 30px;
+  color: var(--text-2);
+  flex-wrap: wrap;
+}
+.ld-prompt { color: var(--accent); }
+.ld-cmd { font-size: 32px; color: var(--text); }
+.ld-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-left: 12px;
+}
+.ld-sec-no { color: var(--accent); }
+.ld-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.ld-note .label-mono { color: var(--accent); }
+.ld-kicker { color: var(--text-mute); }
+
+/* ── step 1~3 · 加速比时间条 ── */
+.ld-bench {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ld-bench-line {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  font-size: 30px;
+}
+.ld-bench--on .ld-bench-line { font-size: 34px; color: var(--text); }
+.ld-bench--old { opacity: 0.55; }
+.ld-bench--old .ld-bench-line { font-size: 28px; }
+.ld-bench-name { min-width: 300px; color: var(--text-2); }
+.ld-bench-sec { color: var(--text-2); }
+.ld-bench-mult { font-size: 26px; color: var(--accent); font-weight: 600; }
+.ld-bench-mult--bad { color: var(--text-mute); }
+.ld-bench-track {
+  height: 40px;
+  margin-left: 12px;
+  border-left: 2px solid var(--rule);
+}
+.ld-bench-bar { height: 100%; }
+.ld-bench-bar--dim { background: var(--surface-3); border: 1px solid var(--rule); }
+.ld-bench-bar--best { background: var(--accent); }
+.ld-bench-bar--worst {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-3),
+    var(--surface-3) 8px,
+    var(--rule) 8px,
+    var(--rule) 10px
+  );
+  border: 1px solid var(--rule);
+}
+
+/* ── step 4 · 结论 ── */
+.ld-concl-scene { gap: 52px; }
+.ld-concl {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--text);
+}
+.ld-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 1100px;
+}
+.ld-mini-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.ld-mini-name { flex: 0 0 260px; font-size: 22px; color: var(--text-mute); }
+.ld-mini-track { flex: 1; height: 22px; border-left: 2px solid var(--rule); }
+.ld-mini-bar { height: 100%; }
+.ld-mini-bar--dim { background: var(--surface-3); border: 1px solid var(--rule); }
+.ld-mini-bar--best { background: var(--accent); }
+.ld-mini-bar--worst {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-3),
+    var(--surface-3) 8px,
+    var(--rule) 8px,
+    var(--rule) 10px
+  );
+  border: 1px solid var(--rule);
+}
+
+/* ── step 5 · main 保护定义 ── */
+.ld-defcard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px 80px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.ld-defcard-name { font-size: 40px; color: var(--text); }
+.ld-defcard-gloss {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text-2);
+}
+
+/* ── step 6 · OK 1 ── */
+.ld-okline { font-size: 44px; }
+.ld-ok { color: var(--accent); font-weight: 600; }
+.ld-fine {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+
+/* ── step 7 · stderr ── */
+.ld-err {
+  font-size: 30px;
+  line-height: 1.55;
+  color: var(--text-2);
+  border-left: 4px solid var(--accent);
+  padding-left: 26px;
+}
+.ld-err b { color: var(--accent); font-weight: 600; }
+.ld-errline { color: var(--text-mute); font-size: 27px; }
+
+/* ── step 8 · 标语 ── */
+.ld-slogan-scene { gap: 34px; }
+.ld-slogan {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}
+.ld-slogan-sub { font-size: 32px; color: var(--text-mute); }
+.ld-order-tagline { font-size: 72px; }
+
+/* ── step 9~10 · 保序 ── */
+.ld-order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+}
+.ld-order-row { display: flex; align-items: center; gap: 26px; }
+.ld-order-label {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text-2);
+  margin-right: 16px;
+}
+.ld-order-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 26px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-order-chip--slow { border-top: 4px solid var(--accent); }
+.ld-order-chip--back { border-left: 4px solid var(--accent); }
+.ld-order-sec { font-size: 38px; color: var(--text); }
+.ld-order-slow {
+  font-size: 18px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+.ld-order-map {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.ld-order-map .mono { color: var(--accent); }
+.ld-order-same {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+.ld-order-rule { width: 620px; border-top-color: var(--rule); }
+.ld-order-time { font-size: 36px; color: var(--text-2); }
+.ld-order-time .mono { color: var(--accent); font-weight: 600; }

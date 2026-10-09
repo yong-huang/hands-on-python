@@ -1,0 +1,134 @@
+/* ch11 closing — 独立前缀 cz-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含） ── */
+.cz-rise,
+.cz-fade,
+.cz-hero-in,
+.cz-row-in,
+.cz-row-dim,
+.cz-past-in {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.cz-rise { animation-name: cz-rise; animation-duration: 750ms; }
+.cz-fade { animation-name: cz-fade; animation-duration: 650ms; }
+.cz-hero-in { animation-name: cz-hero-in; animation-duration: 850ms; }
+.cz-row-in { animation-name: cz-card-in; animation-duration: 700ms; }
+
+@keyframes cz-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cz-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cz-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cz-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── steps 0-1 · API 速查表 ── */
+.cz-api {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 34px;
+}
+.cz-api-title {
+  font-family: var(--font-display-cn);
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cz-api-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 980px;
+}
+.cz-api-row {
+  display: flex;
+  align-items: baseline;
+  gap: 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 20px 44px;
+}
+@keyframes cz-row-dim {
+  0% { opacity: 0; transform: translateY(22px) scale(0.985); }
+  12% { opacity: 1; transform: none; }
+  80% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+.cz-row-dim { animation-name: cz-row-dim; }
+@keyframes cz-past-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 0.4; transform: none; }
+}
+.cz-past-in { animation-name: cz-past-in; animation-duration: 700ms; }
+.cz-api-name {
+  font-family: var(--font-mono);
+  font-size: 33px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 300px;
+}
+.cz-api-use {
+  font-family: var(--font-body);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.cz-api-warn {
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}
+.cz-api-warn span { color: var(--accent); }
+
+/* ── step 2 · 收尾 ── */
+.cz-end {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+}
+.cz-end-repo {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.cz-end-line {
+  font-family: var(--font-display-cn);
+  font-size: 84px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cz-end-next {
+  font-family: var(--font-body);
+  font-size: 32px;
+  color: var(--text-2);
+}
+.cz-end-next b {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 29px;
+}
+.cz-end-bye {
+  font-family: var(--font-display-cn);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--accent);
+  border-top: 1px solid var(--rule);
+  padding-top: 26px;
+}

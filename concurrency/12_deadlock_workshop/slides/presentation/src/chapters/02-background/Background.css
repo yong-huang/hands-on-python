@@ -1,0 +1,357 @@
+/* ch02 · background — 独立前缀 bd-。颜色/字体只走 token（monochrome-print）。 */
+
+.bd-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.bd-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.bd-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.bd-accent {
+  color: var(--accent);
+}
+
+/* ── steps 0~2 · 老三招递进 ── */
+.bd-trick-scene {
+  gap: 52px;
+}
+.bd-trick-head {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-mute);
+}
+.bd-trick-count {
+  color: var(--accent);
+}
+.bd-tricks {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-self: stretch;
+}
+.bd-trick {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  padding: 44px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  transition: opacity 400ms var(--ease-quart);
+}
+.bd-trick--todo {
+  opacity: 0.3;
+}
+.bd-trick--done {
+  opacity: 0.45;
+}
+.bd-trick--active {
+  border-color: var(--accent);
+  opacity: 1;
+}
+.bd-trick-ord {
+  width: 130px;
+  font-size: 24px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+.bd-trick--active .bd-trick-ord {
+  color: var(--accent);
+}
+.bd-trick-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1.2;
+  color: var(--text);
+}
+.bd-trick--done .bd-trick-name {
+  color: var(--text-mute);
+}
+.bd-trick-verdict {
+  margin-top: 14px;
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.bd-trick--done .bd-trick-verdict {
+  color: var(--text-faint);
+}
+.bd-trick-mark {
+  margin-left: auto;
+  font-size: 34px;
+  color: var(--accent);
+}
+
+/* ── step 3 · 收束：靠流程 ── */
+.bd-pivot-scene {
+  gap: 72px;
+}
+.bd-pivot-line {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--text);
+}
+.bd-flow {
+  display: flex;
+  align-items: center;
+}
+.bd-flow-item {
+  display: flex;
+  align-items: center;
+}
+.bd-flow-arrow {
+  margin: 0 30px;
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.bd-flow-node {
+  padding: 22px 42px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.bd-pivot-tag {
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+
+/* ── steps 4~5 · 两个信号 ── */
+.bd-signal-scene {
+  gap: 56px;
+}
+.bd-signal-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.bd-signal-question {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--text);
+}
+.bd-signals {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-self: stretch;
+}
+.bd-signal {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  padding: 46px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  transition: opacity 400ms var(--ease-quart);
+}
+.bd-signal--todo {
+  opacity: 0.3;
+}
+.bd-signal--done {
+  opacity: 0.45;
+}
+.bd-signal--active {
+  border-color: var(--accent);
+  opacity: 1;
+}
+.bd-signal-ord {
+  font-size: 26px;
+  color: var(--text-faint);
+}
+.bd-signal--active .bd-signal-ord {
+  color: var(--accent);
+}
+.bd-signal-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text);
+}
+.bd-signal--done .bd-signal-name {
+  color: var(--text-mute);
+}
+.bd-signal-mark {
+  margin-left: auto;
+  font-size: 34px;
+  color: var(--accent);
+}
+.bd-nested {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 22px;
+}
+.bd-nested-lock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border: 2px solid var(--text-mute);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-mute);
+}
+.bd-nested-lock--held {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--surface);
+}
+.bd-nested-link {
+  width: 120px;
+  border-top: 2px dashed var(--text-faint);
+}
+.bd-nested-note {
+  font-size: 19px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+/* ── step 6 · 边界：一把锁 ── */
+.bd-boundary-scene {
+  gap: 56px;
+}
+.bd-boundary-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.bd-boundary-main {
+  display: flex;
+  align-items: center;
+  gap: 150px;
+}
+.bd-lock-svg {
+  width: 170px;
+}
+.bd-lock-body {
+  fill: var(--surface-2);
+  stroke: var(--text);
+  stroke-width: 4;
+}
+.bd-lock-shackle {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 4;
+}
+.bd-lock-hole {
+  fill: var(--text);
+}
+.bd-lock-label {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 21px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.bd-circle-svg {
+  width: 320px;
+}
+.bd-circle-arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.bd-circle-q {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 68px;
+  font-weight: 600;
+  fill: var(--accent);
+}
+.bd-circle-label {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 21px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+.bd-boundary-line {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 78px;
+  color: var(--text);
+}
+
+/* ── step 7 · 边界：asyncio / 分布式 ── */
+.bd-edge-scene {
+  gap: 60px;
+}
+.bd-edge-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.bd-edge-cards {
+  display: flex;
+  gap: 44px;
+}
+.bd-edge-card {
+  width: 520px;
+  padding: 52px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.bd-edge-tag {
+  color: var(--accent);
+}
+.bd-edge-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.25;
+  color: var(--text);
+}
+.bd-edge-talk {
+  font-size: 28px;
+  color: var(--text-mute);
+}
+
+/* ── step 8 · 备选工具 ── */
+.bd-tool-scene {
+  gap: 60px;
+}
+.bd-tool-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.bd-tools {
+  display: flex;
+  gap: 44px;
+}
+.bd-tool {
+  width: 560px;
+  padding: 52px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.bd-tool-tag {
+  color: var(--accent);
+}
+.bd-tool-name {
+  font-size: 52px;
+  font-weight: 600;
+  color: var(--text);
+}
+.bd-tool-talk {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.bd-tool-sub {
+  font-size: 19px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}

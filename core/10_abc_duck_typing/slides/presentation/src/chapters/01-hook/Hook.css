@@ -1,0 +1,82 @@
+.hk-scene { justify-content: center; align-items: center; gap: 48px; }
+.hk-rise { opacity: 0; animation: hk-rise 620ms var(--ease-quart) both; }
+@keyframes hk-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.hk-mono { font-family: var(--font-mono); }
+.hk-lead-line { font-size: 42px; color: var(--text-2); text-align: center; }
+.hk-lead-sub { font-size: 34px; color: var(--text); text-align: center; }
+.hk-lead-sub b { color: var(--accent); }
+.hk-ask-line { font-size: 40px; color: var(--text-2); text-align: center; }
+.hk-ask-line .hk-mono { color: var(--accent); }
+.hk-ask-big { font-size: 72px; font-weight: 700; color: var(--text); text-align: center; }
+.hk-ask-big b { color: var(--accent); }
+.hk-chips-lead { font-size: 40px; font-weight: 700; color: var(--text); }
+.hk-chips-row { display: flex; gap: 34px; }
+.hk-chip { padding: 18px 44px; border: 1.5px dashed var(--accent); background: var(--accent-soft); font-family: var(--font-mono); font-size: 27px; color: var(--accent); }
+.hk-chips-foot { font-size: 32px; color: var(--text-2); }
+.hk-chips-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 0 · title ── */
+.hk-title-scene {
+  align-items: center;
+  text-align: center;
+}
+.hk-title-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: auto 0;
+}
+.hk-title-rule {
+  width: 820px;
+  animation: hk-rule-x 700ms var(--ease-soft) both;
+  transform-origin: center;
+}
+@keyframes hk-rule-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-title-main {
+  margin: 0;
+  font-size: 112px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.hk-title-code {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+}
+.hk-title-sub {
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.hk-titleblock {
+  position: absolute;
+  right: 56px;
+  bottom: 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 28px;
+  padding: 13px 22px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+}
+.hk-tb-row:first-child { border-top: 0; }
+.hk-tb-row span {
+  width: 64px;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.hk-tb-row b {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-2);
+}

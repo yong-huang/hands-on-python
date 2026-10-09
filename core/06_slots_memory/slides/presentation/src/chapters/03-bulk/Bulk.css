@@ -1,0 +1,172 @@
+/* ── ch03 bulk · CSS prefix: bk- ─────────────────────────────────── */
+
+.bk-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 56px;
+}
+
+/* shared */
+.bk-rise {
+  opacity: 0;
+  animation: bk-rise 620ms var(--ease-quart) both;
+}
+@keyframes bk-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.bk-pop {
+  opacity: 0;
+  animation: bk-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes bk-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.bk-fade {
+  opacity: 0;
+  animation: bk-fade 420ms var(--ease-soft) both;
+}
+@keyframes bk-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · 批量横条 ── */
+.bk-bars-scene { gap: 66px; }
+.bk-bars-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bk-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  width: 1240px;
+}
+.bk-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.bk-bar-label {
+  width: 130px;
+  text-align: right;
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.bk-bar-track {
+  flex: 1;
+  height: 44px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+}
+.bk-bar {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  animation: bk-grow 800ms var(--ease-soft) both;
+}
+@keyframes bk-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.bk-bar-regular {
+  width: 100%;
+  background: var(--text-mute);
+  animation-delay: 700ms;
+}
+.bk-bar-slots {
+  width: 35.3%;
+  background: var(--accent);
+  box-shadow: 0 0 30px var(--accent-soft);
+  animation-delay: 1500ms;
+}
+.bk-bar-val {
+  width: 190px;
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.bk-bar-val-acc { color: var(--accent); }
+.bk-savings {
+  padding: 20px 60px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.bk-savings-num {
+  font-family: var(--font-mono);
+  font-size: 64px;
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+
+/* ── step 1 · 版本角标 ── */
+.bk-version-scene { gap: 26px; }
+.bk-version-line {
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bk-version-num {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+.bk-version-note {
+  font-size: 27px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · 口径坑 ── */
+.bk-caliper-scene { gap: 62px; }
+.bk-caliper-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bk-caliper-cards {
+  display: flex;
+  gap: 70px;
+}
+.bk-caliper-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 440px;
+  padding: 30px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bk-caliper-card-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.bk-caliper-mono {
+  font-family: var(--font-mono);
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.bk-caliper-val {
+  font-family: var(--font-mono);
+  font-size: 74px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-2);
+}
+.bk-caliper-card-acc .bk-caliper-val { color: var(--accent); }
+.bk-caliper-note {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.bk-caliper-foot {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.bk-caliper-foot b { color: var(--text); font-weight: 700; }

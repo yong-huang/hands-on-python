@@ -1,0 +1,311 @@
+/* ch02 · two-steps — 独立前缀 ts-（全仓库未占用）。颜色/字体只走 token（indigo-porcelain）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.ts-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.ts-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ts-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+/* 盖章感：scale-in，用于金句大字 / chip */
+.ts-stamp {
+  opacity: 0;
+  animation: scale-in 520ms var(--ease-expo) forwards;
+}
+/* 输出行显影：左→右擦出（终端逐行出结果） */
+.ts-wipe {
+  clip-path: inset(0 100% 0 0);
+  animation: ts-line-wipe 700ms var(--ease-quart) forwards;
+}
+@keyframes ts-line-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+/* 第二张分工卡：右下轻滑入 */
+.ts-slide {
+  opacity: 0;
+  animation: ts-slide-in 640ms var(--ease-expo) forwards;
+}
+@keyframes ts-slide-in {
+  from { opacity: 0; transform: translate(26px, 18px); }
+  to   { opacity: 1; transform: translate(0, 0); }
+}
+
+/* ── step 0 · 两步流水线 ── */
+.ts-kicker {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  margin-bottom: 56px;
+}
+.ts-pipe {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.ts-pipe-call {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--text);
+}
+.ts-paren {
+  color: var(--accent);
+}
+.ts-pipe-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.ts-pipe-card {
+  width: 470px;
+  padding: 44px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.ts-pipe-no {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.ts-pipe-what {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.ts-pipe-what small {
+  font-size: 23px;
+  font-weight: 400;
+  color: var(--text-mute);
+}
+/* 空盒 = 未赋形的内存；实盒 = 装了属性槽的实例 */
+.ts-box {
+  width: 92px;
+  height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px;
+}
+.ts-box-raw {
+  border: 2px dashed var(--text-faint);
+}
+.ts-box-filled {
+  border: 2px solid var(--accent);
+}
+.ts-slot {
+  display: block;
+  height: 30px;
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 金句：管生管养 ── */
+.ts-crest {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+.ts-crest-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+.ts-crest-dunder {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.ts-crest-char {
+  font-family: var(--font-display-cn);
+  font-size: 250px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+.ts-crest-accent {
+  color: var(--accent);
+}
+.ts-crest-cap {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.ts-crest-divider {
+  width: 1px;
+  height: 300px;
+  background: var(--accent);
+  opacity: 0.35;
+  transform: scaleY(0);
+  transform-origin: center;
+  animation: ts-divider-grow 600ms var(--ease-expo) 260ms forwards;
+}
+@keyframes ts-divider-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* ── step 2 · 终端模拟 ── */
+.ts-term {
+  width: 1280px;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+.ts-term-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 22px;
+  background: var(--surface-3);
+}
+.ts-term-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--rule);
+}
+.ts-term-title {
+  margin-left: 12px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.ts-term-body {
+  margin: 0;
+  padding: 38px 42px 44px;
+  background: var(--text);
+  font-family: var(--font-mono);
+  font-size: 26px;
+  line-height: 2.1;
+  color: var(--surface);
+}
+.ts-ln {
+  display: block;
+  white-space: pre;
+}
+.ts-ln-hot {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent);
+  padding-left: 16px;
+  margin: 4px -16px;
+}
+.ts-term-cap {
+  margin-top: 42px;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 顺序结论 ── */
+.ts-order-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--text);
+}
+.ts-mono-tag {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  color: var(--accent);
+}
+.ts-order-sub {
+  margin-top: 22px;
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.ts-order-chips {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-top: 64px;
+}
+.ts-chip {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  padding: 16px 30px;
+  border: 1px solid var(--accent);
+  color: var(--text);
+  background: var(--accent-soft);
+}
+.ts-chip-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+.ts-order-note {
+  margin-top: 58px;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 分工卡 ── */
+.ts-duel {
+  display: flex;
+  gap: 48px;
+}
+.ts-duel-card {
+  width: 640px;
+  padding: 46px 52px 42px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.ts-duel-name {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.ts-duel-rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ts-row {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 17px 0;
+  border-top: 1px solid var(--rule);
+}
+.ts-row dt {
+  flex: 0 0 150px;
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.ts-row dd {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+}

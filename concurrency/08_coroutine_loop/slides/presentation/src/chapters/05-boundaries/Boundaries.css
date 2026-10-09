@@ -1,0 +1,254 @@
+/* ch05 boundaries — 独立前缀 bd-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含；CPU 填充条为本章专属） ── */
+.bd-rise,
+.bd-fade,
+.bd-hero-in,
+.bd-card-in,
+.bd-row-in,
+.bd-row-dim,
+.bd-past-in {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.bd-rise { animation-name: bd-rise; animation-duration: 750ms; }
+.bd-fade { animation-name: bd-fade; animation-duration: 650ms; }
+.bd-hero-in { animation-name: bd-hero-in; animation-duration: 850ms; }
+.bd-card-in { animation-name: bd-card-in; animation-duration: 800ms; }
+
+@keyframes bd-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bd-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bd-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bd-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── step 0 · 纯计算饿死 ── */
+.bd-no {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 34px;
+}
+.bd-no-kicker,
+.bd-misc-kicker {
+  font-family: var(--font-body);
+  font-size: 25px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+.bd-no-hero {
+  font-family: var(--font-display-cn);
+  font-size: 84px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bd-starve {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 34px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  min-width: 900px;
+}
+.bd-cpu-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.bd-cpu-name {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-2);
+  min-width: 110px;
+}
+.bd-cpu-bar {
+  flex: 1;
+  height: 46px;
+  border: 1.5px solid var(--text);
+  background: var(--surface);
+}
+.bd-cpu-fill {
+  height: 100%;
+  width: 96%;
+  background: var(--accent);
+  transform-origin: left;
+  animation: bd-fill 1400ms cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+@keyframes bd-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.bd-cpu-pct {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--accent);
+  min-width: 210px;
+}
+.bd-hungry-row {
+  display: flex;
+  gap: 20px;
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}
+.bd-hungry-cell {
+  flex: 1;
+  border: 1.5px dashed var(--text-faint);
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  text-align: center;
+  padding: 14px 0;
+  opacity: 0;
+  animation: bd-fade 500ms ease-out forwards;
+}
+.bd-no-way {
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+.bd-no-way u {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+/* ── step 1 · 别用二/三 ── */
+.bd-misc {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 46px;
+}
+.bd-misc-grid {
+  display: flex;
+  gap: 40px;
+}
+.bd-misc-card {
+  width: 520px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 34px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bd-misc-num {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  color: var(--accent);
+}
+.bd-misc-title {
+  font-family: var(--font-display-cn);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bd-misc-body {
+  font-family: var(--font-body);
+  font-size: 26px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.bd-misc-body u { text-decoration-color: var(--accent); text-decoration-thickness: 3px; }
+
+/* ── steps 2-3 · 对比表 ── */
+.bd-table {
+  height: 100%;
+  width: 1480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+.bd-table-title {
+  font-family: var(--font-display-cn);
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.bd-table-head,
+.bd-table-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 1fr;
+  gap: 30px;
+  align-items: center;
+}
+.bd-table-head {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-mute);
+  border-bottom: 2px solid var(--text);
+  padding-bottom: 12px;
+}
+.bd-table-row {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 22px 28px;
+}
+@keyframes bd-past-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 0.4; transform: none; }
+}
+@keyframes bd-row-dim {
+  0% { opacity: 0; transform: translateY(22px) scale(0.985); }
+  12% { opacity: 1; transform: none; }
+  80% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+.bd-row-dim { animation-name: bd-row-dim; animation-duration: 6600ms; }
+.bd-past-in { animation-name: bd-past-in; animation-duration: 700ms; }
+.bd-row-in { animation-name: bd-card-in; animation-duration: 700ms; }
+.bd-cell-name {
+  font-family: var(--font-display-cn);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.bd-cell-how,
+.bd-cell-when {
+  font-family: var(--font-body);
+  font-size: 24px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* ── step 4 · 收束 ── */
+.bd-verdict {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.bd-verdict-line {
+  font-family: var(--font-display-cn);
+  font-size: 92px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.bd-verdict-line span { color: var(--accent); }
+.bd-verdict-note {
+  font-family: var(--font-body);
+  font-size: 28px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}

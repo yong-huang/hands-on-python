@@ -1,0 +1,251 @@
+/* ch06 · gil-bounds — 独立前缀 gb-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.gb-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.gb-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.gb-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.gb-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: gb-grow 900ms var(--ease-expo) forwards;
+}
+@keyframes gb-grow {
+  to { transform: scaleX(1); }
+}
+
+/* ── 公共 ── */
+.gb-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 压间隔 ── */
+.gb-int-scene {
+  gap: 66px;
+}
+.gb-int-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 68px;
+  color: var(--text);
+}
+.gb-int-row {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.gb-int-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 38px 64px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.gb-int-card--hot {
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+}
+.gb-int-card .label-mono {
+  color: var(--text-mute);
+}
+.gb-int-val {
+  font-size: 52px;
+  font-weight: 600;
+  color: var(--text);
+}
+.gb-int-card--hot .gb-int-val {
+  color: var(--accent);
+}
+.gb-int-arrow {
+  font-size: 52px;
+  color: var(--text-faint);
+}
+
+/* ── step 1 · 理由 ── */
+.gb-why-scene {
+  gap: 44px;
+}
+.gb-why-line {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.gb-why-foot {
+  margin-top: 16px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.gb-why-foot b {
+  color: var(--accent);
+}
+
+/* ── step 2 · 手法口诀 ── */
+.gb-mono-scene {
+  gap: 40px;
+}
+.gb-mono-kicker {
+  color: var(--text-mute);
+  letter-spacing: 0.14em;
+}
+.gb-mono-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 1.4;
+  color: var(--text);
+}
+.gb-mono-sub {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+
+/* ── step 3 · 方法交代 ── */
+.gb-method-scene {
+  gap: 60px;
+}
+.gb-method-q {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.gb-method-flow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.gb-method-step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  width: 430px;
+  padding: 30px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.gb-method-step--fix {
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.gb-method-step .label-mono {
+  color: var(--text-faint);
+}
+.gb-method-step--fix .label-mono {
+  color: var(--accent);
+}
+.gb-method-text {
+  font-size: 24px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.gb-method-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+
+/* ── step 4/6 · 基准对比 ── */
+.gb-cpu-scene {
+  gap: 40px;
+  align-self: stretch;
+  padding: 0 40px;
+}
+.gb-bench-kicker {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.gb-bench {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  align-self: stretch;
+}
+.gb-bench-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.gb-bench-tag {
+  min-width: 150px;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.gb-bench-barwrap {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+  height: 74px;
+}
+.gb-bench-bar {
+  height: 100%;
+}
+.gb-bench-bar--serial {
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+}
+.gb-bench-bar--threads {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+}
+.gb-bench-val {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+  white-space: nowrap;
+}
+.gb-bench-verdict {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+
+/* ── step 5 · 机理 ── */
+.gb-mech-scene {
+  gap: 36px;
+}
+.gb-mech-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 88px;
+  color: var(--text);
+}
+.gb-mech-sub {
+  font-size: 32px;
+  color: var(--text-mute);
+}
+
+/* ── step 7 · 公式 ── */
+.gb-formula-scene {
+  gap: 30px;
+}
+.gb-formula {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 120px;
+  color: var(--text);
+}
+.gb-formula-sub {
+  font-size: 30px;
+  color: var(--text-mute);
+}

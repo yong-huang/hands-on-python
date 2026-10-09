@@ -1,0 +1,242 @@
+/* ── ch02 diamond · CSS prefix: dm- ──────────────────────────────── */
+
+.dm-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.dm-rise {
+  opacity: 0;
+  animation: dm-rise 620ms var(--ease-quart) both;
+}
+@keyframes dm-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.dm-pop {
+  opacity: 0;
+  animation: dm-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes dm-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.dm-fade {
+  opacity: 0;
+  animation: dm-fade 420ms var(--ease-soft) both;
+}
+@keyframes dm-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.dm-dim { color: var(--text-mute); }
+
+/* ── step 0 · MRO 序列 ── */
+.dm-mro-scene { gap: 30px; }
+.dm-mro-head {
+  align-self: flex-start;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.dm-mro-chain {
+  display: flex;
+  align-items: center;
+}
+.dm-mro-unit {
+  display: flex;
+  align-items: center;
+}
+.dm-mro-node {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 22px 38px;
+  border: 1.5px solid var(--text);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text);
+}
+.dm-mro-node:last-child {
+  border-style: dashed;
+  color: var(--text-mute);
+}
+.dm-mro-idx {
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.dm-mro-node:last-child .dm-mro-idx { color: var(--text-mute); }
+.dm-mro-arrow {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  color: var(--text-mute);
+  padding: 0 18px;
+}
+
+/* ── step 1 · B 跳 C ── */
+.dm-jump-scene { gap: 34px; }
+.dm-jump-lead {
+  font-size: 30px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+}
+.dm-jump-line {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.5;
+}
+.dm-jump-line b { color: var(--accent); }
+.dm-jump-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+.dm-jump-diagram {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.dm-jump-chip {
+  padding: 16px 44px;
+  border: 1.5px solid var(--text);
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+}
+.dm-jump-chip-acc {
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+}
+.dm-jump-path {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--accent);
+}
+.dm-jump-skip {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · 调用序 ── */
+.dm-call-scene { gap: 44px; }
+.dm-call-head {
+  align-self: flex-start;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.dm-call-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.dm-call-row {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  padding: 20px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.dm-call-idx {
+  font-family: var(--font-mono);
+  font-size: 23px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.dm-call-name {
+  font-family: var(--font-mono);
+  font-size: 29px;
+  font-weight: 600;
+  color: var(--text);
+}
+.dm-call-note {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.dm-call-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.dm-call-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 3 · 恰好一次 vs 两次 ── */
+.dm-once-scene { gap: 0; }
+.dm-once-cols {
+  display: flex;
+  gap: 70px;
+  align-items: stretch;
+}
+.dm-once-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 620px;
+  padding: 44px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.dm-once-card-2 { border: 2px dashed var(--accent); }
+.dm-once-tag {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.dm-once-big {
+  font-family: var(--font-mono);
+  font-size: 110px;
+  font-weight: 600;
+  line-height: 1;
+}
+.dm-once-good { color: var(--accent); }
+.dm-once-bad { color: var(--text); opacity: 0.55; }
+.dm-once-note {
+  font-size: 23px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+/* ── step 4 · 三性质 ── */
+.dm-props-scene { gap: 64px; }
+.dm-props-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.dm-props-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.dm-prop {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  padding: 22px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.dm-prop-ord {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.dm-prop-name {
+  width: 200px;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+}
+.dm-prop-note {
+  font-size: 24px;
+  color: var(--text-mute);
+}

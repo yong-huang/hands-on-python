@@ -1,0 +1,158 @@
+/* ch04 · live-demo — 独立前缀 ld-。颜色/字体只走 token（monochrome-print）。 */
+
+.ld-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.ld-split {
+  flex-direction: row;
+  gap: 60px;
+}
+.ld-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+
+/* ── 模拟终端（印刷风：surface-2 底 + hairline 边） ── */
+.ld-term {
+  width: 980px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.ld-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+  background: var(--surface-3);
+}
+.ld-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: var(--rule-w) solid var(--text-faint);
+  background: var(--surface);
+}
+.ld-term-title {
+  margin-left: 12px;
+  font-size: 18px;
+  color: var(--text-mute);
+}
+.ld-term-body {
+  padding: 26px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 22px;
+  line-height: 1.55;
+}
+.ld-cmd { color: var(--text); }
+.ld-prompt { color: var(--accent); font-weight: 700; }
+.ld-sec { color: var(--text-mute); margin-top: 6px; }
+.ld-line { color: var(--text-2); white-space: pre; }
+.ld-ok { color: var(--accent); margin-top: 8px; }
+.ld-dim { opacity: 0.45; }
+.ld-hl {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.ld-hl-3 {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+  opacity: 1;
+}
+.ld-hl-dim {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+/* ── 右侧注解栏 ── */
+.ld-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  min-width: 0;
+}
+.ld-chlabel { color: var(--text-faint); font-size: 20px; }
+.ld-bignum {
+  font-size: 130px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.ld-big-unit {
+  font-size: 38px;
+  color: var(--text-mute);
+  font-weight: 500;
+}
+.ld-x {
+  font-family: var(--font-display-en);
+  font-style: italic;
+}
+.ld-versus {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.ld-vs-item { font-size: 44px; font-weight: 600; color: var(--accent); }
+.ld-vs-slow { color: var(--text-2); }
+.ld-vs-word { font-size: 26px; color: var(--text-faint); }
+.ld-side-rule { width: 220px; border-top-color: var(--rule); }
+.ld-side-note {
+  font-size: 27px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.ld-side-note b { color: var(--accent); }
+.ld-side-meta { font-size: 19px; color: var(--text-faint); }
+
+/* ── 万次更新格盘 ── */
+.ld-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 30px);
+  gap: 7px;
+}
+.ld-cell {
+  width: 30px;
+  height: 30px;
+  border: var(--rule-w) solid var(--text-faint);
+  border-radius: 3px;
+}
+.ld-cell-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  opacity: 0;
+  animation: pop-in 340ms var(--ease-expo) forwards;
+}
+.ld-grid-legend {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: 24px;
+  flex-wrap: wrap;
+}
+.ld-lg-on { color: var(--accent); font-weight: 600; }
+.ld-lg-off { color: var(--text-mute); }
+.ld-lg-note { font-size: 17px; color: var(--text-faint); }
+
+/* ── step 0 说明行 ── */
+.ld-note {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 26px;
+  color: var(--text-mute);
+}

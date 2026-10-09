@@ -1,0 +1,351 @@
+/* ch03 · mental-model — 独立前缀 fw-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.fw-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.fw-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.fw-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.fw-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: fw-grow-x 700ms var(--ease-expo) forwards;
+}
+@keyframes fw-grow-x {
+  to { transform: scaleX(1); }
+}
+
+.fw-accent {
+  color: var(--accent);
+}
+
+/* 欠条卡通用 */
+.fw-receipt-tag {
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+
+/* ── step 0 · 走一遍流程 ── */
+.fw-flow-scene {
+  gap: 56px;
+}
+.fw-flow {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.fw-submit {
+  padding: 30px 52px;
+  border: 2px solid var(--text);
+  background: var(--surface-2);
+  font-size: 34px;
+  color: var(--text);
+}
+.fw-flow-arrow {
+  font-size: 56px;
+  color: var(--accent);
+}
+.fw-receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 60px;
+}
+.fw-receipt-main {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--accent);
+}
+.fw-kitchen {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 26px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.fw-kitchen-dots {
+  display: flex;
+  gap: 14px;
+}
+.fw-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-2);
+  opacity: 0;
+  flex: 0 0 auto;
+}
+.fw-dot--work {
+  background: var(--accent);
+  animation: pop-in 420ms var(--ease-expo) forwards;
+}
+.fw-kitchen-talk {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.fw-flow-note {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 唯一取货口 ── */
+.fw-port-scene {
+  gap: 50px;
+}
+.fw-port-receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 90px;
+}
+.fw-port-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text);
+}
+.fw-ports {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.fw-port-row {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.fw-port-verb {
+  width: 170px;
+  text-align: right;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+  flex: 0 0 auto;
+}
+.fw-port-talk {
+  font-size: 27px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · as completed 三道 ── */
+.fw-lanes-scene {
+  gap: 56px;
+}
+.fw-lanes-head {
+  align-self: stretch;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 60px;
+  color: var(--text-mute);
+}
+.fw-lanes-sub {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.fw-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  align-self: stretch;
+  padding: 0 60px;
+}
+.fw-lane {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.fw-lane-name {
+  width: 120px;
+  font-size: 23px;
+  color: var(--text-2);
+  flex: 0 0 auto;
+}
+.fw-lane-track {
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+.fw-lane-bar--grow {
+  height: 100%;
+  background: var(--surface-3);
+  border-right: 3px solid var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation-name: fw-grow-x;
+  animation-timing-function: var(--ease-expo);
+  animation-fill-mode: forwards;
+}
+.fw-lane:nth-child(1) .fw-lane-bar--grow { background: var(--accent-soft); }
+.fw-lane-out {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 27px;
+  flex: 0 0 auto;
+}
+.fw-lanes-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 64px;
+  color: var(--text);
+}
+
+/* ── step 3 · 餐厅取餐 ── */
+.fw-rest-scene {
+  gap: 64px;
+}
+.fw-rest-row {
+  display: flex;
+  align-items: center;
+}
+.fw-rest-cell {
+  display: flex;
+  align-items: center;
+}
+.fw-rest-arrow {
+  margin: 0 22px;
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.fw-rest-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 34px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.fw-rest-tag {
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.fw-rest-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+.fw-rest-talk {
+  font-size: 18px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 异常藏在欠条里 ── */
+.fw-pit-scene {
+  gap: 60px;
+}
+.fw-pit-lost {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+.fw-pit-flow {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+.fw-pit-worker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 38px 48px;
+  font-size: 30px;
+  color: var(--text);
+}
+.fw-err-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text-2);
+  flex: 0 0 auto;
+}
+.fw-pit-error {
+  position: absolute;
+  top: -22px;
+  right: -34px;
+  padding: 8px 16px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 22px;
+  background: var(--surface);
+}
+.fw-pit-receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 74px;
+}
+.fw-pit-hidden {
+  padding: 12px 26px;
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+  font-size: 24px;
+}
+.fw-pit-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 60px;
+  color: var(--text);
+}
+
+/* ── step 5 · cancel 边界 ── */
+.fw-cancel-scene {
+  gap: 64px;
+}
+.fw-cancel-duo {
+  display: flex;
+  gap: 60px;
+}
+.fw-cancel-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 480px;
+  padding: 52px 40px;
+}
+.fw-cancel-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.fw-cancel-talk {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.fw-cancel-verdict {
+  margin-top: 12px;
+  padding: 12px 30px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 30px;
+}

@@ -1,0 +1,291 @@
+/* ch06 · pitfalls — 独立前缀 pf-。颜色/字体只走 token（monochrome-print）。 */
+
+.pf-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+}
+.pf-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pf-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.pf-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.pf-head .label-mono { color: var(--text-faint); }
+.pf-ord { font-size: 22px; color: var(--text-faint); }
+.pf-title {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.pf-title-sm { font-size: 44px; }
+.pf-title b { color: var(--accent); }
+.pf-punch {
+  font-family: var(--font-display-cn);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.pf-punch b { color: var(--accent); }
+
+/* ── 坑 1 · close ≠ unlink ── */
+.pf-one-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+}
+.pf-btns {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.pf-btn-card {
+  width: 430px;
+  padding: 26px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.pf-btn {
+  padding: 10px 26px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 27px;
+  color: var(--text);
+}
+.pf-btn-live { border: 2px solid var(--accent); color: var(--accent); font-weight: 600; }
+.pf-btn-word { font-size: 34px; color: var(--text-faint); }
+.pf-btn-note { font-size: 22px; color: var(--text-mute); text-align: center; }
+.pf-leak {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.pf-leak .label-mono { color: var(--text-faint); }
+.pf-leak-pile { display: flex; gap: 12px; }
+.pf-leak-block {
+  width: 46px;
+  height: 34px;
+  border: var(--rule-w) dashed var(--text-mute);
+  border-radius: 3px;
+  background: var(--surface-3);
+}
+.pf-leak-drop {
+  opacity: 0;
+  animation: pf-drop 500ms var(--ease-expo) forwards;
+}
+@keyframes pf-drop {
+  from { transform: translateY(-26px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.pf-leak-note { font-size: 20px; color: var(--text-mute); }
+
+/* ── 坑 2 · EOF 等待 ── */
+.pf-pipe {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+.pf-pipe-end {
+  width: 380px;
+  padding: 32px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+  font-size: 28px;
+  color: var(--text);
+}
+.pf-pipe-state { font-size: 23px; color: var(--text-mute); }
+.pf-pipe-waiting { color: var(--accent); }
+.pf-pipe-gap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.pf-pipe-wire { width: 150px; border-top: 2px dashed var(--text-faint); }
+.pf-pipe-wait { font-size: 22px; color: var(--accent); }
+
+/* ── 坑 3 · 逐项翻 vs 整本抄 ── */
+.pf-traverse {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+.pf-tr-way {
+  width: 600px;
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.pf-tr-good { border-color: var(--accent-glow); }
+.pf-tr-name { color: var(--text-faint); }
+.pf-tr-rounds {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pf-tr-chip {
+  padding: 10px 20px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 23px;
+  color: var(--text);
+}
+.pf-tr-chip-live { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.pf-tr-note { font-size: 22px; color: var(--text-mute); }
+
+/* ── 坑 4 · 视图 vs 拷贝 ── */
+.pf-view {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+.pf-view-way {
+  width: 620px;
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.pf-view-name { color: var(--text-faint); }
+.pf-view-demo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 66px;
+}
+.pf-view-ref {
+  padding: 12px 22px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 23px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.pf-view-safe { border-color: var(--accent); color: var(--accent); }
+.pf-view-wire {
+  width: 90px;
+  border-top: 2px dashed var(--text-faint);
+}
+.pf-wire-cut {
+  animation: pf-cut 600ms var(--ease-expo) forwards;
+  animation-delay: 2400ms;
+  transform-origin: left;
+}
+@keyframes pf-cut {
+  to { transform: scaleX(0.2); opacity: 0.3; }
+}
+.pf-view-block {
+  padding: 14px 24px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 23px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.pf-block-gone {
+  animation: pf-gone 600ms var(--ease-expo) forwards;
+  animation-delay: 2100ms;
+}
+@keyframes pf-gone {
+  to { opacity: 0.25; background: var(--surface); border-style: dashed; }
+}
+.pf-view-note { font-size: 23px; color: var(--text-mute); }
+.pf-view-note b { color: var(--accent); }
+.pf-view-bad b { color: var(--accent); }
+
+/* ── 坑 5 · 副本对照 + 五坑收束 ── */
+.pf-copy-demo {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.pf-copy-box {
+  padding: 18px 28px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 26px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.pf-copy-live { border: 2px solid var(--accent); color: var(--accent); }
+.pf-copy-arrow {
+  width: 110px;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: pf-arrow 900ms var(--ease-expo) forwards;
+  animation-delay: 1300ms;
+  transform: scaleX(0);
+}
+@keyframes pf-arrow {
+  to { transform: scaleX(1); }
+}
+.pf-copy-verdict { font-size: 24px; color: var(--text-mute); }
+.pf-all {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border-top: var(--rule-w) var(--rule-style) var(--rule);
+  padding-top: 26px;
+}
+.pf-all-title { color: var(--text-faint); }
+.pf-all-row {
+  width: 100%;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+.pf-all-item {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 18px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.pf-all-ord { font-size: 19px; color: var(--text-faint); }
+.pf-all-name { font-size: 21px; color: var(--text); }
+.pf-all-fix { font-size: 17px; color: var(--accent); }

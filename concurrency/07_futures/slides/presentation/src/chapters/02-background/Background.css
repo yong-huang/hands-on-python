@@ -1,0 +1,373 @@
+/* ch02 · background — 独立前缀 fb-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.fb-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.fb-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.fb-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.fb-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: fb-grow-x 700ms var(--ease-expo) forwards;
+}
+@keyframes fb-grow-x {
+  to { transform: scaleX(1); }
+}
+/* 墙被推倒：倾倒 + 退隐（内层动画，外层 pop 不冲突） */
+.fb-topple {
+  animation: fb-topple-down 700ms var(--ease-quart) forwards;
+}
+@keyframes fb-topple-down {
+  to { transform: translateY(26px) rotate(-7deg); opacity: 0.35; }
+}
+
+.fb-accent {
+  color: var(--accent);
+}
+
+/* ── step 0 · 转场 ── */
+.fb-intro-scene {
+  gap: 42px;
+}
+.fb-intro-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}
+.fb-intro-roads {
+  display: flex;
+  gap: 36px;
+}
+.fb-intro-road {
+  padding: 18px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+
+/* ── step 1~2 · 路卡 ── */
+.fb-road-scene {
+  gap: 52px;
+}
+.fb-road-head {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.fb-road-ord {
+  font-size: 30px;
+  color: var(--accent);
+}
+.fb-road-name {
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--text);
+}
+.fb-road-tag {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.fb-road-card {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 64px 90px;
+}
+.fb-act {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.fb-act-verb {
+  font-size: 52px;
+  font-weight: 600;
+  color: var(--text);
+}
+.fb-act-talk {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.fb-road-note {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text-mute);
+}
+.fb-map-line {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.fb-map-batch {
+  display: flex;
+  gap: 18px;
+}
+.fb-map-box {
+  width: 74px;
+  height: 54px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+  flex: 0 0 auto;
+}
+.fb-road-duo {
+  display: flex;
+  align-items: baseline;
+  gap: 34px;
+}
+.fb-road-good {
+  padding: 10px 28px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 34px;
+  color: var(--text-2);
+}
+.fb-road-bad {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text-mute);
+}
+
+/* ── step 3 · 形状与接口 ── */
+.fb-shape-scene {
+  gap: 54px;
+}
+.fb-shape-duo {
+  display: flex;
+  gap: 56px;
+}
+.fb-shape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 44px 70px;
+}
+.fb-shape-label {
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.fb-shape-code {
+  font-size: 40px;
+  color: var(--text);
+}
+.fb-shape-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--text);
+}
+.fb-shape-rewrite {
+  font-size: 34px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · map 全批等齐 ── */
+.fb-wait-scene {
+  gap: 56px;
+}
+.fb-wait-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fb-wait-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  align-self: stretch;
+  padding: 0 120px;
+}
+.fb-wait-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.fb-wait-name {
+  width: 130px;
+  font-size: 22px;
+  color: var(--text-2);
+  flex: 0 0 auto;
+}
+.fb-wait-bar {
+  height: 40px;
+  width: 30%;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+  flex: 0 0 auto;
+}
+.fb-wait-bar--slow {
+  width: 72%;
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.fb-wait-stuck {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.fb-wait-stuck--ok {
+  color: var(--accent);
+}
+.fb-wait-gate {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-left: 154px;
+}
+.fb-wait-gate-line {
+  width: 3px;
+  height: 130px;
+  background: var(--accent);
+  flex: 0 0 auto;
+}
+.fb-wait-gate-tag {
+  font-size: 21px;
+  color: var(--accent);
+}
+.fb-wait-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 60px;
+  color: var(--text);
+}
+
+/* ── step 5 · 异常打包寄回 ── */
+.fb-err-scene {
+  gap: 64px;
+}
+.fb-err-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fb-err-flow {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.fb-err-worker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 40px 50px;
+  font-size: 30px;
+  color: var(--text);
+}
+.fb-err-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text-2);
+  flex: 0 0 auto;
+}
+.fb-err-chip {
+  position: absolute;
+  top: -22px;
+  right: -30px;
+  padding: 8px 16px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 22px;
+  background: var(--surface);
+}
+.fb-err-parcel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.fb-err-parcel-box {
+  width: 92px;
+  height: 74px;
+  border: 2px solid var(--rule);
+  background: var(--surface-2);
+}
+.fb-err-arrow {
+  font-size: 52px;
+  color: var(--accent);
+}
+.fb-err-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 36px 56px;
+  font-size: 34px;
+  color: var(--text);
+}
+.fb-err-main-sub {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+
+/* ── step 6 · 三堵墙 ── */
+.fb-wall-scene {
+  gap: 58px;
+}
+.fb-wall-row {
+  display: flex;
+  gap: 44px;
+}
+.fb-wall-cell {
+  flex: 0 0 auto;
+}
+.fb-wall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.fb-wall-tag {
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.fb-wall-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.fb-wall-pep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 80px;
+}
+.fb-wall-pep-tag {
+  font-size: 21px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+.fb-wall-pep-main {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.fb-wall-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 64px;
+  color: var(--text-mute);
+}

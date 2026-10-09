@@ -1,0 +1,43 @@
+.pb-hover {
+  position: fixed;
+  top: 0;
+  right: 168px;
+  width: 130px;
+  height: 60px;
+  z-index: 11;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 12px;
+  pointer-events: auto;
+}
+.pb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #f4f4f5;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  padding: 8px 14px;
+  border-radius: 0 0 0 8px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 280ms ease, transform 280ms ease;
+}
+.pb-hover:hover .pb-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pb-icon {
+  font-size: 9px;
+  letter-spacing: 0;
+}
+.pb-paused,
+.pb-paused .pb-icon {
+  color: #facc15;
+}

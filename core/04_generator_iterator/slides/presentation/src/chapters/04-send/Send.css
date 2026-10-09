@@ -1,0 +1,268 @@
+/* ── ch04 send · CSS prefix: sn- ─────────────────────────────────── */
+
+.sn-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.sn-rise {
+  opacity: 0;
+  animation: sn-rise 620ms var(--ease-quart) both;
+}
+@keyframes sn-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sn-pop {
+  opacity: 0;
+  animation: sn-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes sn-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.sn-fade {
+  opacity: 0;
+  animation: sn-fade 420ms var(--ease-soft) both;
+}
+@keyframes sn-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.sn-line-in {
+  opacity: 0;
+  animation: sn-fade 420ms var(--ease-soft) both;
+}
+
+.sn-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+.sn-codecard {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sn-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.sn-codecard .sn-code {
+  padding: 32px 46px;
+  font-size: 28px;
+  line-height: 2;
+}
+
+/* ── step 0 · 概念反转 ── */
+.sn-flip-scene { gap: 60px; }
+.sn-flip-yield {
+  padding: 26px 100px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 96px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 80px var(--accent-glow);
+}
+.sn-flip-arrows {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+.sn-flip-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.sn-flip-arrow-dim { opacity: 0.55; }
+.sn-flip-glyph {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  color: var(--accent);
+}
+.sn-flip-word {
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+/* ── step 1 · accumulator ── */
+.sn-code-scene { gap: 44px; }
+.sn-code-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.sn-code-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 核心一行 ── */
+.sn-core-scene { gap: 60px; }
+.sn-core-line {
+  padding: 40px 80px;
+  border: 2px solid var(--accent);
+  background: var(--surface-2);
+  box-shadow: 0 0 80px var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 500;
+  color: var(--text);
+}
+.sn-core-yield {
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+.sn-core-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sn-core-note {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  padding: 16px 34px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.sn-core-note-dir {
+  font-family: var(--font-mono);
+  font-size: 23px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* ── step 3 · priming 时间线 ── */
+.sn-prime-scene { gap: 90px; }
+.sn-prime-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sn-prime-mono {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.sn-prime-line {
+  display: flex;
+  align-items: center;
+}
+.sn-prime-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 26px 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.sn-prime-node-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.sn-prime-node-k {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--accent);
+}
+.sn-prime-link {
+  width: 70px;
+  height: 0;
+  border-top: 2px dashed var(--rule);
+}
+
+/* ── step 4 · priming 坑 ── */
+.sn-trap-scene { gap: 44px; }
+.sn-trap-code {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+}
+.sn-trap-bad {
+  padding: 18px 40px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 38px;
+  color: var(--accent);
+}
+.sn-trap-note {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.sn-trace {
+  width: 860px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.sn-trace-bar {
+  padding: 10px 20px;
+  border-bottom: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.sn-trace-code {
+  margin: 0;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 21px;
+  color: var(--text-2);
+  white-space: pre-wrap;
+}
+.sn-trap-fix {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.sn-trap-fix-mono {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+/* ── step 5 · 真机 ── */
+.sn-term-scene { gap: 44px; }
+.sn-term {
+  width: 820px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sn-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.sn-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 28px 36px;
+}
+.sn-term-line {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.sn-term-dim { color: var(--text-mute); }
+.sn-term-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.sn-term-foot b { color: var(--text); font-weight: 700; }

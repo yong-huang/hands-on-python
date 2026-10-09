@@ -1,0 +1,29 @@
+.hk-scene { justify-content: center; align-items: center; gap: 52px; }
+.hk-rise { opacity: 0; animation: hk-rise 620ms var(--ease-quart) both; }
+@keyframes hk-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.hk-pop { opacity: 0; animation: hk-pop 520ms var(--ease-overshoot) both; }
+@keyframes hk-pop { 0% { opacity: 0; transform: scale(0.88); } 100% { opacity: 1; transform: scale(1); } }
+
+.hk-title-scene { align-items: center; text-align: center; }
+.hk-title-center { display: flex; flex-direction: column; align-items: center; gap: 40px; margin: auto 0; }
+.hk-title-rule { width: 820px; animation: hk-rule-x 700ms var(--ease-soft) both; transform-origin: center; }
+@keyframes hk-rule-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.hk-title-main { margin: 0; font-size: 96px; font-weight: 700; letter-spacing: 0.02em; line-height: 1.15; }
+.hk-title-main b { color: var(--accent); text-shadow: 0 0 70px var(--accent-glow); }
+.hk-title-sub { font-size: 32px; letter-spacing: 0.08em; color: var(--text-2); }
+.hk-titleblock { position: absolute; right: 56px; bottom: 48px; border: 1px solid var(--rule); background: var(--surface-2); }
+.hk-tb-row { display: flex; gap: 28px; padding: 13px 22px; border-top: 1px dashed var(--rule); font-family: var(--font-mono); }
+.hk-tb-row:first-child { border-top: 0; }
+.hk-tb-row span { width: 64px; font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-mute); }
+.hk-tb-row b { font-size: 17px; font-weight: 500; color: var(--text-2); }
+
+.hk-ask-scene { gap: 44px; }
+.hk-ask-threads { display: flex; gap: 26px; }
+.hk-ask-t { padding: 16px 36px; border: 1.5px solid var(--accent); background: var(--accent-soft); font-family: var(--font-mono); font-size: 36px; font-weight: 600; color: var(--accent); }
+.hk-ask-big { font-size: 82px; font-weight: 700; color: var(--text); text-align: center; }
+.hk-ask-big b { color: var(--accent); text-shadow: 0 0 70px var(--accent-glow); }
+
+.hk-gil-scene { gap: 34px; }
+.hk-gil-no { font-size: 96px; font-weight: 700; color: var(--accent); text-shadow: 0 0 80px var(--accent-glow); }
+.hk-gil-line { font-size: 36px; color: var(--text-2); }
+.hk-gil-name { font-family: var(--font-mono); font-size: 130px; font-weight: 700; color: var(--accent); text-shadow: 0 0 100px var(--accent-glow); line-height: 1; }

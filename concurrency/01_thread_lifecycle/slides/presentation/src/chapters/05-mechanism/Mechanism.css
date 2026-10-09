@@ -1,0 +1,394 @@
+/* ch05 · mechanism — 独立前缀 mc-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.mc-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.mc-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.mc-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.mc-bar-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: mc-grow 900ms var(--ease-expo) forwards;
+}
+.mc-kill-line {
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: mc-draw 700ms var(--ease-expo) forwards;
+}
+@keyframes mc-grow {
+  to { transform: scaleX(1); }
+}
+@keyframes mc-draw {
+  to { transform: scaleY(1); }
+}
+
+/* ── 公共 ── */
+.mc-kicker {
+  color: var(--text-mute);
+  letter-spacing: 0.14em;
+}
+.mc-thesis {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--text);
+}
+.mc-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · start 两步 ── */
+.mc-start-scene {
+  gap: 84px;
+}
+.mc-start-flow {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.mc-start-node {
+  padding: 40px 58px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 84px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mc-flow-arrow {
+  font-size: 44px;
+  color: var(--text-faint);
+}
+.mc-start-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 400px;
+  padding: 32px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-step-ord {
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.mc-step-text {
+  font-size: 30px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* ── step 1 · 执行者对照 ── */
+.mc-who-scene {
+  gap: 34px;
+}
+.mc-who-row {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  min-width: 1100px;
+  padding: 40px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-who-row--dim {
+  background: var(--surface);
+}
+.mc-who-row--active {
+  border: 1px solid var(--accent);
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.mc-who-row--active .mc-who-call {
+  color: var(--accent);
+  font-weight: 600;
+}
+.mc-who-row--active .mc-who-exec {
+  color: var(--text);
+}
+.mc-who-call {
+  min-width: 260px;
+  font-size: 42px;
+  color: var(--text);
+}
+.mc-who-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.mc-who-exec {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text-2);
+}
+.mc-who-row--dim .mc-who-exec {
+  color: var(--text-mute);
+}
+.mc-who-verdict {
+  margin-top: 26px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  color: var(--text);
+}
+
+/* ── step 2 · join 阻塞 ── */
+.mc-join-scene {
+  gap: 46px;
+}
+.mc-join-call {
+  padding: 28px 60px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 84px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mc-join-quote {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 66px;
+  color: var(--text);
+}
+.mc-join-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  align-self: stretch;
+  padding: 0 60px;
+}
+.mc-join-lane {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.mc-join-who {
+  min-width: 140px;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.mc-join-blocked {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  height: 104px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.mc-join-blocked-label {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--accent);
+}
+.mc-join-working {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 104px;
+  padding-left: 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.mc-join-work-label {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 两个推论 ── */
+.mc-infer-scene {
+  gap: 40px;
+}
+.mc-infer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  align-self: stretch;
+  padding: 44px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-infer-card .label-mono {
+  color: var(--accent);
+}
+.mc-infer-text {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+/* ── step 4 · 隐式 join ── */
+.mc-shutdown-scene {
+  gap: 40px;
+}
+.mc-shutdown-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--text);
+}
+.mc-shutdown-row {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  min-width: 1150px;
+  padding: 36px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-shutdown-row--no {
+  border-style: dashed;
+  background: var(--surface);
+}
+.mc-shutdown-when {
+  min-width: 220px;
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.mc-shutdown-what {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+.mc-shutdown-row--no .mc-shutdown-what {
+  color: var(--text-mute);
+}
+
+/* ── step 5 · daemon 强杀（竖直截断线切过双时间线） ── */
+.mc-kill-scene {
+  gap: 56px;
+}
+.mc-kill-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  align-self: stretch;
+  padding: 26px 0;
+}
+.mc-kill-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(178px + (100% - 178px) * 0.45);
+  width: 3px;
+  background: var(--accent);
+}
+.mc-kill-lane {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.mc-kill-who {
+  min-width: 150px;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.mc-kill-track {
+  position: relative;
+  flex: 1;
+  height: 76px;
+}
+.mc-kill-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+.mc-kill-bar--main {
+  width: 45%;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+}
+.mc-kill-bar--daemon {
+  width: 45%;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+}
+.mc-kill-ghost {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 45%;
+  width: 30%;
+  border-top: 2px dashed var(--text-faint);
+  border-bottom: 2px dashed var(--text-faint);
+  opacity: 0.55;
+}
+.mc-kill-flag {
+  position: absolute;
+  left: 45%;
+  top: -38px;
+  transform: translateX(-50%);
+  font-size: 22px;
+  color: var(--text);
+}
+.mc-kill-torn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 6 · 分界线 ── */
+.mc-line-scene {
+  gap: 60px;
+}
+.mc-line-cols {
+  display: flex;
+  gap: 44px;
+  align-self: stretch;
+  justify-content: center;
+}
+.mc-line-col {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 620px;
+  padding: 44px 50px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-line-col--no {
+  border-style: dashed;
+  background: var(--surface);
+}
+.mc-line-colhead {
+  font-size: 26px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.mc-line-col--yes .mc-line-colhead {
+  color: var(--accent);
+}
+.mc-line-item {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.mc-line-col--no .mc-line-item {
+  color: var(--text-mute);
+}
+.mc-line-foot {
+  margin-top: 10px;
+  font-size: 24px;
+  color: var(--text-2);
+}

@@ -1,0 +1,307 @@
+/* ch02 background — 独立前缀 bk-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含） ── */
+.bk-rise,
+.bk-fade,
+.bk-hero-in,
+.bk-card-in,
+.bk-pop,
+.bk-draw {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.bk-rise { animation-name: bk-rise; animation-duration: 750ms; }
+.bk-fade { animation-name: bk-fade; animation-duration: 650ms; }
+.bk-hero-in { animation-name: bk-hero-in; animation-duration: 850ms; }
+.bk-card-in { animation-name: bk-card-in; animation-duration: 800ms; }
+.bk-pop { animation-name: bk-pop; animation-duration: 600ms; }
+.bk-draw { animation-name: bk-fade; animation-duration: 800ms; }
+
+@keyframes bk-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bk-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bk-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bk-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes bk-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · 连接点阵 ── */
+.bk-who {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.bk-who-hero,
+.bk-who-q {
+  font-family: var(--font-display-cn);
+  font-size: 66px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.3;
+}
+.bk-who-q { color: var(--accent); }
+.bk-thread-farm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.bk-thread-row { display: flex; gap: 46px; }
+.bk-thread-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  animation: bk-fade 450ms ease-out forwards;
+}
+.bk-conn-dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--text);
+  border-radius: 50%;
+}
+.bk-thread-line { width: 2px; height: 18px; background: var(--text-faint); }
+.bk-thread-ellipsis {
+  font-family: var(--font-body);
+  font-size: 23px;
+  color: var(--text-mute);
+  text-align: center;
+  margin-top: 4px;
+}
+.bk-default {
+  margin-top: 16px;
+  font-family: var(--font-body);
+  font-size: 29px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}
+.bk-default strong { color: var(--accent); }
+
+/* ── step 1 · 成本柱状图 ── */
+.bk-cost {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.bk-cost-hero {
+  font-family: var(--font-display-cn);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.45;
+}
+.bk-cost-hero em {
+  font-style: normal;
+  color: var(--accent);
+  border-bottom: 4px solid var(--accent-glow);
+}
+.bk-cost-chart { width: 760px; }
+.bk-bar rect { transform-origin: center 290px; animation: bk-grow 900ms cubic-bezier(0.3, 0.7, 0.2, 1) both; }
+@keyframes bk-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.bk-bar text { opacity: 0; animation: bk-fade 500ms ease-out forwards 800ms; }
+.bk-idle-note { opacity: 0; animation: bk-fade 700ms ease-out forwards; }
+
+/* ── step 2 · 撞墙点 ── */
+.bk-wall {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 34px;
+}
+.bk-wall-title {
+  font-family: var(--font-display-cn);
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.bk-wall-grid {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+.bk-wall-card {
+  flex: 0 0 auto;
+  width: 430px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 26px 30px 20px;
+}
+.bk-wall-card-title {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.bk-wall-card svg { width: 100%; }
+.bk-switch-mark { opacity: 0; animation: bk-pop 450ms ease-out forwards; }
+.bk-gil {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  min-height: 150px;
+}
+.bk-gil-lock {
+  width: 86px;
+  height: 86px;
+  border: 3px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.bk-gil-lane {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 19px;
+}
+.bk-gil-run { color: var(--text); border: 1px solid var(--text); padding: 5px 14px; }
+.bk-gil-wait { color: var(--text-faint); padding: 5px 14px; border: 1px dashed var(--rule); }
+.bk-wall-card-note {
+  margin-top: 16px;
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-2);
+}
+.bk-wall-punch {
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-2);
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+
+/* ── step 3 · 拿回切换权 ── */
+.bk-takeback {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 46px;
+}
+.bk-takeback-hero {
+  font-family: var(--font-display-cn);
+  font-size: 74px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.bk-yield-card {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 26px 60px;
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.bk-yield-quote {
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.bk-yield-say {
+  font-family: var(--font-display-cn);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.bk-takeback-result {
+  font-family: var(--font-body);
+  font-size: 32px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+.bk-takeback-result strong { color: var(--accent); font-family: var(--font-display-cn); }
+
+/* ── step 4 · asyncio 登场 ── */
+.bk-enter {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.bk-enter-kicker {
+  font-family: var(--font-body);
+  font-size: 28px;
+  color: var(--text-mute);
+  letter-spacing: 0.14em;
+}
+.bk-enter-plate {
+  font-family: var(--font-mono);
+  font-size: 120px;
+  font-weight: 700;
+  color: var(--accent);
+  border: 3px solid var(--accent);
+  padding: 6px 64px;
+}
+.bk-enter-timeline {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-top: 10px;
+}
+.bk-tl-item {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.bk-tl-ver {
+  font-family: var(--font-mono);
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bk-tl-desc {
+  font-family: var(--font-body);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.bk-tl-desc code {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 22px;
+}
+.bk-tl-line { width: 90px; height: 2px; background: var(--accent); transform-origin: left; animation: bk-wipe 700ms ease-out both; }
+@keyframes bk-wipe { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+.bk-enter-note {
+  font-family: var(--font-body);
+  font-size: 27px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}

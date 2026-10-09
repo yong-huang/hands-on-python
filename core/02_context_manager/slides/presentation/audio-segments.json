@@ -1,0 +1,176 @@
+[
+  {
+    "chapter": "hook",
+    "step": 1,
+    "text": "今天讲 Python 上下文管理器。就两件事：它是什么，为什么你需要它。",
+    "audio": "hook/1.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "先看一段再正常不过的代码。打开文件，读内容，关文件。三步，天经地义。",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "但如果读的时候崩了呢？抛异常，函数当场中断。写在最后的 close，永远执行不到。",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "治这个的，是一个关键字。一个 with。它背后的机制，叫上下文管理器。",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 1,
+    "text": "拆开看，with 把资源的一生，切成三步。进场，拿资源。中间，跑你的代码。出场，交还资源。",
+    "audio": "what-is/1.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 2,
+    "text": "关键就一条：无论中间是成是败，出场都会执行。中间崩九次，它就兜九次。",
+    "audio": "what-is/2.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 3,
+    "text": "with open 后面那个 as f。接的，就是进场交给你的东西。",
+    "audio": "what-is/3.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 4,
+    "text": "你也可以把它当 try/finally 的语法糖。但谁获取、谁释放，一眼就能看清。",
+    "audio": "what-is/4.mp3"
+  },
+  {
+    "chapter": "what-is",
+    "step": 5,
+    "text": "还要澄清一件事。with 不是 try/except。该抛的异常，照样抛。它只保证一件事：走之前，把资源还了。",
+    "audio": "what-is/5.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 1,
+    "text": "有人会说：忘关就忘关呗，能出多大的事？",
+    "audio": "why/1.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 2,
+    "text": "文件句柄，漏一两个看不出来。服务跑一整天，句柄耗尽，新连接全被拒。",
+    "audio": "why/2.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 3,
+    "text": "换成锁试试。一个进程拿着锁不还，其他的全在等。这叫锁挂死。",
+    "audio": "why/3.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 4,
+    "text": "数据库事务也一样。崩在半路，提交还是回滚，没人收尾。事务就这么悬挂着。",
+    "audio": "why/4.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 5,
+    "text": "那把 close 包进 try/finally？能救。",
+    "audio": "why/5.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 6,
+    "text": "但每个用资源的地方，都得写一遍。代码翻一倍，还总有人忘。",
+    "audio": "why/6.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 7,
+    "text": "with，就是这件事的标准答案。把收拾残局的逻辑写一遍，交给 with。",
+    "audio": "why/7.mp3"
+  },
+  {
+    "chapter": "why",
+    "step": 8,
+    "text": "从此你只管用资源。无论成败，出场永远有人兜底。",
+    "audio": "why/8.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 1,
+    "text": "这套机制怎么写？Python 给了两条路。",
+    "audio": "family/1.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 2,
+    "text": "第一条，类式。定义 __enter__ 和 __exit__ 两个方法。进场拿资源，出场做清理。",
+    "audio": "family/2.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 3,
+    "text": "最典型的应用，数据库事务。正常跑完，自动 commit。中途抛异常，自动 rollback。成败两条路，它都想好了。",
+    "audio": "family/3.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 4,
+    "text": "第二条，函数式。一个 @contextmanager，加一个 yield。yield 前面是进场，yield 后面是出场。几十行的类，三行就写完。",
+    "audio": "family/4.mp3"
+  },
+  {
+    "chapter": "family",
+    "step": 5,
+    "text": "两条路，功能等价。复杂状态用类式，简单场景用函数式。不用背，知道有这两条路就行。",
+    "audio": "family/5.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 1,
+    "text": "标准库里，还全是现成货。",
+    "audio": "stdlib/1.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 2,
+    "text": "with suppress，指定某个异常，优雅地忽略。一行顶四行 try/except。",
+    "audio": "stdlib/2.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 3,
+    "text": "with redirect_stdout。print 出来的东西，改道，去别处。",
+    "audio": "stdlib/3.mp3"
+  },
+  {
+    "chapter": "stdlib",
+    "step": 4,
+    "text": "一行 with，各管一件事。",
+    "audio": "stdlib/4.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 1,
+    "text": "为什么值得搞懂它？你早就在用了。open 文件，头上是 with。threading 的锁，头上是 with。你天天在用的数据库 session，也是。",
+    "audio": "closing/1.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 2,
+    "text": "把 with 背后的三步想明白。句柄泄漏、锁挂死、事务悬挂，一眼看穿。",
+    "audio": "closing/2.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 3,
+    "text": "完整代码在 hands-on-python 仓库里。零依赖，python3 一跑就有体感。链接在评论区，下期见。",
+    "audio": "closing/3.mp3"
+  }
+]

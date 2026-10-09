@@ -1,0 +1,223 @@
+/* ── ch02 type · CSS prefix: tp- ─────────────────────────────────── */
+
+.tp-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.tp-rise {
+  opacity: 0;
+  animation: tp-rise 620ms var(--ease-quart) both;
+}
+@keyframes tp-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tp-pop {
+  opacity: 0;
+  animation: tp-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes tp-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.tp-fade {
+  opacity: 0;
+  animation: tp-fade 420ms var(--ease-soft) both;
+}
+@keyframes tp-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.tp-line-in {
+  opacity: 0;
+  animation: tp-fade 420ms var(--ease-soft) both;
+}
+
+.tp-code,
+.tp-sugar-card {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 0 · 心智模型 ── */
+.tp-model-scene { gap: 70px; }
+.tp-model-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.tp-model-lead .tp-model-k {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.tp-model-lead b { color: var(--text); }
+.tp-model-call {
+  padding: 36px 60px;
+  border: 2px solid var(--accent);
+  background: var(--surface-2);
+  box-shadow: 0 0 80px var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 44px;
+  color: var(--text);
+}
+.tp-model-fn {
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.tp-model-arg-1 { color: var(--text-2); }
+.tp-model-arg-2 { color: var(--text-2); }
+.tp-model-arg-3 { color: var(--text-2); }
+.tp-model-legend {
+  display: flex;
+  gap: 44px;
+}
+.tp-model-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px;
+  color: var(--text-2);
+}
+.tp-dot {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+}
+.tp-dot-1 { background: var(--accent); }
+.tp-dot-2 { background: var(--text-2); }
+.tp-dot-3 { background: var(--text-mute); }
+
+/* ── step 1 · 语法糖双卡 ── */
+.tp-sugar-scene { gap: 0; }
+.tp-sugar-cols {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.tp-sugar-card {
+  padding: 30px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  line-height: 1.85;
+}
+.tp-sugar-card-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.tp-sugar-eq {
+  padding: 12px 26px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  transform: rotate(-3deg);
+}
+
+/* ── step 2 · 真机 ── */
+.tp-term-scene { gap: 0; }
+.tp-term {
+  width: 820px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.tp-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.tp-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 36px;
+}
+.tp-term-line {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.tp-term-acc { color: var(--accent); }
+
+/* ── step 3 · 层级链 ── */
+.tp-chain-scene { gap: 76px; }
+.tp-chain-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.tp-chain {
+  display: flex;
+  align-items: center;
+}
+.tp-chain-unit {
+  display: flex;
+  align-items: center;
+}
+.tp-chain-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 42px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.tp-chain-node:last-child {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.tp-chain-expr {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.tp-chain-res {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text);
+}
+.tp-chain-node:last-child .tp-chain-res { color: var(--accent); }
+.tp-chain-link {
+  width: 60px;
+  height: 0;
+  border-top: 2px dashed var(--accent);
+}
+.tp-chain-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.tp-chain-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · 收束 ── */
+.tp-final-scene { gap: 40px; }
+.tp-final-code {
+  font-family: var(--font-mono);
+  font-size: 68px;
+  color: var(--text);
+}
+.tp-final-k { color: var(--accent); }
+.tp-final-true {
+  font-family: var(--font-mono);
+  font-size: 88px;
+  font-weight: 600;
+  color: var(--accent);
+  text-shadow: 0 0 80px var(--accent-glow);
+}
+.tp-final-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.tp-final-foot b { color: var(--text); font-weight: 700; }

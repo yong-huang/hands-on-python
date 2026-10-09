@@ -1,0 +1,139 @@
+/* ch07 · pitfalls — 独立前缀 pf-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.pf-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in ── */
+.pf-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pf-pop {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+}
+
+/* ── 页头 ── */
+.pf-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.pf-card-ord { font-size: 15px; letter-spacing: 0.12em; color: var(--text-faint); }
+
+/* ── 坑卡（现象→原因→解法，白卡细线） ── */
+.pf-card {
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  overflow: hidden;
+}
+.pf-card-head {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 30px;
+  padding: 26px 44px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.pf-card-name { font-size: 44px; font-weight: 700; color: var(--text); letter-spacing: 0.03em; }
+.pf-card-rows { display: flex; flex-direction: column; }
+.pf-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 36px;
+  padding: 26px 44px;
+  border-bottom: 1px solid var(--rule);
+}
+.pf-row:last-child { border-bottom: none; }
+.pf-row-key {
+  width: 76px;
+  font-size: 19px;
+  color: var(--text-faint);
+  letter-spacing: 0.24em;
+}
+.pf-row-val { font-size: 30px; color: var(--text); }
+.pf-row:last-child .pf-row-val { color: var(--accent); font-weight: 600; }
+.pf-row-code {
+  margin-left: 22px;
+  font-size: 25px;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 4px 16px;
+  color: var(--accent);
+}
+
+/* ── 坑四：因果链 + shield ── */
+.pf-p4-name {
+  font-family: var(--font-display-cn);
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pf-p4-name b { color: var(--accent); font-weight: 700; }
+.pf-chain {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+}
+.pf-chain-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 25px;
+  font-weight: 600;
+  color: var(--text);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 22px 28px;
+}
+.pf-chain-bad { border-color: var(--accent); color: var(--accent); }
+.pf-chain-talk { font-size: 16px; font-weight: 400; color: var(--text-faint); }
+.pf-chain-bad .pf-chain-talk { color: var(--text-mute); }
+.pf-chain-arrow { font-size: 28px; color: var(--text-faint); }
+.pf-shield-row { display: flex; flex-direction: row; gap: 52px; align-items: stretch; align-self: stretch; margin-top: 28px; }
+.pf-shield { flex: 1; display: flex; }
+.pf-shield-shell {
+  flex: 1;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-card, 4px);
+  padding: 26px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+.pf-shield-name { font-size: 30px; color: var(--accent); }
+.pf-shield-talk { font-size: 20px; color: var(--text-mute); }
+.pf-shield-blocked {
+  font-size: 21px;
+  color: var(--text-faint);
+  border-top: 1px dashed var(--rule);
+  padding-top: 14px;
+}
+.pf-shield-inner {
+  font-size: 26px;
+  color: var(--text);
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 18px 26px;
+}
+.pf-shield-inner b { color: var(--accent); font-weight: 700; }
+.pf-p4-solution {
+  flex: 1;
+  align-self: center;
+  font-size: 34px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.pf-p4-solution b { color: var(--accent); font-weight: 700; }

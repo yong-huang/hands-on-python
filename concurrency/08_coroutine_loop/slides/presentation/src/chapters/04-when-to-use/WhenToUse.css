@@ -1,0 +1,303 @@
+/* ch04 when-to-use — 独立前缀 wu-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含） ── */
+.wu-rise,
+.wu-fade,
+.wu-hero-in,
+.wu-card-in,
+.wu-pop {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.wu-rise { animation-name: wu-rise; animation-duration: 750ms; }
+.wu-fade { animation-name: wu-fade; animation-duration: 650ms; }
+.wu-hero-in { animation-name: wu-hero-in; animation-duration: 850ms; }
+.wu-card-in { animation-name: wu-card-in; animation-duration: 800ms; }
+.wu-pop { animation-name: wu-pop; animation-duration: 550ms; }
+
+@keyframes wu-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes wu-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes wu-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes wu-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes wu-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 共用小节标签 */
+.wu-case-tag {
+  font-family: var(--font-body);
+  font-size: 25px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+
+/* ── step 0 · 等待特别多的活 ── */
+.wu-case {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+.wu-case-hero {
+  font-family: var(--font-display-cn);
+  font-size: 84px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wu-examples {
+  display: flex;
+  gap: 36px;
+}
+.wu-example {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 22px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.wu-example-name {
+  font-family: var(--font-body);
+  font-size: 28px;
+  color: var(--text);
+}
+.wu-example-meta {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-faint);
+}
+.wu-cost-compare {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+.wu-cost-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.wu-cost-kind {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 76px;
+  text-align: right;
+}
+.wu-cost-cell {
+  width: 130px;
+  height: 26px;
+  border: 1.5px solid var(--text);
+  background: var(--surface-3);
+}
+.wu-cell-tall { height: 62px; border-style: dashed; border-color: var(--text-faint); background: none; }
+.wu-cost-note {
+  font-family: var(--font-body);
+  font-size: 23px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 断言卡 ── */
+.wu-assert {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.wu-assert-hero {
+  font-family: var(--font-display-cn);
+  font-size: 74px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wu-assert-lead {
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.wu-assert-lead u {
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+.wu-assert-card {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 28px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 860px;
+}
+.wu-assert-title {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 12px;
+}
+.wu-assert-row {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.wu-assert-kind {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-mute);
+  min-width: 110px;
+  text-align: right;
+}
+.wu-assert-seq {
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text);
+}
+.wu-seq-ok { color: var(--accent); font-weight: 700; }
+.wu-assert-note {
+  font-family: var(--font-body);
+  font-size: 24px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 14px;
+}
+
+/* ── step 2 · A1B1 序列 ── */
+.wu-seq {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 26px;
+}
+.wu-seq-kicker {
+  font-family: var(--font-body);
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.wu-seq-lanes {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 30px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.wu-seq-lane {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.wu-seq-lane-name {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-mute);
+  min-width: 96px;
+}
+.wu-seq-cells {
+  display: flex;
+  gap: 12px;
+}
+.wu-seq-cell {
+  width: 74px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 26px;
+}
+.wu-cell-on {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+  background: var(--accent-soft);
+}
+.wu-cell-off {
+  border: 1.5px dashed var(--rule);
+  color: var(--text-faint);
+}
+.wu-seq-order {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-2);
+  text-align: center;
+}
+.wu-seq-badge {
+  font-family: var(--font-display-cn);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.wu-seq-contrast {
+  font-family: var(--font-body);
+  font-size: 26px;
+  color: var(--text-mute);
+  border-top: 1px solid var(--rule);
+  padding-top: 20px;
+}
+
+/* ── step 3 · 任务编排 ── */
+.wu-orch {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.wu-orch-hero {
+  font-family: var(--font-display-cn);
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+}
+.wu-orch-pipe {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.wu-orch-step {
+  display: flex;
+  align-items: center;
+}
+.wu-orch-arrow { width: 70px; }
+.wu-orch-node {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 18px 38px;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+}
+.wu-orch-note {
+  font-family: var(--font-body);
+  font-size: 29px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}
+.wu-orch-note span { color: var(--accent); font-weight: 700; }

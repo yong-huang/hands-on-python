@@ -1,0 +1,179 @@
+/* ── ch03 iter-gen · CSS prefix: ig- ─────────────────────────────── */
+
+.ig-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+}
+
+/* shared */
+.ig-rise {
+  opacity: 0;
+  animation: ig-rise 620ms var(--ease-quart) both;
+}
+@keyframes ig-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ig-pop {
+  opacity: 0;
+  animation: ig-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes ig-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.ig-fade {
+  opacity: 0;
+  animation: ig-fade 420ms var(--ease-soft) both;
+}
+@keyframes ig-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ig-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+.ig-codecard {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ig-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.ig-codecard .ig-code {
+  padding: 30px 44px;
+  font-size: 27px;
+  line-height: 1.95;
+}
+.ig-codecard-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.ig-codecard-acc .ig-code { color: var(--text); }
+
+/* ── step 0 · for 拆解 ── */
+.ig-for-scene { gap: 40px; }
+.ig-for-bridge {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.ig-for-bridge-mono {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.ig-for-hl {
+  color: var(--accent);
+  font-weight: 600;
+}
+.ig-for-top {
+  font-family: var(--font-mono);
+  font-size: 58px;
+  color: var(--text);
+}
+.ig-for-k { color: var(--accent); }
+.ig-for-eq {
+  padding: 8px 26px;
+  border: 1px dashed var(--rule);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.ig-for-under {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ig-for-under .ig-code {
+  padding: 26px 40px;
+  font-size: 26px;
+  line-height: 1.85;
+}
+
+/* ── step 1 · 手写迭代器 ── */
+.ig-manual-scene { gap: 44px; }
+.ig-manual-lead {
+  align-self: flex-start;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.ig-manual-tag {
+  position: absolute;
+  right: -300px;
+  bottom: 40px;
+  padding: 14px 32px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* ── step 2 · 生成器版 ── */
+.ig-gen-scene { gap: 44px; }
+.ig-gen-lead {
+  align-self: flex-start;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.ig-gen-count {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  font-size: 32px;
+  color: var(--text-2);
+}
+.ig-gen-count-num {
+  font-family: var(--font-mono);
+  font-size: 84px;
+  font-weight: 600;
+  color: var(--accent);
+  text-shadow: 0 0 60px var(--accent-glow);
+}
+
+/* ── step 3 · 等价 ── */
+.ig-equiv-scene { gap: 70px; }
+.ig-equiv-lead {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text);
+}
+.ig-equiv-chips {
+  display: flex;
+  gap: 44px;
+}
+.ig-equiv-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  padding: 26px 44px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.ig-equiv-mono {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.ig-equiv-auto {
+  font-size: 23px;
+  color: var(--text-2);
+}
+.ig-equiv-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.ig-equiv-foot b { color: var(--text); font-weight: 700; }

@@ -1,0 +1,199 @@
+/* ch08 · atomicity — 独立前缀 at-。颜色/字体只走 token（monochrome-print）。 */
+
+.at-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+/* ── 入场原语 ── */
+.at-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.at-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+.at-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.at-head--ok .label-mono {
+  color: var(--accent);
+}
+
+/* ── 代码卡 ── */
+.at-code {
+  position: relative;
+  padding: 40px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 44px;
+  color: var(--text);
+  overflow: hidden;
+}
+.at-code--scan {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+.at-code--broken {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  border-color: var(--text);
+}
+.at-break-await {
+  padding: 8px 20px;
+  margin-left: 120px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 30px;
+}
+.at-break-line {
+  position: absolute;
+  left: -2%;
+  top: 50%;
+  width: 104%;
+  height: 5px;
+  background: var(--accent);
+  transform: rotate(-3deg);
+}
+.at-break-draw {
+  transform-origin: left;
+  animation: at-strike 700ms var(--ease-expo) forwards;
+  transform: scaleX(0) rotate(-3deg);
+}
+@keyframes at-strike {
+  to { transform: scaleX(1) rotate(-3deg); }
+}
+.at-scan-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent);
+}
+.at-scan-sweep {
+  animation: at-scan 1400ms var(--ease-quart) forwards;
+  opacity: 0;
+}
+@keyframes at-scan {
+  0%   { opacity: 1; left: 0; }
+  90%  { opacity: 1; left: 99%; }
+  100% { opacity: 0; left: 99%; }
+}
+
+/* ── step 0 · 读改写三步 ── */
+.at-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.at-step-cell {
+  display: flex;
+  align-items: center;
+}
+.at-step {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.at-step-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--accent);
+}
+.at-step-code {
+  font-size: 27px;
+  color: var(--text-2);
+}
+.at-step-gap {
+  padding: 0 18px;
+  font-size: 19px;
+  color: var(--text-faint);
+  border-bottom: 2px dashed var(--text-mute);
+  white-space: nowrap;
+}
+.at-lock-row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.at-lock-badge {
+  padding: 14px 28px;
+  background: var(--text);
+  color: var(--surface);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 32px;
+}
+.at-lock-talk {
+  font-size: 27px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 天然原子 ── */
+.at-scan-note {
+  font-size: 31px;
+  color: var(--text-2);
+}
+.at-scan-note b {
+  color: var(--accent);
+}
+.at-atomic {
+  padding: 22px 64px;
+  background: var(--accent);
+  color: var(--surface);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+}
+.at-dividend {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.at-dividend .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 2 · 破裂 ── */
+.at-head--warn .label-mono {
+  color: var(--text);
+}
+.at-break-word {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 66px;
+  color: var(--accent);
+}
+.at-motto {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.at-motto-ok {
+  padding: 18px 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 34px;
+  color: var(--text-2);
+}
+.at-motto-no {
+  padding: 18px 38px;
+  border: 2px solid var(--accent);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--accent);
+}

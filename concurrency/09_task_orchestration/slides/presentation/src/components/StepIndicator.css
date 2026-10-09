@@ -1,0 +1,27 @@
+.step-indicator {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  z-index: 5; /* 低于悬停进度条(pb-hover z:10)：进度条出现时深色毛玻璃会盖住页码 */
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--font-mono);
+  pointer-events: none;
+  user-select: none;
+}
+.step-indicator .si-global {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-2);
+  opacity: 0.85;
+}
+.step-indicator .si-sub {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  opacity: 0.7;
+}

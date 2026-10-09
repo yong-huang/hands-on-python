@@ -1,0 +1,288 @@
+/* ── ch02 what-is · CSS prefix: wt- ──────────────────────────────── */
+
+.wt-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.wt-rise {
+  opacity: 0;
+  animation: wt-rise 620ms var(--ease-quart) both;
+}
+@keyframes wt-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.wt-pop {
+  opacity: 0;
+  animation: wt-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes wt-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.wt-fade {
+  opacity: 0;
+  animation: wt-fade 420ms var(--ease-soft) both;
+}
+@keyframes wt-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.wt-line-in {
+  opacity: 0;
+  animation: wt-fade 420ms var(--ease-soft) both;
+}
+
+.wt-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 0 · 判定变身 ── */
+.wt-transform-scene { gap: 56px; }
+.wt-transform-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wt-transform-cols {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+.wt-transform-card {
+  padding: 30px 42px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wt-transform-card-dim { opacity: 0.7; }
+.wt-transform-card-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.wt-transform-tag {
+  font-size: 21px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+.wt-transform-card-acc .wt-transform-tag { color: var(--accent); }
+.wt-transform-card .wt-code { font-size: 26px; line-height: 1.9; }
+.wt-transform-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.wt-transform-arrow-word {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.wt-transform-arrow-glyph {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  color: var(--accent);
+}
+
+/* ── step 1 · next() 推着跑 ── */
+.wt-model-scene { gap: 60px; }
+.wt-model-code {
+  width: 620px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 20px 0;
+}
+.wt-model-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 34px;
+  font-family: var(--font-mono);
+  font-size: 29px;
+  color: var(--text-2);
+}
+.wt-model-indent {
+  padding-left: 104px;
+}
+.wt-model-row.wt-model-here {
+  background: var(--surface-3);
+  color: var(--text);
+}
+.wt-model-row.wt-model-yield { color: var(--accent); }
+.wt-model-marker {
+  width: 40px;
+  font-size: 20px;
+  color: var(--accent);
+}
+.wt-model-steps {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.wt-model-step {
+  padding: 16px 34px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.wt-model-step-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.wt-model-key {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.wt-model-arrow {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  color: var(--text-mute);
+}
+.wt-model-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.wt-model-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 栈帧冻结 ── */
+.wt-freeze-scene { gap: 60px; }
+.wt-freeze-cols {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+.wt-freeze-code {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wt-freeze-code-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-mute);
+}
+.wt-freeze-code .wt-code {
+  padding: 26px 34px;
+  font-size: 26px;
+  line-height: 1.95;
+}
+.wt-freeze-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 40px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.wt-freeze-frame-tag {
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.wt-freeze-var {
+  padding: 10px 24px;
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+}
+.wt-freeze-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.wt-freeze-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 3 · 状态机 ── */
+.wt-fsm-scene { gap: 80px; }
+.wt-fsm-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wt-fsm {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.wt-fsm-node {
+  padding: 28px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  text-align: center;
+}
+.wt-fsm-node-mid {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.wt-fsm-node-name {
+  font-size: 33px;
+  font-weight: 700;
+  color: var(--text);
+}
+.wt-fsm-node-mid .wt-fsm-node-name { color: var(--accent); }
+.wt-fsm-node-sub {
+  margin-top: 8px;
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.wt-fsm-edge {
+  position: relative;
+  width: 110px;
+  height: 0;
+  border-top: 2px dashed var(--rule);
+}
+.wt-fsm-edge-label {
+  position: absolute;
+  top: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.wt-fsm-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.wt-fsm-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · 真机状态检查 ── */
+.wt-inspect-scene { gap: 44px; }
+.wt-inspect-term {
+  width: 860px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wt-inspect-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.wt-inspect-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 28px 36px;
+}
+.wt-inspect-line {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.wt-inspect-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.wt-inspect-foot b { color: var(--text); font-weight: 700; }

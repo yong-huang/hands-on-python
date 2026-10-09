@@ -1,0 +1,184 @@
+/* ── ch01 hook · CSS prefix: hk- ─────────────────────────────────── */
+
+.hk-scene {
+  justify-content: center;
+}
+
+/* shared entrances */
+.hk-rise {
+  opacity: 0;
+  animation: hk-rise 620ms var(--ease-quart) both;
+}
+@keyframes hk-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hk-pop {
+  opacity: 0;
+  animation: hk-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes hk-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · title ── */
+.hk-title-scene {
+  align-items: center;
+  text-align: center;
+}
+.hk-title-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: auto 0;
+}
+.hk-title-rule {
+  width: 820px;
+  animation: hk-rule-x 700ms var(--ease-soft) both;
+  transform-origin: center;
+}
+@keyframes hk-rule-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-title-main {
+  margin: 0;
+  font-size: 112px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.hk-title-code {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.hk-title-sub {
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.hk-titleblock {
+  position: absolute;
+  right: 56px;
+  bottom: 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 28px;
+  padding: 13px 22px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+}
+.hk-tb-row:first-child { border-top: 0; }
+.hk-tb-row span {
+  width: 64px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.hk-tb-row b {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 对比卡 ── */
+.hk-contrast-scene {
+  gap: 60px;
+  align-items: center;
+}
+.hk-contrast-cols {
+  display: flex;
+  gap: 90px;
+  align-items: stretch;
+}
+.hk-contrast-card {
+  padding: 30px 42px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-contrast-card-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.hk-contrast-tag {
+  font-size: 21px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+.hk-contrast-card-acc .hk-contrast-tag { color: var(--accent); }
+.hk-contrast-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 25px;
+  line-height: 1.85;
+  color: var(--text-2);
+  white-space: pre;
+}
+.hk-contrast-card-acc .hk-contrast-code { color: var(--text); }
+.hk-contrast-foot {
+  font-size: 38px;
+  color: var(--text-2);
+  text-align: center;
+}
+.hk-contrast-foot b { color: var(--text); font-weight: 700; }
+.hk-contrast-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 悬念 ── */
+.hk-ask-scene {
+  gap: 34px;
+  align-items: center;
+  text-align: center;
+}
+.hk-ask-line {
+  font-size: 44px;
+  color: var(--text-2);
+}
+.hk-ask-code {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.hk-ask-big {
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.hk-ask-em {
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+
+/* ── step 3 · type 点名 ── */
+.hk-answer-scene {
+  align-items: center;
+  gap: 44px;
+}
+.hk-answer-kicker {
+  font-size: 30px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+.hk-answer-type {
+  font-family: var(--font-mono);
+  font-size: 210px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 100px var(--accent-glow);
+}
+.hk-answer-copy {
+  text-align: center;
+  font-size: 36px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.hk-answer-copy b { color: var(--text); font-weight: 700; }

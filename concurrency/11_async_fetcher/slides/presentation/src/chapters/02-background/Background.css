@@ -1,0 +1,540 @@
+/* ch02 · background — 独立前缀 bd-。颜色/字体只走 token（monochrome-print）。 */
+
+.bd-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.bd-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.bd-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.bd-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: bd-grow 700ms var(--ease-quart) forwards;
+}
+@keyframes bd-grow {
+  to { transform: scaleX(1); }
+}
+.bd-drop {
+  opacity: 0;
+  animation: bd-drop 480ms var(--ease-overshoot) forwards;
+}
+@keyframes bd-drop {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.bd-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+.bd-codechip {
+  padding: 6px 18px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 30px;
+  color: var(--accent);
+}
+
+/* ── step 0 · 串行写法 ── */
+.bd-serial-scene {
+  gap: 54px;
+}
+.bd-codecard {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.bd-codecard-head {
+  padding: 18px 36px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.bd-code {
+  margin: 0;
+  padding: 30px 36px;
+  font-size: 32px;
+  line-height: 1.7;
+  color: var(--text);
+}
+.bd-serial-lane {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.bd-serial-dot {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.bd-serial-dot--wait {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+.bd-serial-note {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 1 · 全款 ── */
+.bd-fullprice-scene {
+  gap: 52px;
+}
+.bd-fp-headline {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 64px;
+  color: var(--text);
+}
+.bd-fp-chainwrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.bd-fp-chain {
+  display: flex;
+  gap: 5px;
+  width: 1440px;
+}
+.bd-fp-seg {
+  width: 23px;
+  height: 56px;
+  background: var(--text-2);
+  flex: 0 0 auto;
+}
+.bd-fp-seg:nth-child(4n + 1) {
+  background: var(--text);
+  width: 34px;
+}
+.bd-fp-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.bd-fp-row {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+.bd-fp-cpu {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 30px;
+  border: 1px dashed var(--text-faint);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.bd-fp-cpu .label-mono {
+  font-size: 18px;
+}
+.bd-fp-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 58px;
+  color: var(--text);
+}
+
+/* ── step 2 · 线程池 ── */
+.bd-pool-scene {
+  gap: 48px;
+}
+.bd-pool-headline {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--text);
+}
+.bd-pool-grid {
+  display: flex;
+  gap: 20px;
+}
+.bd-pool-worker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 16px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bd-pool-face {
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--text-2);
+  border-radius: 50%;
+}
+.bd-pool-tag {
+  font-size: 16px;
+  color: var(--text-mute);
+}
+.bd-pool-bar {
+  width: 92px;
+  height: 10px;
+  background: var(--accent);
+}
+.bd-pool-overlap {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.bd-pool-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.bd-pool-lane {
+  width: 300px;
+  height: 7px;
+  background: var(--text-faint);
+}
+.bd-pool-lane:nth-child(3n) {
+  width: 240px;
+}
+.bd-pool-result {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+
+/* ── step 3 · 天花板 ── */
+.bd-ceiling-scene {
+  gap: 44px;
+}
+.bd-ceiling-headline {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 68px;
+  color: var(--text);
+}
+.bd-ceiling-def {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 32px;
+  color: var(--text-2);
+}
+.bd-ceiling-def .label-mono {
+  font-size: 18px;
+  color: var(--accent);
+}
+.bd-ceiling-lanes {
+  display: flex;
+  align-items: flex-end;
+  gap: 26px;
+}
+.bd-ceiling-lane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.bd-ceiling-lane-name {
+  font-size: 17px;
+  color: var(--text-mute);
+}
+.bd-ceiling-thread {
+  padding: 20px 30px;
+  border: 2px solid var(--text-2);
+  background: var(--surface-2);
+  font-size: 25px;
+  color: var(--text);
+}
+.bd-ceiling-thread .mono {
+  color: var(--accent);
+}
+.bd-ceiling-more {
+  align-self: flex-end;
+  padding-bottom: 16px;
+  font-size: 26px;
+  color: var(--text-faint);
+}
+.bd-ceiling-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 38px;
+  color: var(--text);
+}
+
+/* ── step 4 · 异步登场 ── */
+.bd-async-scene {
+  gap: 44px;
+}
+.bd-async-name {
+  padding: 10px 54px;
+  border: 3px solid var(--accent);
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 84px;
+  color: var(--accent);
+}
+.bd-async-def {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.bd-async-rail {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 1500px;
+  height: 190px;
+  margin-top: 60px;
+}
+.bd-async-threadline {
+  align-self: flex-end;
+  width: 100%;
+  height: 4px;
+  background: var(--text);
+}
+.bd-async-threadlabel {
+  position: absolute;
+  left: 0;
+  bottom: 18px;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.bd-async-pendants {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  display: flex;
+  gap: 46px;
+  transform: translateX(-50%);
+}
+.bd-async-pendant {
+  width: 12px;
+  height: 52px;
+  border: 2px solid var(--accent);
+  border-bottom: none;
+  background: var(--accent-soft);
+  flex: 0 0 auto;
+}
+.bd-async-pendant:nth-child(2n) {
+  height: 74px;
+}
+.bd-async-pendant:nth-child(3n) {
+  height: 92px;
+}
+.bd-async-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 5 · 买票三联画 ── */
+.bd-ticket-scene {
+  gap: 46px;
+}
+.bd-ticket-question {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}
+.bd-ticket-row {
+  display: flex;
+  align-items: stretch;
+  gap: 40px;
+}
+.bd-ticket-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  width: 470px;
+  padding: 34px 30px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bd-ticket-panel--best {
+  border-color: var(--accent);
+}
+.bd-ticket-panel-tag {
+  padding: 6px 20px;
+  border: 1px solid var(--rule);
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: var(--text-2);
+}
+.bd-ticket-panel--best .bd-ticket-panel-tag {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.bd-ticket-queue {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 150px;
+}
+.bd-ticket-queue--one {
+  flex-direction: row;
+  gap: 7px;
+}
+.bd-ticket-queue--ten {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  gap: 7px 8px;
+  align-items: end;
+  align-content: end;
+}
+.bd-person {
+  width: 15px;
+  height: 24px;
+  border: 2px solid var(--text-2);
+  border-bottom: none;
+  border-radius: 7px 7px 0 0;
+  flex: 0 0 auto;
+}
+.bd-person--hold {
+  width: 30px;
+  height: 48px;
+  border-color: var(--accent);
+}
+.bd-ticket-hold {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 150px;
+}
+.bd-ticket-tickets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-width: 240px;
+}
+.bd-ticket-slip {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 40px;
+  padding: 0 6px;
+  border: 1px solid var(--accent);
+  font-size: 18px;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.bd-ticket-slip--more {
+  border-style: dashed;
+  color: var(--text-mute);
+  background: none;
+}
+.bd-ticket-panel-note {
+  font-size: 27px;
+  color: var(--text-2);
+}
+.bd-ticket-conclusion {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--text);
+}
+
+/* ── step 6 · 协程与事件循环 ── */
+.bd-name-scene {
+  gap: 46px;
+}
+.bd-name-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 1080px;
+  padding: 38px 0 34px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.bd-name-tag {
+  font-size: 18px;
+  letter-spacing: 0.24em;
+  color: var(--text-faint);
+}
+.bd-name-word {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 60px;
+  color: var(--text);
+}
+.bd-name-def {
+  font-size: 32px;
+  color: var(--text-2);
+}
+.bd-name-root {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 7 · 三种乱象 ── */
+.bd-chaos-scene {
+  gap: 60px;
+}
+.bd-chaos-kicker {
+  font-size: 34px;
+  color: var(--text-mute);
+}
+.bd-chaos-row {
+  display: flex;
+  gap: 40px;
+}
+.bd-chaos-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 430px;
+  padding: 44px 24px 40px;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--text-2);
+  background: var(--surface-2);
+}
+.bd-chaos-num {
+  font-size: 22px;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+}
+.bd-chaos-cond {
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.bd-chaos-hit {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.bd-chaos-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}

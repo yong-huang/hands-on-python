@@ -1,0 +1,22 @@
+.ab-scene { justify-content: center; align-items: center; gap: 44px; }
+.ab-rise { opacity: 0; animation: ab-rise 620ms var(--ease-quart) both; }
+@keyframes ab-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.ab-dim { color: var(--text-mute); }
+.ab-code-lead { align-self: flex-start; font-size: 28px; color: var(--text-mute); }
+.ab-code { border: 1px solid var(--rule); background: var(--surface-2); padding: 26px 40px; font-family: var(--font-mono); font-size: 24px; line-height: 1.85; color: var(--text-2); white-space: pre; }
+.ab-type-scene { gap: 24px; }
+.ab-type-line { font-size: 48px; font-weight: 700; color: var(--accent); text-align: center; }
+.ab-type-reason { font-size: 29px; color: var(--text-2); text-align: center; }
+.ab-type-reason b { color: var(--text); font-weight: 700; }
+.ab-reg-scene { gap: 32px; }
+.ab-reg-code { padding: 18px 40px; border: 1px solid var(--rule); background: var(--surface-2); }
+.ab-reg-mono { font-family: var(--font-mono); font-size: 26px; color: var(--accent); }
+.ab-reg-result { display: flex; flex-direction: column; gap: 10px; }
+.ab-reg-check { font-size: 25px; color: var(--accent); }
+.ab-reg-note { font-size: 30px; color: var(--text-2); }
+.ab-reg-note b { color: var(--text); font-weight: 700; }
+.ab-ship-scene { gap: 0; }
+.ab-ship-line { font-size: 36px; color: var(--text); }
+.ab-summary-scene { gap: 0; }
+.ab-summary-line { font-size: 42px; font-weight: 700; color: var(--text); text-align: center; }
+.ab-summary-line b { color: var(--accent); }

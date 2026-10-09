@@ -1,0 +1,32 @@
+.hk-scene { justify-content: center; align-items: center; gap: 48px; }
+.hk-rise { opacity: 0; animation: hk-rise 620ms var(--ease-quart) both; }
+@keyframes hk-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.hk-pop { opacity: 0; animation: hk-pop 520ms var(--ease-overshoot) both; }
+@keyframes hk-pop { 0% { opacity: 0; transform: scale(0.88); } 100% { opacity: 1; transform: scale(1); } }
+.hk-dim { color: var(--text-mute); font-family: var(--font-mono); }
+
+.hk-err-scene { gap: 30px; }
+.hk-err-code { font-family: var(--font-mono); font-size: 40px; color: var(--text); }
+.hk-err-trace { width: 1000px; border: 1px solid var(--accent); background: var(--accent-soft); }
+.hk-err-bar { padding: 10px 20px; border-bottom: 1px dashed var(--accent); font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.14em; color: var(--accent); }
+.hk-err-body { padding: 18px 24px; font-family: var(--font-mono); font-size: 23px; color: var(--text-2); }
+
+.hk-print-scene { gap: 30px; }
+.hk-print-code { font-family: var(--font-mono); font-size: 36px; color: var(--text); }
+.hk-print-output { font-family: var(--font-mono); font-size: 32px; color: var(--accent); padding: 16px 36px; border: 1.5px dashed var(--accent); background: var(--accent-soft); }
+.hk-print-note { font-size: 28px; color: var(--text-mute); }
+
+.hk-set-scene { gap: 36px; }
+.hk-set-lead { font-size: 38px; font-weight: 700; color: var(--text); }
+.hk-set-demo { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.hk-set-obj { padding: 12px 28px; border: 1px solid var(--rule); background: var(--surface-2); font-family: var(--font-mono); font-size: 24px; color: var(--text-2); }
+.hk-set-obj-2 { border-style: dashed; }
+.hk-set-arrow { font-family: var(--font-mono); font-size: 30px; color: var(--text-mute); }
+.hk-set-count { font-size: 26px; font-weight: 700; color: var(--accent); }
+.hk-set-note { font-size: 28px; color: var(--text-mute); }
+
+.hk-dunder-scene { gap: 40px; }
+.hk-dunder-lead { font-size: 36px; color: var(--text-2); }
+.hk-dunder-big { font-family: var(--font-mono); font-size: 110px; font-weight: 700; color: var(--accent); text-shadow: 0 0 80px var(--accent-glow); }
+.hk-dunder-us { font-size: 0.7em; opacity: 0.5; }
+.hk-dunder-sub { font-size: 30px; color: var(--text-2); text-align: center; line-height: 1.6; }

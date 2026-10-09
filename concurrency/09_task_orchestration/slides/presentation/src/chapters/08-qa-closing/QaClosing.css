@@ -1,0 +1,112 @@
+/* ch08 · qa-closing — 独立前缀 qa-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.qa-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in ── */
+.qa-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.qa-pop {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+}
+
+/* ── 页头 ── */
+.qa-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.qa-q-talk { font-size: 28px; color: var(--text-mute); }
+.qa-tool-name { font-size: 42px; color: var(--accent); }
+
+/* ── step 0/1 · 两工具卡（白卡细线，无粗边） ── */
+.qa-gather-card, .qa-tg-card {
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 46px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.qa-gather-line { font-size: 38px; color: var(--text); line-height: 1.55; }
+.qa-gather-line b { color: var(--accent); font-weight: 700; }
+.qa-gather-sub { font-size: 27px; color: var(--text-mute); }
+.qa-count-row { display: flex; flex-direction: row; align-items: baseline; gap: 30px; }
+.qa-count-chip {
+  font-size: 26px;
+  color: var(--text-2);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: 3px;
+  padding: 14px 30px;
+}
+.qa-count-hero { font-size: 38px; font-weight: 700; color: var(--text); margin-left: 14px; }
+.qa-hero-num { font-size: 92px; color: var(--accent); }
+.qa-pair-note {
+  text-align: center;
+  font-size: 27px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+}
+
+/* ── step 2 · 两条路 ── */
+.qa-roads { display: flex; flex-direction: row; gap: 48px; flex: 1; align-items: stretch; align-self: stretch; }
+.qa-road {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 44px 50px;
+}
+.qa-road-tag { font-size: 17px; color: var(--text-faint); letter-spacing: 0.18em; }
+.qa-road-code { font-size: 29px; color: var(--text); }
+.qa-road-talk { font-size: 22px; color: var(--text-mute); }
+
+/* ── step 3 · 仓库卡 ── */
+.qa-repo-scene { gap: 30px; }
+.qa-repo-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.qa-repo-path {
+  font-family: var(--font-display-cn);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+.qa-repo-sep { color: var(--text-faint); font-weight: 400; padding: 0 8px; }
+.qa-repo-cmd {
+  font-size: 28px;
+  color: var(--text-2);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: 3px;
+  padding: 18px 40px;
+}
+
+/* ── step 4 · 终屏 ── */
+.qa-end-scene { gap: 30px; }
+.qa-end-title {
+  font-family: var(--font-display-cn);
+  font-size: 118px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.06em;
+}
+.qa-end-sub { font-size: 32px; color: var(--text-mute); letter-spacing: 0.04em; }
+.qa-end-bye { font-size: 26px; color: var(--text-faint); letter-spacing: 0.5em; margin-top: 14px; }

@@ -1,0 +1,519 @@
+/* ch03 · conveyor — 独立前缀 cv-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.cv-scene {
+  align-items: center;
+  justify-content: center;
+}
+.cv-scene .label-mono {
+  font-size: 15px;
+}
+
+/* ── 入场原语 ── */
+.cv-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.cv-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 通用件 ── */
+.cv-accent {
+  color: var(--accent);
+}
+.cv-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.cv-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1.4;
+  color: var(--text);
+  text-align: center;
+}
+.cv-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.cv-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 0 · 主角登场 ── */
+.cv-hero-scene {
+  gap: 36px;
+}
+.cv-hero {
+  font-size: 104px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.cv-hero-rule {
+  width: 76px;
+}
+.cv-hero-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+.cv-hero-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 30px;
+  color: var(--text-faint);
+}
+
+/* ── 传送带（step 1/3/4 共用画法）── */
+.cv-belt-scene {
+  gap: 56px;
+}
+.cv-belt-flow {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.cv-endpoint {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.cv-endpoint-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.cv-endpoint-talk {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+.cv-belt {
+  position: relative;
+  width: 1000px;
+  height: 170px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.cv-belt-band,
+.cv-belt-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+/* 带面实线在上,滚轮虚线贴其下,两层全程等宽 */
+.cv-belt-band {
+  bottom: 7px;
+  border-top: 2px solid var(--text-2);
+}
+.cv-belt-dots {
+  bottom: 0;
+  border-top: 3px dotted var(--rule);
+}
+.cv-crate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-family: var(--font-mono);
+  font-size: 23px;
+  color: var(--text-2);
+  box-shadow: var(--card-shadow);
+}
+.cv-belt .cv-crate {
+  position: absolute;
+  bottom: 8px;
+}
+.cv-crate--run {
+  animation: cv-run 2600ms linear forwards;
+}
+.cv-crate--run-stay {
+  animation: cv-run-stay 2600ms var(--ease-soft) forwards;
+}
+@keyframes cv-run-stay {
+  0% {
+    left: -110px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    left: 640px;
+    opacity: 1;
+  }
+}
+@keyframes cv-run {
+  0% {
+    left: -110px;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    left: 920px;
+    opacity: 0;
+  }
+}
+.cv-crate--slide {
+  animation: cv-slide 1400ms var(--ease-soft) forwards;
+}
+@keyframes cv-slide {
+  from {
+    transform: translateX(-260px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ── step 2 · 背压 ── */
+.cv-bp-scene {
+  gap: 42px;
+}
+.cv-bp-stage {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.cv-bp-producer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.cv-bp-hold {
+  position: absolute;
+  top: -22px;
+  right: -26px;
+  padding: 10px 20px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--accent);
+  transform: rotate(-6deg);
+}
+.cv-bp-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.cv-bp-belt {
+  display: flex;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.cv-slot {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cv-bp-count {
+  font-size: 27px;
+  color: var(--accent);
+}
+
+/* ── step 3 · 回执 ── */
+.cv-rc-scene {
+  gap: 48px;
+}
+.cv-rc-stage {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.cv-rc-belt {
+  position: relative;
+  width: 620px;
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.cv-rc-belt .cv-belt-band {
+  position: absolute;
+  bottom: 0;
+}
+.cv-rc-belt .cv-crate {
+  position: absolute;
+  bottom: 14px;
+}
+.cv-crate--tagged {
+  padding-top: 14px;
+}
+.cv-receipt-tag {
+  position: absolute;
+  top: -34px;
+  right: -46px;
+  padding: 8px 16px;
+  border: 1px solid var(--accent);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--accent);
+  transform: rotate(5deg);
+}
+.cv-rc-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 34px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.cv-rc-box .cv-endpoint-name {
+  font-size: 34px;
+}
+.cv-rc-tick {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 600;
+}
+.cv-rc-api {
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+/* ── step 4 · 毒丸 ── */
+.cv-ps-scene {
+  gap: 42px;
+}
+.cv-ps-stage {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.cv-ps-belt {
+  position: relative;
+  width: 860px;
+  height: 210px;
+  display: flex;
+  align-items: flex-end;
+  gap: 60px;
+  padding: 0 30px 14px;
+}
+.cv-ps-belt .cv-belt-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.cv-crate--poison {
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.cv-ps-off {
+  padding: 10px 20px;
+  border: 1px solid var(--accent);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 25px;
+  color: var(--accent);
+}
+
+/* ── step 5/6 · 部件地图 ── */
+.cv-map-scene {
+  gap: 56px;
+}
+.cv-map {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 26px;
+}
+.cv-map-producers,
+.cv-map-consumers {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+.cv-map-producer,
+.cv-map-consumer,
+.cv-map-node,
+.cv-map-queue {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.cv-map-queue {
+  justify-content: center;
+  border-color: var(--accent);
+}
+.cv-map-queue-name {
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.cv-map-ord {
+  font-size: 17px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.cv-map-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--text);
+}
+.cv-map-talk {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.cv-map-talk--poison {
+  color: var(--accent);
+}
+.cv-map-join {
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+.cv-map-join--ghost {
+  opacity: 0.35;
+}
+.cv-map-ghost {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 40px 46px;
+  border: 2px dashed var(--rule);
+}
+.cv-map-ghost-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text-faint);
+}
+.cv-map-ghost-talk {
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.cv-map--full .cv-map-node {
+  justify-content: center;
+}
+
+/* ── step 7 · 汇流 ── */
+.cv-mix-scene {
+  gap: 52px;
+}
+.cv-mix {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.cv-mix-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.cv-mix-from {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 20px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.cv-mix-from-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text);
+  min-width: 200px;
+}
+.cv-mix-stream {
+  display: flex;
+  gap: 20px;
+  width: 220px;
+}
+.cv-stream-dot {
+  width: 20px;
+  height: 20px;
+  background: var(--text-2);
+  animation: cv-stream 800ms var(--ease-soft) forwards;
+  opacity: 0;
+}
+.cv-stream-dot--poison {
+  background: var(--accent);
+}
+@keyframes cv-stream {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(30px);
+    opacity: 1;
+  }
+}
+.cv-mix-what {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.cv-mix-merge {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+.cv-mix-belt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 26px 40px 0;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.cv-mix-belt .cv-belt-band {
+  width: 100%;
+}

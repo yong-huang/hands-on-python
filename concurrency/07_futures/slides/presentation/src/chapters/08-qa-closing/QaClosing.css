@@ -1,0 +1,211 @@
+/* ch08 · qa-closing — 独立前缀 qz-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.qz-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.qz-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.qz-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.qz-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: qz-grow-x 700ms var(--ease-expo) forwards;
+}
+@keyframes qz-grow-x {
+  to { transform: scaleX(1); }
+}
+.qz-accent {
+  color: var(--accent);
+}
+
+/* ── step 0 · 定义 ── */
+.qz-def-scene {
+  gap: 50px;
+}
+.qz-def-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.qz-def-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 46px 100px;
+}
+.qz-def-tag {
+  font-size: 22px;
+  letter-spacing: 0.18em;
+  color: var(--text-faint);
+}
+.qz-def-main {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 76px;
+  color: var(--accent);
+}
+.qz-def-attrs {
+  display: flex;
+  gap: 56px;
+}
+.qz-def-attr {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.qz-def-verb {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+}
+.qz-def-talk {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 抽出等待 ── */
+.qz-pull-scene {
+  gap: 60px;
+}
+.qz-pull-flow {
+  display: flex;
+  align-items: center;
+  gap: 46px;
+}
+.qz-pull-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 44px 64px;
+}
+.qz-pull-tag {
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.qz-pull-slot {
+  padding: 18px 36px;
+  border: 2px dashed var(--text-faint);
+  color: var(--text-mute);
+  font-size: 28px;
+}
+.qz-pull-arrow {
+  font-size: 50px;
+  color: var(--accent);
+}
+.qz-pull-thing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 64px;
+}
+.qz-pull-thing-main {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--accent);
+}
+.qz-pull-thing-talk {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.qz-pull-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+
+/* ── step 2 · Thread ── */
+.qz-not-scene {
+  gap: 50px;
+}
+.qz-not-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 56px 100px;
+}
+.qz-not-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.qz-not-talk {
+  font-size: 32px;
+  color: var(--text-mute);
+}
+
+/* ── step 3 · asyncio ── */
+.qz-async-scene {
+  gap: 56px;
+}
+.qz-async-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.qz-async-ring {
+  position: relative;
+  width: 520px;
+  height: 320px;
+}
+.qz-async-waiter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 26px 40px;
+  border: 2px solid var(--text);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text);
+}
+.qz-async-guest {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.qz-async-guest--0 { left: 40px;  top: 30px; }
+.qz-async-guest--1 { left: 440px; top: 40px; }
+.qz-async-guest--2 { left: 20px;  top: 240px; }
+.qz-async-guest--3 { left: 460px; top: 230px; }
+.qz-async-guest--4 { left: 240px; top: 4px; }
+.qz-async-guest--5 { left: 240px; top: 280px; }
+.qz-async-hero {
+  font-size: 34px;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 1500px;
+}
+
+/* ── step 4 · 收尾 ── */
+.qz-end-scene {
+  gap: 44px;
+}
+.qz-end-note {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.qz-end-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}

@@ -1,0 +1,210 @@
+/* ch06 · unify — 独立前缀 un-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.un-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.un-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.un-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.un-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: un-grow-x 700ms var(--ease-expo) forwards;
+}
+@keyframes un-grow-x {
+  to { transform: scaleX(1); }
+}
+
+.un-accent {
+  color: var(--accent);
+}
+
+/* ── step 0 · 对照表 ── */
+.un-dict-scene {
+  gap: 50px;
+}
+.un-dict-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.un-dict-table {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  min-width: 1050px;
+  padding: 46px 70px;
+}
+.un-dict-cols {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 40px;
+  font-size: 19px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 16px;
+}
+.un-dict-row {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 40px;
+  align-items: baseline;
+}
+.un-dict-name {
+  font-size: 30px;
+  color: var(--text);
+}
+.un-dict-make {
+  font-size: 27px;
+  color: var(--text-2);
+}
+.un-dict-hero {
+  font-size: 32px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+/* ── step 1 · 插头与电压 ── */
+.un-plug-scene {
+  gap: 56px;
+}
+.un-plug-flow {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+}
+.un-plug-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 44px 60px;
+}
+.un-plug-tag {
+  font-size: 21px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.un-plug-wire {
+  width: 130px;
+  height: 5px;
+  background: var(--accent);
+}
+.un-plug-sockets {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.un-plug-socket {
+  padding: 30px 60px;
+  border: 2px dashed var(--rule);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.un-plug-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 66px;
+  color: var(--text);
+}
+.un-plug-note {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · IO 用线程 ── */
+.un-io-scene {
+  gap: 58px;
+}
+.un-io-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.un-io-tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.un-io-task {
+  padding: 26px 70px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 38px;
+  color: var(--text);
+}
+.un-io-tag {
+  padding: 12px 30px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 26px;
+}
+.un-io-verdict {
+  font-size: 36px;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 1400px;
+}
+
+/* ── step 3 · G I L ── */
+.un-gil-scene {
+  gap: 60px;
+}
+.un-gil-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 44px 90px;
+  border: 3px solid var(--text);
+  background: var(--surface-2);
+}
+.un-gil-name {
+  font-size: 64px;
+  font-weight: 600;
+  color: var(--text);
+}
+.un-gil-talk {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.un-gil-duo {
+  display: flex;
+  gap: 60px;
+}
+.un-gil-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 520px;
+  padding: 44px 40px;
+}
+.un-gil-card-tag {
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.un-gil-card-main {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.un-gil-card-talk {
+  font-size: 24px;
+  color: var(--text-mute);
+  text-align: center;
+}

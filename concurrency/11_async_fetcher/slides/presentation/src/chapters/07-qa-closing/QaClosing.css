@@ -1,0 +1,279 @@
+/* ch07 · qa-closing — 独立前缀 qa-。颜色/字体只走 token（monochrome-print）。 */
+
+.qa-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.qa-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.qa-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.qa-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: qa-grow 700ms var(--ease-quart) forwards;
+}
+@keyframes qa-grow {
+  to { transform: scaleX(1); }
+}
+
+.qa-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── 公共问句 ── */
+.qa-question {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+
+/* ── step 0 · 等待成本为零 ── */
+.qa-zero-scene {
+  gap: 64px;
+}
+.qa-zero-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  width: 1480px;
+}
+.qa-zero-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.qa-zero-tag {
+  flex: 0 0 170px;
+  font-size: 25px;
+  color: var(--text-2);
+  text-align: right;
+}
+.qa-zero-track {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  height: 48px;
+}
+.qa-zero-seg {
+  width: 26px;
+  height: 40px;
+  background: var(--text-2);
+  flex: 0 0 auto;
+}
+.qa-zero-bar {
+  width: 11%;
+  height: 48px;
+  background: var(--accent);
+}
+.qa-zero-val {
+  flex: 0 0 170px;
+  font-size: 58px;
+  color: var(--text);
+}
+.qa-zero-val--win {
+  color: var(--accent);
+}
+.qa-zero-note {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 比线程 ── */
+.qa-thread-scene {
+  gap: 62px;
+}
+.qa-thread-q {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+.qa-thread-row {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+.qa-thread-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 480px;
+  padding: 50px 0 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.qa-thread-num {
+  font-size: 110px;
+  color: var(--accent);
+}
+.qa-thread-name {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.qa-thread-vs {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.qa-thread-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 58px;
+  color: var(--text);
+}
+
+/* ── step 2 · 连接池 vs 信号量 ── */
+.qa-pool-scene {
+  gap: 56px;
+}
+.qa-pool-question {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}
+.qa-pool-name {
+  color: var(--accent);
+}
+.qa-pool-row {
+  display: flex;
+  gap: 46px;
+}
+.qa-pool-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 620px;
+  padding: 44px 0 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.qa-pool-card--key {
+  border: 2px solid var(--accent);
+}
+.qa-pool-card-tag {
+  font-size: 20px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+.qa-pool-card--key .qa-pool-card-tag {
+  color: var(--accent);
+}
+.qa-pool-card-line {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.qa-pool-card-sub {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.qa-pool-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+
+/* ── step 3 · 退避时间线 ── */
+.qa-backoff-scene {
+  gap: 52px;
+}
+.qa-backoff-line {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 1400px;
+}
+.qa-backoff-marker {
+  padding: 12px 28px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 26px;
+  color: var(--accent);
+  flex: 0 0 auto;
+}
+.qa-backoff-track {
+  flex: 1;
+  height: 3px;
+  background: var(--text-faint);
+}
+.qa-backoff-row {
+  display: flex;
+  gap: 46px;
+}
+.qa-backoff-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 600px;
+  padding: 40px 0 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.qa-backoff-card--bad {
+  border: 2px dashed var(--text-faint);
+  background: var(--surface);
+}
+.qa-backoff-tag {
+  font-size: 20px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+}
+.qa-backoff-text {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+.qa-backoff-note {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  color: var(--text-2);
+}
+
+/* ── step 4 · 收尾 ── */
+.qa-end-scene {
+  gap: 44px;
+}
+.qa-end-repo {
+  padding: 20px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 30px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.qa-end-note {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  color: var(--text-2);
+}
+.qa-end-lib {
+  color: var(--accent);
+}
+.qa-end-rule {
+  width: 420px;
+  height: 2px;
+  background: var(--accent);
+}
+.qa-end-bye {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 54px;
+  color: var(--text);
+}

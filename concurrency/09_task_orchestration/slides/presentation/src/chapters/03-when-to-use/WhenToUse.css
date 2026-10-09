@@ -1,0 +1,222 @@
+/* ch03 · when-to-use — 独立前缀 wu-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.wu-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in ── */
+.wu-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.wu-pop {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+}
+.wu-stamp {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+  animation-delay: 1600ms;
+}
+
+/* ── 页头 ── */
+.wu-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.wu-head-name { font-size: 30px; color: var(--accent); }
+.wu-head-ord { font-size: 15px; letter-spacing: 0.12em; color: var(--text-faint); }
+.wu-note { text-align: center; font-size: 32px; color: var(--text-2); letter-spacing: 0.03em; }
+.wu-note b { color: var(--accent); font-weight: 700; }
+
+/* ── step 0 · wait_for（细线元素 + 圆环时限） ── */
+.wu-timeout-stage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 54px;
+  flex: 1;
+}
+.wu-call-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 42px 56px;
+}
+.wu-call-name { font-size: 30px; color: var(--text); }
+.wu-call-talk { font-size: 20px; color: var(--text-faint); letter-spacing: 0.06em; }
+.wu-timeout-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+}
+.wu-ring-num { font-family: var(--font-display-en); font-style: italic; font-size: 50px; color: var(--accent); }
+.wu-ring-talk { font-size: 18px; color: var(--text-faint); letter-spacing: 0.2em; }
+.wu-timeout-hit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+}
+.wu-hit-badge {
+  font-size: 23px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 8px 22px;
+  transform: rotate(-3deg);
+}
+
+/* ── step 1 · gather ── */
+.wu-gather-stage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  flex: 1;
+}
+.wu-batch { display: flex; flex-direction: column; gap: 18px; }
+.wu-batch-chip, .wu-batch-more {
+  font-size: 26px;
+  color: var(--text-2);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 16px 38px;
+  text-align: center;
+}
+.wu-batch-more { color: var(--text-faint); border: none; background: none; padding: 0; }
+.wu-gather-arrow { font-size: 48px; color: var(--text-faint); }
+.wu-list-box {
+  width: 380px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  overflow: hidden;
+}
+.wu-list-title {
+  padding: 14px 26px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 16px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+}
+.wu-list-row { padding: 15px 26px; font-size: 23px; color: var(--text); border-bottom: 1px solid var(--rule); }
+.wu-list-row:last-child { border-bottom: none; }
+
+/* ── step 2 · 关联强度 ── */
+.wu-rule-hero {
+  font-family: var(--font-display-cn);
+  font-size: 68px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.wu-rule-hero b { color: var(--accent); font-weight: 700; }
+.wu-rule-list { display: flex; flex-direction: column; gap: 20px; align-self: stretch; }
+.wu-rule-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 34px;
+  border-bottom: 1px solid var(--rule);
+  padding: 16px 10px 22px;
+}
+.wu-rule-cond { font-size: 40px; font-weight: 700; color: var(--text); width: 360px; }
+.wu-rule-arrow { font-size: 32px; color: var(--text-faint); }
+.wu-rule-tool { font-size: 36px; color: var(--accent); }
+
+/* ── step 3 · 下单 ── */
+.wu-order-stage { display: flex; justify-content: center; gap: 40px; flex: 1; align-items: center; }
+.wu-order-chip {
+  font-size: 34px;
+  color: var(--text);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 34px 60px;
+}
+.wu-order-verdict { text-align: center; font-size: 40px; color: var(--text-2); }
+.wu-order-verdict b { color: var(--accent); font-weight: 700; }
+
+/* ── step 4 · 慢接口 ── */
+.wu-deadline-stage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  flex: 1;
+}
+.wu-dl-main { font-size: 38px; font-weight: 700; color: var(--text); }
+.wu-dl-call {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 28px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 34px 48px;
+}
+.wu-dl-call .mono { font-size: 28px; color: var(--text-2); }
+.wu-dl-limit { font-size: 22px; color: var(--accent); }
+
+/* ── step 5 · 100 页面点阵 ── */
+.wu-page-grid {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 10px;
+  flex: 1;
+  align-content: center;
+  padding: 0 60px;
+  align-self: stretch;
+}
+.wu-page-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+}
+.wu-page-dot.is-bad { background: var(--accent); border-color: var(--accent); }
+
+/* ── step 6~8 · 别用边界（行式清单） ── */
+.wu-avoid-list { display: flex; flex-direction: column; gap: 26px; flex: 1; justify-content: center; align-self: stretch; }
+.wu-avoid-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 30px;
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 8px 26px;
+}
+.wu-avoid-ord { font-size: 19px; color: var(--text-faint); width: 44px; }
+.wu-avoid-name { font-size: 44px; font-weight: 700; color: var(--text); }
+.wu-avoid-talk { font-size: 24px; color: var(--text-mute); }
+.wu-avoid-row.is-past .wu-avoid-name,
+.wu-avoid-row.is-past .wu-avoid-talk,
+.wu-avoid-row.is-past .wu-avoid-ord { color: var(--text-faint); }
+.wu-avoid-row.is-future { opacity: 0; }
+.wu-avoid-row.is-active .wu-avoid-ord { color: var(--accent); }
+.wu-avoid-row.is-active .wu-avoid-name { color: var(--accent); }

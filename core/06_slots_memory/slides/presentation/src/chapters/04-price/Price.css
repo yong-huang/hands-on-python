@@ -1,0 +1,184 @@
+/* ── ch04 price · CSS prefix: pr- ────────────────────────────────── */
+
+.pr-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+}
+
+/* shared */
+.pr-rise {
+  opacity: 0;
+  animation: pr-rise 620ms var(--ease-quart) both;
+}
+@keyframes pr-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pr-pop {
+  opacity: 0;
+  animation: pr-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes pr-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pr-fade {
+  opacity: 0;
+  animation: pr-fade 420ms var(--ease-soft) both;
+}
+@keyframes pr-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.pr-line-in {
+  opacity: 0;
+  animation: pr-fade 420ms var(--ease-soft) both;
+}
+
+.pr-dim { color: var(--text-mute); }
+
+.pr-cost-head {
+  align-self: flex-start;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.pr-cost-head b { color: var(--text); }
+
+/* ── step 0 · AttributeError ── */
+.pr-dyn-scene { gap: 40px; }
+.pr-dyn-code {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 38px;
+  color: var(--text);
+}
+.pr-dyn-trace {
+  width: 1240px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.pr-dyn-trace-bar {
+  padding: 10px 20px;
+  border-bottom: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.pr-dyn-trace-code {
+  margin: 0;
+  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 23px;
+  line-height: 1.7;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ── step 1 · weakref ── */
+.pr-weak-scene { gap: 40px; }
+.pr-weak-cols {
+  display: flex;
+  gap: 50px;
+  align-items: stretch;
+}
+.pr-weak-code {
+  margin: 0;
+  padding: 30px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  line-height: 1.8;
+  white-space: pre;
+}
+.pr-weak-code-bad { color: var(--text-mute); }
+.pr-weak-code-fix {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* ── step 2 · 继承链 ── */
+.pr-inherit-scene { gap: 64px; }
+.pr-inherit-chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.pr-chain-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 60px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pr-chain-node-ok { border-top: 2px dashed var(--accent); }
+.pr-chain-node-bad {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.pr-chain-name {
+  font-family: var(--font-mono);
+  font-size: 29px;
+  font-weight: 600;
+  color: var(--text);
+}
+.pr-chain-note {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.pr-chain-link {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.pr-inherit-foot {
+  font-size: 40px;
+  color: var(--text-2);
+}
+.pr-inherit-foot b { color: var(--accent); font-weight: 700; }
+
+/* ── step 3 · 默认值误会 ── */
+.pr-default-scene { gap: 40px; }
+.pr-default-term {
+  width: 900px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pr-default-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-mute);
+}
+.pr-default-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 26px 36px;
+}
+.pr-default-line {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+}
+.pr-default-dim { color: var(--text-mute); font-size: 22px; }
+.pr-default-note {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.pr-default-mono { font-family: var(--font-mono); color: var(--accent); }
+.pr-default-note b { color: var(--text); font-weight: 700; }
+.pr-default-badge {
+  padding: 10px 30px;
+  border: 1px dashed var(--rule);
+  font-size: 21px;
+  color: var(--text-mute);
+}

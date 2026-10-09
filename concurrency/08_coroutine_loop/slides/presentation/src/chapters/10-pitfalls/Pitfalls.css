@@ -1,0 +1,155 @@
+/* ch10 pitfalls — 独立前缀 pf-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含） ── */
+.pf-rise,
+.pf-fade,
+.pf-hero-in,
+.pf-pop {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.pf-rise { animation-name: pf-rise; animation-duration: 750ms; }
+.pf-fade { animation-name: pf-fade; animation-duration: 650ms; }
+.pf-hero-in { animation-name: pf-hero-in; animation-duration: 850ms; }
+.pf-pop { animation-name: pf-pop; animation-duration: 550ms; }
+
+@keyframes pf-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pf-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pf-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pf-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · 引子 ── */
+.pf-intro {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 44px;
+}
+.pf-intro-hero {
+  font-family: var(--font-display-cn);
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pf-intro-strip {
+  display: flex;
+  gap: 30px;
+}
+.pf-intro-num {
+  width: 96px;
+  height: 96px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pf-intro-note {
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-mute);
+}
+
+/* ── steps 1-5 · 坑卡 ── */
+.pf-card-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.pf-card {
+  width: 1360px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 44px 64px 40px;
+}
+.pf-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  border-bottom: 2px solid var(--text);
+  padding-bottom: 22px;
+}
+.pf-card-num {
+  font-family: var(--font-mono);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.pf-card-title {
+  font-family: var(--font-display-cn);
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pf-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 30px;
+}
+.pf-row {
+  display: flex;
+  align-items: baseline;
+  gap: 34px;
+}
+.pf-row-kind {
+  font-family: var(--font-body);
+  font-size: 25px;
+  color: var(--text-mute);
+  min-width: 88px;
+  text-align: right;
+  letter-spacing: 0.2em;
+}
+.pf-row-text {
+  font-family: var(--font-body);
+  font-size: 32px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.pf-row-fix {
+  border-top: 1px solid var(--rule);
+  margin-top: 22px;
+  padding-top: 30px;
+}
+.pf-row-fix .pf-row-kind { color: var(--accent); font-weight: 700; }
+.pf-row-fix .pf-row-text {
+  font-family: var(--font-display-cn);
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* 每坑小图形条 */
+.pf-motif {
+  width: 100%;
+  margin-top: 22px;
+  border-top: 1px solid var(--rule);
+  padding-top: 10px;
+}
+.pf-m-pop {
+  opacity: 0;
+  animation: pf-pop 480ms ease-out forwards;
+}
+.pf-m-grow {
+  transform-origin: left center;
+  transform-box: fill-box;
+  animation: pf-fill 800ms cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+@keyframes pf-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }

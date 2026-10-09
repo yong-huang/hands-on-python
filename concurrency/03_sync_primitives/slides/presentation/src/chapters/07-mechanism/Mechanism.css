@@ -1,0 +1,424 @@
+/* ch07 · mechanism — 独立前缀 mc-。颜色/字体只走 token（monochrome-print）。 */
+
+.mc-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 52px;
+}
+
+/* ── 入场原语 ── */
+.mc-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.mc-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+.mc-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.mc-acc {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── step 0 · 路线图 + API 对照 ── */
+.mc-road {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.mc-road-stop {
+  padding: 14px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 33px;
+  color: var(--text-mute);
+}
+.mc-road-stop--on {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.mc-road-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+.mc-diff {
+  display: flex;
+  align-items: stretch;
+  gap: 44px;
+}
+.mc-diff-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mc-diff-head {
+  color: var(--text-faint);
+}
+.mc-diff-head--acc {
+  color: var(--accent);
+}
+.mc-diff-mid {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.mc-diff-almost {
+  font-size: 24px;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.mc-diff-plus {
+  padding: 10px 22px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 30px;
+  font-weight: 700;
+}
+.mc-code {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 30px 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.mc-code--acc {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+.mc-code-line {
+  font-size: 33px;
+  color: var(--text-2);
+}
+.mc-code-line b {
+  color: var(--accent);
+  font-weight: 700;
+}
+.mc-code-line--in {
+  padding-left: 44px;
+  font-size: 27px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 阻塞 vs 让出 ── */
+.mc-wait {
+  display: flex;
+  gap: 44px;
+}
+.mc-wait-card {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 700px;
+  padding: 48px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-wait-card--yield {
+  border-color: var(--accent);
+}
+.mc-wait-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text-2);
+}
+.mc-wait-name b {
+  color: var(--accent);
+}
+.mc-wait-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.mc-wait-lane {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.mc-wait-thread {
+  padding: 14px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.mc-wait-frozen {
+  padding: 14px 26px;
+  background: var(--text);
+  color: var(--surface);
+  font-size: 26px;
+}
+.mc-wait-give {
+  padding: 14px 26px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 26px;
+}
+.mc-wait-others {
+  font-size: 26px;
+  color: var(--text-faint);
+}
+.mc-wait-others--run {
+  color: var(--text-2);
+}
+.mc-wait-others--run b {
+  color: var(--accent);
+}
+
+/* ── step 2 · 毒丸协议 ── */
+.mc-proto {
+  display: flex;
+  align-items: stretch;
+  gap: 26px;
+}
+.mc-proto-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 300px;
+  padding: 38px 24px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-proto-step--key {
+  border-color: var(--accent);
+}
+.mc-proto-num {
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.mc-proto-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.mc-proto-code {
+  font-size: 34px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.mc-proto-talk {
+  font-size: 22px;
+  color: var(--text-mute);
+  text-align: center;
+}
+.mc-proto-arrow {
+  align-self: center;
+  font-size: 34px;
+  color: var(--text-faint);
+}
+
+/* ── step 3 · get 语义 ── */
+.mc-once {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+}
+.mc-once-msg {
+  margin-left: 200px;
+  padding: 20px 44px;
+  border: 2px solid var(--text-2);
+  background: var(--surface-2);
+  font-size: 34px;
+}
+.mc-once-lane {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.mc-once-lane--win .mc-once-who {
+  color: var(--accent);
+  font-weight: 700;
+}
+.mc-once-dash {
+  width: 170px;
+  height: 2px;
+  background: var(--rule);
+  margin-left: 60px;
+}
+.mc-once-lane--win .mc-once-dash {
+  background: var(--accent);
+}
+.mc-once-who {
+  font-size: 32px;
+  color: var(--text-mute);
+}
+.mc-once-take {
+  padding: 10px 22px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 24px;
+}
+.mc-once-note {
+  font-size: 31px;
+  color: var(--text-2);
+}
+.mc-once-note b {
+  color: var(--accent);
+}
+
+/* ── step 4 · 闸门代码 ── */
+.mc-gate-code-wrap {
+  position: relative;
+  display: flex;
+}
+.mc-gate-bracket {
+  width: 8px;
+  margin-right: 30px;
+  background: var(--accent);
+  transform-origin: top;
+  transform: scaleY(0);
+  animation: mc-bracket 800ms var(--ease-expo) forwards;
+}
+@keyframes mc-bracket {
+  to { transform: scaleY(1); }
+}
+.mc-gate-code {
+  min-width: 560px;
+}
+.mc-gate-queue {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.mc-gate-wait {
+  padding: 16px 30px;
+  border: 1px dashed var(--text-mute);
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.mc-gate-wait--at {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+.mc-gate-wait--at b {
+  font-weight: 700;
+}
+
+/* ── step 5 · 一万协程 ── */
+.mc-flood {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+}
+.mc-flood-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 34px);
+  grid-auto-rows: 34px;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+.mc-flood-dot {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--text-mute);
+  opacity: 0.7;
+}
+.mc-flood-enter {
+  opacity: 0;
+  animation: pop-in 260ms var(--ease-expo) forwards;
+}
+.mc-flood-scale {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+  font-size: 19px;
+  color: var(--text-faint);
+}
+.mc-flood-out {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+.mc-flood-none {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mc-flood-none-word {
+  align-self: flex-start;
+  padding: 10px 24px;
+  background: var(--text);
+  color: var(--surface);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+}
+.mc-flood-none-talk {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.mc-flood-motto {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* ── step 6 · 背压定义 ── */
+.mc-bp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+.mc-bp-triad {
+  display: flex;
+  gap: 34px;
+}
+.mc-bp-item {
+  padding: 24px 46px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.mc-bp-item--acc {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.mc-bp-bomb {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.mc-bp-fuse {
+  width: 90px;
+  height: 3px;
+  background: var(--text-mute);
+  transform: rotate(-24deg);
+}
+.mc-bp-bomb-body {
+  padding: 34px 48px;
+  border: 3px solid var(--text);
+  background: var(--surface-2);
+}
+.mc-bp-bomb-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}
+.mc-bp-bomb-talk {
+  margin-top: 12px;
+  font-size: 27px;
+  color: var(--text-mute);
+}

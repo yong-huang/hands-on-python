@@ -1,0 +1,438 @@
+/* ch01 · hook — 独立前缀 hf-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.hf-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.hf-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.hf-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.hf-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: hf-bar-grow 900ms var(--ease-quart) forwards;
+}
+@keyframes hf-bar-grow {
+  to { transform: scaleX(1); }
+}
+
+.hf-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 标题页 ── */
+.hf-title-scene {
+  gap: 40px;
+}
+.hf-kicker {
+  letter-spacing: var(--track-caps);
+  color: var(--text-mute);
+}
+.hf-title {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 116px;
+  letter-spacing: var(--track-tight);
+  line-height: 1.15;
+  color: var(--text);
+}
+.hf-rule {
+  width: 560px;
+  height: 2px;
+  background: var(--accent);
+}
+.hf-subtitle {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  color: var(--text-2);
+}
+.hf-def {
+  margin-top: 26px;
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.hf-def .hf-accent {
+  color: var(--text);
+}
+.hf-examples {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.hf-ex-label {
+  font-size: 20px;
+  color: var(--text-faint);
+}
+.hf-chip {
+  padding: 8px 22px;
+  border: 1px solid var(--rule);
+  font-size: 24px;
+  color: var(--text-2);
+  background: var(--surface-2);
+}
+
+/* ── step 1 · 任务卡 ── */
+.hf-task-scene {
+  gap: 56px;
+}
+.hf-task-top {
+  display: flex;
+  align-items: center;
+  gap: 72px;
+}
+.hf-listcard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 30px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.hf-listcard-head {
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.hf-listcard-row {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.hf-listcard-dots {
+  font-size: 24px;
+  color: var(--text-faint);
+}
+.hf-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.hf-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 34px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  flex: 0 0 auto;
+}
+.hf-node--you {
+  border-color: var(--accent);
+}
+.hf-node-tag {
+  font-size: 18px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.hf-node--you .hf-node-tag {
+  color: var(--accent);
+}
+.hf-node-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.4;
+  color: var(--text);
+  text-align: center;
+}
+.hf-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0 8px;
+}
+.hf-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 240px;
+}
+.hf-arrow--back .hf-arrow-line {
+  border-color: var(--accent);
+}
+.hf-arrow--back .hf-arrow-line::after {
+  right: auto;
+  left: -2px;
+  border-width: 7px 0 7px 14px;
+  border-color: transparent transparent transparent var(--accent);
+}
+.hf-arrow-line {
+  position: relative;
+  width: 100%;
+  height: 0;
+  border-top: 2px solid var(--text-2);
+}
+.hf-arrow-line::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -8px;
+  border-style: solid;
+  border-width: 7px 0 7px 14px;
+  border-color: transparent transparent transparent var(--text-2);
+}
+.hf-arrow--back .hf-arrow-line::after {
+  border-width: 7px 14px 7px 0;
+  border-color: transparent var(--accent) transparent transparent;
+}
+.hf-arrow-label {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · 数字榜 ── */
+.hf-board-scene {
+  gap: 64px;
+}
+.hf-board-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.hf-board {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  width: 1240px;
+}
+.hf-board-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.hf-board-name {
+  flex: 0 0 130px;
+  font-size: 28px;
+  color: var(--text-2);
+  text-align: right;
+}
+.hf-board-track {
+  flex: 1;
+  height: 40px;
+  background: var(--surface-3);
+}
+.hf-board-bar {
+  display: block;
+  height: 100%;
+}
+.hf-board-bar--slow {
+  width: 100%;
+  background: var(--text-2);
+}
+.hf-board-bar--fast {
+  width: 12%;
+  background: var(--accent);
+}
+.hf-board-val {
+  flex: 0 0 190px;
+  font-size: 54px;
+  color: var(--text);
+}
+.hf-board-note {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  color: var(--text-2);
+}
+.hf-board-times {
+  font-size: 76px;
+  color: var(--accent);
+}
+
+/* ── step 3 · 抖动整批报错 ── */
+.hf-jitter-scene {
+  gap: 40px;
+}
+.hf-jitter-headline {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 76px;
+  color: var(--text);
+}
+.hf-jitter-sub {
+  font-size: 32px;
+  color: var(--text-mute);
+}
+.hf-jitter-tags {
+  display: flex;
+  gap: 26px;
+  margin: 10px 0 26px;
+}
+.hf-jitter-tag {
+  padding: 14px 34px;
+  border: 1px dashed var(--text-faint);
+  font-size: 28px;
+  color: var(--text-2);
+  background: var(--surface-2);
+}
+.hf-crash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.hf-crash-strip {
+  display: flex;
+  gap: 8px;
+}
+.hf-cell {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 22px;
+  color: var(--accent);
+  flex: 0 0 auto;
+}
+.hf-cell--bad {
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+.hf-crash-verdict {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.hf-crash-verdict .label-mono {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 引用卡 ── */
+.hf-quote-scene {
+  gap: 40px;
+}
+.hf-quote-text {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text);
+}
+.hf-quote-attrib {
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.hf-quote-note {
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+  font-size: 30px;
+  color: var(--text-2);
+}
+
+/* ── step 5 · 50 格端点带 ── */
+.hf-grid-scene {
+  gap: 54px;
+}
+.hf-grid-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+}
+.hf-grid-board {
+  display: grid;
+  grid-template-columns: repeat(10, 76px);
+  gap: 12px;
+}
+.hf-grid-cell {
+  width: 76px;
+  height: 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hf-grid-cell--unstable {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.hf-grid-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hf-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 24px;
+  color: var(--text-2);
+}
+.hf-legend-cell {
+  width: 30px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+.hf-grid-question {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 72px;
+  color: var(--text);
+}
+
+/* ── step 6 · 三件套答案 ── */
+.hf-answer-scene {
+  gap: 66px;
+}
+.hf-answer-kicker {
+  font-size: 34px;
+  color: var(--text-mute);
+}
+.hf-answer-row {
+  display: flex;
+  gap: 44px;
+}
+.hf-answer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 380px;
+  padding: 48px 0 42px;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.hf-answer-en {
+  font-size: 19px;
+  letter-spacing: 0.22em;
+  color: var(--text-faint);
+}
+.hf-answer-name {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 72px;
+  color: var(--text);
+}
+.hf-answer-note {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.hf-answer-foot {
+  font-size: 30px;
+  color: var(--text-2);
+}

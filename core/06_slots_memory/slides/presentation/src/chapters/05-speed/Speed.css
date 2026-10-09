@@ -1,0 +1,132 @@
+/* ── ch05 speed · CSS prefix: sp- ────────────────────────────────── */
+
+.sp-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.sp-rise {
+  opacity: 0;
+  animation: sp-rise 620ms var(--ease-quart) both;
+}
+@keyframes sp-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sp-pop {
+  opacity: 0;
+  animation: sp-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes sp-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.sp-line-in {
+  opacity: 0;
+  animation: sp-fade 420ms var(--ease-soft) both;
+}
+@keyframes sp-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · 历史 ── */
+.sp-history-scene { gap: 30px; }
+.sp-history-kicker {
+  font-size: 30px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+}
+.sp-history-line {
+  font-size: 40px;
+  color: var(--text-2);
+}
+.sp-history-num {
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 80px var(--accent-glow);
+}
+
+/* ── step 1 · 真机基准 ── */
+.sp-bench-scene { gap: 52px; }
+.sp-bench-term {
+  width: 940px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sp-bench-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-mute);
+}
+.sp-bench-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 26px 36px;
+}
+.sp-bench-line {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.sp-ratios {
+  display: flex;
+  gap: 30px;
+  align-items: stretch;
+}
+.sp-ratio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 40px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.sp-ratio-dim {
+  border-color: var(--rule);
+  background: var(--surface-2);
+}
+.sp-ratio-k {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.sp-ratio-v {
+  font-family: var(--font-mono);
+  font-size: 33px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.sp-ratio-dim .sp-ratio-v {
+  color: var(--text-mute);
+  font-size: 24px;
+}
+
+/* ── step 2 · 定论 ── */
+.sp-verdict-scene { gap: 46px; }
+.sp-verdict-old {
+  font-size: 36px;
+  color: var(--text-mute);
+}
+.sp-verdict-old-tag {
+  padding: 6px 20px;
+  border: 1px dashed var(--rule);
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.sp-verdict-big {
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.sp-verdict-big b {
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}

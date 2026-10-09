@@ -1,0 +1,193 @@
+/* ch01 · hook — 独立前缀 ho-。颜色/字体只走 token（indigo-porcelain）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.ho-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.ho-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ho-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 片头标题页 ── */
+.ho-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.ho-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.ho-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 118px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.ho-title-kw {
+  color: var(--accent);
+  font-size: 96px;
+  font-weight: 500;
+  margin-right: 20px;
+}
+.ho-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 42px;
+  color: var(--text-mute);
+}
+.ho-title-sub {
+  font-size: 26px;
+  letter-spacing: 0.05em;
+  color: var(--text-mute);
+}
+.ho-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 340px;
+  padding: 20px 26px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+}
+.ho-tb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 28px;
+  font-family: var(--font-mono);
+  font-size: 17px;
+}
+.ho-tb-row span {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  font-size: 13px;
+}
+.ho-tb-row b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── step 1 · 两次 import 对比卡 ── */
+.ho-twice-card {
+  width: 1180px;
+  padding: 40px 56px 46px;
+}
+.ho-twice-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 26px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.ho-twice-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.ho-call-row {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  padding: 14px 0;
+}
+.ho-call-prompt {
+  font-size: 33px;
+  color: var(--text-2);
+  white-space: pre;
+}
+.ho-call-out {
+  font-family: var(--font-display-cn);
+  font-size: 26px;
+  color: var(--accent);
+}
+.ho-call-out-silent {
+  color: var(--text-faint);
+}
+.ho-is-line {
+  margin-top: 22px;
+  padding-top: 24px;
+  border-top: var(--rule-w) var(--rule-style) var(--rule);
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.ho-is-expr {
+  font-size: 33px;
+  color: var(--text-mute);
+}
+.ho-is-arrow {
+  font-size: 38px;
+  color: var(--text-faint);
+}
+.ho-is-result {
+  font-size: 92px;
+  color: var(--accent);
+}
+
+/* ── step 2 · 三步流水线点题 ── */
+.ho-pipe-scene {
+  gap: 54px;
+}
+.ho-pipe-lead {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+}
+.ho-pipe-kw {
+  font-size: 64px;
+  color: var(--accent);
+}
+.ho-pipe-not {
+  font-family: var(--font-display-cn);
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text);
+}
+.ho-pipe-row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.ho-pipe-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 26px 40px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.ho-pipe-arrow {
+  font-size: 46px;
+  color: var(--text-faint);
+}
+.ho-pipe-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 44px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}

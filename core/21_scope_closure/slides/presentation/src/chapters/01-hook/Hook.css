@@ -1,0 +1,253 @@
+/* ch01 · hook — 独立前缀 hk-。颜色/字体只走 token（indigo-porcelain）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.hk-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.hk-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.hk-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 片头标题页 ── */
+.hk-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.hk-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.hk-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 124px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.hk-title-accent {
+  color: var(--accent);
+}
+.hk-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 42px;
+  color: var(--text-mute);
+}
+.hk-title-sub {
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+.hk-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 340px;
+  padding: 20px 26px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+}
+.hk-tb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 28px;
+  font-family: var(--font-mono);
+  font-size: 17px;
+}
+.hk-tb-row span {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  font-size: 13px;
+}
+.hk-tb-row b {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── step 1 · make_counter 代码卡 ── */
+.hk-code-scene {
+  flex-direction: row;
+  gap: 84px;
+}
+.hk-code-card {
+  width: 820px;
+  padding: 34px 46px 40px;
+}
+.hk-code-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.hk-code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.hk-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 29px;
+  line-height: 1.85;
+  color: var(--text-2);
+}
+.hk-code code {
+  font-family: inherit;
+}
+.hk-ln {
+  display: block;
+  white-space: pre;
+}
+.hk-ln-key {
+  color: var(--accent);
+  font-weight: 500;
+}
+.hk-ln-return {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 500;
+  margin: 0 -18px;
+  padding: 0 18px;
+}
+.hk-code-notes {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 44px;
+}
+.hk-note {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hk-note-text {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* 回收章：盖章动作（不与 hk-rise 的 transform 冲突） */
+.hk-stamp {
+  opacity: 0;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 28px;
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+  animation: hk-stamp-in 560ms var(--ease-expo) forwards;
+}
+.hk-stamp .label-mono {
+  color: var(--accent);
+}
+.hk-stamp-text {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  font-weight: 700;
+}
+@keyframes hk-stamp-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-3deg) scale(1.3);
+  }
+  62% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(1);
+  }
+}
+
+/* ── step 2 · counter 连续调用 ── */
+.hk-call-scene {
+  gap: 36px;
+}
+.hk-frame-tag {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.hk-frame-state {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--text-mute);
+  padding: 4px 14px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+}
+.hk-call-row {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.hk-call-prompt {
+  font-size: 42px;
+  color: var(--text-mute);
+}
+.hk-call-arrow {
+  font-size: 46px;
+  color: var(--text-faint);
+}
+.hk-call-num {
+  font-size: 168px;
+  color: var(--accent);
+}
+.hk-call-foot {
+  margin-top: 18px;
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  color: var(--text);
+}
+.hk-call-foot b {
+  color: var(--accent);
+}
+
+/* ── step 3 · 点题「闭包」── */
+.hk-word-scene {
+  gap: 26px;
+}
+.hk-word-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 58px;
+  color: var(--accent);
+}
+.hk-word-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 224px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.hk-word-cue {
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  color: var(--text-mute);
+}

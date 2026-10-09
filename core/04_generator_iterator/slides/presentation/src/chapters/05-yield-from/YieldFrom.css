@@ -1,0 +1,222 @@
+/* ── ch05 yield-from · CSS prefix: yf- ───────────────────────────── */
+
+.yf-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.yf-rise {
+  opacity: 0;
+  animation: yf-rise 620ms var(--ease-quart) both;
+}
+@keyframes yf-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.yf-pop {
+  opacity: 0;
+  animation: yf-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes yf-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.yf-fade {
+  opacity: 0;
+  animation: yf-fade 420ms var(--ease-soft) both;
+}
+@keyframes yf-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.yf-line-in {
+  opacity: 0;
+  animation: yf-fade 420ms var(--ease-soft) both;
+}
+
+.yf-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 0 · 委托概念 ── */
+.yf-delegate-scene { gap: 0; }
+.yf-delegate-row {
+  display: flex;
+  align-items: center;
+}
+.yf-delegate-node {
+  padding: 30px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  text-align: center;
+}
+.yf-delegate-node-inner {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.yf-delegate-k {
+  font-size: 20px;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.yf-delegate-node-inner .yf-delegate-k { color: var(--accent); }
+.yf-delegate-mono {
+  font-family: var(--font-mono);
+  font-size: 29px;
+  color: var(--text);
+}
+.yf-delegate-link {
+  position: relative;
+  width: 200px;
+  height: 0;
+  border-top: 2px dashed var(--accent);
+}
+.yf-delegate-link-label {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 18px;
+  border: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.yf-delegate-foot {
+  margin-top: 80px;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.yf-delegate-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 1 · flatten 走读 ── */
+.yf-flatten-scene { gap: 0; }
+.yf-flatten-lead {
+  align-self: flex-start;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 26px;
+}
+.yf-flatten-code {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.yf-flatten-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.yf-flatten-code .yf-code {
+  padding: 28px 44px;
+  font-size: 28px;
+  line-height: 1.95;
+}
+.yf-branch {
+  position: absolute;
+  width: 300px;
+  padding: 10px 0;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 21px;
+  text-align: center;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.yf-branch-1 { right: -320px; top: 243px; }
+.yf-branch-2 { right: -320px; top: 352px; }
+
+/* ── step 2 · 三件事 ── */
+.yf-three-scene { gap: 54px; }
+.yf-three-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.yf-three-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.yf-three-item {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 20px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.yf-three-ord {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.yf-three-name {
+  width: 170px;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text);
+}
+.yf-three-note {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+
+/* ── step 3 · 真机摊平 ── */
+.yf-flat-scene { gap: 0; }
+.yf-flat-term {
+  width: 980px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.yf-flat-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.yf-flat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 36px;
+}
+.yf-flat-line {
+  font-family: var(--font-mono);
+  font-size: 24px;
+}
+.yf-flat-line-dim { color: var(--text-2); }
+.yf-flat-line-acc { color: var(--accent); }
+
+/* ── step 4 · 协程伏笔 ── */
+.yf-async-scene { gap: 60px; }
+.yf-async-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.yf-async-lead b { color: var(--text); }
+.yf-async-answer {
+  padding: 26px 70px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}

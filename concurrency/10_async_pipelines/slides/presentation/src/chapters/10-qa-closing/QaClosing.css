@@ -1,0 +1,154 @@
+/* ch10 · qa-closing — 独立前缀 qc-。颜色/字体只走 token（monochrome-print）。 */
+
+.qc-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 52px;
+}
+
+/* ── 入场原语 ── */
+.qc-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.qc-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+.qc-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+
+/* ── step 0 · 两个 Queue ── */
+.qc-q {
+  display: flex;
+  gap: 44px;
+}
+.qc-q-col {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 700px;
+  padding: 46px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.qc-q-name {
+  font-size: 40px;
+  color: var(--text);
+}
+.qc-q-row {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  font-size: 28px;
+  color: var(--text-2);
+}
+.qc-q-key {
+  flex: 0 0 90px;
+}
+.qc-q-row--fork {
+  padding-top: 18px;
+  border-top: 1px dashed var(--rule);
+}
+.qc-q-acc {
+  color: var(--accent);
+  font-weight: 700;
+}
+.qc-q-hot {
+  color: var(--text);
+  font-weight: 700;
+}
+.qc-q-note {
+  align-self: stretch;
+  font-size: 29px;
+  color: var(--text-2);
+}
+.qc-q-note b {
+  color: var(--accent);
+}
+
+/* ── step 1 · 毒丸协议 ── */
+.qc-proto-same {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+.qc-proto-same > .label-mono {
+  color: var(--text-mute);
+}
+.qc-proto-chips {
+  display: flex;
+  gap: 30px;
+}
+.qc-chip {
+  padding: 22px 44px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 36px;
+  font-weight: 700;
+}
+.qc-gather {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.qc-gather-code {
+  padding: 16px 28px;
+  background: var(--surface-3);
+  font-size: 30px;
+  color: var(--text);
+}
+.qc-gather-talk {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.qc-seamless {
+  padding: 20px 52px;
+  background: var(--accent);
+  color: var(--surface);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+}
+
+/* ── step 2 · 收尾 ── */
+.qc-end-scene {
+  gap: 0;
+}
+.qc-end-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.qc-end-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.qc-end-repo {
+  font-family: var(--font-mono);
+  font-size: 54px;
+  color: var(--text);
+}
+.qc-end-acc {
+  color: var(--accent);
+  font-weight: 700;
+}
+.qc-end-talk {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.qc-end-bye {
+  padding-bottom: 40px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}

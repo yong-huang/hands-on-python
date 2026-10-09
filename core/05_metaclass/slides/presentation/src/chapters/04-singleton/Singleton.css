@@ -1,0 +1,227 @@
+/* ── ch04 singleton · CSS prefix: sg- ────────────────────────────── */
+
+.sg-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.sg-rise {
+  opacity: 0;
+  animation: sg-rise 620ms var(--ease-quart) both;
+}
+@keyframes sg-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sg-pop {
+  opacity: 0;
+  animation: sg-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes sg-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.sg-fade {
+  opacity: 0;
+  animation: sg-fade 420ms var(--ease-soft) both;
+}
+@keyframes sg-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.sg-line-in {
+  opacity: 0;
+  animation: sg-fade 420ms var(--ease-soft) both;
+}
+
+.sg-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 0 · 需求 ── */
+.sg-req-scene { gap: 30px; }
+.sg-req-head {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.sg-req-head b { color: var(--text); }
+.sg-req-body {
+  font-size: 76px;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.sg-req-sub {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 代码卡 ── */
+.sg-code-scene { gap: 0; }
+.sg-codecard {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sg-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.sg-codecard .sg-code {
+  padding: 30px 46px;
+  font-size: 26px;
+  line-height: 1.9;
+}
+.sg-mark {
+  position: absolute;
+  width: 170px;
+  padding: 8px 0;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 21px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.sg-mark-1 { right: -206px; top: 124px; }
+.sg-mark-2 { right: -206px; top: 272px; }
+.sg-mark-3 { right: -206px; top: 421px; }
+
+/* ── step 2 · 拦截点 ── */
+.sg-gate-scene { gap: 0; }
+.sg-gate-flow {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.sg-gate-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sg-gate-node-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.sg-gate-mono {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text);
+}
+.sg-gate-node-acc .sg-gate-mono { color: var(--accent); }
+.sg-gate-sub {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.sg-gate-arrow {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  color: var(--text-mute);
+}
+.sg-gate-foot {
+  margin-top: 80px;
+  font-size: 36px;
+  color: var(--text-2);
+}
+.sg-gate-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 3 · 首次 vs 缓存 ── */
+.sg-cache-scene { gap: 0; }
+.sg-cache-cols {
+  display: flex;
+  gap: 70px;
+}
+.sg-cache-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 520px;
+  padding: 36px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sg-cache-card-2 {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.sg-cache-tag {
+  font-size: 21px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.sg-cache-card-2 .sg-cache-tag { color: var(--accent); }
+.sg-cache-body {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.sg-cache-res {
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--accent);
+}
+
+/* ── step 4 · 真机 ── */
+.sg-term {
+  width: 980px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sg-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.sg-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 36px;
+}
+.sg-term-line {
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.sg-term-acc { color: var(--accent); }
+
+/* ── step 5 · 陷阱 ── */
+.sg-trap-scene { gap: 36px; }
+.sg-trap-line {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.sg-trap-mono {
+  font-family: var(--font-mono);
+  color: var(--text);
+}
+.sg-trap-big {
+  font-size: 74px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sg-trap-foot {
+  font-size: 32px;
+  color: var(--text-mute);
+}
+.sg-trap-foot b { color: var(--text-2); font-weight: 700; }

@@ -1,0 +1,226 @@
+/* ch04 · live-demo — 独立前缀 ld-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.ld-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in；条形生长为本章自含 ── */
+.ld-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ld-pop {
+  opacity: 0;
+  animation: pop-in 420ms var(--ease-expo) forwards;
+}
+@keyframes ld-grow-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.ld-bar-fill {
+  transform-origin: left center;
+  animation: ld-grow-x 900ms var(--ease-expo) both;
+  animation-delay: 500ms;
+}
+
+/* ── 页头 ── */
+.ld-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.ld-head-note { font-size: 15px; letter-spacing: 0.12em; color: var(--text-faint); }
+.ld-slogan { text-align: center; font-size: 40px; color: var(--text-2); }
+.ld-slogan b { color: var(--accent); font-weight: 700; }
+
+/* ── 模拟终端（纸面浅色，对齐 thread-lifecycle） ── */
+.ld-term {
+  width: 1240px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  overflow: hidden;
+}
+.ld-term-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.ld-term-dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--text-faint);
+  border-radius: 50%;
+}
+.ld-term-title { margin-left: 14px; font-size: 16px; color: var(--text-mute); letter-spacing: 0.08em; }
+.ld-term-body { padding: 34px 42px; display: flex; flex-direction: column; gap: 20px; }
+.ld-term-line { font-size: 25px; color: var(--text); letter-spacing: 0.02em; }
+.ld-term-line.ld-sec { color: var(--text-mute); font-size: 21px; }
+
+/* ── step 1 · 任务时间轴 ── */
+.ld-bars { display: flex; flex-direction: column; gap: 34px; flex: 1; justify-content: center; align-self: stretch; }
+.ld-bar-row { display: flex; flex-direction: row; align-items: center; gap: 28px; }
+.ld-bar-name { width: 150px; font-size: 28px; font-weight: 700; color: var(--text); text-align: right; }
+.ld-bar-track {
+  flex: 1;
+  height: 42px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.ld-bar-fill { height: 100%; }
+.ld-bar-ok { background: var(--surface-3); }
+.ld-bar-run { background: color-mix(in srgb, var(--accent) 16%, var(--surface-2)); border-right: 2px solid var(--accent); }
+.ld-bar-bad { background: var(--accent); }
+.ld-bar-time { font-size: 22px; color: var(--text-2); width: 190px; }
+.ld-time-bad { color: var(--accent); font-weight: 600; }
+.ld-axis {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 178px;
+  padding-right: 20px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-faint);
+}
+
+/* ── step 2/4 · hero 数字（hero-num 原语，theme 决定斜体衬线） ── */
+.ld-hero-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  flex: 1;
+}
+.ld-hero-num-wrap { display: flex; flex-direction: row; align-items: baseline; gap: 16px; }
+.ld-hero { font-size: 260px; line-height: 0.9; color: var(--accent); }
+.ld-hero-unit { font-size: 58px; color: var(--text-2); }
+.ld-hero-talk { font-size: 25px; color: var(--text-mute); margin-left: 20px; }
+.ld-hero-vs { font-size: 42px; color: var(--text-faint); font-style: italic; }
+.ld-hero-slow { display: flex; flex-direction: column; gap: 12px; }
+.ld-hero-slow-num {
+  font-size: 60px;
+  color: var(--text-2);
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--accent);
+}
+.ld-hero-slow .ld-hero-talk { margin-left: 0; }
+
+/* ── step 3 · 清理清单 + 打包（双白卡细线） ── */
+.ld-clean-row { display: flex; flex-direction: row; gap: 52px; flex: 1; align-items: center; justify-content: center; }
+.ld-clean-card {
+  width: 420px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  overflow: hidden;
+}
+.ld-clean-title {
+  padding: 16px 26px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 19px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+}
+.ld-clean-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 26px;
+  font-size: 26px;
+  color: var(--text);
+  border-bottom: 1px solid var(--rule);
+}
+.ld-clean-item:last-child { border-bottom: none; }
+.ld-clean-item b { color: var(--accent); }
+.ld-clean-pack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 30px 40px;
+}
+.ld-pack-name { font-size: 30px; color: var(--accent); }
+.ld-pack-talk { font-size: 22px; color: var(--text-2); }
+
+/* ── step 4 · stubborn ── */
+.ld-stubborn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+  font-size: 32px;
+  color: var(--text);
+}
+.ld-stubborn-name { font-size: 38px; color: var(--text-2); }
+.ld-stubborn b { color: var(--accent); font-weight: 700; }
+.ld-stubborn-note { font-size: 18px; color: var(--text-faint); letter-spacing: 0.06em; }
+
+/* ── step 5 · 新老写法（双细线卡） ── */
+.ld-ways { display: flex; flex-direction: row; gap: 48px; flex: 1; align-items: stretch; justify-content: center; }
+.ld-way {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  justify-content: center;
+  width: 620px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 40px 46px;
+}
+.ld-way-tag { font-size: 17px; color: var(--text-faint); letter-spacing: 0.16em; }
+.ld-way-code { font-size: 27px; color: var(--text); }
+
+/* ── step 6/7 · gather 开关与结果 ── */
+.ld-switch {
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 10px 22px;
+}
+.ld-switch b { margin-left: 10px; color: var(--text-faint); }
+.ld-switch.is-on { border-color: var(--accent); color: var(--text); }
+.ld-switch.is-on b { color: var(--accent); }
+.ld-result-list { display: flex; flex-direction: column; gap: 18px; flex: 1; justify-content: center; align-self: stretch; }
+.ld-result-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 22px 36px;
+}
+.ld-result-row .mono { font-size: 29px; color: var(--text); }
+.ld-result-talk { font-size: 19px; color: var(--text-faint); letter-spacing: 0.06em; }
+.ld-result-bad { border-color: var(--accent); }
+.ld-result-bad .mono { color: var(--accent); }
+
+/* ── step 7 · 默认模式 ── */
+.ld-default-flow { display: flex; justify-content: center; gap: 30px; flex: 1; align-items: center; }
+.ld-df-chip { font-size: 29px; border: 1px solid var(--rule); background: var(--surface-2); border-radius: 3px; padding: 22px 40px; color: var(--text); }
+.ld-df-bad { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.ld-df-dim { color: var(--text-faint); }
+.ld-final-pair { display: flex; justify-content: center; gap: 90px; padding-bottom: 20px; }
+.ld-fp { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ld-fp b { font-size: 48px; font-weight: 700; color: var(--accent); }
+.ld-fp span { font-size: 22px; color: var(--text-mute); }

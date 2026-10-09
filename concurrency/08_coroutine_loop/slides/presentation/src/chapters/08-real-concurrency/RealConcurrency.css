@@ -1,0 +1,210 @@
+/* ch08 real-concurrency — 独立前缀 rc-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含；时间条生长为本章专属动作） ── */
+.rc-rise,
+.rc-fade,
+.rc-hero-in,
+.rc-card-in {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.rc-rise { animation-name: rc-rise; animation-duration: 750ms; }
+.rc-fade { animation-name: rc-fade; animation-duration: 650ms; }
+.rc-hero-in { animation-name: rc-hero-in; animation-duration: 850ms; }
+.rc-card-in { animation-name: rc-card-in; animation-duration: 800ms; }
+
+@keyframes rc-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes rc-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rc-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes rc-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.rc-kicker {
+  font-family: var(--font-body);
+  font-size: 25px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+
+/* 时间条：从左向右生长（讲「跑了多久」） */
+.rc-bar-grow {
+  transform-origin: left center;
+  transform-box: fill-box;
+  animation: rc-grow 900ms cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+@keyframes rc-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.rc-bar-overlap { animation-name: rc-fade; animation-duration: 700ms; }
+.rc-total { opacity: 0; animation: rc-fade 600ms ease-out forwards; }
+
+/* ── step 0 / 1 · 时间条对照 ── */
+.rc-chain,
+.rc-overlap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.rc-chain-hero {
+  font-family: var(--font-display-cn);
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--text);
+}
+.rc-chain-hero code {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  color: var(--accent);
+}
+.rc-chain-chart {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 24px 40px;
+}
+.rc-chain-chart svg { width: 900px; display: block; }
+.rc-chain-note {
+  font-family: var(--font-body);
+  font-size: 29px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}
+.rc-chain-note b {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.rc-xbadge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 32px;
+  color: var(--text);
+}
+.rc-xbadge-main b {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 44px;
+}
+.rc-xbadge-main { white-space: nowrap; }
+.rc-xbadge-sub {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+
+
+/* ── step 2 · 本质 ── */
+.rc-essence {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.rc-essence-hero {
+  font-family: var(--font-display-cn);
+  font-size: 84px;
+  font-weight: 700;
+  color: var(--text);
+}
+.rc-essence-card {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 44px 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  text-align: center;
+}
+.rc-essence-line {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  color: var(--text-mute);
+}
+.rc-essence-line2 {
+  font-family: var(--font-display-cn);
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text);
+}
+.rc-essence-line2 b { color: var(--accent); }
+.rc-essence-line3 {
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.rc-essence-line3 u {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+/* ── step 3 · 正确姿势 ── */
+.rc-right {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+.rc-right-kicker {
+  font-family: var(--font-display-cn);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text);
+}
+.rc-right-flow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.rc-right-step {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 28px 44px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 560px;
+}
+.rc-right-num {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.rc-right-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 28px;
+  color: var(--text);
+}
+.rc-right-text code {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-weight: 700;
+}
+.rc-right-text em {
+  font-style: normal;
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.rc-right-arrow { width: 90px; }

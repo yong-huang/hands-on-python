@@ -1,0 +1,191 @@
+/* ── ch02 slots · CSS prefix: sl- ────────────────────────────────── */
+
+.sl-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.sl-rise {
+  opacity: 0;
+  animation: sl-rise 620ms var(--ease-quart) both;
+}
+@keyframes sl-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sl-pop {
+  opacity: 0;
+  animation: sl-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes sl-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.sl-fade {
+  opacity: 0;
+  animation: sl-fade 420ms var(--ease-soft) both;
+}
+@keyframes sl-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.sl-mono {
+  font-family: var(--font-mono);
+}
+
+/* ── step 0 · 声明 ── */
+.sl-declare-scene { gap: 50px; }
+.sl-declare-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sl-declare-code {
+  padding: 42px 70px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 44px;
+  line-height: 1.8;
+  color: var(--text);
+  white-space: pre;
+  text-align: left;
+}
+.sl-declare-acc {
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.sl-declare-dim { color: var(--text-mute); }
+
+/* ── step 1 · 机制图 ── */
+.sl-mech-scene { gap: 80px; }
+.sl-mech-flow {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.sl-mech-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 26px 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sl-mech-node-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.sl-mech-node-k {
+  font-size: 19px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.sl-mech-node-acc .sl-mech-node-k { color: var(--accent); }
+.sl-mech-mono {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+}
+.sl-mech-arrow {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  color: var(--text-mute);
+}
+.sl-mech-note {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sl-mech-note-row {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.sl-mech-note-acc { color: var(--accent); }
+
+/* ── step 2 · 真机 ── */
+.sl-term-scene { gap: 46px; }
+.sl-term {
+  width: 1000px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sl-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.sl-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 30px 36px;
+}
+.sl-term-line {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.sl-term-stamp {
+  padding: 16px 50px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+/* ── step 3 · 本体解剖 ── */
+.sl-anatomy-scene { gap: 64px; }
+.sl-anatomy-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sl-anatomy {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.sl-anatomy-part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 26px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sl-anatomy-num {
+  font-family: var(--font-mono);
+  font-size: 42px;
+  font-weight: 600;
+  color: var(--text);
+}
+.sl-anatomy-k {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.sl-anatomy-plus {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.sl-anatomy-total {
+  padding: 20px 52px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.sl-anatomy-total-acc { color: var(--accent); }

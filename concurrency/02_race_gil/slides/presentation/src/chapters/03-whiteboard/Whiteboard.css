@@ -1,0 +1,227 @@
+/* ch03 · whiteboard — 独立前缀 wb-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.wb-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.wb-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.wb-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.wb-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── 白板面板 ── */
+.wb-board {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  padding: 46px 64px;
+  border: 6px solid var(--text);
+  background: var(--surface-2);
+}
+.wb-board--wide {
+  width: 1240px;
+}
+.wb-board .label-mono {
+  color: var(--text-faint);
+}
+.wb-board-line {
+  font-size: 64px;
+  font-weight: 600;
+  color: var(--text);
+}
+.wb-board-tag {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 1 · 丢失现场 ── */
+.wb-lose-scene {
+  gap: 46px;
+}
+.wb-lose-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.wb-lose-step {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.wb-lose-step b {
+  color: var(--accent);
+}
+.wb-lose-ord {
+  color: var(--text-faint);
+}
+.wb-lose-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  color: var(--text);
+}
+
+/* ── step 2 · 类比纠偏 ── */
+.wb-fix-scene {
+  gap: 44px;
+}
+.wb-fix-gloss {
+  padding: 18px 32px;
+  border: 1px dashed var(--rule);
+  background: var(--surface);
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.wb-fix-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+.wb-fix-statement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  align-self: stretch;
+}
+.wb-fix-flags {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+.wb-fix-flag {
+  padding: 10px 22px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 20px;
+  color: var(--accent);
+}
+.wb-fix-mid {
+  color: var(--text-faint);
+}
+.wb-fix-bar {
+  padding: 26px 200px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 40px;
+  color: var(--text-2);
+}
+.wb-fix-foot {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+
+/* ── step 3 · 事实一：窗口 ── */
+.wb-fact1-scene {
+  gap: 56px;
+}
+.wb-fact1-kicker {
+  color: var(--text-mute);
+  letter-spacing: 0.14em;
+}
+.wb-fact1-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}
+.wb-fact1-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.wb-fact1-seg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 360px;
+  padding: 40px 20px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wb-fact1-seg .mono {
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text);
+}
+.wb-fact1-seg .label-mono {
+  font-size: 16px;
+  color: var(--text-faint);
+}
+.wb-fact1-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 1;
+  padding: 40px 20px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 27px;
+  color: var(--accent);
+}
+
+/* ── step 4 · GIL 话筒 ── */
+.wb-mic-scene {
+  gap: 120px;
+}
+.wb-mic-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+.wb-mic-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 76px;
+  color: var(--text);
+}
+.wb-mic-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.wb-mic-rule {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-size: 29px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.wb-mic-rule .mono {
+  color: var(--accent);
+}
+.wb-mic {
+  width: 150px;
+  height: 238px;
+}

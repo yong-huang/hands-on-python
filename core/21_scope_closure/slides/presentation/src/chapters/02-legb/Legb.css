@@ -1,0 +1,447 @@
+/* ch02 · legb — 独立前缀 lg-。颜色/字体只走 token（indigo-porcelain）。 */
+
+/* 场景根：只写布局属性（不碰 position —— scene-pad 负责 absolute inset） */
+.lg-hero-scene { align-items: center; justify-content: center; gap: 68px; }
+.lg-skel-scene { align-items: center; justify-content: center; gap: 46px; }
+.lg-lit-l-scene,
+.lg-lit-e-scene,
+.lg-lit-g-scene,
+.lg-lit-b-scene { align-items: center; justify-content: center; gap: 64px; }
+.lg-code-scene { align-items: center; justify-content: center; }
+.lg-rule-scene { align-items: center; justify-content: center; gap: 32px; }
+
+/* ── 通用入场原语（复用 animations.css keyframes） ── */
+.lg-rise { opacity: 0; animation: rise-in 680ms var(--ease-expo) forwards; }
+.lg-pop { opacity: 0; animation: pop-in 520ms var(--ease-overshoot) forwards; }
+.lg-accent { color: var(--accent); }
+
+/* clip-path 文字擦除（左 → 右） */
+.lg-wipe {
+  display: inline-block;
+  animation: lg-wipe 750ms var(--ease-expo) both;
+}
+.lg-wipe-slow { animation-duration: 850ms; }
+@keyframes lg-wipe {
+  0% { clip-path: inset(-20% 100% -20% 0); }
+  100% { clip-path: inset(-20% -10% -20% 0); }
+}
+
+/* 横线自绘 */
+.lg-draw-x { transform: scaleX(0); transform-origin: left; animation: lg-draw 700ms var(--ease-expo) forwards; }
+@keyframes lg-draw { to { transform: scaleX(1); } }
+
+/* ── step 0 · hero 问题句 + 绑定示意 ── */
+.lg-hero-block { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.lg-hero-line {
+  display: flex;
+  gap: 6px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1.3;
+  color: var(--text);
+}
+.lg-hero-q { font-size: 148px; font-weight: 900; }
+.lg-bind { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.lg-bind-row { display: flex; align-items: center; gap: 26px; }
+.lg-bind-name { font-size: 32px; color: var(--text-2); }
+.lg-bind-line {
+  position: relative;
+  width: 190px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: lg-draw 700ms var(--ease-expo) 2900ms forwards;
+}
+.lg-bind-line::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 12px solid var(--accent);
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  opacity: 0;
+  animation: fade-in 240ms var(--ease-soft) 3600ms forwards;
+}
+.lg-bind-obj {
+  padding: 12px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  font-size: 28px;
+  color: var(--accent);
+}
+
+/* ── 四格链（step 1~5 共用骨架） ── */
+.lg-chain-wrap { position: relative; display: flex; justify-content: center; }
+.lg-chain-row { display: flex; align-items: stretch; }
+.lg-cell {
+  position: relative;
+  width: 350px;
+  padding: 32px 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--rule);
+  border-radius: var(--r-card);
+}
+.lg-cell-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+}
+.lg-cell-face {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.lg-cell-letter { font-size: 84px; color: var(--text-faint); }
+.lg-cell-word {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 26px;
+  color: var(--text-faint);
+}
+/* 已走过的层：墨色淡入纸面 */
+.lg-cell.is-visited {
+  border-style: solid;
+  background: var(--surface-2);
+}
+.lg-cell.is-visited .lg-cell-letter { color: var(--text-mute); }
+.lg-cell.is-visited .lg-cell-word { color: var(--text-mute); }
+/* 当前层：靛蓝勾边 */
+.lg-cell.is-lit {
+  border-style: solid;
+  border-color: var(--accent);
+}
+.lg-cell.is-lit .lg-cell-word { color: var(--text-2); }
+
+/* 连接件 */
+.lg-conn { width: 60px; display: flex; align-items: center; gap: 4px; }
+.lg-conn-line { flex: 1; height: 1px; background: var(--rule); transform-origin: left; }
+.lg-conn-head {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-faint);
+}
+
+/* step 1 · 骨架装配态：格子逐个升起 + 连接线自绘 */
+.lg-skel-scene .lg-cell { opacity: 0; animation: rise-in 620ms var(--ease-expo) forwards; }
+.lg-skel-scene .lg-conn-line {
+  transform: scaleX(0);
+  animation: lg-draw 420ms var(--ease-expo) forwards;
+}
+.lg-skel-scene .lg-conn-head { opacity: 0; animation: fade-in 300ms var(--ease-soft) forwards; }
+.lg-skel-caption {
+  font-family: var(--font-display-cn);
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+
+/* step 2 · L 点火：横向漫入（左 → 右） */
+.lg-lit-l-scene .lg-cell.is-lit .lg-cell-bg {
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--accent-soft);
+  animation: lg-flood-x 700ms var(--ease-expo) 250ms forwards;
+}
+@keyframes lg-flood-x { to { transform: scaleX(1); } }
+
+/* step 3 · E 点火：落章定格（放大 → 收稳） */
+.lg-lit-e-scene .lg-cell.is-lit { animation: lg-stamp 560ms var(--ease-overshoot) 250ms both; }
+.lg-lit-e-scene .lg-cell.is-lit .lg-cell-bg { background: var(--accent-soft); border-radius: inherit; }
+@keyframes lg-stamp {
+  0% { opacity: 0; transform: scale(1.14); }
+  60% { opacity: 1; transform: scale(0.99); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* step 4 · G 点火：纵向漫入（自下而上） */
+.lg-lit-g-scene .lg-cell.is-lit .lg-cell-bg {
+  transform: scaleY(0);
+  transform-origin: bottom;
+  background: var(--accent-soft);
+  animation: lg-flood-y 700ms var(--ease-expo) 250ms forwards;
+}
+@keyframes lg-flood-y { to { transform: scaleY(1); } }
+
+/* step 5 · B 点火：闪墨定格 + 查找扫描线扫过整链 */
+.lg-lit-b-scene .lg-cell.is-lit .lg-cell-bg {
+  opacity: 0;
+  animation: lg-flash 700ms var(--ease-soft) 250ms forwards;
+}
+@keyframes lg-flash {
+  0% { opacity: 0; background: transparent; }
+  40% { opacity: 1; background: var(--accent-glow); }
+  100% { opacity: 1; background: var(--accent-soft); }
+}
+.lg-scan {
+  position: absolute;
+  top: -16px;
+  bottom: -16px;
+  left: 0;
+  width: 2px;
+  background: var(--accent);
+  opacity: 0;
+  animation: lg-scan 1500ms var(--ease-soft) 2100ms forwards;
+}
+@keyframes lg-scan {
+  0% { transform: translateX(0); opacity: 0; }
+  12% { opacity: 0.9; }
+  85% { opacity: 0.9; }
+  100% { transform: translateX(1578px); opacity: 0; }
+}
+
+/* 四个点火场景共用：当前层字母弹现 */
+.lg-lit-l-scene .lg-cell.is-lit .lg-cell-letter,
+.lg-lit-e-scene .lg-cell.is-lit .lg-cell-letter,
+.lg-lit-g-scene .lg-cell.is-lit .lg-cell-letter,
+.lg-lit-b-scene .lg-cell.is-lit .lg-cell-letter {
+  opacity: 0;
+  color: var(--accent);
+  animation: pop-in 520ms var(--ease-overshoot) 350ms forwards;
+}
+
+/* ── step 2~5 · 焦点条（每步主定义 + 例证） ── */
+.lg-focus { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.lg-station {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+.lg-focus-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+.lg-focus-rise { opacity: 0; animation: rise-in 620ms var(--ease-expo) forwards; }
+.lg-focus-wipe { animation: lg-wipe 700ms var(--ease-expo) both; }
+.lg-focus-slide { animation: lg-slide-x 620ms var(--ease-expo) both; }
+@keyframes lg-slide-x {
+  from { opacity: 0; transform: translateX(-36px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.lg-focus-chip {
+  padding: 12px 28px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.lg-chip-code { font-size: 24px; color: var(--text-2); }
+.lg-focus-rule {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text);
+}
+.lg-focus-chips { display: flex; align-items: center; gap: 16px; }
+.lg-chip {
+  padding: 8px 24px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-pill);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.lg-chips-note {
+  font-family: var(--font-display-cn);
+  font-size: 26px;
+  color: var(--text-mute);
+}
+
+/* ── step 6 · legb_demo 代码卡 + 查找轨迹 ── */
+.lg-code-layout { display: flex; align-items: center; gap: 48px; width: 100%; }
+.lg-code-card { width: 1020px; flex: none; padding: 30px 40px 34px; }
+.lg-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.lg-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 23px;
+  line-height: 1.9;
+  color: var(--text-2);
+}
+.lg-code code { font-family: inherit; }
+.lg-ln { display: block; white-space: pre; animation: lg-wipe 460ms var(--ease-quart) both; }
+/* 命中行：例子里 inner 自己的赋值（article L60 注释逐字） */
+.lg-ln-hit {
+  margin: 0 -16px;
+  padding: 0 16px;
+  animation:
+    lg-wipe 460ms var(--ease-quart) 480ms both,
+    lg-hit 520ms var(--ease-soft) 1500ms forwards;
+}
+@keyframes lg-hit {
+  from { background: transparent; color: var(--text-2); }
+  to { background: var(--accent-soft); color: var(--accent); }
+}
+/* enclosing 行：蒙版盖上之后淡出为影子色 */
+.lg-ln-enc {
+  animation:
+    lg-wipe 460ms var(--ease-quart) 320ms both,
+    lg-enc-dim 600ms var(--ease-soft) 3900ms forwards;
+}
+@keyframes lg-enc-dim { to { color: var(--text-faint); } }
+
+.lg-trace { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+.lg-trace-card { padding: 10px 26px; display: flex; flex-direction: column; }
+.lg-tr-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 17px 2px;
+}
+.lg-tr-row + .lg-tr-row { border-top: var(--rule-w) var(--rule-style) var(--rule); }
+.lg-tr-key {
+  width: 30px;
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 30px;
+  color: var(--text-faint);
+}
+.lg-tr-word {
+  width: 130px;
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+.lg-tr-val { flex: 1; font-size: 26px; color: var(--text-2); }
+.lg-tr-badge {
+  margin-left: auto;
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.lg-tr-hit .lg-tr-key { color: var(--accent); }
+.lg-tr-hit .lg-tr-val { color: var(--accent); font-weight: 500; }
+.lg-tr-hit .lg-tr-badge {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.lg-tr-skip .lg-tr-val { color: var(--text-faint); }
+
+/* 遮蔽蒙版：滑过来，把 enclosing 盖住 */
+.lg-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+  transform: translateX(-102%);
+  animation: lg-veil 750ms var(--ease-expo) 3100ms forwards;
+}
+@keyframes lg-veil { to { transform: translateX(0); } }
+.lg-veil-tag { font-size: 16px; letter-spacing: 0.2em; color: var(--accent); }
+.lg-veil-note { font-family: var(--font-display-cn); font-size: 20px; color: var(--text-mute); }
+
+.lg-output {
+  border-top: var(--bw-2) solid var(--rule);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lg-output-main { font-size: 40px; color: var(--text); }
+.lg-output-main b { font-weight: 500; }
+.lg-output-sub { font-family: var(--font-display-cn); font-size: 23px; color: var(--text-mute); }
+
+/* ── step 7 · 规矩卡：赋值即声明 ── */
+.lg-rule-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 120px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.lg-rule-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 36px;
+  color: var(--text-mute);
+}
+.lg-verdict { display: flex; align-items: stretch; justify-content: center; gap: 40px; width: 100%; }
+.lg-verdict-src {
+  width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.lg-src-chip { padding: 26px 40px; font-size: 34px; color: var(--text); }
+.lg-verdict-list { display: flex; flex-direction: column; justify-content: center; gap: 30px; }
+.lg-verdict-row { display: flex; align-items: center; gap: 24px; }
+.lg-verdict-arrow { font-size: 34px; color: var(--text-faint); }
+.lg-v-box {
+  position: relative;
+  min-width: 400px;
+  padding: 18px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lg-v-old { background: var(--surface-2); border: 1px solid var(--rule); }
+/* 判决一笔：不写进外层 —— 划掉 */
+.lg-v-old::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 50%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: lg-strike 700ms var(--ease-expo) 2900ms forwards;
+}
+@keyframes lg-strike { to { transform: scaleX(1); } }
+.lg-v-new { background: var(--accent-soft); border: 1px solid var(--accent); }
+.lg-v-head {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.lg-v-new .lg-v-head { color: var(--accent); }
+.lg-v-code { display: flex; align-items: center; gap: 16px; font-size: 28px; color: var(--text-2); }
+.lg-v-new .lg-v-code { color: var(--accent); }
+.lg-v-verdict {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.lg-v-verdict-new { color: var(--text); }
+.lg-rule-foot { font-family: var(--font-display-cn); font-size: 24px; color: var(--text-mute); }
+.lg-rule-foot .mono { font-size: 22px; }

@@ -1,0 +1,302 @@
+/* ch01 hook — 独立前缀 ho-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含） ── */
+.ho-rise,
+.ho-fade,
+.ho-hero-in,
+.ho-card-in,
+.ho-trace-in {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.ho-rise { animation-name: ho-rise; animation-duration: 750ms; }
+.ho-fade { animation-name: ho-fade; animation-duration: 600ms; }
+.ho-hero-in { animation-name: ho-hero-in; animation-duration: 850ms; }
+.ho-card-in { animation-name: ho-card-in; animation-duration: 750ms; }
+.ho-trace-in { animation-name: ho-fade; animation-duration: 600ms; }
+
+@keyframes ho-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ho-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ho-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ho-card-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 调用箭头：线段自绘 + 箭头行进（讲「调用」这个动作） */
+.ho-arrow-run line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: ho-draw 900ms cubic-bezier(0.4, 0, 0.3, 1) forwards 350ms;
+}
+.ho-arrow-run path {
+  opacity: 0;
+  animation: ho-fade 250ms ease-out forwards 1050ms;
+}
+@keyframes ho-draw { to { stroke-dashoffset: 0; } }
+
+/* ── step 0 · 标题页 ── */
+.ho-title {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 34px;
+  text-align: center;
+}
+.ho-kicker {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.22em;
+  color: var(--text-mute);
+}
+.ho-rule { width: 88px; height: 3px; background: var(--accent); }
+.ho-main {
+  font-family: var(--font-display-cn);
+  font-size: 128px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.15;
+}
+.ho-sub {
+  font-family: var(--font-display-cn);
+  font-size: 44px;
+  color: var(--text-2);
+  letter-spacing: 0.28em;
+}
+.ho-claim {
+  margin-top: 18px;
+  font-family: var(--font-body);
+  font-size: 27px;
+  color: var(--accent);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}
+
+/* ── step 1 · 邪门现象 ── */
+.ho-weird {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+.ho-weird-hero {
+  font-family: var(--font-display-cn);
+  font-size: 70px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.3;
+}
+.ho-weird-hero em {
+  font-style: normal;
+  color: var(--accent);
+  border-bottom: 4px solid var(--accent-glow);
+}
+.ho-weird-demo {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+.ho-code-card {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 26px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.ho-code-tag {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 8px 16px;
+  align-self: flex-start;
+  margin-bottom: 6px;
+}
+.ho-code-async {
+  color: var(--accent);
+  font-weight: 700;
+  border-bottom: 3px solid var(--accent-glow);
+}
+.ho-code-line {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+  white-space: nowrap;
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+.ho-code-indent { padding-left: 36px; }
+.ho-code-kw { color: var(--accent); font-weight: 700; }
+.ho-code-note {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.ho-code-note::before { content: "← "; color: var(--text-faint); }
+.ho-call-arrow { width: 220px; flex: 0 0 auto; }
+.ho-call-label {
+  display: block;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 21px;
+  color: var(--text-2);
+  margin-bottom: 6px;
+}
+.ho-call-card {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 20px 44px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ho-call-name {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  color: var(--text);
+}
+.ho-call-state {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.ho-state-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.ho-trace {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.ho-trace-label {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.ho-trace-value {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.ho-trace-note {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-faint);
+}
+
+/* ── step 2 · 不是 bug ── */
+.ho-notbug {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  text-align: center;
+}
+.ho-notbug-line1,
+.ho-notbug-line2 {
+  font-family: var(--font-display-cn);
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+}
+.ho-asyncio-plate {
+  font-family: var(--font-mono);
+  font-size: 76px;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  padding: 0 30px;
+  vertical-align: middle;
+}
+.ho-pledge {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-2);
+  margin-top: 14px;
+}
+.ho-dot { color: var(--text-faint); }
+
+/* ── steps 3-6 · 四问清单 ── */
+.ho-questions {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+.ho-q-kicker {
+  font-family: var(--font-body);
+  font-size: 28px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+.ho-q-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.ho-q-item {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  --q-o: 0.28;
+  animation: ho-q-fade 500ms ease-out forwards;
+  transition: opacity 400ms ease;
+}
+.ho-q-item.is-active { --q-o: 1; }
+.ho-q-item.is-past { --q-o: 0.45; }
+@keyframes ho-q-fade {
+  from { opacity: 0; }
+  to { opacity: var(--q-o, 1); }
+}
+.ho-q-num {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  color: var(--text-faint);
+  min-width: 58px;
+}
+.ho-q-item.is-active .ho-q-num { color: var(--accent); }
+.ho-q-text {
+  font-family: var(--font-display-cn);
+  font-size: 52px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ho-q-cursor {
+  width: 14px;
+  height: 44px;
+  background: var(--accent);
+  animation: ho-blink 900ms steps(2) infinite;
+  align-self: center;
+}
+@keyframes ho-blink { 50% { opacity: 0; } }

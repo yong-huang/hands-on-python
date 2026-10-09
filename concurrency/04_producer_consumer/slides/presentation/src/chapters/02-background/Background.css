@@ -1,0 +1,981 @@
+/* ch02 · background — 独立前缀 bg-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.bg-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* 章内小标签保底字号（--t-micro 12px 在 16:9 视频里太小） */
+.bg-scene .label-mono {
+  font-size: 16px;
+}
+
+/* ── 入场原语 ── */
+.bg-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.bg-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 章内 keyframes ── */
+@keyframes bg-stamp {
+  0%   { opacity: 0; transform: translateX(-50%) scale(2.1); }
+  60%  { opacity: 1; transform: translateX(-50%) scale(0.94); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+@keyframes bg-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes bg-dim {
+  to { opacity: 0.32; }
+}
+@keyframes bg-bounce {
+  0%   { opacity: 0; transform: translateX(0); }
+  18%  { opacity: 1; transform: translateX(56px); }
+  42%  { transform: translateX(56px); }
+  72%  { transform: translateX(-10px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes bg-flow-in {
+  to { opacity: 1; }
+}
+@keyframes bg-flow-run {
+  to { background-position-x: 104px; } /* 4 × 26px 周期，走完停住 */
+}
+@keyframes bg-fadeout {
+  to { opacity: 0; }
+}
+@keyframes bg-drop {
+  from { opacity: 0; transform: translateY(-30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 公共 ── */
+.bg-head {
+  align-self: stretch;
+  display: flex;
+  color: var(--text-mute);
+}
+.bg-accent {
+  color: var(--accent);
+}
+.bg-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.bg-note--dim {
+  color: var(--text-mute);
+}
+.bg-note-tag {
+  padding: 4px 12px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 16px;
+}
+.bg-term {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.bg-term b {
+  margin-right: 6px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* 纯 CSS 小挂锁（accent 描边，无 emoji） */
+.bg0-lockglyph {
+  position: relative;
+  display: inline-block;
+  width: 26px;
+  height: 20px;
+  border: 3px solid var(--accent);
+  border-radius: 4px;
+  background: var(--accent-soft);
+}
+.bg0-lockglyph::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -15px;
+  width: 12px;
+  height: 12px;
+  transform: translateX(-50%);
+  border: 3px solid var(--accent);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+}
+.bg0-lockglyph--sm {
+  width: 16px;
+  height: 13px;
+  border-width: 2px;
+}
+.bg0-lockglyph--sm::before {
+  width: 8px;
+  height: 8px;
+  top: -11px;
+  border-width: 2px;
+}
+
+/* ── step 0 · 老方案：箭头汇聚 + 大锁压顶 ── */
+.bg0-scene {
+  gap: 56px;
+}
+.bg0-diagram {
+  display: flex;
+  align-items: stretch;
+  width: 1260px;
+}
+.bg0-lanes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+}
+.bg0-lane {
+  display: flex;
+  align-items: center;
+}
+.bg0-thread {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg0-thread .mono {
+  font-size: 22px;
+  color: var(--text);
+}
+.bg0-act {
+  padding: 2px 10px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 16px;
+  color: var(--accent);
+}
+.bg0-wire {
+  position: relative;
+  flex: 1;
+  height: 0;
+  border-top: 2px solid var(--text-faint);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: bg-grow 600ms var(--ease-expo) forwards;
+}
+.bg0-wire::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -6px;
+  border-left: 12px solid var(--text-faint);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+.bg0-boxwrap {
+  position: relative;
+  display: flex;
+  width: 470px;
+}
+.bg0-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 44px 36px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg0-box .label-mono {
+  color: var(--text-mute);
+}
+.bg0-cells {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.bg0-cell {
+  padding: 12px 18px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 19px;
+  color: var(--text-2);
+}
+.bg0-box-note {
+  font-size: 17px;
+  color: var(--text-faint);
+}
+.bg0-lock {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 22px 12px;
+  border: 2px solid var(--accent);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--accent);
+  opacity: 0;
+  animation: bg-stamp 700ms var(--ease-overshoot) forwards;
+}
+.bg0-notes {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+}
+
+/* ── step 1 · 共享面：锁在代码点上成倍繁殖 ── */
+.bg1-scene {
+  gap: 46px;
+}
+.bg1-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--text);
+}
+.bg1-strip {
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+  margin-top: 10px;
+}
+.bg1-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.bg1-lockchip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 17px 16px 10px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.bg1-lockchip .mono {
+  font-size: 16px;
+  letter-spacing: 0.08em;
+}
+.bg1-code {
+  padding: 16px 22px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 22px;
+  color: var(--text);
+}
+.bg1-act {
+  font-size: 16px;
+  color: var(--text-faint);
+}
+.bg1-caption {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · 范式翻转：左灰化，右队列逐格入队 ── */
+.bg2-scene {
+  gap: 44px;
+}
+.bg2-panels {
+  display: flex;
+  align-items: stretch;
+  gap: 44px;
+}
+.bg2-left {
+  flex: 1;
+  display: flex;
+}
+.bg2-leftinner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 40px 44px;
+  border: 1px dashed var(--rule);
+  animation: bg-dim 900ms var(--ease-soft) 2400ms forwards;
+}
+.bg2-tag {
+  padding: 8px 18px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 17px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.bg2-tag--on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.bg2-mini {
+  display: flex;
+  align-items: center;
+}
+.bg2-mini-threads {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bg2-mini-thread {
+  padding: 10px 18px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 18px;
+  color: var(--text-2);
+}
+.bg2-mini-wire {
+  position: relative;
+  width: 90px;
+  height: 0;
+  border-top: 2px solid var(--text-faint);
+}
+.bg2-mini-wire::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -5px;
+  border-left: 10px solid var(--text-faint);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+.bg2-mini-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 19px;
+  color: var(--text-2);
+}
+.bg2-mini-lock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px 7px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 16px;
+  color: var(--accent);
+}
+.bg2-leftcap {
+  font-size: 17px;
+  color: var(--text-faint);
+}
+.bg2-mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bg2-flip {
+  padding: 22px 12px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  writing-mode: vertical-rl;
+  font-size: 20px;
+  letter-spacing: 0.34em;
+  color: var(--accent);
+}
+.bg2-right {
+  flex: 1.25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 38px 44px;
+  border: 1px solid var(--accent);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.bg2-workers {
+  display: flex;
+  gap: 20px;
+}
+.bg2-worker {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 22px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 20px;
+  color: var(--text-2);
+}
+.bg2-worker b {
+  font-size: 17px;
+  color: var(--text);
+}
+.bg2-fall {
+  display: flex;
+  gap: 120px;
+}
+.bg2-fallarrow {
+  font-size: 26px;
+  color: var(--text-faint);
+}
+.bg2-queue {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bg2-queue-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.bg2-fifo {
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.bg2-slots {
+  display: flex;
+  gap: 10px;
+}
+.bg2-slotcell {
+  flex: 1;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.bg2-item {
+  font-size: 26px;
+  color: var(--text);
+}
+.bg2-item--head {
+  color: var(--accent);
+}
+.bg2-ends {
+  display: flex;
+  justify-content: space-between;
+}
+.bg2-endhead {
+  font-size: 17px;
+  color: var(--accent);
+}
+.bg2-endtail {
+  font-size: 17px;
+  color: var(--text-faint);
+}
+
+/* ── step 3 · queue.Queue hero ＋ 睡→醒微演示 ── */
+.bg3-scene {
+  gap: 42px;
+}
+.bg3-hero {
+  display: flex;
+  font-size: 108px;
+  color: var(--text);
+}
+.bg3-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) scale(0.85);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  animation: letter-rise var(--dur-slow) var(--ease-expo) forwards;
+}
+.bg3-packs {
+  display: flex;
+  gap: 18px;
+}
+.bg3-pack {
+  padding: 12px 24px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.bg3-pack--on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.bg3-demo {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 34px 46px;
+  border: 1px dashed var(--rule);
+}
+.bg3-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.bg3-who {
+  padding: 12px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 22px;
+  color: var(--text);
+}
+.bg3-status {
+  position: relative;
+  width: 190px;
+  height: 34px;
+}
+.bg3-status-a {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-mute);
+  opacity: 0;
+  animation:
+    rise-in 600ms var(--ease-expo) 3400ms forwards,
+    bg-fadeout 450ms var(--ease-soft) 5000ms forwards;
+}
+.bg3-status-b {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--accent);
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) 5050ms forwards;
+}
+.bg3-dir {
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.bg3-slotbox {
+  width: 130px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.bg3-item {
+  font-size: 20px;
+  color: var(--text);
+  opacity: 0;
+  animation: bg-drop 500ms var(--ease-soft) forwards;
+}
+.bg3-sidecap {
+  font-size: 16px;
+  color: var(--text-faint);
+}
+.bg3-sub {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 4 · 三道工序流水线 ── */
+.bg4-scene {
+  gap: 50px;
+}
+.bg4-question {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  color: var(--text);
+}
+.bg4-pipeline {
+  display: flex;
+  align-items: stretch;
+  gap: 34px;
+}
+.bg4-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 330px;
+  padding: 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg4-stage-top {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.bg4-ord {
+  font-size: 18px;
+  color: var(--text-faint);
+}
+.bg4-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.bg4-en {
+  font-size: 17px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.bg4-crew {
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 16px;
+  color: var(--text-faint);
+}
+.bg4-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 150px;
+}
+.bg4-linklabel {
+  font-size: 16px;
+  color: var(--text-mute);
+}
+.bg4-flow {
+  width: 140px;
+  height: 4px;
+  opacity: 0;
+  background-image: repeating-linear-gradient(90deg, var(--accent) 0 14px, transparent 14px 26px);
+  animation:
+    bg-flow-in 400ms var(--ease-soft) 2600ms forwards,
+    bg-flow-run 2200ms linear 2600ms forwards;
+}
+.bg4-flow--b {
+  animation-delay: 3100ms, 3100ms;
+}
+.bg4-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text-mute);
+}
+.bg4-corner {
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+/* ── step 5 · 任务分发 × 上游过载：填满、反弹、反传 ── */
+.bg5-scene {
+  gap: 38px;
+}
+.bg5-revrow {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-left: 380px;
+}
+.bg5-revlabel {
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.bg5-revwire {
+  position: relative;
+  width: 540px;
+  height: 0;
+  border-top: 2px solid var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  animation: bg-grow 800ms var(--ease-expo) forwards;
+}
+.bg5-revwire::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -6px;
+  border-right: 12px solid var(--accent);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+.bg5-chain {
+  display: flex;
+  align-items: stretch;
+  gap: 30px;
+}
+.bg5-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 300px;
+  padding: 30px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg5-endname {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.bg5-endsub {
+  font-size: 17px;
+  color: var(--text-mute);
+}
+.bg5-state {
+  padding: 8px 16px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 17px;
+  color: var(--accent);
+}
+.bg5-state--slow {
+  border-color: var(--rule);
+  background: var(--surface-3);
+  color: var(--text-mute);
+}
+.bg5-tryzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 150px;
+}
+.bg5-try {
+  padding: 10px 18px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 18px;
+  color: var(--text-2);
+  opacity: 0;
+  animation: bg-bounce 900ms var(--ease-soft) forwards;
+}
+.bg5-trynote {
+  font-size: 16px;
+  color: var(--text-faint);
+}
+.bg5-queue {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 34px 38px;
+  border: 2px solid var(--accent);
+  background: var(--surface-2);
+}
+.bg5-queue-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 40px;
+}
+.bg5-max {
+  font-size: 16px;
+  color: var(--accent);
+}
+.bg5-slots {
+  display: flex;
+  gap: 12px;
+}
+.bg5-slotcell {
+  width: 104px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.bg5-item {
+  font-size: 24px;
+  color: var(--text);
+}
+.bg5-full {
+  position: absolute;
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+  top: -18px;
+  right: -14px;
+  padding: 10px 18px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--surface-2);
+}
+
+/* ── step 6 · 边界：三张裁决卡按口播分句落地 ── */
+.bg6-scene {
+  gap: 46px;
+}
+.bg6-cards {
+  display: flex;
+  align-items: stretch;
+  gap: 32px;
+}
+.bg6-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 490px;
+  padding: 32px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.bg6-ord {
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+}
+.bg6-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 1.3;
+  color: var(--text);
+}
+.bg6-verdict {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.bg6-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bg6-barow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.bg6-barow .mono {
+  width: 96px;
+  flex: none;
+  font-size: 16px;
+  color: var(--text-mute);
+}
+/* 等长轨道:两行共用同一坐标轴,条=轨道内百分比填充,左缘严格对齐 */
+.bg6-track {
+  flex: 1;
+  height: 26px;
+}
+.bg6-bar {
+  display: block;
+  height: 100%;
+  background: var(--surface-3);
+  border-left: 3px solid var(--text-faint);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: bg-grow 700ms var(--ease-expo) 2200ms forwards;
+}
+.bg6-bar--work {
+  width: 30%;
+}
+.bg6-bar--proto {
+  width: 82%;
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+  animation-delay: 2450ms;
+}
+.bg6-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.bg6-flowchip {
+  padding: 10px 16px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 17px;
+  color: var(--text-2);
+}
+.bg6-flowchip--on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.bg6-flowarrow {
+  font-size: 20px;
+  color: var(--text-faint);
+}
+.bg6-order {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bg6-orderow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bg6-orderlabel {
+  width: 84px;
+  font-size: 16px;
+  color: var(--text-mute);
+}
+.bg6-ochip {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 20px;
+  color: var(--text-2);
+}
+.bg6-ochip--out {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.bg6-siblings {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+}
+.bg6-sib {
+  padding: 10px 18px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 17px;
+  color: var(--text-2);
+}
+.bg6-sibtalk {
+  font-size: 16px;
+  color: var(--text-faint);
+}

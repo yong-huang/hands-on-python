@@ -1,0 +1,306 @@
+/* ch02 · solution — 独立前缀 so-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.so-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in ── */
+.so-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.so-pop {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+}
+.so-stamp2 {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+  animation-delay: 2400ms;
+}
+
+/* ── 页头 ── */
+.so-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.so-py-badge { font-size: 15px; }
+.so-head-note { font-size: 15px; letter-spacing: 0.12em; color: var(--text-faint); }
+.so-accent { color: var(--accent); }
+
+/* ── step 0 · 命名卡（hero 句式 + 细线示意） ── */
+.so-name-hero {
+  font-family: var(--font-display-cn);
+  font-size: 108px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  line-height: 1.15;
+}
+.so-inout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 26px;
+}
+.so-inout-word {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text-2);
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+}
+.so-inout-arrow { font-size: 36px; color: var(--text-faint); }
+.so-inout-block {
+  font-size: 25px;
+  color: var(--text-2);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  padding: 24px 40px;
+  border-radius: var(--r-card, 4px);
+}
+.so-inout-note { font-size: 22px; color: var(--text-faint); margin-left: 18px; letter-spacing: 0.06em; }
+.so-eg-card {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 28px;
+  border-top: 1px solid var(--rule);
+  padding-top: 26px;
+  align-self: stretch;
+  justify-content: center;
+}
+.so-eg-name { font-size: 28px; color: var(--accent); }
+.so-eg-talk { font-size: 24px; color: var(--text-2); }
+
+/* ── step 1 · 三个主角（细线白卡，无粗边） ── */
+.so-cast {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  flex: 1;
+  align-items: stretch;
+  align-self: stretch;
+}
+.so-cast-main, .so-cast-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 44px 48px;
+}
+.so-cast-main { flex: 1.2; justify-content: center; }
+.so-cast-pair {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+.so-cast-card { flex: 1; justify-content: center; }
+.so-cast-tag { font-size: 15px; color: var(--text-faint); letter-spacing: 0.22em; }
+.so-cast-main .so-cast-tag { color: var(--accent); }
+.so-cast-name { font-size: 58px; color: var(--text); }
+.so-cast-name-sm { font-size: 42px; }
+.so-cast-talk { font-size: 24px; color: var(--text-mute); }
+
+/* ── step 2 · async with 块（代码卡细线 + 双出口） ── */
+.so-tg-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 56px;
+  align-items: center;
+  flex: 1;
+  align-self: stretch;
+}
+.so-tg-code {
+  flex: 1.3;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 38px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.so-tg-code-line { font-size: 26px; color: var(--text); }
+.so-tg-indent { margin-left: 44px; color: var(--text-2); }
+.so-kw { color: var(--accent); }
+.so-str { color: var(--text-mute); }
+.so-tg-exits {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.so-tg-exit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  font-size: 33px;
+  font-weight: 600;
+  color: var(--text);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 22px 40px;
+}
+.so-tg-exit-bad { color: var(--accent); }
+.so-exit-mark { font-size: 28px; }
+.so-tg-exit-or { font-size: 24px; color: var(--text-faint); }
+.so-tg-slogan { text-align: center; font-size: 38px; color: var(--text-2); }
+.so-tg-slogan b { color: var(--accent); font-weight: 700; }
+
+/* ── step 3 · 连带责任制 ── */
+.so-lian-hero {
+  font-family: var(--font-display-cn);
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+.so-lian-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: flex-start;
+}
+.so-lian-tasks { display: flex; gap: 30px; }
+.so-lian-task {
+  font-size: 28px;
+  color: var(--text-2);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 18px 34px;
+}
+.so-lian-task-bad { border-color: var(--accent); color: var(--text); }
+.so-lian-boom { color: var(--accent); font-weight: 600; margin-left: 10px; }
+.so-lian-signal {
+  font-size: 28px;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.so-lian-signal-note { font-size: 18px; color: var(--text-faint); letter-spacing: 0.06em; }
+.so-lian-pack {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 24px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 22px 34px;
+  font-size: 23px;
+  color: var(--text-2);
+}
+.so-lian-pack-name { font-size: 26px; color: var(--accent); }
+
+/* ── step 4 · 登山向导（细线山路 + 白卡队员 + 报告表） ── */
+.so-guide-stage { position: relative; height: 300px; align-self: stretch; }
+.so-guide-svg { width: 100%; height: 100%; }
+.so-climber {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  display: grid;
+  place-items: center;
+  font-size: 21px;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+}
+.so-guide {
+  background: var(--accent);
+  color: var(--surface-2);
+  font-family: var(--font-body);
+  font-size: 16px;
+  width: 66px;
+  height: 66px;
+}
+.so-c1 { left: 120px; top: 172px; }
+.so-c2 { left: 300px; top: 140px; }
+.so-c3 { left: 470px; top: 96px; }
+.so-guide { left: 700px; top: 44px; }
+.so-fall {
+  position: absolute;
+  left: 288px;
+  top: 66px;
+  color: var(--accent);
+  font-size: 25px;
+  font-weight: 600;
+}
+.so-whistle {
+  position: absolute;
+  right: 30px;
+  top: 150px;
+  font-size: 24px;
+  color: var(--text);
+  border-left: 1px solid var(--rule);
+  padding-left: 18px;
+}
+.so-descend {
+  position: absolute;
+  left: 380px;
+  bottom: 6px;
+  font-size: 26px;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+}
+.so-report-row {
+  display: flex;
+  flex-direction: row;
+  gap: 52px;
+  align-items: stretch;
+  align-self: stretch;
+}
+.so-report {
+  width: 400px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  overflow: hidden;
+}
+.so-report-title {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 16px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+}
+.so-report-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 24px;
+  font-size: 21px;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--rule);
+}
+.so-report-line:last-child { border-bottom: none; }
+.so-report-line b { font-weight: 600; }
+.so-ok { color: var(--text-2); }
+.so-bad { color: var(--accent); }
+.so-guide-warn {
+  flex: 1;
+  align-self: center;
+  font-size: 26px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.so-guide-warn b { color: var(--accent); font-weight: 700; }

@@ -1,0 +1,156 @@
+/* ── ch07 memory · CSS prefix: mm- ───────────────────────────────── */
+
+.mm-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.mm-rise {
+  opacity: 0;
+  animation: mm-rise 620ms var(--ease-quart) both;
+}
+@keyframes mm-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mm-pop {
+  opacity: 0;
+  animation: mm-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes mm-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.mm-line-in {
+  opacity: 0;
+  animation: mm-fade 420ms var(--ease-soft) both;
+}
+@keyframes mm-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · 真机双条 ── */
+.mm-terms-scene { gap: 56px; }
+.mm-term {
+  width: 900px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mm-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.mm-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 30px 36px;
+}
+.mm-term-line {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.mm-term-acc { color: var(--accent); }
+.mm-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 900px;
+}
+.mm-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.mm-bar-label {
+  width: 90px;
+  font-size: 22px;
+  color: var(--text-mute);
+  text-align: right;
+}
+.mm-bar {
+  display: block;
+  height: 26px;
+  background: var(--accent);
+  box-shadow: 0 0 24px var(--accent-soft);
+}
+.mm-bar-long { width: 820px; }
+.mm-bar-tiny { width: 10px; }
+.mm-bar-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: mm-grow 700ms var(--ease-soft) both;
+}
+@keyframes mm-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── step 1 · 倍数 hero ── */
+.mm-ratio-scene {
+  flex-direction: column;
+  gap: 10px;
+}
+.mm-ratio-num {
+  font-family: var(--font-mono);
+  font-size: 170px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 100px var(--accent-glow);
+}
+.mm-ratio-word {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  letter-spacing: 0.14em;
+  color: var(--text-2);
+}
+
+/* ── step 2 · 诚实预期 + 对比表 ── */
+.mm-honest-scene { gap: 70px; }
+.mm-honest-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  opacity: 0.4;
+  width: 1100px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mm-honest-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  gap: 30px;
+  padding: 13px 30px;
+  border-top: 1px dashed var(--rule);
+  font-size: 21px;
+  color: var(--text-2);
+}
+.mm-honest-row:first-child { border-top: 0; }
+.mm-honest-head {
+  font-family: var(--font-mono);
+  color: var(--text-mute);
+}
+.mm-honest-card {
+  padding: 30px 60px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  text-align: center;
+}
+.mm-honest-line {
+  font-size: 31px;
+  color: var(--text-2);
+  padding: 6px 0;
+}
+.mm-honest-line-acc {
+  font-weight: 700;
+  color: var(--accent);
+}

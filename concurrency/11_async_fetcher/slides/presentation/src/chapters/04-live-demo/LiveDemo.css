@@ -1,0 +1,268 @@
+/* ch04 · live-demo — 独立前缀 ld-。颜色/字体只走 token（monochrome-print）。 */
+
+.ld-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.ld-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ld-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.ld-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── 模拟终端（墨底纸字，token 组合） ── */
+.ld-term {
+  width: 1240px;
+  border: 1px solid var(--text);
+  background: var(--text);
+  box-shadow: var(--card-shadow);
+  animation: rise-in var(--dur-base) var(--ease-expo) both;
+}
+.ld-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--surface-3);
+}
+.ld-term-dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--text-faint);
+  border-radius: 50%;
+}
+.ld-term-title {
+  margin-left: 14px;
+  font-size: 17px;
+  color: var(--text-faint);
+}
+.ld-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 36px 34px;
+  font-size: 29px;
+  line-height: 1.5;
+  color: var(--surface);
+}
+.ld-term-prompt {
+  color: var(--surface);
+}
+.ld-term-dollar {
+  margin-right: 12px;
+  color: var(--text-faint);
+}
+.ld-term-line {
+  opacity: 0;
+  animation: ld-type 420ms var(--ease-quart) forwards;
+}
+@keyframes ld-type {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.ld-term-line--hot {
+  color: var(--surface-2);
+  font-weight: 700;
+}
+.ld-term-line--dim {
+  color: var(--text-faint);
+}
+.ld-term-sub {
+  display: block;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+/* ── step 0/1 · 命令与说明 ── */
+.ld-run-scene {
+  gap: 60px;
+}
+.ld-run-note {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.ld-run-note .hero-num {
+  font-size: 64px;
+}
+.ld-badges {
+  display: flex;
+  gap: 22px;
+}
+.ld-badge {
+  padding: 14px 30px;
+  border: 1px dashed var(--text-faint);
+  font-size: 27px;
+  color: var(--text-2);
+  background: var(--surface-2);
+}
+.ld-badge--key {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+/* ── step 2~4 · 行下白话注 ── */
+.ld-line-note {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.ld-line-note .label-mono {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+
+/* ── step 5 · 65 之账 ── */
+.ld-account-scene {
+  gap: 70px;
+}
+.ld-account-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}
+.ld-account-eq {
+  display: flex;
+  align-items: center;
+  gap: 46px;
+}
+.ld-account-num {
+  font-size: 190px;
+  color: var(--text);
+}
+.ld-account-op {
+  font-size: 90px;
+  color: var(--text-faint);
+}
+.ld-account-part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.ld-account-part .hero-num {
+  font-size: 120px;
+  color: var(--text-2);
+}
+.ld-account-part i {
+  font-style: normal;
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.ld-account-part--retry .hero-num {
+  color: var(--accent);
+}
+.ld-account-note {
+  font-size: 32px;
+  color: var(--text-2);
+}
+
+/* ── step 6 · 恢复率 ── */
+.ld-recover-scene {
+  gap: 60px;
+}
+.ld-recover-hero {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.ld-recover-num {
+  font-size: 170px;
+  color: var(--accent);
+}
+.ld-recover-label {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.ld-recover-strip {
+  display: flex;
+  gap: 14px;
+}
+.ld-recover-cell {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 32px;
+  color: var(--accent);
+}
+.ld-recover-note {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 7 · 打平解释 ── */
+.ld-tie-scene {
+  gap: 56px;
+}
+.ld-tie-headline {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 62px;
+  color: var(--text);
+}
+.ld-tie-headline .hero-num {
+  font-size: 84px;
+  color: var(--accent);
+}
+.ld-tie-verdict {
+  padding: 20px 54px;
+  border: 2px solid var(--accent);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--accent);
+}
+.ld-tie-row {
+  display: flex;
+  gap: 44px;
+}
+.ld-tie-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 560px;
+  padding: 42px 0 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-tie-card--thread {
+  border-color: var(--accent);
+}
+.ld-tie-card-tag {
+  font-size: 20px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+.ld-tie-card-text {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.ld-tie-card-text .hero-num {
+  font-size: 64px;
+}

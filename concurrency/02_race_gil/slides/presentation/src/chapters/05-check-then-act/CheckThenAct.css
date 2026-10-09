@@ -1,0 +1,142 @@
+/* ch05 · check-then-act — 独立前缀 ct-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.ct-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.ct-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ct-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.ct-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 写法 ── */
+.ct-shape-scene {
+  gap: 56px;
+}
+.ct-shape-tag {
+  font-size: 26px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.ct-code {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 46px 70px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 44px;
+  color: var(--text);
+}
+.ct-code-line--indent {
+  padding-left: 2.2em;
+}
+.ct-code-kw {
+  color: var(--accent);
+  font-weight: 600;
+}
+.ct-why {
+  font-size: 28px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.ct-why2 {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+
+/* ── step 1 · Barrier 复现 ── */
+.ct-barrier-scene {
+  gap: 34px;
+}
+.ct-barrier-ask {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.ct-barrier-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.ct-barrier-lanes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-self: stretch;
+}
+.ct-barrier-lane {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 22px 28px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ct-barrier-name {
+  font-size: 21px;
+  color: var(--text-2);
+}
+.ct-barrier-check {
+  font-size: 18px;
+  color: var(--text-mute);
+}
+.ct-barrier-write {
+  align-self: center;
+  font-size: 34px;
+  color: var(--text);
+}
+.ct-barrier-result {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 76px;
+  color: var(--text);
+}
+.ct-barrier-conclusion {
+  font-size: 27px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.ct-barrier-conclusion b {
+  color: var(--accent);
+}
+.ct-bad {
+  color: var(--accent);
+}
+
+/* ── step 2 · 锁 gloss ── */
+.ct-lock-scene {
+  gap: 52px;
+}
+.ct-lock-gloss {
+  max-width: 1400px;
+  padding: 26px 40px;
+  border: 1px dashed var(--rule);
+  background: var(--surface);
+  font-size: 29px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.ct-lock-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 88px;
+  line-height: 1.4;
+  color: var(--text);
+}

@@ -1,0 +1,221 @@
+/* ── ch01 hook · CSS prefix: hk- ─────────────────────────────────── */
+
+.hk-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.hk-rise {
+  opacity: 0;
+  animation: hk-rise 620ms var(--ease-quart) both;
+}
+@keyframes hk-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hk-pop {
+  opacity: 0;
+  animation: hk-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes hk-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.hk-fade {
+  opacity: 0;
+  animation: hk-fade 420ms var(--ease-soft) both;
+}
+@keyframes hk-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · title ── */
+.hk-title-scene {
+  align-items: center;
+  text-align: center;
+}
+.hk-title-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: auto 0;
+}
+.hk-title-rule {
+  width: 820px;
+  animation: hk-rule-x 700ms var(--ease-soft) both;
+  transform-origin: center;
+}
+@keyframes hk-rule-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-title-main {
+  margin: 0;
+  font-size: 116px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.hk-title-code {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+}
+.hk-title-sub {
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.hk-titleblock {
+  position: absolute;
+  right: 56px;
+  bottom: 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 28px;
+  padding: 13px 22px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+}
+.hk-tb-row:first-child { border-top: 0; }
+.hk-tb-row span {
+  width: 64px;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.hk-tb-row b {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 反差 ── */
+.hk-contrast-scene { gap: 40px; }
+.hk-contrast-mono {
+  font-family: var(--font-mono);
+  font-size: 130px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.hk-contrast-line {
+  font-size: 40px;
+  color: var(--text-2);
+}
+.hk-contrast-big {
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--text);
+}
+.hk-contrast-big b {
+  border-bottom: 4px solid var(--accent);
+  padding-bottom: 6px;
+}
+
+/* ── step 2 · 翻车卡 ── */
+.hk-crash-scene { gap: 44px; }
+.hk-crash-line {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.hk-crash-line b { color: var(--text); }
+.hk-crash-truth {
+  padding: 28px 64px;
+  border: 2px dashed var(--accent);
+  background: var(--surface-2);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.hk-crash-acc {
+  color: var(--accent);
+}
+
+/* ── step 3 · MRO 概念 ── */
+.hk-mro-scene { gap: 22px; }
+.hk-mro-abbr {
+  font-family: var(--font-mono);
+  font-size: 150px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+}
+.hk-mro-full {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.hk-mro-cn {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text);
+}
+.hk-mro-c3 {
+  margin-top: 26px;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.hk-mro-c3 b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · 钻石结构 ── */
+.hk-diamond-scene { gap: 40px; }
+.hk-diamond-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.hk-diamond-canvas {
+  position: relative;
+  width: 900px;
+  height: 500px;
+}
+.hk-diamond-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hk-dline {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  opacity: 0.6;
+}
+.hk-dnode {
+  position: absolute;
+  width: 150px;
+  padding: 14px 0;
+  border: 1.5px solid var(--text);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 33px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+.hk-dnode-sub {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-mute);
+}
+.hk-dnode-a { left: 375px; top: 20px; }
+.hk-dnode-b { left: 175px; top: 185px; }
+.hk-dnode-c { left: 575px; top: 185px; }
+.hk-dnode-d {
+  left: 375px;
+  top: 350px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+}
+.hk-dnode-d .hk-dnode-sub { color: var(--accent); }

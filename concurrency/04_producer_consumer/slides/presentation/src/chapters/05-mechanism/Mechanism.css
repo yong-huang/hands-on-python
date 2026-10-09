@@ -1,0 +1,891 @@
+/* ch05 · mechanism — 独立前缀 mc-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（不碰 position） */
+.mc-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.mc-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.mc-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.mc-accent {
+  color: var(--accent);
+}
+
+/* ── 内容驱动动画（step2 注满 / step3 回执飞行 / step6 下划线扫入） ── */
+@keyframes mc-fill {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+@keyframes mc-drop {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+@keyframes mc-sweep {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes mc-fly {
+  0%   { opacity: 0; transform: translate(var(--fx, -480px), var(--fy, -36px)) scale(0.55); }
+  55%  { opacity: 1; }
+  80%  { transform: translate(0, 0) scale(1.07); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+
+/* ── 公共 ── */
+.mc-kicker-line {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.mc-panel-head {
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.mc-code {
+  white-space: pre;
+  line-height: 1.75;
+  font-size: 34px;
+  color: var(--text);
+}
+.mc-code-kw {
+  color: var(--accent);
+  font-weight: 600;
+}
+.mc-code-note {
+  color: var(--text-mute);
+}
+.mc-code-indent {
+  padding-left: 2.5ch;
+}
+
+/* ── step 0 · 打包对照两栏 ── */
+.mc-pack-scene {
+  gap: 46px;
+}
+.mc-pack-head {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 20px;
+  color: var(--text-mute);
+}
+.mc-pack-question {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+.mc-pack-question .mono {
+  font-size: 50px;
+}
+.mc-pack-cols {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 56px;
+  min-height: 0;
+}
+.mc-pack-diy {
+  flex: 1.55;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+.mc-pack-colhead {
+  font-size: 21px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.mc-pack-item {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  padding: 21px 34px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-pack-ord {
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.mc-pack-name {
+  min-width: 200px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.mc-pack-talk {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+.mc-pack-built {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  padding: 40px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+}
+.mc-pack-built-name {
+  font-size: 25px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+.mc-pack-built-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 86px;
+  color: var(--text);
+}
+.mc-pack-built-note {
+  text-align: center;
+  font-size: 24px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 全内置 ── */
+.mc-builtin-scene {
+  gap: 42px;
+}
+.mc-builtin-hero {
+  font-size: 108px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.mc-builtin-plates {
+  display: flex;
+  align-self: stretch;
+  justify-content: center;
+  gap: 44px;
+}
+.mc-plate {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 700px;
+  padding: 38px 46px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-plate-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.mc-plate-talk {
+  font-size: 24px;
+  line-height: 1.65;
+  color: var(--text-mute);
+}
+.mc-fifo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.mc-fifo-cap {
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.mc-fifo-cell {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.mc-builtin-hidden {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  padding: 22px 52px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+}
+.mc-builtin-hidden .label-mono {
+  color: var(--accent);
+}
+.mc-hidden-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--accent);
+}
+
+/* ── step 2 · 背压阀门 ── */
+.mc-valve-scene {
+  gap: 40px;
+}
+.mc-valve-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  gap: 26px;
+}
+.mc-valve-actor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 38px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+}
+.mc-valve-actor-name {
+  font-size: 29px;
+  font-weight: 600;
+  color: var(--text);
+}
+.mc-valve-call {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.mc-valve-held {
+  position: absolute;
+  top: -20px;
+  right: -24px;
+  padding: 8px 18px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mc-valve-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.mc-valve-gate-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  height: 74px;
+}
+.mc-valve-arrow {
+  font-size: 52px;
+  color: var(--text-faint);
+}
+.mc-valve-bar {
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  left: 50%;
+  width: 4px;
+  margin-left: -2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: mc-drop 460ms var(--ease-expo) forwards;
+}
+.mc-valve-shut {
+  white-space: nowrap;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+}
+.mc-valve-shut--open {
+  color: var(--text-mute);
+}
+.mc-valve-queue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 28px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+}
+.mc-valve-slots {
+  display: flex;
+  gap: 10px;
+}
+.mc-slot {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  overflow: hidden;
+  border: 1px dashed var(--rule);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+}
+.mc-slot-fill {
+  position: absolute;
+  inset: 0;
+  border-top: 3px solid var(--accent);
+  background: var(--accent-soft);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  animation: mc-fill 400ms var(--ease-expo) forwards;
+}
+.mc-valve-count {
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.mc-valve-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 64px;
+  color: var(--text);
+}
+.mc-valve-foot {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.mc-valve-note {
+  padding: 16px 30px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.mc-valve-evidence {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  padding: 14px 34px;
+  border-left: 3px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+}
+.mc-valve-evidence .label-mono {
+  color: var(--accent);
+}
+.mc-valve-peak {
+  font-size: 72px;
+  color: var(--accent);
+}
+.mc-valve-evtext {
+  font-size: 24px;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 回执协议（核心演示） ── */
+.mc-receipt-scene {
+  gap: 32px;
+}
+.mc-receipt-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  min-height: 0;
+}
+.mc-receipt-loop {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 36px 44px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-receipt-counter {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 36px 44px;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-loop-nodes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mc-loop-node {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+  padding: 18px 30px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+}
+.mc-loop-node--hot {
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+}
+.mc-node-code {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--text);
+}
+.mc-loop-node--hot .mc-node-code {
+  color: var(--accent);
+}
+.mc-node-talk {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.mc-loop-down {
+  text-align: center;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--text-faint);
+}
+.mc-loop-back {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
+  color: var(--text-2);
+}
+.mc-loop-back .mono {
+  font-size: 34px;
+  color: var(--accent);
+}
+.mc-counter-need {
+  align-self: flex-start;
+  padding: 8px 20px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.mc-counter-slots {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+.mc-cslot {
+  position: relative;
+  width: 122px;
+  height: 122px;
+  border: 2px dashed var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+}
+.mc-cslot-ord {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.mc-cslot-chip {
+  position: absolute;
+  inset: 8px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+  font-size: 46px;
+  font-weight: 600;
+  color: var(--accent);
+  opacity: 0;
+  animation: mc-fly 780ms var(--ease-expo) forwards;
+}
+.mc-counter-law {
+  text-align: center;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.mc-receipt-verdict {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+.mc-verdict-stamp {
+  padding: 16px 38px;
+  border: 3px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+.mc-verdict-line {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+
+/* ── step 4 · 两个易断点 + finally ── */
+.mc-break-scene {
+  gap: 30px;
+}
+.mc-break-card {
+  display: flex;
+  align-items: baseline;
+  gap: 34px;
+  align-self: stretch;
+  padding: 34px 46px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-break-card--dim {
+  border-style: dashed;
+  background: var(--surface);
+}
+.mc-break-ord {
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.mc-break-cause {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.mc-break-arrow {
+  font-size: 38px;
+  color: var(--text-faint);
+}
+.mc-break-effect {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text-2);
+}
+.mc-break-stuck {
+  margin-left: auto;
+  padding: 12px 24px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: var(--text-mute);
+}
+.mc-finally {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 14px;
+  padding: 28px 46px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+}
+.mc-finally-head {
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.mc-finally-code {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 31px;
+  color: var(--text);
+}
+
+/* ── step 5 · 毒丸细节一 ── */
+.mc-dose-scene {
+  gap: 46px;
+}
+.mc-dose-law {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 82px;
+  color: var(--text);
+}
+.mc-dose-eq {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+.mc-dose-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.mc-dose-side--pills {
+  gap: 16px;
+}
+.mc-dose-num {
+  font-size: 150px;
+  color: var(--text);
+}
+.mc-dose-who {
+  font-size: 23px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.mc-dose-sign {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 96px;
+  color: var(--text-faint);
+}
+.mc-dose-pills {
+  display: flex;
+  gap: 22px;
+}
+.mc-pill {
+  padding: 18px 32px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mc-dose-cases {
+  display: flex;
+  gap: 40px;
+}
+.mc-dose-case {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 20px 36px;
+  border: 1px dashed var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  font-size: 32px;
+  color: var(--text-2);
+}
+.mc-dose-case .mono {
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+
+/* ── step 6 · 毒丸细节二三：is 认身份 ── */
+.mc-ident-scene {
+  gap: 36px;
+}
+.mc-ident-second {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  align-self: stretch;
+  padding: 22px 40px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 34px;
+  color: var(--text);
+}
+.mc-ident-second .label-mono {
+  color: var(--accent);
+}
+.mc-ident-main {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 56px;
+  min-height: 0;
+}
+.mc-codecard {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 34px 44px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-code-hotline {
+  position: relative;
+}
+/* step6 代码卡:内容在卡内垂直居中,消除下半空白(mc-ident 场景限定) */
+.mc-ident-main .mc-codecard .mc-code {
+  margin: auto 0;
+  font-size: 38px;
+}
+.mc-code-hot {
+  position: relative;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mc-ident-underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 4px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: mc-sweep 480ms var(--ease-expo) forwards;
+}
+.mc-ident-vernacular {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+}
+.mc-vern {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  padding: 30px 38px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+}
+.mc-vern--is {
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+}
+.mc-vern--eq {
+  border-style: dashed;
+  background: var(--surface);
+}
+.mc-vern-op {
+  min-width: 86px;
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--text);
+}
+.mc-vern--is .mc-vern-op {
+  color: var(--accent);
+}
+.mc-vern-ask {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--text);
+}
+.mc-vern-talk {
+  margin-left: auto;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.mc-ident-foot {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}
+
+/* ── step 7 · 队列安全 ≠ 全程安全 ── */
+.mc-safe-scene {
+  gap: 38px;
+}
+.mc-safe-slogan {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 94px;
+  color: var(--text);
+}
+.mc-safe-codecard {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 16px;
+  padding: 30px 48px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-safe-codecard .mc-code {
+  font-size: 40px;
+}
+.mc-safe-phases {
+  display: flex;
+  justify-content: center;
+  gap: 34px;
+}
+.mc-phase {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 20px 34px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+}
+.mc-phase-ord {
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.mc-phase-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--text);
+}
+.mc-phase-frag {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.mc-safe-notes {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.mc-safe-note {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.mc-safe-lock {
+  padding: 12px 28px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  background: var(--accent-soft);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mc-safe-close {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text-2);
+}

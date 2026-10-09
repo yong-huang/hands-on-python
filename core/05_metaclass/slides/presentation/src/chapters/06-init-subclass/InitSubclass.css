@@ -1,0 +1,131 @@
+/* ── ch06 init-subclass · CSS prefix: is- ────────────────────────── */
+
+.is-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.is-rise {
+  opacity: 0;
+  animation: is-rise 620ms var(--ease-quart) both;
+}
+@keyframes is-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.is-pop {
+  opacity: 0;
+  animation: is-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes is-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.is-line-in {
+  opacity: 0;
+  animation: is-fade 420ms var(--ease-soft) both;
+}
+@keyframes is-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · 转折 ── */
+.is-turn-scene { gap: 26px; }
+.is-turn-line {
+  font-size: 42px;
+  color: var(--text-2);
+}
+.is-turn-big {
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── step 1 · 轻量版 ── */
+.is-light-scene { gap: 40px; }
+.is-light-lead {
+  font-size: 42px;
+  color: var(--text-2);
+}
+.is-light-name {
+  padding: 26px 70px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 56px;
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 60px var(--accent-glow);
+}
+.is-light-sub {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · 真机 ── */
+.is-term {
+  width: 940px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.is-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.is-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px 36px;
+}
+.is-term-line {
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 原则 ── */
+.is-rule-scene { gap: 70px; }
+.is-rule-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.is-rule-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+}
+.is-rule-table {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.is-rule-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  width: 1150px;
+  padding: 22px 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.is-rule-use {
+  font-size: 26px;
+  color: var(--text-2);
+}
+.is-rule-pick {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 600;
+}
+.is-rule-pick-light { color: var(--accent); }
+.is-rule-pick-heavy { color: var(--text-2); }

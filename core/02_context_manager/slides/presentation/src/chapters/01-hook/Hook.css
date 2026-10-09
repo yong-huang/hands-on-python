@@ -1,0 +1,338 @@
+/* ── ch01 hook · CSS prefix: hk- ─────────────────────────────────── */
+
+.hk-scene {
+  justify-content: center;
+}
+
+/* shared entrance */
+.hk-rise {
+  opacity: 0;
+  animation: hk-rise 620ms var(--ease-quart) both;
+}
+@keyframes hk-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hk-pop {
+  opacity: 0;
+  animation: hk-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes hk-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · title ── */
+.hk-title-scene {
+  align-items: center;
+  text-align: center;
+}
+.hk-title-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: auto 0;
+}
+.hk-title-rule {
+  width: 760px;
+  animation: hk-rule-x 700ms var(--ease-soft) both;
+  transform-origin: center;
+}
+@keyframes hk-rule-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-title-main {
+  margin: 0;
+  font-size: 136px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+.hk-title-em {
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.hk-title-sub {
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.hk-titleblock {
+  position: absolute;
+  right: 56px;
+  bottom: 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 28px;
+  padding: 13px 22px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+}
+.hk-tb-row:first-child { border-top: 0; }
+.hk-tb-row span {
+  width: 64px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.hk-tb-row b {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 / 2 · three-step flow ── */
+.hk-flow-scene {
+  align-items: center;
+  gap: 56px;
+}
+.hk-flow-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.hk-flow-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+.hk-flow-dot-alarm {
+  animation: hk-alarm-blink 900ms var(--ease-soft) infinite;
+}
+@keyframes hk-alarm-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+
+.hk-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+}
+.hk-flow-unit {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.hk-flow-arrow {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  color: var(--text-mute);
+  opacity: 0;
+  animation: hk-fade 400ms var(--ease-soft) both;
+}
+.hk-arrow-now {
+  color: var(--accent);
+  opacity: 0;
+  animation: hk-fade 400ms var(--ease-soft) 500ms both;
+}
+@keyframes hk-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.hk-stepcard {
+  position: relative;
+  width: 380px;
+  border: 1px solid var(--rule);
+  border-top: 2px dashed var(--accent);
+  background: var(--surface-2);
+}
+.hk-stepcard-bar {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px dashed var(--rule);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.hk-stepcard-ord {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+.hk-stepcard-en {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--text-mute);
+}
+.hk-stepcard-code {
+  margin: 0;
+  padding: 24px 20px;
+  font-family: var(--font-mono);
+  font-size: 23px;
+  line-height: 1.6;
+  color: var(--text);
+  white-space: pre;
+}
+.hk-stepcard-ok {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  padding: 2px 10px;
+  border: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  opacity: 0;
+  animation: hk-fade 360ms var(--ease-soft) both;
+}
+.hk-ok-now { opacity: 0; animation: hk-fade 360ms var(--ease-soft) 600ms both; }
+
+.hk-flow-foot {
+  font-size: 44px;
+  color: var(--text-2);
+}
+.hk-flow-foot b {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* ── step 2 crash additions ── */
+.hk-crash-scene { gap: 40px; }
+.hk-stepcard-done {
+  border-color: var(--rule);
+  border-top: 2px dashed var(--text-faint);
+}
+.hk-stepcard-dead {
+  opacity: 0.38;
+}
+.hk-flow-break {
+  font-family: var(--font-mono);
+  font-size: 54px;
+  color: var(--accent);
+  text-shadow: 0 0 26px var(--accent-glow);
+}
+.hk-dead-stamp {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-6deg);
+  padding: 12px 22px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.hk-stamp-in {
+  animation: hk-stamp 460ms var(--ease-overshoot) both;
+}
+@keyframes hk-stamp {
+  0%   { opacity: 0; transform: translate(-50%, -50%) rotate(-6deg) scale(1.7); }
+  100% { opacity: 1; transform: translate(-50%, -50%) rotate(-6deg) scale(1); }
+}
+.hk-trace {
+  width: 760px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 46px var(--accent-soft);
+}
+.hk-trace-bar {
+  padding: 10px 20px;
+  border-bottom: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.hk-trace-code {
+  margin: 0;
+  padding: 18px 20px;
+  font-family: var(--font-mono);
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 3 · with hero ── */
+.hk-with-scene {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 120px;
+}
+.hk-with-box {
+  position: relative;
+  width: 560px;
+  height: 460px;
+  display: grid;
+  place-items: center;
+}
+.hk-with-sym {
+  font-family: var(--font-mono);
+  font-size: 250px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 90px var(--accent-glow);
+  animation: hk-at-in 800ms var(--ease-quart) 120ms both;
+}
+@keyframes hk-at-in {
+  from { opacity: 0; transform: scale(0.86); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.hk-corner {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border: 2px dashed var(--rule);
+  animation: hk-fade 600ms var(--ease-soft) 650ms both;
+}
+.hk-corner-nw { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.hk-corner-ne { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.hk-corner-sw { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.hk-corner-se { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+.hk-with-copy {
+  max-width: 620px;
+}
+.hk-with-copy .kicker {
+  font-size: 17px;
+  margin-bottom: 24px;
+}
+.hk-with-big {
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.hk-with-em {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 60px var(--accent-glow);
+}
+.hk-with-plate {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 20px 34px;
+  border: 1.5px dashed var(--rule);
+  background: var(--surface-2);
+  font-size: 34px;
+  color: var(--text-2);
+}
+.hk-with-plate b {
+  color: var(--text);
+  font-weight: 700;
+}

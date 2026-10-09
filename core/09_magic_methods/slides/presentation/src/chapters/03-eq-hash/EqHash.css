@@ -1,0 +1,28 @@
+.eh-scene { justify-content: center; align-items: center; gap: 48px; }
+.eh-rise { opacity: 0; animation: eh-rise 620ms var(--ease-quart) both; }
+@keyframes eh-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.eh-pop { opacity: 0; animation: eh-pop 520ms var(--ease-overshoot) both; }
+@keyframes eh-pop { 0% { opacity: 0; transform: scale(0.88); } 100% { opacity: 1; transform: scale(1); } }
+.eh-line-in { opacity: 0; animation: eh-fade 420ms var(--ease-soft) both; }
+@keyframes eh-fade { from { opacity: 0; } to { opacity: 1; } }
+.eh-mono { font-family: var(--font-mono); }
+.eh-contract-scene { gap: 50px; }
+.eh-contract-lead { font-size: 46px; font-weight: 700; color: var(--text); }
+.eh-contract-flow { display: flex; align-items: center; gap: 30px; }
+.eh-flow-chip { display: flex; align-items: baseline; gap: 12px; padding: 20px 40px; border: 1.5px dashed var(--accent); background: var(--accent-soft); font-size: 28px; color: var(--text-2); }
+.eh-flow-mono { font-family: var(--font-mono); font-size: 30px; font-weight: 600; color: var(--accent); }
+.eh-flow-arrow { font-family: var(--font-mono); font-size: 38px; color: var(--accent); }
+.eh-contract-rule { font-family: var(--font-mono); font-size: 30px; color: var(--text-2); text-align: center; }
+.eh-trap-scene { gap: 40px; }
+.eh-trap-big { font-size: 62px; font-weight: 700; color: var(--text); }
+.eh-trace { width: 1000px; border: 1px solid var(--accent); background: var(--accent-soft); }
+.eh-trace-bar { padding: 10px 20px; border-bottom: 1px dashed var(--accent); font-family: var(--font-mono); font-size: 16px; color: var(--accent); }
+.eh-trace-body { padding: 18px 24px; font-size: 26px; color: var(--text-2); }
+.eh-term { width: 940px; border: 1px solid var(--rule); background: var(--surface-2); }
+.eh-term-bar { padding: 12px 22px; border-bottom: 1px dashed var(--rule); font-family: var(--font-mono); font-size: 16px; color: var(--text-mute); }
+.eh-term-body { display: flex; flex-direction: column; gap: 14px; padding: 26px 36px; }
+.eh-line { font-family: var(--font-mono); font-size: 25px; color: var(--text-2); }
+.eh-p { color: var(--accent); margin-right: 12px; }
+.eh-dim { color: var(--text-mute); font-size: 20px; }
+.eh-combo-line { font-size: 40px; font-weight: 700; color: var(--text); text-align: center; }
+.eh-combo-line b { color: var(--accent); }

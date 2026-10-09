@@ -1,0 +1,423 @@
+/* ch04 · live-demo — 独立前缀 fd-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.fd-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.fd-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.fd-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.fd-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: fd-grow-x 700ms var(--ease-expo) forwards;
+}
+@keyframes fd-grow-x {
+  to { transform: scaleX(1); }
+}
+
+.fd-accent {
+  color: var(--accent);
+}
+
+/* ── 模拟终端 ── */
+.fd-term {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  min-width: 900px;
+  padding: 44px 60px;
+}
+.fd-term-head {
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 18px;
+}
+.fd-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.fd-term-cmd {
+  font-size: 34px;
+  color: var(--text);
+}
+.fd-term-prompt {
+  color: var(--accent);
+  margin-right: 14px;
+}
+.fd-term-caret {
+  display: inline-block;
+  width: 17px;
+  height: 34px;
+  margin-left: 10px;
+  background: var(--accent);
+  vertical-align: text-bottom;
+}
+.fd-term-line {
+  font-size: 25px;
+  color: var(--text-2);
+}
+
+/* ── step 0 ── */
+.fd-boot-scene {
+  gap: 44px;
+}
+.fd-boot-note {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 统一接口 ── */
+.fd-same-scene {
+  gap: 54px;
+}
+.fd-same-code {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 34px 60px;
+}
+.fd-same-code-tag {
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.fd-same-code-main {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.fd-same-duo {
+  display: flex;
+  gap: 60px;
+}
+.fd-same-backend {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 40px 70px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 34px;
+  color: var(--text);
+}
+.fd-same-ok {
+  font-size: 22px;
+  color: var(--accent);
+}
+.fd-same-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+
+/* ── step 2 · 耗时快递费 ── */
+.fd-cost-scene {
+  gap: 62px;
+}
+.fd-cost-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-self: stretch;
+  padding: 0 140px;
+}
+.fd-cost-row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.fd-cost-name {
+  width: 120px;
+  font-size: 24px;
+  color: var(--text-2);
+  flex: 0 0 auto;
+}
+.fd-cost-bar {
+  height: 46px;
+  flex: 0 0 auto;
+}
+.fd-cost-bar--fast {
+  width: 26px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+}
+.fd-cost-bar--slow {
+  width: 460px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+}
+.fd-cost-val {
+  font-size: 26px;
+  color: var(--text-2);
+}
+.fd-cost-duo {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+}
+.fd-cost-meta {
+  font-size: 33px;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 大活儿才赚回 ── */
+.fd-worth-scene {
+  gap: 58px;
+}
+.fd-worth-duo {
+  display: flex;
+  gap: 60px;
+}
+.fd-worth-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 520px;
+  padding: 50px 40px;
+}
+.fd-worth-verdict {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 32px;
+}
+.fd-worth-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.fd-worth-talk {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.fd-worth-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+
+/* ── step 4 · 完成序 ── */
+.fd-order-scene {
+  gap: 40px;
+}
+.fd-order-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.fd-order-label {
+  font-size: 20px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.fd-order-row {
+  display: flex;
+  gap: 30px;
+}
+.fd-order-chip {
+  padding: 20px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 30px;
+  color: var(--text-2);
+  flex: 0 0 auto;
+}
+.fd-order-chip--hot {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.fd-order-mid {
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.fd-order-note {
+  font-size: 30px;
+  color: var(--text-2);
+}
+
+/* ── step 5 · wait ── */
+.fd-waitone-scene {
+  gap: 56px;
+}
+.fd-waitone-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fd-waitone-flow {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.fd-waitone-first {
+  padding: 34px 56px;
+  font-size: 32px;
+  color: var(--text);
+}
+.fd-waitone-arrow {
+  font-size: 52px;
+  color: var(--accent);
+}
+.fd-waitone-take {
+  padding: 26px 46px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+}
+.fd-waitone-rest {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+
+/* ── step 6~7 · 异常 ── */
+.fd-err-scene {
+  gap: 46px;
+}
+.fd-err-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fd-err-msg {
+  padding: 20px 30px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 30px;
+}
+.fd-deliver-scene {
+  gap: 54px;
+}
+.fd-deliver-row {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  font-size: 34px;
+}
+.fd-deliver-from {
+  padding: 20px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  color: var(--text);
+  flex: 0 0 auto;
+}
+.fd-deliver-arrow {
+  font-size: 48px;
+  color: var(--accent);
+}
+.fd-deliver-to {
+  color: var(--text-2);
+}
+
+/* ── step 8 · 超时 ── */
+.fd-timeout-scene {
+  gap: 56px;
+}
+.fd-timeout-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fd-timeout-track {
+  position: relative;
+  align-self: stretch;
+  height: 52px;
+  margin: 0 160px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+.fd-timeout-bar {
+  height: 100%;
+  width: 24%;
+  background: var(--accent-soft);
+  border-right: 3px solid var(--accent);
+}
+.fd-timeout-mark {
+  position: absolute;
+  left: 24%;
+  top: -46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.fd-timeout-flag {
+  padding: 6px 16px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 24px;
+}
+.fd-timeout-pin {
+  width: 3px;
+  height: 46px;
+  background: var(--accent);
+}
+.fd-timeout-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 60px;
+  color: var(--text);
+}
+.fd-timeout-note {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+
+/* ── step 9 · 边界金句 ── */
+.fd-boundary-scene {
+  gap: 60px;
+}
+.fd-boundary-duo {
+  display: flex;
+  gap: 60px;
+}
+.fd-boundary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 46px 70px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.fd-boundary-tag {
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.fd-boundary-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.fd-boundary-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--text);
+}

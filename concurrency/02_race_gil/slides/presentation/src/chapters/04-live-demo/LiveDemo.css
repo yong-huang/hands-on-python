@@ -1,0 +1,290 @@
+/* ch04 · live-demo — 独立前缀 ld-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.ld-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.ld-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ld-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.ld-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+.ld-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.ld-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── 模拟终端 ── */
+.ld-term {
+  width: 1240px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.ld-dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--text-faint);
+}
+.ld-term-title {
+  margin-left: 14px;
+  font-size: 18px;
+  color: var(--text-mute);
+}
+.ld-term-body {
+  padding: 34px 40px;
+  font-size: 27px;
+  line-height: 2.1;
+  color: var(--text-2);
+}
+.ld-line {
+  white-space: pre;
+}
+.ld-line b {
+  color: var(--accent);
+}
+.ld-prompt {
+  color: var(--accent);
+  margin-right: 14px;
+}
+.ld-zero {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── step 0/1 · 终端场景 ── */
+.ld-cmd-scene {
+  gap: 46px;
+}
+
+/* ── step 2 · 反直觉 ── */
+.ld-twist-scene {
+  gap: 40px;
+}
+.ld-twist-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}
+.ld-twist-sub {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.ld-twist-fact {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+
+/* ── step 3 · 检查点两处 ── */
+.ld-ckpt-scene {
+  gap: 56px;
+}
+.ld-ckpt-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 88px;
+  color: var(--text);
+}
+.ld-ckpt-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.ld-ckpt-flag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 30px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 22px;
+  color: var(--accent);
+}
+.ld-ckpt-safe {
+  padding: 20px 30px;
+  border: 1px dashed var(--text-faint);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.ld-ckpt-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  align-self: stretch;
+  padding: 0 60px;
+}
+.ld-ckpt-node {
+  padding: 14px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.ld-ckpt-span {
+  flex: 1;
+  height: 0;
+  border-top: 2px dashed var(--text-faint);
+}
+.ld-ckpt-span--safe {
+  border-top-style: solid;
+  border-top-color: var(--rule);
+}
+
+/* ── step 4 · 转折桥接 ── */
+.ld-bridge-scene {
+  gap: 56px;
+}
+.ld-bridge-q {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+.ld-bridge-shape {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* ── step 5 · 实验组代码 ── */
+.ld-code-scene {
+  gap: 50px;
+}
+.ld-code {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 50px 70px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-code-line {
+  display: flex;
+  align-items: baseline;
+  gap: 34px;
+  font-size: 38px;
+  color: var(--text);
+}
+.ld-code-line--hook {
+  padding: 16px 24px;
+  margin-left: -24px;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.ld-code-note {
+  min-width: 190px;
+  font-size: 20px;
+  color: var(--text-faint);
+}
+.ld-code-line--hook .ld-code-note {
+  color: var(--accent);
+}
+
+/* ── step 6 · 五轮输出 ── */
+.ld-rounds-scene {
+  gap: 46px;
+}
+.ld-rounds-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.ld-rounds {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ld-round {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  padding: 16px 28px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.ld-round-n {
+  min-width: 120px;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.ld-round-left {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ld-round-lost {
+  margin-left: auto;
+  font-size: 26px;
+  color: var(--accent);
+}
+.ld-rounds-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 7 · 真实世界 ── */
+.ld-real-scene {
+  gap: 44px;
+}
+.ld-real-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 92px;
+  color: var(--text);
+}
+.ld-real-sub {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.ld-real-chips {
+  display: flex;
+  gap: 30px;
+}
+.ld-real-chip {
+  padding: 22px 46px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 30px;
+  color: var(--accent);
+}
+.ld-real-foot {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}

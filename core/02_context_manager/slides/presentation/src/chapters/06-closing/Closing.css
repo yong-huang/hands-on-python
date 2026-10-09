@@ -1,0 +1,192 @@
+/* ── ch06 closing · CSS prefix: cl- ──────────────────────────────── */
+
+.cl-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+
+/* shared entrances */
+.cl-rise {
+  opacity: 0;
+  animation: cl-rise 620ms var(--ease-quart) both;
+}
+@keyframes cl-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cl-stamp-in {
+  opacity: 0;
+  animation: cl-stamp 460ms var(--ease-overshoot) both;
+}
+@keyframes cl-stamp {
+  0%   { opacity: 0; transform: rotate(-6deg) scale(1.7); }
+  100% { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+/* ── step 0 · 你早就在用 ── */
+.cl-users-scene { gap: 80px; }
+.cl-users-head {
+  align-self: flex-start;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cl-users-head b { color: var(--text); }
+
+.cl-users {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+.cl-user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  padding: 26px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cl-user-with {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--text-faint);
+  min-width: 130px;
+  transition: none;
+}
+.cl-user-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cl-user-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cl-user-code {
+  font-family: var(--font-mono);
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.cl-user-lit {
+  position: absolute;
+  inset: -1px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 34px var(--accent-soft), inset 0 0 24px var(--accent-soft);
+  opacity: 0;
+  pointer-events: none;
+  animation: cl-lit 420ms var(--ease-soft) both;
+}
+@keyframes cl-lit {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 1 · 看穿 ── */
+.cl-see-scene { gap: 76px; }
+.cl-see-head {
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cl-see-head b { color: var(--text); }
+.cl-pains {
+  display: flex;
+  gap: 44px;
+}
+.cl-pain {
+  position: relative;
+  padding: 40px 60px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cl-pain-name {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cl-pain-stamp {
+  position: absolute;
+  top: -24px;
+  right: -30px;
+  padding: 10px 24px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+.cl-see-foot {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.cl-see-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · CTA（同 decorator 系列终端样式） ── */
+.cl-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.cl-term {
+  width: 1020px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cl-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.cl-term-body {
+  padding: 34px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.cl-prompt {
+  color: var(--accent);
+  margin-right: 16px;
+}
+.cl-cmd-out { color: var(--text-mute); }
+.cl-cursor {
+  display: inline-block;
+  width: 16px;
+  height: 34px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--accent);
+  animation: cl-blink 1.1s steps(1) infinite;
+}
+@keyframes cl-blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0; }
+}
+.cl-cta-foot {
+  display: flex;
+  gap: 32px;
+}
+.cl-cta-chip {
+  padding: 18px 40px;
+  border: 1.5px dashed var(--rule);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.cl-cta-chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+}

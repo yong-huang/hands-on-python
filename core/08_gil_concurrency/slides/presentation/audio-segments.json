@@ -1,0 +1,122 @@
+[
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "Python 起 4 个线程，CPU 能跑满吗？",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "答案是不能。CPython 有一把全局解释器锁——GIL。同一时刻，只允许一个线程执行字节码。",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "threading、multiprocessing、asyncio——三种并发模型的真实边界，今天一次拆完。",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "gil",
+    "step": 1,
+    "text": "一句话心智模型：GIL 只锁「执行字节码」这件事。线程一进入 I/O 等待，就把锁让出去。",
+    "audio": "gil/1.mp3"
+  },
+  {
+    "chapter": "gil",
+    "step": 2,
+    "text": "线程 1 发起 socket.recv()，阻塞等待——等待期间释放 GIL。线程 2 获得锁执行 5 毫秒，I/O 完成后线程 1 重新竞争。",
+    "audio": "gil/2.mp3"
+  },
+  {
+    "chapter": "gil",
+    "step": 3,
+    "text": "这就是「多线程能加速 I/O、不能加速 CPU」的微观原因。",
+    "audio": "gil/3.mp3"
+  },
+  {
+    "chapter": "gil",
+    "step": 4,
+    "text": "每次切换间隔约 5 毫秒——sys.getswitchinterval()。",
+    "audio": "gil/4.mp3"
+  },
+  {
+    "chapter": "bench",
+    "step": 1,
+    "text": "口说无凭，真机跑一组基准。CPU 密集：素数计数，4 个线程。",
+    "audio": "bench/1.mp3"
+  },
+  {
+    "chapter": "bench",
+    "step": 2,
+    "text": "serial 0.005 秒，threading 0.005 秒。比值 1.01——原地踏步。",
+    "audio": "bench/2.mp3"
+  },
+  {
+    "chapter": "bench",
+    "step": 3,
+    "text": "multiprocessing 0.046 秒，比值 8.49——反而更慢。任务粒度太小，进程启动成本吞掉了并行收益。",
+    "audio": "bench/3.mp3"
+  },
+  {
+    "chapter": "bench",
+    "step": 4,
+    "text": "换 I/O 密集：8 个 100 毫秒的 sleep。",
+    "audio": "bench/4.mp3"
+  },
+  {
+    "chapter": "bench",
+    "step": 5,
+    "text": "serial 0.827 秒，threading 0.106 秒——7.82 倍加速。",
+    "audio": "bench/5.mp3"
+  },
+  {
+    "chapter": "bench",
+    "step": 6,
+    "text": "asyncio 0.102 秒——8.12 倍。两个都比串行快，因为 GIL 在 I/O 等待期间被释放了。",
+    "audio": "bench/6.mp3"
+  },
+  {
+    "chapter": "release",
+    "step": 1,
+    "text": "那什么时候释放 GIL？time.sleep() 可以，socket.recv() 可以，numpy.sum() 也可以。",
+    "audio": "release/1.mp3"
+  },
+  {
+    "chapter": "release",
+    "step": 2,
+    "text": "for 循环十亿次，不行。str.join()，不行。re.match()，也不行。",
+    "audio": "release/2.mp3"
+  },
+  {
+    "chapter": "release",
+    "step": 3,
+    "text": "注意，「是 C 扩展」不等于「释放 GIL」。re 和 json 就是 C 写的，但它们直接操作 Python 对象，GIL 不放。numpy 能释放，是因为它在 C 层显式调了 Py_BEGIN_ALLOW_THREADS。",
+    "audio": "release/3.mp3"
+  },
+  {
+    "chapter": "models",
+    "step": 1,
+    "text": "所以选型边界很清楚。threading：I/O 密集，网络、文件、数据库。multiprocessing：CPU 密集，计算、编码。asyncio：大量 I/O 并发，高 QPS API。",
+    "audio": "models/1.mp3"
+  },
+  {
+    "chapter": "models",
+    "step": 2,
+    "text": "细选一下：少量 I/O 不超过 100 并发，threading 简单。大量 I/O 超过 100 并发，asyncio 高效。CPU 密集的部分，用 run_in_executor 转给进程池。",
+    "audio": "models/2.mp3"
+  },
+  {
+    "chapter": "models",
+    "step": 3,
+    "text": "为什么不直接去掉 GIL？它保护 CPython 的引用计数。3.13 起有 free-threading 实验版，3.14 起升级为官方支持。但传统 GIL 构建仍是默认。",
+    "audio": "models/3.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 1,
+    "text": "完整代码在 hands-on-python 仓库，python3 一跑就有体感。链接在评论区，下期见。",
+    "audio": "closing/1.mp3"
+  }
+]

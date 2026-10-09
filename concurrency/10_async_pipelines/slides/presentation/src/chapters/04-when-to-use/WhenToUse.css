@@ -1,0 +1,283 @@
+/* ch04 · when-to-use — 独立前缀 wu-。颜色/字体只走 token（monochrome-print）。 */
+
+.wu-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 52px;
+}
+
+/* ── 入场原语 ── */
+.wu-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.wu-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+.wu-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.wu-acc {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── step 0 · 快慢关卡 ── */
+.wu-checkpoint {
+  display: flex;
+  align-items: stretch;
+  gap: 30px;
+}
+.wu-station {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 220px;
+  padding: 34px 0;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wu-station-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.wu-station-speed {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.wu-station-speed--slow {
+  color: var(--accent);
+}
+.wu-gate {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.wu-gate-name {
+  font-size: 22px;
+  color: var(--accent);
+}
+.wu-gate-tag {
+  font-size: 19px;
+  color: var(--text-2);
+}
+.wu-foot {
+  font-size: 28px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 场景双卡 ── */
+.wu-cases {
+  display: flex;
+  gap: 44px;
+}
+.wu-case {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 720px;
+  padding: 50px 52px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wu-case-ord {
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.wu-case-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+.wu-case-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.wu-case-cell {
+  padding: 12px 20px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 24px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.wu-case-cell--acc {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.wu-case-dir {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.wu-case-note {
+  font-size: 23px;
+  color: var(--text-faint);
+}
+
+/* ── step 2 · 第三方限流 ── */
+.wu-third {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.wu-third-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 60px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.wu-third-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.wu-third-note {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.wu-third-gate {
+  padding: 18px 34px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 30px;
+  background: var(--surface);
+}
+.wu-third-flood {
+  display: flex;
+  gap: 20px;
+}
+.wu-third-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--text-mute);
+}
+.wu-third-enter {
+  opacity: 0;
+  animation: pop-in 320ms var(--ease-expo) forwards;
+}
+.wu-third-motto {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  color: var(--text);
+}
+
+/* ── step 3 · 留在线程版 ── */
+.wu-stay-scene {
+  gap: 60px;
+}
+.wu-stay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+}
+.wu-stay-cond {
+  padding: 30px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 36px;
+  color: var(--text-2);
+}
+.wu-stay-cond--tall {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.wu-stay-main {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.wu-stay-talk {
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+.wu-stay-cond b {
+  color: var(--accent);
+  font-weight: 700;
+}
+.wu-stay-or {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.wu-stay-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--accent);
+}
+
+/* ── step 4 · 三方案对比表 ── */
+.wu-table {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.wu-trow {
+  display: flex;
+  align-items: baseline;
+  gap: 44px;
+  padding: 40px 20px;
+  border-top: 1px solid var(--rule);
+}
+.wu-trow:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.wu-trow--hot {
+  background: var(--accent-soft);
+}
+.wu-trow-pick {
+  flex: 0 0 520px;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.wu-trow--hot .wu-trow-pick {
+  color: var(--accent);
+  font-weight: 700;
+}
+.wu-trow-verdict {
+  flex: 0 0 400px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--text);
+}
+.wu-trow-talk {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.wu-table-note {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  align-self: stretch;
+  font-size: 26px;
+  color: var(--text-2);
+}
+.wu-table-note .label-mono {
+  color: var(--accent);
+}

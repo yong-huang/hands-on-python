@@ -1,0 +1,214 @@
+/* ch09 mechanism — 独立前缀 me-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含） ── */
+.me-rise,
+.me-fade,
+.me-hero-in,
+.me-card-in,
+.me-pop {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.me-rise { animation-name: me-rise; animation-duration: 750ms; }
+.me-fade { animation-name: me-fade; animation-duration: 650ms; }
+.me-hero-in { animation-name: me-hero-in; animation-duration: 850ms; }
+.me-card-in { animation-name: me-card-in; animation-duration: 800ms; }
+.me-pop { animation-name: me-pop; animation-duration: 550ms; }
+
+@keyframes me-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes me-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes me-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes me-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes me-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.me-run-kicker {
+  font-family: var(--font-body);
+  font-size: 25px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+.me-run-hero {
+  font-family: var(--font-display-cn);
+  font-size: 68px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── step 0 · 三步打包 ── */
+.me-run {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 44px;
+}
+.me-run-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.me-run-step { display: flex; align-items: center; }
+.me-run-arrow { width: 80px; }
+.me-run-box {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 24px 36px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+}
+.me-run-num {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.me-run-note {
+  font-family: var(--font-body);
+  font-size: 28px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+.me-run-note b {
+  font-family: var(--font-display-cn);
+  color: var(--accent);
+}
+
+/* ── step 1 · 两张表 ── */
+.me-tables {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.me-tables-grid {
+  display: flex;
+  gap: 44px;
+}
+.me-table-card {
+  width: 540px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.me-table-name {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.me-table-gloss {
+  font-family: var(--font-body);
+  font-size: 23px;
+  color: var(--text-2);
+}
+.me-queue,
+.me-alarm {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+}
+.me-queue-cell {
+  border: 2px solid var(--text);
+  background: var(--surface-3);
+  padding: 16px 26px;
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text);
+}
+.me-alarm-cell {
+  border: 1.5px dashed var(--text-faint);
+  padding: 16px 22px;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.me-alarm-clock {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--text-faint);
+  border-radius: 50%;
+}
+.me-table-move {
+  font-family: var(--font-body);
+  font-size: 24px;
+  color: var(--accent);
+  font-weight: 700;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+}
+
+/* ── step 2 · 铁律 ── */
+.me-rule {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.me-rule-hero {
+  font-family: var(--font-display-cn);
+  font-size: 66px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.45;
+}
+.me-rule-hero em {
+  font-style: normal;
+  color: var(--accent);
+  border-bottom: 4px solid var(--accent-glow);
+}
+.me-rule-term {
+  width: 1240px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 26px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.me-rule-term-line {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.me-rule-prompt { color: var(--accent); font-weight: 700; margin-right: 12px; }
+.me-rule-err { color: var(--text); font-weight: 600; }
+.me-rule-note {
+  font-family: var(--font-body);
+  font-size: 29px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}

@@ -1,0 +1,308 @@
+/* ── ch02 protocol · CSS prefix: pt- ─────────────────────────────── */
+
+.pt-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.pt-rise {
+  opacity: 0;
+  animation: pt-rise 620ms var(--ease-quart) both;
+}
+@keyframes pt-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pt-pop {
+  opacity: 0;
+  animation: pt-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes pt-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pt-fade {
+  opacity: 0;
+  animation: pt-fade 420ms var(--ease-soft) both;
+}
+@keyframes pt-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.pt-stamp-in {
+  animation: pt-stamp 460ms var(--ease-overshoot) both;
+}
+@keyframes pt-stamp {
+  0%   { opacity: 0; transform: rotate(-6deg) scale(1.7); }
+  100% { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+.pt-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 0 · 协议代码卡 ── */
+.pt-codecard {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pt-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.pt-codecard .pt-code {
+  padding: 36px 46px;
+  font-size: 29px;
+  line-height: 2.1;
+}
+.pt-role {
+  position: absolute;
+  padding: 8px 24px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.pt-role-1 { right: -120px; top: 203px; }
+.pt-role-2 { right: -120px; top: 325px; }
+.pt-role-3 { right: -120px; top: 447px; }
+
+/* ── step 1 · 签名解剖 ── */
+.pt-sig-scene { gap: 64px; }
+.pt-sig {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  color: var(--text);
+}
+.pt-sig-token { color: var(--accent); text-shadow: 0 0 40px var(--accent-glow); }
+.pt-sig-obj { color: var(--text); border-bottom: 3px solid var(--accent); }
+.pt-sig-type { color: var(--text); border-bottom: 3px dashed var(--text-mute); }
+.pt-sig-notes {
+  display: flex;
+  gap: 60px;
+}
+.pt-sig-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 40px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.pt-sig-note-key {
+  font-family: var(--font-mono);
+  font-size: 29px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.pt-calls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.pt-call {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-mono);
+  font-size: 27px;
+}
+.pt-call code { color: var(--text-2); }
+.pt-call .pt-call-arrow { color: var(--text-mute); }
+.pt-call code:last-child { color: var(--text); }
+
+/* ── step 2 · None 陷阱 ── */
+.pt-crash-scene { gap: 46px; }
+.pt-crash-flow {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.pt-crash-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pt-crash-mono {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text);
+}
+.pt-crash-none { border-color: var(--accent); }
+.pt-crash-none .pt-crash-mono { color: var(--accent); }
+.pt-crash-dict { opacity: 0.85; }
+.pt-crash-note {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.pt-crash-arrow {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.pt-crash-x {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 18px;
+  color: var(--accent);
+}
+.pt-crash-trace {
+  width: 720px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.pt-crash-trace-bar {
+  padding: 10px 20px;
+  border-bottom: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.pt-crash-trace-code {
+  margin: 0;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-2);
+  white-space: pre-wrap;
+}
+.pt-crash-stamp {
+  padding: 14px 36px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+/* ── step 3 · 放哪 ── */
+.pt-place-scene { gap: 60px; }
+.pt-place-lead {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pt-place-cols {
+  display: flex;
+  gap: 110px;
+  align-items: flex-start;
+}
+.pt-place-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+.pt-place-tag {
+  padding: 8px 24px;
+  border: 1px dashed var(--rule);
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.pt-place-tag-ok {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.pt-place-code {
+  margin: 0;
+  padding: 24px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 21px;
+  line-height: 1.75;
+  color: var(--text-mute);
+  white-space: pre;
+}
+.pt-place-code-acc {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* ── step 4 · __set_name__ ── */
+.pt-name-scene { gap: 46px; }
+.pt-name-card {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pt-namecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.pt-name-card .pt-code {
+  padding: 32px 46px;
+  font-size: 27px;
+  line-height: 1.95;
+}
+.pt-name-arrow {
+  position: absolute;
+  right: -250px;
+  top: 148px;
+  padding: 10px 24px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.pt-name-result {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  padding: 18px 44px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.pt-name-result-mono {
+  font-family: var(--font-mono);
+  font-size: 33px;
+  color: var(--text);
+}
+.pt-name-result-val {
+  font-family: var(--font-mono);
+  font-size: 33px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.pt-name-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.pt-name-foot b { color: var(--text); font-weight: 700; }

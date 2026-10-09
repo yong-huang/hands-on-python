@@ -1,0 +1,33 @@
+.bn-scene { justify-content: center; align-items: center; gap: 48px; }
+.bn-rise { opacity: 0; animation: bn-rise 620ms var(--ease-quart) both; }
+@keyframes bn-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.bn-dim { color: var(--text-mute); }
+
+.bn-design-scene { gap: 48px; }
+.bn-design-lead { font-size: 46px; font-weight: 700; color: var(--text); }
+.bn-design-cards { display: flex; gap: 60px; }
+.bn-design-card { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 34px 56px; border: 1.5px dashed var(--accent); background: var(--accent-soft); }
+.bn-design-tag { font-size: 29px; font-weight: 700; color: var(--accent); }
+.bn-design-desc { font-family: var(--font-mono); font-size: 22px; color: var(--text-2); }
+
+.bn-tbl-scene { gap: 44px; }
+.bn-tbl-head { align-self: flex-start; font-size: 36px; font-weight: 700; color: var(--text); }
+.bn-tbl { display: flex; flex-direction: column; gap: 16px; width: 1000px; }
+.bn-tbl-row { display: flex; align-items: baseline; gap: 32px; padding: 20px 38px; border: 1px solid var(--rule); background: var(--surface-2); }
+.bn-tbl-name { width: 280px; font-family: var(--font-mono); font-size: 27px; font-weight: 600; color: var(--text); }
+.bn-tbl-time { font-family: var(--font-mono); font-size: 27px; color: var(--text-2); }
+.bn-tbl-ratio { margin-left: auto; font-family: var(--font-mono); font-size: 25px; font-weight: 600; color: var(--text-mute); }
+.bn-tbl-bad { color: var(--accent); }
+.bn-tbl-good { color: var(--accent); }
+
+.bn-note-scene { gap: 28px; }
+.bn-note-big { font-size: 78px; font-weight: 700; color: var(--text); }
+.bn-note-sub { font-size: 31px; color: var(--text-2); }
+.bn-note-fix { font-size: 27px; color: var(--accent); }
+
+.bn-io-scene { gap: 0; }
+.bn-io-lead { font-size: 48px; font-weight: 700; color: var(--text); }
+
+.bn-done-scene { gap: 26px; }
+.bn-done-big { font-size: 82px; font-weight: 700; color: var(--accent); text-shadow: 0 0 80px var(--accent-glow); }
+.bn-done-sub { font-size: 32px; color: var(--text-2); }

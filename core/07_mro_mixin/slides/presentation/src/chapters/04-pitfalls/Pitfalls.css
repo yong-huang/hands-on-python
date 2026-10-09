@@ -1,0 +1,168 @@
+/* ── ch04 pitfalls · CSS prefix: pf- ─────────────────────────────── */
+
+.pf-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.pf-rise {
+  opacity: 0;
+  animation: pf-rise 620ms var(--ease-quart) both;
+}
+@keyframes pf-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pf-pop {
+  opacity: 0;
+  animation: pf-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes pf-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pf-fade {
+  opacity: 0;
+  animation: pf-fade 420ms var(--ease-soft) both;
+}
+@keyframes pf-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · 断链 ── */
+.pf-break-scene { gap: 70px; }
+.pf-break-lead {
+  font-size: 40px;
+  color: var(--text-2);
+}
+.pf-break-chain {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.pf-break-node {
+  padding: 20px 42px;
+  border: 1.5px solid var(--text);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+}
+.pf-break-node-dead {
+  border: 1px dashed var(--rule);
+  opacity: 0.35;
+  text-decoration: line-through;
+}
+.pf-break-x {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.pf-break-arrow-dead {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  opacity: 0.35;
+}
+.pf-break-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.pf-break-foot b { color: var(--accent); font-weight: 700; }
+.pf-break-badge {
+  padding: 10px 30px;
+  border: 1px dashed var(--rule);
+  font-size: 21px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 四原则 ── */
+.pf-rules-scene { gap: 54px; }
+.pf-rules-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pf-rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.pf-rule {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  padding: 22px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pf-rule-num {
+  font-family: var(--font-mono);
+  font-size: 23px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.pf-rule-name {
+  width: 320px;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pf-rule-note {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+
+/* ── step 2 · 放左侧原理 ── */
+.pf-left-scene { gap: 40px; }
+.pf-left-q {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pf-left-q b { color: var(--accent); }
+.pf-left-ans {
+  font-size: 36px;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.6;
+}
+.pf-left-ans b { color: var(--accent); font-weight: 700; }
+.pf-left-note {
+  font-size: 27px;
+  color: var(--text-mute);
+}
+
+/* ── step 3 · 绕链坑 ── */
+.pf-skip-scene { gap: 40px; }
+.pf-skip-lead {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.pf-skip-code {
+  font-family: var(--font-mono);
+  font-size: 48px;
+  color: var(--text);
+}
+.pf-skip-bad {
+  color: var(--accent);
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 4px;
+}
+.pf-skip-cons {
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pf-skip-cons b { color: var(--accent); }
+.pf-skip-rule {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.pf-skip-mono {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}

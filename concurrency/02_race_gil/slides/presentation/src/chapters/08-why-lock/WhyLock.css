@@ -1,0 +1,152 @@
+/* ch08 · why-lock — 独立前缀 wl-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.wl-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.wl-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.wl-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.wl-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 追问 ── */
+.wl-ask-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 110px;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+/* ── step 1 · 击穿 ── */
+.wl-break-scene {
+  gap: 44px;
+}
+.wl-break-line {
+  max-width: 1480px;
+  font-family: var(--font-display-cn);
+  font-size: 33px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.wl-break-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  color: var(--text);
+}
+
+/* ── step 2 · 原子 + 公式 ── */
+.wl-atom-scene {
+  gap: 56px;
+}
+.wl-atom-gloss {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.wl-atom-formula {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 74px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+/* ── step 3 · 何时不用 ── */
+.wl-skip-scene {
+  gap: 52px;
+}
+.wl-skip-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 68px;
+  color: var(--text);
+}
+.wl-skip-cases {
+  display: flex;
+  gap: 36px;
+}
+.wl-skip-card {
+  padding: 40px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--text);
+}
+.wl-skip-foot {
+  font-size: 30px;
+  color: var(--text-2);
+}
+
+/* ── step 4 · 修法预告 ── */
+.wl-fix-scene {
+  gap: 40px;
+}
+.wl-fix-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 100px;
+  color: var(--text);
+}
+.wl-fix-sub {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.wl-fix-next {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 27px;
+  color: var(--text-2);
+}
+.wl-fix-next .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 5 · 收尾 ── */
+.wl-end-scene {
+  gap: 42px;
+}
+.wl-end-repo {
+  padding: 20px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.wl-end-cmd {
+  font-size: 34px;
+  color: var(--text);
+}
+.wl-end-prompt {
+  color: var(--accent);
+  margin-right: 16px;
+}
+.wl-end-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 92px;
+  color: var(--text);
+}
+.wl-end-byeline {
+  font-size: 26px;
+  color: var(--text-mute);
+}

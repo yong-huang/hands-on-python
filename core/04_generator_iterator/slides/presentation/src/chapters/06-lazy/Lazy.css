@@ -1,0 +1,183 @@
+/* ── ch06 lazy · CSS prefix: lz- ─────────────────────────────────── */
+
+.lz-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.lz-rise {
+  opacity: 0;
+  animation: lz-rise 620ms var(--ease-quart) both;
+}
+@keyframes lz-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lz-pop {
+  opacity: 0;
+  animation: lz-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes lz-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · 无限流 ── */
+.lz-infinite-scene { gap: 56px; }
+.lz-infinite-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.lz-infinite-stream {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 34px 60px;
+  border: 1px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.lz-stream-num {
+  font-family: var(--font-mono);
+  font-size: 42px;
+  color: var(--text);
+}
+.lz-stream-dots {
+  font-family: var(--font-mono);
+  font-size: 42px;
+  color: var(--accent);
+}
+.lz-stream-note {
+  font-size: 22px;
+  color: var(--text-mute);
+  margin-left: 14px;
+}
+.lz-infinite-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.lz-infinite-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 1 · 管道串联 ── */
+.lz-pipe-scene { gap: 80px; }
+.lz-pipe-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.lz-pipe {
+  display: flex;
+  align-items: center;
+}
+.lz-pipe-unit {
+  display: flex;
+  align-items: center;
+}
+.lz-pipe-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 26px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.lz-pipe-node:last-child {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.lz-pipe-name {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text);
+}
+.lz-pipe-desc {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.lz-pipe-link {
+  width: 54px;
+  height: 0;
+  border-top: 2px dashed var(--accent);
+}
+.lz-pipe-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.lz-pipe-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 偶数平方 ── */
+.lz-squares-scene { gap: 66px; }
+.lz-squares-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.lz-squares {
+  display: flex;
+  gap: 20px;
+}
+.lz-square {
+  padding: 18px 24px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 29px;
+  color: var(--text);
+}
+.lz-squares-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.lz-squares-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 3 · 日志管道 ── */
+.lz-log-scene { gap: 52px; }
+.lz-log-pipe {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.lz-log-unit {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.lz-log-node {
+  padding: 14px 30px;
+  border: 1px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--accent);
+}
+.lz-log-arrow {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.lz-log-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 26px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.lz-log-line {
+  font-family: var(--font-mono);
+  font-size: 23px;
+  color: var(--text-2);
+}
+.lz-log-dim {
+  font-family: var(--font-mono);
+  font-size: 23px;
+  color: var(--text-mute);
+}
+.lz-log-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.lz-log-foot b { color: var(--text); font-weight: 700; }

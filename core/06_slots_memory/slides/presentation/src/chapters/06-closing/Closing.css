@@ -1,0 +1,205 @@
+/* ── ch06 closing · CSS prefix: cl- ──────────────────────────────── */
+
+.cl-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+
+/* shared */
+.cl-rise {
+  opacity: 0;
+  animation: cl-rise 620ms var(--ease-quart) both;
+}
+@keyframes cl-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cl-pop {
+  opacity: 0;
+  animation: cl-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes cl-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.cl-fade {
+  opacity: 0;
+  animation: cl-fade 420ms var(--ease-soft) both;
+}
+@keyframes cl-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · 三场景 ── */
+.cl-cases-scene { gap: 76px; }
+.cl-cases-lead {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cl-cases {
+  display: flex;
+  gap: 36px;
+}
+.cl-case {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 40px 50px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.cl-case-name {
+  font-size: 31px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cl-case-note {
+  font-size: 21px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 描述符彩蛋 ── */
+.cl-egg-scene { gap: 0; }
+.cl-egg-lead {
+  font-size: 30px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+  margin-bottom: 40px;
+}
+.cl-egg-flow {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.cl-egg-node {
+  padding: 24px 38px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  text-align: center;
+}
+.cl-egg-node-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.cl-egg-mono {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text);
+}
+.cl-egg-node-acc .cl-egg-mono { color: var(--accent); }
+.cl-egg-sub {
+  font-size: 23px;
+  color: var(--text-2);
+}
+.cl-egg-arrow {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  color: var(--text-mute);
+}
+.cl-egg-foot {
+  margin-top: 44px;
+  font-size: 36px;
+  color: var(--text-2);
+}
+.cl-egg-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 系列衔接 ── */
+.cl-link-scene { gap: 26px; }
+.cl-link-row {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  padding: 26px 54px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cl-link-row-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.cl-link-name {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cl-link-row-acc .cl-link-name { color: var(--accent); }
+.cl-link-tag {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.cl-link-row-acc .cl-link-tag { color: var(--text-2); }
+.cl-link-arrow {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  color: var(--accent);
+  text-align: center;
+}
+
+/* ── step 3 · CTA（系列同款终端） ── */
+.cl-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.cl-term {
+  width: 1060px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cl-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.cl-term-body {
+  padding: 34px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.cl-prompt {
+  color: var(--accent);
+  margin-right: 16px;
+}
+.cl-cmd-out { color: var(--text-mute); }
+.cl-cursor {
+  display: inline-block;
+  width: 16px;
+  height: 32px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--accent);
+  animation: cl-blink 1.1s steps(1) infinite;
+}
+@keyframes cl-blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0; }
+}
+.cl-cta-foot {
+  display: flex;
+  gap: 32px;
+}
+.cl-cta-chip {
+  padding: 18px 40px;
+  border: 1.5px dashed var(--rule);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.cl-cta-chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+}

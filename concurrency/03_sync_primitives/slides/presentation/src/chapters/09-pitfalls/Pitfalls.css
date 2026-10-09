@@ -1,0 +1,173 @@
+/* ch09 · pitfalls — 独立前缀 pf-。颜色/字体只走 token（monochrome-print）。 */
+
+.pf-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+.pf-scene-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 40px;
+  width: 100%;
+}
+
+/* ── 入场原语 ── */
+.pf-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pf-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 坑卡骨架 ── */
+.pf-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(--text-mute);
+}
+.pf-progress {
+  font-size: 20px;
+  color: var(--accent);
+}
+.pf-title {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 74px;
+  color: var(--text);
+}
+.pf-title-ord {
+  font-size: 44px;
+  color: var(--accent);
+}
+.pf-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.pf-row {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  padding: 26px 32px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pf-row--fix {
+  border-color: var(--accent);
+}
+.pf-row-tag {
+  flex: 0 0 90px;
+  color: var(--text-faint);
+}
+.pf-row-tag--fix {
+  color: var(--accent);
+}
+.pf-row-text {
+  font-size: 32px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.pf-row-text b {
+  color: var(--accent);
+  font-weight: 700;
+}
+.pf-row-text .mono {
+  font-size: 29px;
+}
+
+/* ── 坑二 · 双曲线 ── */
+.pf-curves {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.pf-curve-svg {
+  width: 560px;
+  height: 150px;
+}
+.pf-curve {
+  fill: none;
+  stroke-width: 4;
+}
+.pf-curve--flat {
+  stroke: var(--text-faint);
+}
+.pf-curve--up {
+  stroke: var(--accent);
+}
+.pf-curve-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pf-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 23px;
+  color: var(--text-2);
+}
+.pf-legend-line {
+  width: 44px;
+  height: 4px;
+}
+.pf-legend-line--flat {
+  background: var(--text-faint);
+}
+.pf-legend-line--up {
+  background: var(--accent);
+}
+
+/* ── 坑四 · 范围对比 ── */
+.pf-scope {
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+}
+.pf-scope-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pf-scope-tag {
+  color: var(--text-faint);
+}
+.pf-scope-tag--good {
+  color: var(--accent);
+}
+.pf-scope-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px 32px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pf-scope-cell--good .pf-scope-block {
+  border-color: var(--accent);
+}
+.pf-scope-line {
+  font-size: 25px;
+  color: var(--text-2);
+}
+.pf-scope-line--all {
+  padding-left: 0;
+  color: var(--accent);
+  border-left: 4px solid var(--accent);
+  padding-left: 14px;
+  margin-left: -14px;
+}
+.pf-scope-line--in {
+  padding-left: 40px;
+  color: var(--text-mute);
+}

@@ -1,0 +1,264 @@
+/* ── ch01 hook · CSS prefix: hk- ─────────────────────────────────── */
+
+.hk-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.hk-rise {
+  opacity: 0;
+  animation: hk-rise 620ms var(--ease-quart) both;
+}
+@keyframes hk-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hk-fade {
+  opacity: 0;
+  animation: hk-fade 420ms var(--ease-soft) both;
+}
+@keyframes hk-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · title ── */
+.hk-title-scene {
+  align-items: center;
+  text-align: center;
+}
+.hk-title-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: auto 0;
+}
+.hk-title-rule {
+  width: 820px;
+  animation: hk-rule-x 700ms var(--ease-soft) both;
+  transform-origin: center;
+}
+@keyframes hk-rule-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-title-main {
+  margin: 0;
+  font-size: 112px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.hk-title-code {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.82em;
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.hk-title-sub {
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.hk-titleblock {
+  position: absolute;
+  right: 56px;
+  bottom: 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 28px;
+  padding: 13px 22px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+}
+.hk-tb-row:first-child { border-top: 0; }
+.hk-tb-row span {
+  width: 64px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.hk-tb-row b {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 0 · 悬念 ── */
+.hk-ask-scene { gap: 44px; }
+.hk-ask-obj {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-ask-chip {
+  padding: 8px 26px;
+  border: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--accent);
+}
+.hk-ask-obj-label {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.hk-ask-big {
+  font-size: 82px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.hk-ask-big b {
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+
+/* ── step 1 · 双数字 ── */
+.hk-reveal-scene { gap: 60px; }
+.hk-reveal-cols {
+  display: flex;
+  gap: 80px;
+  align-items: center;
+}
+.hk-reveal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 70px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-reveal-card-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.hk-reveal-tag {
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.hk-reveal-card-acc .hk-reveal-tag { color: var(--accent); }
+.hk-reveal-num {
+  font-family: var(--font-mono);
+  font-size: 120px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text);
+}
+.hk-reveal-num-acc {
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.hk-reveal-unit {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.hk-reveal-foot {
+  font-size: 40px;
+  color: var(--text-2);
+}
+.hk-reveal-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 版本刻度 ── */
+.hk-default-scene { gap: 70px; }
+.hk-default-lead {
+  font-size: 40px;
+  color: var(--text-2);
+  text-align: center;
+}
+.hk-default-lead b { color: var(--text); font-weight: 700; }
+.hk-scale {
+  width: 1100px;
+}
+.hk-scale-track {
+  position: relative;
+  height: 22px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+}
+.hk-scale-fill {
+  position: absolute;
+  inset: 3px auto 3px 3px;
+  width: 88%;
+  background: var(--accent);
+  opacity: 0.65;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: hk-fill 900ms var(--ease-soft) 900ms both;
+}
+@keyframes hk-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-scale-tick {
+  position: absolute;
+  top: -56px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.hk-scale-range {
+  margin-top: 18px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.hk-default-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.hk-default-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 3 · 上量场景 ── */
+.hk-scaleup-scene { gap: 70px; }
+.hk-scaleup-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.hk-scaleup-cards {
+  display: flex;
+  gap: 34px;
+}
+.hk-scaleup-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 36px 50px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+}
+.hk-scaleup-x {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.hk-scaleup-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.hk-scaleup-foot b { color: var(--text); font-weight: 700; }

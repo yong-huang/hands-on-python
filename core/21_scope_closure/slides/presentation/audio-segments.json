@@ -1,0 +1,200 @@
+[
+  {
+    "chapter": "hook",
+    "step": 1,
+    "text": "今天讲作用域与闭包。四样东西：LEGB、cell、nonlocal、还有一个经典陷阱。",
+    "audio": "hook/1.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "先看这段代码。make_counter 返回了一个 counter，函数体已经跑完。按理说，里面的 count 该跟着销毁。",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "可 counter 一调，是 1。再调，是 2。count 活过了它所在的函数。",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "这个现象，叫闭包。",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 1,
+    "text": "看穿它之前，先补块地基：作用域。它管的事很简单：一个名字，在代码的某处，指向谁。",
+    "audio": "legb/1.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 2,
+    "text": "Python 查名字，走一条固定的链，叫 LEGB。",
+    "audio": "legb/2.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 3,
+    "text": "L，Local。当前函数内部。",
+    "audio": "legb/3.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 4,
+    "text": "E，Enclosing。外层函数。",
+    "audio": "legb/4.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 5,
+    "text": "G，Global。模块级。",
+    "audio": "legb/5.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 6,
+    "text": "B，Built-in。内建的，print、len 这些不用导入。从里往外找，找到就停。",
+    "audio": "legb/6.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 7,
+    "text": "看个例子。inner 自己赋了值，读到的就是自己那一层。外层的 enclosing？被遮住了，看不见。这就叫就近遮蔽。",
+    "audio": "legb/7.mp3"
+  },
+  {
+    "chapter": "legb",
+    "step": 8,
+    "text": "规矩只有一条：赋值即声明。函数里写 value 等于什么，是新建一个局部名。不是改外层，是新建。",
+    "audio": "legb/8.mp3"
+  },
+  {
+    "chapter": "closure-cell",
+    "step": 1,
+    "text": "地基打完，回头看闭包。内层函数引用了外层的变量，这个变量，叫自由变量。",
+    "audio": "closure-cell/1.mp3"
+  },
+  {
+    "chapter": "closure-cell",
+    "step": 2,
+    "text": "外层函数返回，栈帧销毁，自由变量却没死。它被打包进一个 cell 对象，跟着 counter 一起被带走。",
+    "audio": "closure-cell/2.mp3"
+  },
+  {
+    "chapter": "closure-cell",
+    "step": 3,
+    "text": "怎么验证？counter 身上带着 closure 属性。里面躺着那个 cell，cell contents 一看，就是当前计数。",
+    "audio": "closure-cell/3.mp3"
+  },
+  {
+    "chapter": "closure-cell",
+    "step": 4,
+    "text": "字节码更诚实。count 加一，编译出来是一条 STORE DEREF 指令。普通局部变量是 STORE FAST，读写栈帧，函数一返回就没了。STORE DEREF 写的不是栈帧，是 cell。",
+    "audio": "closure-cell/4.mp3"
+  },
+  {
+    "chapter": "closure-cell",
+    "step": 5,
+    "text": "这就是变量活过函数的全部实现。",
+    "audio": "closure-cell/5.mp3"
+  },
+  {
+    "chapter": "nonlocal",
+    "step": 1,
+    "text": "闭包要好用，还差一块：怎么改外层的变量？答案一行：nonlocal。",
+    "audio": "nonlocal/1.mp3"
+  },
+  {
+    "chapter": "nonlocal",
+    "step": 2,
+    "text": "不写会怎样？count 加一，直接报错，UnboundLocalError。刚才那条规矩，赋值即声明。Python 看到 count 在函数里被赋值，就认定它是局部变量。读它的时候还没有值，当场翻车。",
+    "audio": "nonlocal/2.mp3"
+  },
+  {
+    "chapter": "nonlocal",
+    "step": 3,
+    "text": "nonlocal 就是声明：我要改的，是外层那个 count。",
+    "audio": "nonlocal/3.mp3"
+  },
+  {
+    "chapter": "nonlocal",
+    "step": 4,
+    "text": "那 global 呢？它指向模块级，人人可见。",
+    "audio": "nonlocal/4.mp3"
+  },
+  {
+    "chapter": "nonlocal",
+    "step": 5,
+    "text": "两个计数器，各调各的：A 到 2，B 才 1，互不干扰。每次 make_counter，都产出一套独立的 cell。闭包版的实例，就是这么来的。",
+    "audio": "nonlocal/5.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 1,
+    "text": "接下来是重头戏，一个经典陷阱。",
+    "audio": "late-binding/1.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 2,
+    "text": "列表推导里造三个函数，lambda 冒号 i，i 从 0 到 2。依次调用，你预期 0、1、2。",
+    "audio": "late-binding/2.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 3,
+    "text": "结果是 2、2、2。",
+    "audio": "late-binding/3.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 4,
+    "text": "为什么？闭包记住的是变量，不是值。三个 lambda 共享同一个 i。函数体到调用时才去读 i。那时循环早跑完了，i 停在 2。",
+    "audio": "late-binding/4.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 5,
+    "text": "这叫迟绑定。",
+    "audio": "late-binding/5.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 6,
+    "text": "修法就一处：给 lambda 加个默认参数，i 等于 i。默认参数在定义时求值，等于当场拍快照。或者用 functools 的 partial，把实参钉死。",
+    "audio": "late-binding/6.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 7,
+    "text": "再调，0、1、2，齐了。",
+    "audio": "late-binding/7.mp3"
+  },
+  {
+    "chapter": "late-binding",
+    "step": 8,
+    "text": "以后碰到回调列表、定时器集体读到同一个值，先想到它。",
+    "audio": "late-binding/8.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 1,
+    "text": "这套机制，你早就在用。装饰器的 wrapper，就是闭包。retry 的次数、缓存的 store，全是自由变量，靠 cell 活过装饰那一刻。",
+    "audio": "closing/1.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 2,
+    "text": "这一路：LEGB 管名字往哪找，cell 管变量活多久。nonlocal 是跨层修改的通行证。而迟绑定是个提醒：闭包存的是变量，不是值。",
+    "audio": "closing/2.mp3"
+  },
+  {
+    "chapter": "closing",
+    "step": 3,
+    "text": "完整代码在 hands-on-python 仓库，零依赖，python3 一跑就有体感。链接在评论区，下期见。",
+    "audio": "closing/3.mp3"
+  }
+]

@@ -1,0 +1,367 @@
+/* ch07 · qa-closing — 独立前缀 qc-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（不碰 position） */
+.qc-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 38px;
+}
+
+/* ── 入场原语 ── */
+.qc-rise {
+  opacity: 0;
+  animation: rise-in 750ms var(--ease-expo) forwards;
+}
+.qc-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.qc-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: qc-grow-x 800ms var(--ease-expo) forwards;
+}
+@keyframes qc-grow-x {
+  to { transform: scaleX(1); }
+}
+/* 出错链让位灰化（兜底出现时整体退后） */
+.qc-dim {
+  animation: qc-dim-out 700ms var(--ease-soft) 6900ms forwards;
+}
+@keyframes qc-dim-out {
+  to { opacity: 0.45; }
+}
+
+.qc-accent { color: var(--accent); }
+
+/* ── 公共 · Q 页 kicker 行 + 问题行 ── */
+.qc-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.qc-head-ord {
+  font-size: 20px;
+  color: var(--accent);
+}
+.qc-question {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+/* ── step 0 · Q1 速率剖面 ── */
+.qc-profile {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  margin-top: 20px;
+}
+.qc-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 30px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+}
+.qc-node--slow {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  padding: 36px 54px;
+}
+.qc-node-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--text);
+}
+.qc-node--slow .qc-node-name {
+  color: var(--accent);
+  font-size: 36px;
+}
+.qc-node-api {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.qc-slow-tag {
+  padding: 6px 16px;
+  border: 1px solid var(--accent);
+  font-size: 20px;
+  color: var(--accent);
+}
+.qc-slow-rate {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--text);
+}
+.qc-flow {
+  font-size: 38px;
+  color: var(--text-faint);
+}
+
+.qc-throughput {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  margin-top: 6px;
+}
+.qc-tp-from {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.qc-tp-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+.qc-tp-num {
+  font-size: 150px;
+}
+.qc-tp-unit {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  color: var(--text-mute);
+}
+
+.qc-tagline {
+  margin-top: 8px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text-mute);
+}
+.qc-note {
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+
+/* ── step 1 · Q2 双 join 对照 + 收尾三步时间线 ── */
+.qc-joins {
+  display: flex;
+  align-items: stretch;
+  gap: 52px;
+}
+.qc-join-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  width: 660px;
+  padding: 46px 54px;
+  text-align: left;
+}
+.qc-join-sep {
+  width: 1px;
+  background: var(--rule);
+}
+.qc-join-name {
+  font-size: 30px;
+  color: var(--accent);
+}
+.qc-join-verb {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 1.15;
+  color: var(--text);
+}
+.qc-join-note {
+  font-size: 25px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.qc-tl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  margin-top: 6px;
+}
+.qc-tl-head {
+  color: var(--text-mute);
+}
+.qc-tl-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.qc-tl-link {
+  width: 96px;
+  height: 1px;
+  background: var(--rule);
+}
+.qc-stepnode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 40px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: var(--r-card);
+}
+.qc-stepnode-ord {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  font-size: 22px;
+  color: var(--accent);
+}
+.qc-stepnode-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--accent);
+}
+.qc-stepnode-sub {
+  font-size: 20px;
+  color: var(--text-2);
+}
+
+/* ── step 2 · Q3 异常路径 + 兜底两件套 ── */
+.qc-chain {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 8px;
+}
+.qc-chain-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 26px 40px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+}
+.qc-chain-mark {
+  font-size: 24px;
+  color: var(--accent);
+}
+.qc-chain-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--text);
+}
+.qc-chain-sub {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.qc-chain-node--stuck {
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.qc-chain-node--stuck .qc-chain-name {
+  color: var(--accent);
+}
+.qc-chain-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+
+.qc-fix-head {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  align-self: stretch;
+}
+.qc-fix-head .rule {
+  flex: 1;
+}
+.qc-fix-head .label-mono {
+  color: var(--accent);
+}
+.qc-fixes {
+  display: flex;
+  gap: 52px;
+}
+.qc-fix-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  width: 700px;
+  padding: 42px 50px;
+  text-align: left;
+}
+.qc-fix-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.qc-fix-name .mono {
+  font-size: 38px;
+}
+.qc-fix-mark {
+  margin-right: 14px;
+  font-size: 30px;
+  color: var(--accent);
+}
+.qc-fix-note {
+  font-size: 25px;
+  line-height: 1.55;
+  color: var(--text-mute);
+}
+.qc-fix-tag {
+  margin-top: 8px;
+  font-size: 18px;
+  letter-spacing: 0.22em;
+  color: var(--text-faint);
+}
+
+/* ── step 3 · 收尾 CTA ── */
+.qc-end-repo {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 20px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+}
+.qc-end-path {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.qc-end-cmd {
+  font-size: 32px;
+  color: var(--text);
+}
+.qc-end-prompt {
+  margin-right: 18px;
+  color: var(--accent);
+}
+.qc-end-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}
+.qc-end-py {
+  font-size: 72px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.qc-end-bye {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text-mute);
+}

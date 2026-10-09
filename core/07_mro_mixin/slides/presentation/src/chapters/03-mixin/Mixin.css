@@ -1,0 +1,203 @@
+/* ── ch03 mixin · CSS prefix: mx- ────────────────────────────────── */
+
+.mx-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.mx-rise {
+  opacity: 0;
+  animation: mx-rise 620ms var(--ease-quart) both;
+}
+@keyframes mx-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mx-pop {
+  opacity: 0;
+  animation: mx-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes mx-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.mx-fade {
+  opacity: 0;
+  animation: mx-fade 420ms var(--ease-soft) both;
+}
+@keyframes mx-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.mx-dim { color: var(--text-mute); }
+
+/* ── step 0 · 转场 ── */
+.mx-lead-scene { gap: 34px; }
+.mx-lead-line {
+  font-size: 44px;
+  color: var(--text-2);
+}
+.mx-lead-name {
+  font-family: var(--font-mono);
+  font-size: 120px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── step 1 · 概念 ── */
+.mx-concept-scene { gap: 70px; }
+.mx-concept-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text-2);
+  text-align: center;
+}
+.mx-concept-lead b { color: var(--text); }
+.mx-concept-demo {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+.mx-plug {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 42px;
+  border: 1.5px dashed var(--accent);
+  background: var(--surface-2);
+}
+.mx-plug-name {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  font-weight: 600;
+  color: var(--text);
+}
+.mx-plug-desc {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.mx-concept-eq {
+  font-family: var(--font-mono);
+  font-size: 42px;
+  color: var(--accent);
+}
+.mx-combo {
+  padding: 20px 44px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 30px;
+  color: var(--text);
+}
+.mx-combo b { color: var(--accent); }
+
+/* ── step 2 · 真机代码 ── */
+.mx-code-scene { gap: 0; }
+.mx-code-head {
+  align-self: flex-start;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 26px;
+}
+.mx-codecard {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 30px;
+  line-height: 2;
+  color: var(--text);
+  white-space: pre;
+  padding: 32px 56px;
+}
+
+/* ── step 3 · __init__ 执行序 ── */
+.mx-init-scene { gap: 48px; }
+.mx-init-head {
+  align-self: flex-start;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mx-init-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.mx-init-row {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  padding: 22px 42px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text);
+}
+.mx-init-idx {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mx-init-note {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.mx-init-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.mx-init-foot b { color: var(--accent); font-weight: 700; }
+
+/* ── step 4 · super 链 ── */
+.mx-links-scene { gap: 90px; }
+.mx-links-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mx-links-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.mx-links-unit {
+  display: flex;
+  align-items: center;
+}
+.mx-links-node {
+  padding: 18px 36px;
+  border: 1.5px solid var(--text);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text);
+}
+.mx-links-node:last-child {
+  border-style: dashed;
+  color: var(--text-mute);
+}
+.mx-links-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 12px;
+}
+.mx-links-super {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.mx-links-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.mx-links-foot b { color: var(--text); font-weight: 700; }

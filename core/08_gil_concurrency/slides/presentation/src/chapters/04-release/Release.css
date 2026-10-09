@@ -1,0 +1,35 @@
+.rl-scene { justify-content: center; align-items: center; gap: 48px; }
+.rl-rise { opacity: 0; animation: rl-rise 620ms var(--ease-quart) both; }
+@keyframes rl-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.rl-fade { opacity: 0; animation: rl-fade 420ms var(--ease-soft) both; }
+@keyframes rl-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.rl-lead-scene { gap: 0; }
+.rl-lead-line { font-size: 56px; font-weight: 700; color: var(--text); }
+
+.rl-table-scene { gap: 40px; }
+.rl-table-head { align-self: flex-start; font-size: 38px; font-weight: 700; color: var(--text); }
+.rl-table { display: flex; flex-direction: column; gap: 14px; width: 1160px; }
+.rl-row { display: flex; align-items: baseline; gap: 26px; padding: 18px 34px; border: 1px solid var(--rule); background: var(--surface-2); }
+.rl-row-yes { border-left: 3px solid var(--accent); }
+.rl-row-no { opacity: 0.55; }
+.rl-row-badge { width: 60px; font-family: var(--font-mono); font-size: 21px; font-weight: 700; text-align: center; }
+.rl-badge-yes { color: var(--accent); }
+.rl-badge-no { color: var(--text-mute); }
+.rl-row-op { width: 400px; font-family: var(--font-mono); font-size: 25px; color: var(--text); }
+.rl-row-why { font-size: 22px; color: var(--text-mute); }
+
+.rl-cec-scene { gap: 56px; }
+.rl-cec-big { font-size: 58px; font-weight: 700; color: var(--text); text-align: center; }
+.rl-cec-cols { display: flex; gap: 70px; }
+.rl-cec-card { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 480px; padding: 34px 42px; border: 1px solid var(--rule); background: var(--surface-2); }
+.rl-cec-good { border: 2px dashed var(--accent); background: var(--accent-soft); }
+.rl-cec-name { font-family: var(--font-mono); font-size: 33px; font-weight: 600; color: var(--text); }
+.rl-cec-good .rl-cec-name { color: var(--accent); }
+.rl-cec-desc { font-size: 23px; color: var(--text-2); text-align: center; line-height: 1.5; }
+
+.rl-rule-scene { gap: 30px; }
+.rl-rule-line { font-size: 32px; letter-spacing: 0.16em; color: var(--text-mute); }
+.rl-rule-body { font-size: 56px; font-weight: 700; color: var(--text); text-align: center; }
+.rl-rule-body b { color: var(--accent); }
+.rl-rule-sub { font-size: 26px; color: var(--text-mute); }

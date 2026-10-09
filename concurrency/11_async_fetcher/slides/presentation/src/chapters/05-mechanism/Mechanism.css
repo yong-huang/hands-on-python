@@ -1,0 +1,364 @@
+/* ch05 · mechanism — 独立前缀 mc-。颜色/字体只走 token（monochrome-print）。 */
+
+.mc-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.mc-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.mc-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.mc-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: mc-grow 800ms var(--ease-quart) forwards;
+}
+@keyframes mc-grow {
+  to { transform: scaleX(1); }
+}
+
+.mc-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 引入 ── */
+.mc-intro-scene {
+  gap: 60px;
+}
+.mc-intro-line {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 66px;
+  color: var(--text);
+}
+.mc-intro-line .hero-num {
+  font-size: 92px;
+}
+.mc-intro-ghosts {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.mc-ghost {
+  width: 980px;
+  height: 40px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+}
+
+/* ── step 1~3 · 代码卡 ── */
+.mc-code-scene {
+  gap: 44px;
+}
+.mc-code {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+}
+.mc-code-head {
+  padding: 16px 34px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.mc-code-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 32px 38px;
+  font-size: 29px;
+  line-height: 1.75;
+}
+.mc-code-line {
+  color: var(--text-faint);
+  transition: color var(--dur-base) var(--ease-soft);
+}
+.mc-code-line--hot {
+  color: var(--text);
+  background: var(--accent-soft);
+  outline: 1px solid var(--accent);
+}
+.mc-code-anno {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+.mc-anno-tag {
+  font-size: 21px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.mc-branch {
+  display: flex;
+  gap: 40px;
+}
+.mc-branch-opt {
+  padding: 18px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.mc-branch-opt--bad {
+  border: 2px solid var(--accent);
+}
+.mc-loop-close {
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+
+/* ── step 4 · 测试服务 ── */
+.mc-server-scene {
+  gap: 50px;
+}
+.mc-server-title {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--text);
+}
+.mc-state-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  width: 1480px;
+}
+.mc-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mc-state-id {
+  font-size: 18px;
+  color: var(--text-mute);
+}
+.mc-state-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+}
+.mc-state-first {
+  padding: 3px 12px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+  color: var(--accent);
+}
+.mc-state-arrow {
+  font-size: 20px;
+  color: var(--text-faint);
+}
+.mc-state-ok {
+  color: var(--text-2);
+}
+.mc-server-legend {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-size: 29px;
+  color: var(--text-2);
+}
+.mc-server-legend .label-mono {
+  font-size: 19px;
+  color: var(--accent);
+}
+
+/* ── step 5 · 为什么不随机 ── */
+.mc-random-scene {
+  gap: 46px;
+}
+.mc-random-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text);
+}
+.mc-random-fact {
+  padding: 26px 48px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.mc-random-fact .hero-num {
+  font-size: 62px;
+}
+.mc-random-defs {
+  display: flex;
+  gap: 40px;
+}
+.mc-def {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 22px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.mc-def-tag {
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.mc-random-quote {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--text);
+}
+
+/* ── step 6 · 公平性 ── */
+.mc-fair-scene {
+  gap: 48px;
+}
+.mc-fair-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text);
+}
+.mc-fair-row {
+  display: flex;
+  gap: 54px;
+}
+.mc-fair-pair {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.mc-fair-model {
+  padding: 16px 32px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.mc-fair-arrow {
+  font-size: 30px;
+  color: var(--text-faint);
+}
+.mc-fair-server {
+  padding: 16px 32px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.mc-fair-counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 46px;
+  border: 1px dashed var(--text-faint);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.mc-fair-counter .label-mono {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.mc-fair-principle {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+
+/* ── step 7 · 踩雷 ── */
+.mc-mine-scene {
+  gap: 52px;
+}
+.mc-mine-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.mc-mine-loop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 120px;
+  width: 1440px;
+  height: 210px;
+}
+.mc-mine-rail {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  top: 50%;
+  height: 3px;
+  background: var(--text-faint);
+}
+.mc-mine-co {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 46px;
+  border: 2px solid var(--text-2);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--text);
+}
+.mc-mine-co--server {
+  border-style: dashed;
+}
+.mc-mine-co-tag {
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.mc-mine-fate {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.mc-mine-fix {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 20px 40px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 32px;
+  color: var(--text);
+}
+.mc-mine-fix .label-mono {
+  font-size: 19px;
+  color: var(--accent);
+}

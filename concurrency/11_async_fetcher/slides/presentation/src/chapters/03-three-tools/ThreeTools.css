@@ -1,0 +1,501 @@
+/* ch03 · three-tools — 独立前缀 tt-。颜色/字体只走 token（monochrome-print）。 */
+
+.tt-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.tt-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.tt-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.tt-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: tt-grow 800ms var(--ease-quart) forwards;
+}
+@keyframes tt-grow {
+  to { transform: scaleX(1); }
+}
+.tt-riseup {
+  opacity: 0;
+  animation: tt-riseup 600ms var(--ease-quart) forwards;
+}
+@keyframes tt-riseup {
+  from { opacity: 0; transform: scaleY(0); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+.tt-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── 公共：工具名头 ── */
+.tt-tool-kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.tt-tool-no {
+  font-size: 26px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+.tt-tool-name {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 72px;
+  color: var(--text);
+}
+
+/* ── step 0 · 限流闸门 ── */
+.tt-limit-scene {
+  gap: 56px;
+}
+.tt-limit-cols {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+.tt-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.tt-gate-beam {
+  width: 620px;
+  height: 6px;
+  background: var(--text);
+}
+.tt-permits {
+  display: flex;
+  gap: 14px;
+}
+.tt-permit {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 68px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 24px;
+  color: var(--accent);
+}
+.tt-gate-caption {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  color: var(--text);
+}
+.tt-gate-caption .hero-num {
+  font-size: 56px;
+}
+.tt-limit-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  width: 620px;
+}
+.tt-limit-name {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tt-limit-en {
+  font-size: 30px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+.tt-limit-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 64px;
+  color: var(--text);
+}
+.tt-inflight {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.tt-inflight .label-mono {
+  font-size: 18px;
+  color: var(--accent);
+}
+.tt-limit-verdict {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.tt-limit-verdict .hero-num {
+  font-size: 60px;
+}
+
+/* ── step 1 · 防两头 ── */
+.tt-twohead-scene {
+  flex-direction: row;
+  gap: 70px;
+}
+.tt-twohead-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 560px;
+  padding: 70px 0 64px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.tt-twohead-tag {
+  font-size: 20px;
+  letter-spacing: 0.22em;
+  color: var(--text-faint);
+}
+.tt-twohead-text {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 74px;
+  color: var(--text);
+}
+.tt-twohead-mid {
+  font-size: 60px;
+  color: var(--text-faint);
+}
+
+/* ── step 2 · 超时死线 ── */
+.tt-timeout-scene {
+  gap: 54px;
+}
+.tt-deadline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 1360px;
+}
+.tt-deadline-track {
+  position: relative;
+  height: 26px;
+  background: var(--surface-3);
+}
+.tt-deadline-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--text-2);
+}
+.tt-deadline-mark {
+  position: absolute;
+  right: -30px;
+  top: -74px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 30px;
+  color: var(--accent);
+}
+.tt-deadline-mark .mono {
+  padding: 4px 14px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 26px;
+}
+.tt-deadline-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.tt-timeout-compare {
+  display: flex;
+  gap: 40px;
+  margin-top: 10px;
+}
+.tt-timeout-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 32px;
+  color: var(--text-2);
+}
+.tt-timeout-card--worse {
+  border: 2px solid var(--accent);
+}
+.tt-timeout-tag {
+  font-size: 22px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.tt-timeout-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 64px;
+  color: var(--text);
+}
+
+/* ── step 3 · 重试阶梯 ── */
+.tt-retry-scene {
+  gap: 50px;
+}
+.tt-retry-loop {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.tt-retry-step {
+  padding: 20px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.tt-retry-step--wait {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+.tt-retry-step--again {
+  border: 2px solid var(--text);
+}
+.tt-retry-arrow {
+  font-size: 48px;
+  color: var(--text-mute);
+}
+.tt-retry-ladder {
+  display: flex;
+  align-items: flex-end;
+  gap: 60px;
+  height: 280px;
+}
+.tt-retry-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.tt-retry-bar {
+  display: block;
+  width: 120px;
+  background: var(--accent);
+  transform-origin: bottom;
+}
+.tt-retry-ms {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.tt-retry-note {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 指数退避 ── */
+.tt-backoff-scene {
+  gap: 70px;
+}
+.tt-backoff-name {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 76px;
+  color: var(--text);
+}
+.tt-backoff-row {
+  display: flex;
+  gap: 44px;
+}
+.tt-backoff-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 620px;
+  padding: 46px 0 42px;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.tt-backoff-card-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.tt-backoff-card-text {
+  font-size: 30px;
+  color: var(--text-2);
+}
+
+/* ── step 5 · 分工表 ── */
+.tt-division-scene {
+  gap: 54px;
+}
+.tt-division-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.tt-division-table {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.tt-division-row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: 900px;
+  padding: 24px 46px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.tt-division-tool {
+  flex: 0 0 120px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.tt-division-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+.tt-division-fight {
+  font-size: 40px;
+  color: var(--text);
+}
+.tt-division-verdict {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.tt-division-raw {
+  font-weight: 400;
+  font-size: 28px;
+  color: var(--text-mute);
+}
+
+/* ── step 6 · 值得上 ── */
+.tt-when-scene {
+  gap: 64px;
+}
+.tt-when-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.tt-when-row {
+  display: flex;
+  gap: 40px;
+}
+.tt-when-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 470px;
+  min-height: 300px;
+  padding: 40px 36px;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.tt-when-num {
+  font-size: 22px;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+}
+.tt-when-text {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text);
+}
+.tt-when-sub {
+  display: block;
+  margin-top: 12px;
+  font-weight: 400;
+  font-size: 25px;
+  color: var(--text-mute);
+}
+
+/* ── step 7 · 别用边界 ── */
+.tt-not-scene {
+  gap: 54px;
+}
+.tt-not-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.tt-not-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.tt-not-row {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  width: 1420px;
+  padding: 24px 44px;
+  border: 1px dashed var(--rule);
+  background: var(--surface);
+}
+.tt-not-case {
+  flex: 0 0 560px;
+  font-size: 33px;
+  color: var(--text-2);
+}
+.tt-not-arrow {
+  font-size: 30px;
+  color: var(--text-faint);
+}
+.tt-not-why {
+  font-size: 33px;
+  color: var(--text);
+}
+.tt-httpx {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-top: 10px;
+  padding: 24px 40px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 29px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.tt-httpx-name {
+  font-size: 32px;
+  color: var(--accent);
+}
+.tt-httpx .mono {
+  font-size: 27px;
+}

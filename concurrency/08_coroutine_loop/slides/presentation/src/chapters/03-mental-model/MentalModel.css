@@ -1,0 +1,288 @@
+/* ch03 mental-model — 独立前缀 mm-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含；「交出去」滑块与箭头自绘为本章专属） ── */
+.mm-rise,
+.mm-fade,
+.mm-hero-in,
+.mm-card-in,
+.mm-pop,
+.mm-draw {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.mm-rise { animation-name: mm-rise; animation-duration: 750ms; }
+.mm-fade { animation-name: mm-fade; animation-duration: 650ms; }
+.mm-hero-in { animation-name: mm-hero-in; animation-duration: 850ms; }
+.mm-card-in { animation-name: mm-card-in; animation-duration: 800ms; }
+.mm-pop { animation-name: mm-pop; animation-duration: 550ms; }
+.mm-draw { animation-name: mm-fade; animation-duration: 800ms; }
+
+@keyframes mm-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mm-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mm-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mm-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes mm-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 「交出去」方块沿执行线滑到等待点（讲协程交控制权这个动作） */
+.mm-baton-move { animation: mm-slide-right 1800ms cubic-bezier(0.45, 0, 0.3, 1) both; }
+@keyframes mm-slide-right {
+  from { opacity: 1; transform: translateX(-300px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ── step 0 / 1 · 定义卡共用 ── */
+.mm-def,
+.mm-loopdef {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 26px;
+}
+.mm-def-kicker {
+  font-family: var(--font-body);
+  font-size: 26px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+.mm-def-word {
+  font-family: var(--font-display-cn);
+  font-size: 112px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.mm-def-gloss {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.mm-baton { width: 900px; margin-top: 8px; }
+.mm-baton svg { width: 100%; }
+.mm-baton-stop,
+.mm-baton-dot { opacity: 0; animation: mm-fade 500ms ease-out forwards; }
+.mm-baton-dot { animation-name: mm-pop; }
+.mm-def-points {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 26px 0 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mm-pt {
+  font-family: var(--font-body);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.mm-pt::before {
+  content: "·";
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 16px;
+}
+
+.mm-loop-ring { width: 760px; margin-top: 6px; }
+.mm-loop-ring svg { width: 100%; }
+.mm-ring-node { opacity: 0; animation: mm-pop 550ms ease-out forwards; }
+.mm-ring-arrow { opacity: 0; animation: mm-fade 700ms ease-out forwards; }
+.mm-loopdef-note {
+  font-family: var(--font-body);
+  font-size: 29px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}
+
+/* ── step 2 · 心智模型管线 ── */
+.mm-pipe {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+}
+.mm-pipe-kicker {
+  font-family: var(--font-body);
+  font-size: 27px;
+  color: var(--text-mute);
+  letter-spacing: 0.16em;
+}
+.mm-pipe-flow {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.mm-pipe-node {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 22px 40px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display-cn);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  flex: 0 0 auto;
+}
+.mm-node-accent {
+  border: 3px solid var(--accent);
+  color: var(--accent);
+}
+/* 箭头线固定在节点中心高度（96px 盒内垂直居中），标签浮动上下 */
+.mm-pipe-link {
+  position: relative;
+  width: 170px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.mm-pipe-link svg { width: 150px; }
+.mm-pipe-lab {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-2);
+}
+.mm-pipe-sub {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.mm-pipe-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mm-pipe-footer {
+  font-family: var(--font-display-cn);
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--accent);
+  border-top: 1px solid var(--rule);
+  padding-top: 26px;
+}
+
+/* ── step 3 · 服务员 ── */
+.mm-waiter {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.mm-waiter-kicker {
+  font-family: var(--font-body);
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.mm-waiter-floor { width: 980px; }
+.mm-waiter-floor svg { width: 100%; }
+.mm-dish { opacity: 0; animation: mm-pop 550ms ease-out forwards; }
+.mm-waiter-guy { opacity: 0; animation: mm-pop 550ms ease-out forwards; }
+.mm-waiter-move { animation: mm-waiter-go 2600ms cubic-bezier(0.45, 0, 0.3, 1) 1000ms both; }
+@keyframes mm-waiter-go {
+  from { transform: translate(0, 0); }
+  to { transform: translate(170px, 36px); }
+}
+.mm-waiter-path {
+  opacity: 0;
+  animation: mm-fade 700ms ease-out forwards 2400ms;
+}
+.mm-wipe { opacity: 0; animation: mm-fade 700ms ease-out forwards; }
+.mm-waiter-punch {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+.mm-waiter-punch span { color: var(--accent); }
+
+/* ── step 4 · 并发 ≠ 并行 ── */
+.mm-cvp {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 42px;
+}
+.mm-cvp-title {
+  font-family: var(--font-display-cn);
+  font-size: 68px;
+  font-weight: 700;
+  color: var(--text);
+}
+.mm-cvp-grid {
+  display: flex;
+  gap: 44px;
+}
+.mm-cvp-card {
+  width: 470px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 28px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mm-cvp-name {
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.mm-cvp-gloss {
+  font-family: var(--font-body);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.mm-cvp-card svg { width: 100%; margin-top: 6px; }
+.mm-cvp-cell { opacity: 0; animation: mm-pop 450ms ease-out forwards; }
+.mm-cvp-footer {
+  font-family: var(--font-body);
+  font-size: 30px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+.mm-cvp-footer b {
+  font-family: var(--font-display-cn);
+  color: var(--accent);
+}

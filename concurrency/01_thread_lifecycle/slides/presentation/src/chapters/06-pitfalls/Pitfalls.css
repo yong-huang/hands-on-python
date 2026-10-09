@@ -1,0 +1,197 @@
+/* ch06 · pitfalls — 独立前缀 pf-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.pf-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.pf-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pf-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.pf-thesis {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.pf-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 证据采集对照 ── */
+.pf-evidence-scene {
+  gap: 66px;
+}
+.pf-evidence-cols {
+  display: flex;
+  align-items: stretch;
+  gap: 44px;
+}
+.pf-ev-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  width: 620px;
+  padding: 42px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pf-ev-card--no {
+  border-style: dashed;
+  background: var(--surface);
+}
+.pf-ev-card--yes {
+  border: 1px solid var(--accent);
+}
+.pf-ev-head {
+  font-size: 34px;
+  color: var(--text-mute);
+}
+.pf-ev-card--yes .pf-ev-head {
+  color: var(--accent);
+}
+.pf-ev-body {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 1.45;
+  color: var(--text);
+}
+.pf-ev-card--no .pf-ev-body {
+  color: var(--text-mute);
+}
+.pf-ev-note {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 24px;
+  color: var(--text-2);
+}
+.pf-ev-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 1 · 行缓冲 ── */
+.pf-buffer-scene {
+  gap: 70px;
+}
+.pf-buffer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 34px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pf-buffer-box .label-mono {
+  color: var(--text-mute);
+}
+.pf-buffer-line {
+  min-width: 560px;
+  padding: 18px 26px;
+  border: 1px dashed var(--text-faint);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.pf-buffer-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 1.32;
+  color: var(--text);
+}
+
+/* ── step 2~5 · 四个坑：统一坑卡 ── */
+.pf-pit-scene {
+  gap: 52px;
+}
+.pf-pit-duo-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 44px;
+}
+.pf-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  width: 1150px;
+  padding: 42px 52px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.pf-pit-duo .pf-card {
+  width: 760px;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px 40px;
+}
+.pf-pit-duo .pf-card-tag {
+  font-size: 17px;
+}
+.pf-pit-duo .pf-card-title {
+  font-size: 32px;
+}
+.pf-pit-duo .pf-card-row {
+  padding-top: 10px;
+}
+.pf-pit-duo .pf-card-label {
+  font-size: 17px;
+  min-width: 44px;
+}
+.pf-pit-duo .pf-card-text {
+  font-size: 22px;
+  line-height: 1.5;
+}
+.pf-card-tag {
+  font-size: 20px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+.pf-card-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.35;
+  color: var(--text);
+}
+.pf-card-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  align-self: stretch;
+}
+.pf-card-label {
+  min-width: 52px;
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.pf-card-text {
+  font-size: 27px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.pf-chip {
+  padding: 4px 14px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 23px;
+  color: var(--accent);
+}

@@ -1,0 +1,340 @@
+/* ch03 · mental-model — 独立前缀 mm-。颜色/字体只走 token（monochrome-print）。 */
+
+.mm-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 52px;
+}
+
+/* ── 入场原语 ── */
+.mm-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.mm-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+.mm-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+
+/* ── step 0 / 1 · 食堂传送带 ── */
+.mm-canteen {
+  display: flex;
+  align-items: stretch;
+  gap: 40px;
+}
+.mm-stove {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 260px;
+  border: 2px solid var(--text-2);
+  background: var(--surface-2);
+}
+.mm-stove--held {
+  border-color: var(--text-mute);
+  opacity: 0.9;
+}
+.mm-stove-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.mm-stove-role,
+.mm-window-role {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.mm-hold-sign {
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: var(--accent);
+  color: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 19px;
+  white-space: nowrap;
+}
+.mm-belt-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.mm-belt {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 0 26px;
+  height: 110px;
+  border-top: 3px solid var(--text-2);
+  border-bottom: 3px solid var(--text-2);
+  background: var(--surface-3);
+  min-width: 760px;
+}
+.mm-belt--slots {
+  gap: 0;
+  justify-content: space-between;
+}
+.mm-plate {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--text-2);
+  border-radius: 4px;
+  background: var(--surface);
+}
+.mm-plate-run {
+  opacity: 0;
+  animation: mm-travel 2.2s var(--ease-quart) forwards;
+}
+@keyframes mm-travel {
+  0%   { opacity: 0; transform: translateX(-40px); }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(220px); }
+}
+.mm-slot {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 1px dashed var(--rule);
+}
+.mm-plate-fill {
+  opacity: 0;
+  animation: pop-in 360ms var(--ease-expo) forwards;
+}
+.mm-belt-note {
+  text-align: center;
+  color: var(--text-mute);
+}
+.mm-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 260px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.mm-window-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.mm-foot {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+
+/* step 1 · 摞到半空的反例 */
+.mm-notstack {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.mm-notstack-stack {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+}
+.mm-notstack-stack span {
+  width: 54px;
+  height: 14px;
+  border: 1px solid var(--text-mute);
+  background: var(--surface-2);
+}
+.mm-notstack-stack span:nth-child(2) { transform: translateX(5px); }
+.mm-notstack-stack span:nth-child(3) { transform: translateX(-4px); }
+.mm-notstack-cross {
+  font-size: 42px;
+  color: var(--accent);
+}
+.mm-notstack-word {
+  font-size: 29px;
+  color: var(--text-2);
+}
+
+/* ── step 2 · 背压命名卡 ── */
+.mm-name-scene {
+  gap: 44px;
+}
+.mm-name-flow {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.mm-name-end {
+  padding: 18px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text-2);
+}
+.mm-name-arrows {
+  font-size: 40px;
+  letter-spacing: 6px;
+  color: var(--accent);
+}
+.mm-name-word {
+  font-size: 38px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.mm-name-rule {
+  width: 120px;
+  border-top-color: var(--accent);
+  border-top-width: 2px;
+}
+.mm-name-big {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 130px;
+  color: var(--text);
+}
+.mm-name-acc {
+  color: var(--accent);
+}
+.mm-name-en {
+  font-size: 26px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+
+/* ── step 3 · 三句话总结 ── */
+.mm-sum {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.mm-sum-row {
+  display: flex;
+  align-items: baseline;
+  gap: 40px;
+  padding: 44px 12px;
+  border-top: 1px solid var(--rule);
+}
+.mm-sum-row:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.mm-sum-code {
+  flex: 0 0 360px;
+  font-size: 33px;
+  color: var(--accent);
+}
+.mm-sum-cn {
+  flex: 0 0 480px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.mm-sum-talk {
+  font-size: 29px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 毒丸纪律 ── */
+.mm-pill-row {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.mm-pill-lane {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.mm-pill-box {
+  padding: 22px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 29px;
+  color: var(--text-2);
+}
+.mm-pill-arrow {
+  font-size: 34px;
+  color: var(--text-faint);
+}
+.mm-pill {
+  display: grid;
+  place-items: center;
+  padding: 18px 30px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 30px;
+  font-weight: 700;
+}
+.mm-pill-exit {
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.mm-pill-gloss {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 27px;
+  color: var(--text-2);
+}
+.mm-pill-gloss .label-mono {
+  color: var(--accent);
+}
+.mm-pill-count {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.mm-pill-num {
+  font-size: 96px;
+  color: var(--accent);
+}
+.mm-pill-count-note {
+  font-size: 27px;
+  color: var(--text-2);
+}
+
+/* ── step 5 · 纪律 02 / 03 ── */
+.mm-disc {
+  display: flex;
+  gap: 44px;
+}
+.mm-disc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 640px;
+  padding: 54px 58px;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.mm-disc-ord {
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.mm-disc-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  color: var(--text);
+}
+.mm-disc-talk {
+  font-size: 30px;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+.mm-disc-talk b {
+  color: var(--accent);
+  font-weight: 700;
+}

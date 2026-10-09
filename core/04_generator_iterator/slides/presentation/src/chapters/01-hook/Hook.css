@@ -1,0 +1,272 @@
+/* ── ch01 hook · CSS prefix: hk- ─────────────────────────────────── */
+
+.hk-scene {
+  justify-content: center;
+}
+
+/* shared entrances */
+.hk-rise {
+  opacity: 0;
+  animation: hk-rise 620ms var(--ease-quart) both;
+}
+@keyframes hk-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hk-pop {
+  opacity: 0;
+  animation: hk-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes hk-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · title ── */
+.hk-title-scene {
+  align-items: center;
+  text-align: center;
+}
+.hk-title-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: auto 0;
+}
+.hk-title-rule {
+  width: 820px;
+  animation: hk-rule-x 700ms var(--ease-soft) both;
+  transform-origin: center;
+}
+@keyframes hk-rule-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-title-main {
+  margin: 0;
+  font-size: 112px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.hk-title-code {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.hk-title-colon {
+  color: var(--text-mute);
+}
+.hk-title-sub {
+  font-size: 32px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.hk-titleblock {
+  position: absolute;
+  right: 56px;
+  bottom: 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 28px;
+  padding: 13px 22px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+}
+.hk-tb-row:first-child { border-top: 0; }
+.hk-tb-row span {
+  width: 64px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.hk-tb-row b {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 千万行日志灌爆 ── */
+.hk-flood-scene {
+  align-items: center;
+  gap: 42px;
+}
+.hk-flood-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.hk-flood-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+.hk-flood-list {
+  width: 900px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-flood-list-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-mute);
+}
+.hk-flood-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 26px;
+}
+.hk-flood-row {
+  display: block;
+  height: 16px;
+  background: var(--text-faint);
+  opacity: 0;
+  animation: hk-fade-row 320ms var(--ease-soft) both;
+}
+.hk-flood-row:nth-child(4) { width: 92%; }
+.hk-flood-row:nth-child(5) { width: 96%; }
+.hk-flood-row:nth-child(6) { width: 88%; }
+@keyframes hk-fade-row {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.hk-flood-crack {
+  padding: 16px 46px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.hk-flood-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.hk-flood-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 二十行负担 ── */
+.hk-burden-scene { gap: 56px; }
+.hk-burden-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.hk-burden-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.hk-burden-item {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  padding: 18px 34px;
+  border: 1px dashed var(--text-faint);
+  background: var(--surface-2);
+}
+.hk-burden-mono {
+  width: 330px;
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+}
+.hk-burden-desc {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.hk-burden-count {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.hk-burden-count-num {
+  font-family: var(--font-mono);
+  font-size: 72px;
+  font-weight: 600;
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+
+/* ── step 3 · yield 点名 ── */
+.hk-yield-scene {
+  align-items: center;
+  gap: 70px;
+}
+.hk-yield-troubles {
+  display: flex;
+  gap: 70px;
+}
+.hk-trouble {
+  position: relative;
+  padding: 22px 50px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-trouble-text {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.hk-trouble-strike {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 50%;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: hk-strike 480ms var(--ease-soft) 1100ms both;
+}
+.hk-trouble-strike-2 {
+  animation-delay: 1500ms;
+}
+@keyframes hk-strike {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hk-yield-sym {
+  padding: 26px 90px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 92px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 80px var(--accent-glow);
+}
+.hk-yield-copy {
+  text-align: center;
+}
+.hk-yield-copy .kicker {
+  margin-bottom: 20px;
+}
+.hk-yield-big {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.hk-yield-big b {
+  color: var(--accent);
+  text-shadow: 0 0 60px var(--accent-glow);
+}

@@ -1,0 +1,326 @@
+[
+  {
+    "chapter": "hook",
+    "step": 1,
+    "text": "今天讲多核加速。绕开 G I L，真用上多个核。",
+    "audio": "hook/1.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 2,
+    "text": "4 个线程一起计算，怎么比单线程还慢？",
+    "audio": "hook/2.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 3,
+    "text": "换成 4 个进程，一下快了 2.5 倍——为什么？",
+    "audio": "hook/3.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 4,
+    "text": "更吓人的是：有时候程序显示一切正常，结果却悄悄丢了一部分。",
+    "audio": "hook/4.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 5,
+    "text": "三件事：一，线程在纯计算上白忙活——速度只剩 0.75 倍。",
+    "audio": "hook/5.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 6,
+    "text": "二，进程才是真并行——2.5 倍，但有代价。",
+    "audio": "hook/6.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 7,
+    "text": "三，静默失败——报了成功，实际上部分结果丢掉了。",
+    "audio": "hook/7.mp3"
+  },
+  {
+    "chapter": "hook",
+    "step": 8,
+    "text": "一条命令，四个小节。串行、线程、进程，挨个分析。",
+    "audio": "hook/8.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 1,
+    "text": "先说线程为什么白忙活。Python 有把全局大锁：G I L，全局解释器锁。",
+    "audio": "background/1.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 2,
+    "text": "解释器，就是替你一行行跑代码的程序。全局解释器锁，在同一时刻，只放行一个线程。",
+    "audio": "background/2.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 3,
+    "text": "纯计算的活，4 个线程在锁前排队，一人算一段，还要互相抢锁。",
+    "audio": "background/3.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 4,
+    "text": "实测数素数：串行 0.49 秒，4 线程 0.66 秒——不加速，还倒贴。",
+    "audio": "background/4.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 5,
+    "text": "I O 密集的活没事：线程一等外部响应，此时会把 G I L 让出去。",
+    "audio": "background/5.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 6,
+    "text": "出路在进程——一份独立运行的程序，自带全套内存。",
+    "audio": "background/6.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 7,
+    "text": "关键在这：G I L 是每个解释器一把——每新开一个进程，多一把新锁。各锁各的，真正同时执行。",
+    "audio": "background/7.mp3"
+  },
+  {
+    "chapter": "background",
+    "step": 8,
+    "text": "标准库把这套打包成 multiprocessing：开进程、派任务、收结果，全包了。",
+    "audio": "background/8.mp3"
+  },
+  {
+    "chapter": "pool-map",
+    "step": 1,
+    "text": "最常用的是进程池 Pool：预先雇好固定数量的 worker，循环领任务。",
+    "audio": "pool-map/1.mp3"
+  },
+  {
+    "chapter": "pool-map",
+    "step": 2,
+    "text": "批量派任务用 map，从提交到收工，三步。",
+    "audio": "pool-map/2.mp3"
+  },
+  {
+    "chapter": "pool-map",
+    "step": 3,
+    "text": "一，提交：主进程把任务列表切块，分给 worker。",
+    "audio": "pool-map/3.mp3"
+  },
+  {
+    "chapter": "pool-map",
+    "step": 4,
+    "text": "二，并行执行：几个 worker 各领一块，同时开算。",
+    "audio": "pool-map/4.mp3"
+  },
+  {
+    "chapter": "pool-map",
+    "step": 5,
+    "text": "三，汇合：结果按输入顺序回来——不是完成顺序。",
+    "audio": "pool-map/5.mp3"
+  },
+  {
+    "chapter": "pool-map",
+    "step": 6,
+    "text": "但有个规矩：谁也不能直接拿对方的内存——参数和返回值都要先打包再运输，干这活的叫 pickle。",
+    "audio": "pool-map/6.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 1,
+    "text": "口说无凭，跑实验。跑完自动核对结果。",
+    "audio": "live-demo/1.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 2,
+    "text": "第一小节，量加速比。串行——4 个任务挨个跑——0.49 秒。",
+    "audio": "live-demo/2.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 3,
+    "text": "Pool 开 4 个进程：0.20 秒，2.5 倍——4 个核真的同时干活了。",
+    "audio": "live-demo/3.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 4,
+    "text": "对照组，4 个线程：0.66 秒，速度只剩 0.75 倍。",
+    "audio": "live-demo/4.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 5,
+    "text": "结论：每个进程一把独立 G I L，字节码真并行。",
+    "audio": "live-demo/5.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 6,
+    "text": "第二小节，静默失败。主角是 main 保护——只有主程序本人，才执行启动代码。",
+    "audio": "live-demo/6.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 7,
+    "text": "故意漏写它：父进程退出码 0，屏幕打印 OK 1——看起来一切正常。",
+    "audio": "live-demo/7.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 8,
+    "text": "真相在另一路输出：子进程把主文件重新加载了一遍，启动代码又执行了一遍，报错退场。",
+    "audio": "live-demo/8.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 9,
+    "text": "worker 的结果悄悄丢了。程序崩溃会喊，静默失败不喊。",
+    "audio": "live-demo/9.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 10,
+    "text": "第三小节，验证保序。最慢的任务排第一个：0.3、0.1、0.2、0.05 秒。",
+    "audio": "live-demo/10.mp3"
+  },
+  {
+    "chapter": "live-demo",
+    "step": 11,
+    "text": "map 返回的顺序，跟输入一模一样。总耗时 0.35 秒——真并行，不是排队。",
+    "audio": "live-demo/11.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 1,
+    "text": "2.5 倍从哪来？每个进程是一个完整的新解释器：自己的 G I L、自己的内存——4 份互不干扰的计算。",
+    "audio": "mechanism/1.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 2,
+    "text": "但代价有三笔。第一笔，启动费：spawn 要重新启动一个全新解释器，需要 50 到 100 毫秒。",
+    "audio": "mechanism/2.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 3,
+    "text": "第二笔，物流费：传参和返回值全要 pickle 打包，数据越大越贵。",
+    "audio": "mechanism/3.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 4,
+    "text": "第三笔，隔离费：跨进程改全局变量不可能——各改各的副本。",
+    "audio": "mechanism/4.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 5,
+    "text": "两个数字：spawn 一整套 0.3 到 0.5 秒——建池放计时外，一次性成本。",
+    "audio": "mechanism/5.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 6,
+    "text": "加速在 2.4 到 3.2 倍浮动——芯片有快有慢，验收只锁 2 倍底线。",
+    "audio": "mechanism/6.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 7,
+    "text": "最后一笔账：任务规模。加速比，等于总任务量，除以——单任务量，加启动时间。",
+    "audio": "mechanism/7.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 8,
+    "text": "代入：单任务 0.15 秒，4 份共 0.6 秒，启动摊 0.4 秒，还剩 2.5 倍——任务太小就会倒挂。",
+    "audio": "mechanism/8.mp3"
+  },
+  {
+    "chapter": "mechanism",
+    "step": 9,
+    "text": "什么活该上？批量纯计算、长时离线作业。不该上的：I O 密集、毫秒级小任务、高频共享数据。",
+    "audio": "mechanism/9.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 1,
+    "text": "五个真实踩过的坑。一，lambda——匿名函数——丢给进程池，pickle 当场报错。",
+    "audio": "pitfalls/1.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 2,
+    "text": "spawn 按名字打包函数，它没名字。解法：worker 用文件最外层的有名字函数。",
+    "audio": "pitfalls/2.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 3,
+    "text": "二，漏写 main 保护——入口代码一律包起来，Jupyter 里也要写。",
+    "audio": "pitfalls/3.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 4,
+    "text": "三，任务太小就上多进程——比串行还慢。先算启动成本这笔账。",
+    "audio": "pitfalls/4.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 5,
+    "text": "四，子进程里大量 print——输出撕成一团。结果用返回值带回来。",
+    "audio": "pitfalls/5.mp3"
+  },
+  {
+    "chapter": "pitfalls",
+    "step": 6,
+    "text": "五，以为 map 会一个一个返回——它等全部干完才整批返回。需要流式返回，换 i m a p。",
+    "audio": "pitfalls/6.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 1,
+    "text": "最后两个问题。fork 和 spawn 差在哪？fork 复制父进程内存——快，但只在 Mac、Linux 上有。",
+    "audio": "qa-closing/1.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 2,
+    "text": "spawn 重新启动一个解释器——慢一点，但跨平台，macOS 和 Windows 默认支持。",
+    "audio": "qa-closing/2.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 3,
+    "text": "map 等全批，整批回；i m a p 流式，一个一个出；无序版，谁先完成谁先出——不用陪着最慢的等。",
+    "audio": "qa-closing/3.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 4,
+    "text": "全家桶怎么选？等网络，默认线程；计算重，才上进程池。",
+    "audio": "qa-closing/4.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 5,
+    "text": "统一的池写法，有 futures 这层接口；海量连接，是协程——后面专门讲。",
+    "audio": "qa-closing/5.mp3"
+  },
+  {
+    "chapter": "qa-closing",
+    "step": 6,
+    "text": "完整代码在仓库第五讲目录。下一讲拆进程间通信——下期见。",
+    "audio": "qa-closing/6.mp3"
+  }
+]

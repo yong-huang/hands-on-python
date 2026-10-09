@@ -1,0 +1,335 @@
+/* ch03 · state-machine — 独立前缀 sm-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.sm-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.sm-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.sm-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── 公共 ── */
+.sm-kicker {
+  color: var(--text-mute);
+  letter-spacing: 0.14em;
+}
+.sm-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── step 0 · 主角 ── */
+.sm-hero-scene {
+  gap: 38px;
+}
+.sm-hero-code {
+  font-size: 100px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: -0.02em;
+}
+.sm-hero-code b {
+  color: var(--accent);
+  font-weight: 600;
+}
+.sm-hero-sub {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.sm-pool-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 26px;
+  padding: 22px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.sm-pool-card .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 1 · 单行道管线 ── */
+.sm-pipe-scene {
+  gap: 58px;
+}
+.sm-pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sm-pipe-item {
+  display: flex;
+  align-items: center;
+}
+.sm-pipe-arrow {
+  margin: 0 42px;
+  font-size: 48px;
+  color: var(--text-faint);
+}
+.sm-pipe-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 42px 54px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sm-pipe-en {
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.sm-pipe-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text);
+}
+.sm-pipe-note {
+  font-size: 32px;
+  color: var(--text-2);
+}
+
+/* ── step 2 · 烟花三态 ── */
+.sm-fw-scene {
+  gap: 48px;
+}
+.sm-fw-cards {
+  display: flex;
+  gap: 44px;
+}
+.sm-fw-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 360px;
+  padding: 44px 0 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sm-fw-card--dead {
+  background: var(--surface-3);
+}
+.sm-fw-draw {
+  height: 172px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sm-fw-svg {
+  width: 120px;
+  height: 172px;
+}
+.sm-fw-branch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-left: 2px dashed var(--accent);
+  font-size: 21px;
+  color: var(--text-2);
+}
+.sm-fw-branch .label-mono {
+  color: var(--accent);
+}
+.sm-fw-branch .label-mono {
+  color: var(--accent);
+}
+.sm-fw-label {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--text);
+}
+.sm-fw-en {
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+}
+.sm-fw-foot {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text-mute);
+}
+
+/* ── step 3~4 · 状态入口表 ── */
+.sm-entry-scene {
+  gap: 54px;
+}
+.sm-entry-table {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+.sm-entry {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 44px 12px;
+  border-top: 1px solid var(--rule);
+  transition: opacity 400ms var(--ease-quart);
+}
+.sm-entry:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.sm-entry-event {
+  min-width: 520px;
+  font-size: 36px;
+  color: var(--text);
+}
+.sm-entry-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.sm-entry-state {
+  font-size: 38px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+.sm-entry-state--on {
+  color: var(--accent);
+  font-weight: 600;
+}
+.sm-entry--todo {
+  opacity: 0.3;
+}
+.sm-entry--done {
+  opacity: 0.45;
+}
+.sm-entry--done .sm-entry-event {
+  color: var(--text-mute);
+}
+
+/* ── step 5 · is_alive 验证 ── */
+.sm-alive-scene {
+  gap: 50px;
+}
+.sm-alive-q {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 76px;
+  color: var(--text);
+}
+.sm-alive-call {
+  font-size: 42px;
+  color: var(--accent);
+}
+.sm-alive-ask {
+  font-family: var(--font-display-cn);
+  font-size: 26px;
+  color: var(--text-faint);
+}
+.sm-alive-table {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  margin-top: 10px;
+}
+.sm-alive-row {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  padding: 30px 16px;
+  border-top: 1px solid var(--rule);
+}
+.sm-alive-row:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.sm-alive-en {
+  min-width: 300px;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.sm-alive-cn {
+  flex: 1;
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.sm-alive-bool {
+  font-size: 32px;
+  color: var(--text-faint);
+}
+.sm-alive-row--yes {
+  background: var(--accent-soft);
+}
+.sm-alive-bool--true {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── step 6 · RUNNABLE ≠ 正在跑 ── */
+.sm-gil-scene {
+  gap: 120px;
+}
+.sm-gil-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+.sm-gil-hero {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 88px;
+  line-height: 1.24;
+  color: var(--text);
+}
+.sm-gil-neq {
+  color: var(--accent);
+}
+.sm-gil-note {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.sm-gil-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 44px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sm-gil-tag {
+  color: var(--text-mute);
+}
+.sm-gil-queue {
+  display: flex;
+  gap: 18px;
+}
+.sm-gil-chip {
+  padding: 14px 24px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.sm-gil-gate {
+  padding: 20px 42px;
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.sm-gil-pass {
+  font-size: 22px;
+  color: var(--text);
+}

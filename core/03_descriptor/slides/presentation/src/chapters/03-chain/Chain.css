@@ -1,0 +1,250 @@
+/* ── ch03 chain · CSS prefix: lk- ────────────────────────────────── */
+
+.lk-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.lk-rise {
+  opacity: 0;
+  animation: lk-rise 620ms var(--ease-quart) both;
+}
+@keyframes lk-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lk-pop {
+  opacity: 0;
+  animation: lk-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes lk-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · 分类标准 ── */
+.lk-rule-scene { gap: 34px; }
+.lk-rule-lead {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.lk-rule-line {
+  font-size: 42px;
+  color: var(--text-2);
+}
+.lk-rule-tokens {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.lk-token {
+  padding: 14px 34px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 44px;
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.lk-token-or {
+  font-size: 32px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 两类对照 ── */
+.lk-kinds-scene { gap: 70px; }
+.lk-kinds-scene .lk-kind {
+  display: flex;
+}
+.lk-kinds-scene {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+.lk-kind {
+  flex-direction: column;
+  gap: 16px;
+  width: 640px;
+  padding: 44px 52px;
+  border: 1px solid var(--rule);
+  border-top: 2px dashed var(--accent);
+  background: var(--surface-2);
+}
+.lk-kind-2 { border-top-color: var(--text-faint); }
+.lk-kind-name {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.lk-kind-cond {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.lk-kind-note {
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.lk-kinds-foot {
+  width: 100%;
+  text-align: center;
+  font-size: 36px;
+  color: var(--text-2);
+}
+.lk-kinds-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 查找链引入 ── */
+.lk-intro-scene { gap: 48px; }
+.lk-intro-code {
+  font-family: var(--font-mono);
+  font-size: 96px;
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.lk-intro-sub {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.lk-intro-mono {
+  font-family: var(--font-mono);
+  color: var(--text);
+}
+.lk-intro-slots {
+  display: flex;
+  gap: 26px;
+  margin-top: 16px;
+}
+.lk-slot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 26px;
+  border: 1px dashed var(--text-faint);
+  background: var(--surface-2);
+}
+.lk-slot-ord {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--accent);
+}
+.lk-slot-bar {
+  display: block;
+  width: 150px;
+  height: 13px;
+  background: var(--text-faint);
+}
+
+/* ── step 3 · 四步链 ── */
+.lk-full-scene { gap: 44px; }
+.lk-full-head {
+  align-self: flex-start;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.lk-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.lk-step {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 17px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.lk-step-ord {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.lk-step-mono {
+  width: 430px;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text);
+}
+.lk-step-desc {
+  font-size: 24px;
+  color: var(--text-2);
+}
+.lk-step-arrow {
+  align-self: center;
+  margin-left: 40px;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 口诀 ── */
+.lk-motto-scene { gap: 60px; }
+.lk-motto-kicker {
+  font-size: 30px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+.lk-motto {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.lk-motto-item {
+  padding: 26px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.lk-motto-hot {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.lk-motto-gt {
+  font-family: var(--font-mono);
+  font-size: 72px;
+  color: var(--accent);
+}
+
+/* ── step 5 · 四模式 ── */
+.lk-modes-scene { gap: 70px; }
+.lk-modes-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.lk-modes {
+  display: flex;
+  gap: 30px;
+}
+.lk-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 40px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+}
+.lk-mode-name {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text);
+}
+.lk-mode-tag {
+  padding: 4px 18px;
+  border: 1px dashed var(--accent);
+  font-size: 20px;
+  color: var(--accent);
+}

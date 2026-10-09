@@ -1,0 +1,242 @@
+/* ch01 · hook — 独立前缀 hk-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.hk-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.hk-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.hk-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 片头标题页 ── */
+.hk-title-scene {
+  gap: 0;
+}
+.hk-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.hk-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.hk-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 132px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.hk-title-accent {
+  color: var(--accent);
+}
+.hk-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.hk-title-sub {
+  font-size: 26px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.hk-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 22px;
+  border-left: 1px solid var(--rule);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 18px;
+  font-size: 19px;
+}
+.hk-tb-row span {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.hk-tb-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1~3 · 冷开场三问 ── */
+.hk-quote-scene {
+  gap: 34px;
+}
+.hk-quote-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.hk-quote-ord {
+  font-size: 20px;
+  color: var(--accent);
+}
+.hk-quote-rule {
+  align-self: stretch;
+  border-top-color: var(--rule);
+}
+.hk-quote {
+  margin: 0;
+  max-width: 1360px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 76px;
+  line-height: 1.42;
+  color: var(--text);
+}
+.hk-quote-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 27px;
+  color: var(--text-2);
+}
+.hk-quote-note .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 4~6 · 三行为递进列表 ── */
+.hk-list-scene {
+  gap: 48px;
+}
+.hk-list-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.hk-list {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+.hk-row {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 40px 8px;
+  border-top: 1px solid var(--rule);
+  transition: opacity 400ms var(--ease-quart);
+}
+.hk-row:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.hk-row-ord {
+  font-size: 30px;
+  color: var(--text-faint);
+}
+.hk-row-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.25;
+}
+.hk-row-talk {
+  margin-top: 10px;
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.hk-row--todo {
+  opacity: 0.3;
+}
+.hk-row--done {
+  opacity: 0.45;
+}
+.hk-row--done .hk-row-name {
+  color: var(--text-mute);
+}
+.hk-row--done .hk-row-talk {
+  color: var(--text-faint);
+}
+.hk-row--active .hk-row-ord {
+  color: var(--accent);
+}
+.hk-row--active .hk-row-name {
+  color: var(--text);
+}
+.hk-row-mark {
+  font-size: 30px;
+  color: var(--accent);
+}
+.hk-row-enter {
+  animation: none;
+}
+
+/* ── step 7 · 三阶段预告管线 ── */
+.hk-stage-scene {
+  gap: 64px;
+}
+.hk-stage-kicker {
+  color: var(--text-mute);
+}
+.hk-pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hk-pipe-item {
+  display: flex;
+  align-items: center;
+}
+.hk-pipe-arrow {
+  margin: 0 44px;
+  font-size: 44px;
+  color: var(--text-faint);
+}
+.hk-pipe-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 34px 46px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-pipe-ord {
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.hk-pipe-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+.hk-pipe-en {
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+}
+.hk-stage-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 86px;
+  color: var(--text-mute);
+}
+.hk-tag-accent {
+  color: var(--accent);
+}

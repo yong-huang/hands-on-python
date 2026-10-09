@@ -1,0 +1,29 @@
+.cm-scene { justify-content: center; align-items: center; gap: 48px; }
+.cm-rise { opacity: 0; animation: cm-rise 620ms var(--ease-quart) both; }
+@keyframes cm-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.cm-fail-scene { gap: 40px; }
+.cm-fail-lead { align-self: flex-start; font-size: 42px; font-weight: 700; color: var(--text); }
+.cm-fail-list { display: flex; flex-direction: column; gap: 18px; width: 1200px; }
+.cm-fail-row { display: flex; align-items: baseline; gap: 30px; padding: 20px 38px; border: 1px solid var(--rule); background: var(--surface-2); }
+.cm-fail-name { width: 200px; font-family: var(--font-mono); font-size: 27px; font-weight: 600; color: var(--text); }
+.cm-fail-when { width: 180px; font-size: 25px; font-weight: 700; color: var(--accent); }
+.cm-fail-what { font-size: 23px; color: var(--text-mute); }
+.cm-pick-scene { gap: 40px; }
+.cm-pick-lead { align-self: flex-start; font-size: 38px; font-weight: 700; color: var(--text); }
+.cm-pick-list { display: flex; flex-direction: column; gap: 16px; }
+.cm-pick-row { display: flex; align-items: baseline; gap: 28px; padding: 16px 38px; border: 1px solid var(--rule); background: var(--surface-2); }
+.cm-pick-a { width: 200px; font-size: 25px; font-weight: 700; color: var(--text-2); }
+.cm-pick-b { font-family: var(--font-mono); font-size: 24px; color: var(--accent); }
+.cm-quote-scene { gap: 20px; }
+.cm-quote-big { font-size: 82px; font-weight: 700; color: var(--text); }
+.cm-quote-acc { color: var(--accent); text-shadow: 0 0 70px var(--accent-glow); }
+.cm-series-scene { gap: 56px; }
+.cm-series-lead { font-size: 40px; font-weight: 700; color: var(--text-2); }
+.cm-series-lead b { color: var(--text); }
+.cm-series-list { display: flex; gap: 26px; flex-wrap: wrap; justify-content: center; }
+.cm-series-item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 24px 38px; border: 1px solid var(--rule); background: var(--surface-2); }
+.cm-series-item:last-child { border: 2px dashed var(--accent); background: var(--accent-soft); }
+.cm-series-name { font-size: 25px; font-weight: 700; color: var(--text); }
+.cm-series-item:last-child .cm-series-name { color: var(--accent); }
+.cm-series-tag { font-size: 19px; color: var(--text-mute); }
+.cm-series-item:last-child .cm-series-tag { color: var(--accent); }

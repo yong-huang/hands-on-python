@@ -1,0 +1,206 @@
+/* ch07 · qa-closing — 独立前缀 qa-。颜色/字体只走 token（monochrome-print）。 */
+
+.qa-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+.qa-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.qa-q-scene { gap: 36px; }
+.qa-head { width: 100%; color: var(--text-faint); }
+.qa-qtitle {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* 双栏选型卡 */
+.qa-duo {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+.qa-card {
+  width: 480px;
+  padding: 36px 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  background: var(--surface);
+}
+.qa-card-name { font-size: 34px; font-weight: 600; color: var(--text); }
+.qa-card-rule { width: 64px; border-top-color: var(--accent); border-top-width: 2px; }
+.qa-card-talk {
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.qa-card-talk b { color: var(--accent); }
+.qa-card-note { font-size: 22px; color: var(--text-mute); }
+.qa-footnote {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.qa-footnote .label-mono { color: var(--text-faint); }
+
+/* 三条路排序条 */
+.qa-rank {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.qa-rank-row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.qa-rank-ord {
+  width: 70px;
+  text-align: right;
+  font-size: 22px;
+  color: var(--text-faint);
+  flex: 0 0 auto;
+}
+.qa-rank-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 76px;
+  padding: 0 30px;
+  border-radius: var(--r-card);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.qa-rank-bar b {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  font-weight: 700;
+}
+.qa-rank-bar span { font-size: 22px; opacity: 0.82; }
+.qa-rank-best {
+  width: 78%;
+  background: var(--accent);
+  color: var(--surface-2);
+}
+.qa-rank-mid {
+  width: 56%;
+  background: var(--text-2);
+  color: var(--surface-2);
+}
+.qa-rank-fallback {
+  width: 38%;
+  background: var(--surface-3);
+  color: var(--text-2);
+  border: var(--rule-w) var(--rule-style) var(--rule);
+}
+.qa-bar-grow {
+  transform-origin: left;
+  animation: qa-bar 900ms var(--ease-expo) forwards;
+  transform: scaleX(0);
+}
+@keyframes qa-bar {
+  to { transform: scaleX(1); }
+}
+
+/* 收束标语页 */
+.qa-slogan {
+  font-family: var(--font-display-cn);
+  font-size: 84px;
+  font-weight: 700;
+  color: var(--text);
+}
+.qa-slogan b { color: var(--accent); }
+.qa-slogan-sm { font-size: 56px; }
+.qa-slogan-sub {
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  color: var(--text-2);
+}
+.qa-slogan-tail { font-size: 26px; color: var(--text-mute); }
+.qa-slogan-tail b { color: var(--accent); }
+
+/* Q4 选型：是什么 → 选什么 */
+.qa-pick {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.qa-pick-what {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.qa-chip {
+  padding: 12px 28px;
+  border: var(--rule-w) var(--rule-style) var(--text-2);
+  border-radius: var(--r-card);
+  background: var(--surface-3);
+  font-size: 26px;
+  color: var(--text);
+}
+.qa-pick-label { font-size: 24px; color: var(--text-mute); white-space: nowrap; }
+.qa-pick-arrow {
+  width: 110px;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: qa-arrow 800ms var(--ease-expo) forwards;
+  animation-delay: 1100ms;
+  transform: scaleX(0);
+}
+@keyframes qa-arrow {
+  to { transform: scaleX(1); }
+}
+.qa-pick-card {
+  padding: 30px 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+}
+
+/* 收尾页 */
+.qa-end-scene { gap: 30px; }
+.qa-end-label { color: var(--text-faint); }
+.qa-end-title {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--text);
+}
+.qa-end-cmd {
+  padding: 16px 34px;
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text);
+}
+.qa-end-prompt { color: var(--accent); font-weight: 700; margin-right: 12px; }
+.qa-end-note { font-size: 24px; color: var(--text-mute); }
+.qa-end-rule { width: 76px; border-top-color: var(--accent); border-top-width: 2px; }
+.qa-end-next {
+  font-family: var(--font-display-cn);
+  font-size: 34px;
+  color: var(--text-2);
+}
+.qa-end-next b { color: var(--accent); }
+.qa-end-bye {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  color: var(--text-mute);
+}

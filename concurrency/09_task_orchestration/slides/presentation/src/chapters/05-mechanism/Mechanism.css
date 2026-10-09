@@ -1,0 +1,211 @@
+/* ch05 · mechanism — 独立前缀 me-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.me-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in ── */
+.me-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.me-pop {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+}
+.me-stamp {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+  animation-delay: 3400ms;
+}
+.me-stamp2 {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+  animation-delay: 5200ms;
+}
+
+/* ── 页头 ── */
+.me-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.me-head-note { font-size: 15px; letter-spacing: 0.12em; color: var(--text-faint); }
+.me-accent { color: var(--accent); }
+.me-kw { color: var(--accent); }
+
+/* ── step 0 · 线程掐不死 ── */
+.me-q-hero {
+  font-family: var(--font-display-cn);
+  font-size: 78px;
+  font-weight: 700;
+  color: var(--text);
+}
+.me-q-hero b { color: var(--accent); font-weight: 700; }
+.me-thread-card {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 40px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.me-thread-line { display: flex; flex-direction: row; align-items: baseline; gap: 30px; }
+.me-thread-name { font-size: 38px; color: var(--text); }
+.me-thread-talk { font-size: 25px; color: var(--text-mute); }
+.me-thread-no { font-size: 32px; font-weight: 600; color: var(--accent); }
+.me-thread-note { font-size: 20px; color: var(--text-faint); letter-spacing: 0.06em; }
+
+/* ── step 1 · 注入示意（固定 1120 容器 1:1 定位，PLAYBOOK 坑 30） ── */
+.me-cor-stage {
+  position: relative;
+  width: 1120px;
+  height: 300px;
+  margin: 0 auto;
+}
+.me-cor-svg { position: absolute; top: 46px; left: 0; width: 1120px; height: 130px; }
+.me-await {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transform: translateX(-50%);
+}
+.me-await .mono { font-size: 23px; color: var(--text-2); }
+.me-await-talk { font-size: 17px; color: var(--text-faint); white-space: nowrap; }
+.me-a1 { left: 360px; top: 190px; }
+.me-a2 { left: 760px; top: 190px; }
+.me-inject {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 20px;
+}
+.me-inject-chip {
+  font-size: 29px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 10px 24px;
+  transform: rotate(-3deg);
+}
+.me-inject-talk { font-size: 22px; color: var(--text-mute); }
+.me-inject-here {
+  position: absolute;
+  left: 360px;
+  top: 252px;
+  transform: translateX(-50%);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.me-propagate { text-align: center; font-size: 34px; color: var(--text-2); }
+.me-propagate b { color: var(--accent); font-weight: 700; }
+
+/* ── step 2 · try/finally ── */
+.me-why-q {
+  font-family: var(--font-display-cn);
+  font-size: 58px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.me-why-q b { color: var(--accent); font-weight: 700; }
+.me-try-card {
+  align-self: center;
+  width: 560px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 34px 46px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.me-try-line { font-size: 29px; color: var(--text); }
+.me-try-indent { margin-left: 46px; color: var(--text-2); }
+.me-finally-ok { color: var(--accent); font-weight: 600; }
+.me-why-a { text-align: center; font-size: 30px; color: var(--text-2); }
+.me-why-a b { color: var(--accent); font-weight: 700; }
+
+/* ── step 3 · 两条推论（双细线卡） ── */
+.me-infer-row { display: flex; flex-direction: row; gap: 48px; flex: 1; align-items: stretch; align-self: stretch; }
+.me-infer-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 46px 50px;
+}
+.me-infer-ord { font-size: 17px; color: var(--text-faint); letter-spacing: 0.2em; }
+.me-infer-name { font-size: 38px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.me-infer-bad .me-infer-name { color: var(--accent); }
+.me-infer-talk { font-size: 21px; color: var(--text-mute); }
+
+/* ── step 4 · 契约 ── */
+.me-contract-hero {
+  font-family: var(--font-display-cn);
+  font-size: 86px;
+  font-weight: 700;
+  color: var(--text);
+}
+.me-contract-pair { display: flex; gap: 36px; }
+.me-contract-exit {
+  font-size: 27px;
+  color: var(--text-2);
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  border-radius: var(--r-card, 4px);
+  padding: 20px 36px;
+}
+.me-solved-list { display: flex; flex-direction: column; gap: 14px; }
+.me-solved-row { display: flex; flex-direction: row; align-items: baseline; gap: 22px; font-size: 29px; }
+.me-solved-mark { color: var(--accent); font-weight: 600; }
+.me-solved-name { font-weight: 700; color: var(--text); }
+.me-solved-talk { font-size: 21px; color: var(--text-mute); }
+
+/* ── step 5 · exceptions 列表 ── */
+.me-eg-stage { display: flex; flex-direction: row; gap: 60px; flex: 1; align-items: center; justify-content: center; }
+.me-eg-list {
+  width: 640px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  overflow: hidden;
+}
+.me-eg-title {
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 17px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+}
+.me-eg-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 22px;
+  padding: 22px 28px;
+  font-size: 25px;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--rule);
+}
+.me-eg-row:last-child { border-bottom: none; }
+.me-eg-row .mono { color: var(--text-faint); font-size: 20px; }
+.me-eg-row b { color: var(--accent); font-weight: 600; font-size: 21px; margin-left: auto; }
+.me-eg-note { font-size: 36px; color: var(--text-2); }
+.me-eg-note b { color: var(--accent); font-weight: 700; }

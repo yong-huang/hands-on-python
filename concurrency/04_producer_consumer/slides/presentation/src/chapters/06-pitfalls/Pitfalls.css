@@ -1,0 +1,710 @@
+/* ch06 · pitfalls — 独立前缀 pf-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（不碰 position） */
+.pf-scene {
+  align-items: center;
+  justify-content: center;
+}
+.pf-p1,
+.pf-p2,
+.pf-p3,
+.pf-p4,
+.pf-p5 {
+  gap: 42px;
+}
+
+/* ── 入场原语（本章特有：盖章 / 翻转；rise / pop 复用全局 keyframes） ── */
+.pf-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pf-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.pf-stamp {
+  opacity: 0;
+  animation: pf-stamp-in 620ms var(--ease-expo) forwards;
+}
+.pf-flip {
+  opacity: 0;
+  animation: pf-flip-in 700ms var(--ease-expo) forwards;
+}
+@keyframes pf-stamp-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+  62% {
+    opacity: 1;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes pf-flip-in {
+  0% {
+    opacity: 0;
+    transform: perspective(1400px) rotateY(58deg) translateX(36px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(0deg) translateX(0);
+  }
+}
+
+/* ── 公共：节标题 + 解法角标行 ── */
+.pf-head {
+  align-self: stretch;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.pf-head .label-mono {
+  font-size: 15px;
+  color: var(--text-mute);
+}
+.pf-head-right {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.pf-head-right b {
+  font-weight: 600;
+  color: var(--accent);
+}
+.pf-head-rule {
+  border-top-color: var(--rule);
+}
+
+.pf-fix {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 24px 38px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.pf-fix .label-mono {
+  flex-shrink: 0;
+  font-size: 15px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+.pf-fix-body {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+.pf-fix-code {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.pf-fix-strong {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 29px;
+  color: var(--accent);
+}
+.pf-fix-talk {
+  font-size: 25px;
+  color: var(--text-2);
+}
+
+/* ── step 0 · 坑一 整除丢任务：算式坍缩 333→666→999 + 断言盖章 ── */
+.pf-p1 {
+  gap: 38px;
+}
+.pf-p1-eq {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  font-size: 46px;
+  color: var(--text);
+}
+.pf-p1-eq-code {
+  font-size: 44px;
+  color: var(--accent);
+}
+.pf-p1-eq-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.pf-p1-eq-note {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.pf-p1-row {
+  display: flex;
+  gap: 28px;
+  animation: pf-dim 900ms var(--ease-soft) forwards;
+  animation-delay: 5200ms;
+}
+@keyframes pf-dim {
+  to {
+    opacity: 0.4;
+  }
+}
+.pf-p1-cell {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 24px 36px;
+}
+.pf-p1-cell-name {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.pf-p1-cell-num {
+  font-size: 56px;
+  font-weight: 600;
+  color: var(--text);
+}
+.pf-p1-cell-unit {
+  font-size: 24px;
+  color: var(--text-faint);
+}
+.pf-p1-total {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.pf-p1-total-label,
+.pf-p1-total-unit {
+  font-size: 32px;
+  color: var(--text-mute);
+}
+.pf-p1-count {
+  display: grid;
+}
+.pf-p1-count > span {
+  grid-area: 1 / 1;
+  font-size: 104px;
+  opacity: 0;
+}
+.pf-p1-count-pass {
+  animation: pf-count-pass 800ms linear forwards;
+}
+.pf-p1-count-stay {
+  color: var(--accent);
+  animation: pf-count-stay 560ms var(--ease-expo) forwards;
+}
+@keyframes pf-count-pass {
+  0% {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+  22% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  78% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-0.3em);
+  }
+}
+@keyframes pf-count-stay {
+  0% {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.pf-p1-lost {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.pf-p1-lost-slot {
+  width: 52px;
+  height: 52px;
+  border: 2px dashed var(--accent);
+}
+.pf-p1-assert {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.pf-p1-assert-note {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 坑二 毒丸数量写死：少一枚 / 多一枚 两张卡先后翻转 ── */
+.pf-p2 {
+  gap: 40px;
+}
+.pf-p2-base {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.pf-p2-crew-label {
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.pf-p2-person {
+  padding: 14px 28px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.pf-p2-hardseed {
+  margin-left: 26px;
+  padding: 14px 28px;
+  border: 2px dashed var(--text-faint);
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.pf-p2-cases {
+  display: flex;
+  align-items: stretch;
+  gap: 40px;
+}
+.pf-p2-case {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  width: 660px;
+  padding: 34px 40px;
+}
+.pf-p2-case--stuck {
+  border-style: dashed;
+  background: var(--surface);
+  box-shadow: none;
+}
+.pf-p2-case-head {
+  font-size: 23px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.pf-p2-qrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pf-p2-qrow--col {
+  flex-direction: column;
+  align-items: stretch;
+  align-self: stretch;
+  gap: 12px;
+}
+.pf-p2-qcell {
+  padding: 16px 22px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 23px;
+  color: var(--text-2);
+}
+.pf-p2-qcell--left {
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+  color: var(--accent);
+}
+.pf-p2-case-text {
+  font-size: 26px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.pf-p2-case-text b {
+  font-weight: 700;
+  color: var(--accent);
+}
+.pf-p2-waiter {
+  padding: 14px 22px;
+  border: 1px solid var(--rule);
+  font-size: 23px;
+  color: var(--text-2);
+}
+.pf-p2-waiter--stuck {
+  border: 2px dashed var(--accent);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── step 2 · 坑三 吞异常不交回执：回执行划掉 + 清点卡在 999/1000 ── */
+.pf-p3 {
+  gap: 44px;
+}
+.pf-p3-cols {
+  display: flex;
+  align-items: stretch;
+  gap: 56px;
+}
+.pf-p3-code {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  width: 780px;
+  padding: 42px 48px;
+}
+.pf-p3-code-title {
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.pf-p3-line {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 30px;
+  color: var(--text-2);
+}
+.pf-p3-skipcode {
+  position: relative;
+}
+.pf-p3-skip-line {
+  position: absolute;
+  top: 52%;
+  left: -6px;
+  right: -6px;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: pf-strike 480ms var(--ease-expo) forwards;
+  animation-delay: 2600ms;
+}
+@keyframes pf-strike {
+  to {
+    transform: scaleX(1);
+  }
+}
+.pf-p3-skip-tag {
+  padding: 4px 16px;
+  border: 2px dashed var(--accent);
+  font-size: 21px;
+  color: var(--accent);
+}
+.pf-p3-meter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  width: 620px;
+}
+.pf-p3-meter .label-mono {
+  font-size: 15px;
+  color: var(--text-mute);
+}
+.pf-p3-read {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+.pf-p3-read-num {
+  font-size: 108px;
+  color: var(--accent);
+}
+.pf-p3-read-sep {
+  font-size: 54px;
+  color: var(--text-faint);
+}
+.pf-p3-read-total {
+  font-size: 54px;
+  color: var(--text-faint);
+}
+.pf-p3-track {
+  height: 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.pf-p3-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  animation: pf-fill-run 1900ms var(--ease-soft) forwards;
+  animation-delay: 1800ms;
+}
+@keyframes pf-fill-run {
+  to {
+    width: calc(100% - 16px);
+  }
+}
+.pf-p3-stuck {
+  font-size: 26px;
+  color: var(--text-2);
+}
+.pf-p3-stuck b {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ── step 3 · 坑四 队列长度做业务判断：读数闪一次揭穿「已过期」 ── */
+.pf-p4 {
+  gap: 44px;
+}
+.pf-p4-cols {
+  display: flex;
+  align-items: stretch;
+  gap: 80px;
+}
+.pf-p4-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 26px;
+}
+.pf-p4-left .label-mono {
+  font-size: 15px;
+  color: var(--text-mute);
+}
+.pf-p4-window {
+  width: 540px;
+  padding: 14px;
+  overflow: hidden;
+}
+.pf-p4-track {
+  display: flex;
+  gap: 12px;
+  animation: pf-q-drift 2800ms var(--ease-soft) 900ms forwards;
+}
+@keyframes pf-q-drift {
+  0%,
+  20% {
+    transform: translateX(0);
+  }
+  45%,
+  62% {
+    transform: translateX(-208px);
+  }
+  88%,
+  100% {
+    transform: translateX(-416px);
+  }
+}
+.pf-p4-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 36px;
+  color: var(--text-2);
+}
+.pf-p4-item--empty {
+  border-style: dashed;
+  background: transparent;
+}
+.pf-p4-cap {
+  font-size: 25px;
+  color: var(--text-2);
+}
+.pf-p4-cap b {
+  font-weight: 700;
+  color: var(--accent);
+}
+.pf-p4-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 34px;
+}
+.pf-p4-code {
+  align-self: flex-start;
+  padding: 16px 26px;
+  font-size: 32px;
+  color: var(--text);
+}
+.pf-p4-read {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.pf-p4-read-label {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.pf-p4-read-num {
+  font-size: 124px;
+  color: var(--text);
+}
+.pf-p4-num-flash {
+  animation: pf-flash-once 760ms ease-in-out 3800ms both;
+}
+@keyframes pf-flash-once {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.12;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.pf-p4-stale {
+  padding: 10px 22px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 26px;
+  color: var(--accent);
+}
+.pf-p4-doc {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 坑五 拿列表当队列：list 整队前挪 vs deque 记号一步到位 ── */
+.pf-p5 {
+  gap: 46px;
+}
+.pf-p5-cols {
+  display: flex;
+  align-items: stretch;
+  gap: 52px;
+}
+.pf-p5-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  width: 700px;
+  padding: 36px 42px;
+}
+.pf-p5-panel--list {
+  border-style: dashed;
+  background: var(--surface);
+  box-shadow: none;
+}
+.pf-p5-panel--deque {
+  border-color: var(--accent);
+}
+.pf-p5-panel-head {
+  font-size: 27px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.pf-p5-panel--list .pf-p5-panel-head {
+  color: var(--text-mute);
+}
+.pf-p5-panel--deque .pf-p5-panel-head {
+  color: var(--accent);
+}
+.pf-p5-panel-sub {
+  margin-top: 8px;
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.pf-p5-strip {
+  width: 540px;
+  padding: 14px;
+  overflow: hidden;
+}
+.pf-p5-track {
+  display: flex;
+  gap: 12px;
+}
+.pf-p5-list-track {
+  animation: pf-list-shift 4400ms var(--ease-soft) 1500ms forwards;
+}
+@keyframes pf-list-shift {
+  0%,
+  14% {
+    transform: translateX(0);
+  }
+  26%,
+  52% {
+    transform: translateX(-104px);
+  }
+  64%,
+  100% {
+    transform: translateX(-208px);
+  }
+}
+.pf-p5-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 36px;
+  color: var(--text-2);
+}
+.pf-p5-eat--1 {
+  animation: pf-deque-eat 600ms var(--ease-soft) forwards;
+  animation-delay: 3800ms;
+}
+.pf-p5-eat--2 {
+  animation: pf-deque-eat 600ms var(--ease-soft) forwards;
+  animation-delay: 5000ms;
+}
+@keyframes pf-deque-eat {
+  to {
+    opacity: 0.22;
+  }
+}
+.pf-p5-cursor-row {
+  width: 100%;
+  height: 38px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.pf-p5-cursor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 38px;
+  border-top: 3px solid var(--accent);
+  font-size: 20px;
+  color: var(--accent);
+  animation: pf-cursor-hop 3400ms var(--ease-soft) 3000ms forwards;
+}
+@keyframes pf-cursor-hop {
+  0%,
+  20% {
+    transform: translateX(0);
+  }
+  32%,
+  55% {
+    transform: translateX(104px);
+  }
+  67%,
+  100% {
+    transform: translateX(208px);
+  }
+}
+.pf-p5-cost {
+  font-size: 26px;
+  color: var(--text-2);
+}
+.pf-p5-verdict {
+  font-size: 26px;
+  color: var(--text-2);
+}
+.pf-p5-cost .mono,
+.pf-p5-verdict .mono {
+  font-weight: 600;
+  color: var(--accent);
+}

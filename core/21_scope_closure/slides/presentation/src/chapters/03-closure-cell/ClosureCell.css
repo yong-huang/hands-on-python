@@ -1,0 +1,640 @@
+/* ch03 · closure-cell — 独立前缀 cc-。颜色/字体只走 token（indigo-porcelain）。
+   场景根（.cc-scene / .cc-XX-scene）只写布局属性，禁止 position；定位锚点在子元素。 */
+
+/* ── 场景根：仅布局 ── */
+.cc-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语（复用全局 keyframes：rise-in / pop-in / scale-in） ── */
+.cc-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.cc-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ══════════════ step 0 · 「自由变量」命名卡 ══════════════ */
+.cc-name-scene {
+  flex-direction: row;
+  gap: 100px;
+}
+.cc-code-card {
+  width: 700px;
+  padding: 36px 48px 40px;
+}
+.cc-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cc-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 30px;
+  line-height: 2;
+  color: var(--text-2);
+}
+.cc-code code {
+  font-family: inherit;
+}
+.cc-ln {
+  display: block;
+  white-space: pre;
+}
+/* 被引用的变量：accent 墨色 + 画线强调（打标签） */
+.cc-var {
+  position: relative;
+  color: var(--accent);
+}
+.cc-var::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.cc-var-out::after {
+  animation: cc-draw 520ms var(--ease-expo) 600ms forwards;
+}
+.cc-var-in::after {
+  animation: cc-draw 520ms var(--ease-expo) 820ms forwards;
+}
+.cc-name-side {
+  width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.cc-name-rule {
+  width: 88px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: cc-draw 600ms var(--ease-expo) 1900ms forwards;
+}
+.cc-name-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 104px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.cc-name-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 42px;
+  color: var(--text-mute);
+}
+.cc-name-gloss {
+  font-size: 26px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.cc-name-gloss b {
+  color: var(--accent);
+  font-weight: 700;
+}
+.cc-name-def {
+  font-size: 21px;
+  line-height: 1.7;
+  color: var(--text-mute);
+}
+
+/* ══════════════ step 1 · 栈帧销毁 → cell 打包带走（签名画面） ══════════════ */
+.cc-journey-scene {
+  gap: 20px;
+}
+.cc-journey-head {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+}
+.cc-journey-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--text);
+}
+.cc-journey-sub {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-mute);
+}
+/* 画布：所有舞台坐标的定位锚点（子元素，可用 position） */
+.cc-canvas {
+  position: relative;
+  width: 1600px;
+  height: 600px;
+}
+
+/* 左 · 栈帧：先立后灭 */
+.cc-frame {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  width: 400px;
+  height: 440px;
+  padding: 26px 30px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--text-mute);
+  background: var(--surface-2);
+  animation:
+    rise-in 680ms var(--ease-expo) 200ms both,
+    cc-frame-die 900ms var(--ease-soft) 1300ms forwards;
+}
+.cc-frame-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cc-frame-status {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: var(--track-caps);
+  color: var(--text-mute);
+  border: var(--rule-w) var(--rule-style) var(--rule);
+  padding: 3px 10px;
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) 1500ms forwards;
+}
+.cc-frame-foot {
+  margin-top: auto;
+}
+/* 空槽：count 搬走后留下的位置（随栈帧一起熄灭） */
+.cc-slot {
+  position: absolute;
+  left: 84px;
+  top: 260px;
+  width: 232px;
+  height: 120px;
+  border: 2px dashed var(--rule);
+  opacity: 0;
+  animation: rise-in 600ms var(--ease-expo) 420ms forwards;
+}
+.cc-slot-label {
+  position: absolute;
+  top: -11px;
+  left: 14px;
+  padding: 0 8px;
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-mute);
+}
+
+/* 中 · cell 容器（打包箱，accent 虚线） */
+.cc-cell {
+  position: absolute;
+  left: 660px;
+  top: 230px;
+  width: 300px;
+  height: 260px;
+  padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  opacity: 0;
+  animation:
+    scale-in 560ms var(--ease-expo) 2300ms forwards,
+    cc-drift 700ms var(--ease-soft) 5900ms forwards;
+}
+.cc-cell-head {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: var(--track-caps);
+  color: var(--accent);
+}
+
+/* 变量本身：从槽位出发 → 落进 cell → 随 counter 漂走 */
+.cc-tile {
+  position: absolute;
+  left: 128px;
+  top: 316px;
+  width: 144px;
+  height: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 2px solid var(--text-2);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+  animation:
+    rise-in 560ms var(--ease-expo) 600ms both,
+    cc-travel 900ms var(--ease-soft) 2600ms forwards,
+    cc-drift-tile 700ms var(--ease-soft) 5900ms forwards;
+}
+.cc-tile-name {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--text-mute);
+}
+.cc-tile-val {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* 右 · counter 函数对象 + __closure__ 挂钩 */
+.cc-link {
+  position: absolute;
+  left: 960px;
+  top: 359px;
+  width: 190px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation:
+    cc-draw 600ms var(--ease-expo) 4400ms forwards,
+    cc-drift 700ms var(--ease-soft) 5900ms forwards;
+}
+.cc-counter {
+  position: absolute;
+  left: 1150px;
+  top: 200px;
+  width: 450px;
+  height: 320px;
+  padding: 30px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 0;
+  animation:
+    rise-in 680ms var(--ease-expo) 3800ms forwards,
+    cc-drift 700ms var(--ease-soft) 5900ms forwards;
+}
+.cc-counter-name {
+  font-family: var(--font-mono);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text);
+}
+.cc-counter-sub {
+  font-family: var(--font-display-cn);
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.cc-counter-port {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cc-port-note {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-mute);
+}
+.cc-carry {
+  position: absolute;
+  left: 1150px;
+  top: 545px;
+  width: 450px;
+  text-align: center;
+  font-family: var(--font-display-cn);
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0;
+  animation:
+    rise-in 680ms var(--ease-expo) 5100ms forwards,
+    cc-drift 700ms var(--ease-soft) 5900ms forwards;
+}
+
+/* step 1 专用 keyframes：变量迁移 / 幸存组漂移 / 栈帧熄灭 */
+@keyframes cc-travel {
+  from { transform: translateX(0); }
+  to   { transform: translateX(610px); }
+}
+@keyframes cc-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(48px, -10px); }
+}
+@keyframes cc-drift-tile {
+  from { transform: translate(610px, 0); }
+  to   { transform: translate(658px, -10px); }
+}
+@keyframes cc-frame-die {
+  to {
+    opacity: 0.45;
+    border-color: var(--rule);
+    background: transparent;
+  }
+}
+
+/* ══════════════ step 2 · __closure__ 终端实测 ══════════════ */
+.cc-repl-scene {
+  flex-direction: row;
+  gap: 90px;
+}
+.cc-term {
+  width: 1020px;
+  padding: 34px 44px 40px;
+}
+.cc-term-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cc-term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cc-tline {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  line-height: 1.6;
+  color: var(--text-2);
+  white-space: pre;
+}
+.cc-tline-anim {
+  opacity: 0;
+  animation: rise-in 600ms var(--ease-quart) forwards;
+}
+.cc-prompt {
+  color: var(--text-faint);
+}
+/* cell 段：accent 墨色 + 一次性底色点亮 */
+.cc-hl {
+  color: var(--accent);
+  animation: cc-hl-bg 700ms var(--ease-quart) 2200ms both;
+}
+.cc-term-result {
+  font-family: var(--font-mono);
+  font-size: 84px;
+  line-height: 1.15;
+  color: var(--accent);
+}
+.cc-repl-side {
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.cc-repl-term {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  color: var(--accent);
+}
+.cc-repl-sub {
+  margin-top: 6px;
+  font-family: var(--font-display-cn);
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.cc-repl-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.cc-repl-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cc-repl-code {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text);
+}
+.cc-repl-gloss {
+  font-size: 25px;
+  color: var(--text-2);
+}
+.cc-repl-note {
+  color: var(--text-faint);
+}
+@keyframes cc-hl-bg {
+  from { background-color: transparent; }
+  to   { background-color: var(--accent-soft); }
+}
+
+/* ══════════════ step 3 · 字节码对照 ══════════════ */
+.cc-byte-scene {
+  gap: 34px;
+}
+.cc-byte-head {
+  display: flex;
+  align-items: baseline;
+  gap: 32px;
+}
+.cc-byte-title {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 48px;
+  color: var(--text);
+}
+.cc-byte-cmd {
+  font-family: var(--font-mono);
+  font-size: 21px;
+  color: var(--text-mute);
+  background: var(--surface-3);
+  padding: 8px 16px;
+}
+.cc-byte-cols {
+  display: flex;
+  gap: 100px;
+}
+.cc-byte-card {
+  width: 760px;
+  padding: 34px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.cc-insn {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 32px;
+  padding: 8px 20px;
+}
+.cc-insn-fast {
+  color: var(--text-2);
+  background: var(--surface-3);
+  border: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cc-insn-deref {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: var(--rule-w) var(--rule-style) var(--accent);
+}
+.cc-byte-tag {
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  color: var(--text-mute);
+}
+/* 指令去处的微缩演示：chip 落进槽位 / 飞进 cell */
+.cc-diagram {
+  position: relative;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cc-target {
+  width: 380px;
+  height: 104px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 2px dashed var(--rule);
+}
+.cc-target-cell {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.cc-target-label {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-mute);
+}
+.cc-target-label-cell {
+  color: var(--accent);
+}
+.cc-mini-insn {
+  font-family: var(--font-mono);
+  font-size: 19px;
+}
+.cc-mini-fast {
+  color: var(--text-2);
+}
+.cc-mini-deref {
+  color: var(--accent);
+  font-weight: 600;
+}
+.cc-drop-fast {
+  opacity: 0;
+  animation: cc-drop 600ms var(--ease-soft) 1700ms forwards;
+}
+.cc-fly-deref {
+  opacity: 0;
+  animation: cc-fly 700ms var(--ease-soft) 5000ms forwards;
+}
+.cc-verdict {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.cc-verdict-text {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cc-verdict-mute {
+  color: var(--text-mute);
+}
+.cc-b-accent {
+  color: var(--accent);
+}
+.cc-chip {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: var(--track-caps);
+  padding: 4px 12px;
+}
+.cc-chip-mute {
+  color: var(--text-mute);
+  border: var(--rule-w) var(--rule-style) var(--rule);
+}
+.cc-chip-accent {
+  color: var(--accent);
+  border: var(--rule-w) var(--rule-style) var(--accent);
+}
+.cc-equation {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  font-family: var(--font-mono);
+  font-size: 24px;
+}
+.cc-eq-fast {
+  color: var(--text-mute);
+}
+.cc-eq-arrow {
+  color: var(--text-faint);
+}
+.cc-eq-deref {
+  color: var(--accent);
+  font-weight: 600;
+}
+.cc-eq-gloss {
+  font-family: var(--font-display-cn);
+  font-size: 21px;
+  color: var(--text-mute);
+}
+@keyframes cc-drop {
+  from { opacity: 0; transform: translateY(-90px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cc-fly {
+  from { opacity: 0; transform: translate(-140px, -64px); }
+  to   { opacity: 1; transform: translate(0, 0); }
+}
+
+/* ══════════════ step 4 · 金句收束（油墨印刷 wipe） ══════════════ */
+.cc-quote-scene {
+  gap: 34px;
+}
+.cc-quote-rule {
+  width: 110px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: cc-draw 700ms var(--ease-expo) 250ms forwards;
+}
+.cc-quote-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 92px;
+  line-height: 1.3;
+  color: var(--text);
+  animation: cc-wipe 1100ms var(--ease-quart) 550ms both;
+}
+.cc-quote-accent {
+  color: var(--accent);
+}
+.cc-quote-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 38px;
+  color: var(--text-mute);
+}
+@keyframes cc-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* 共用：画线生长 */
+@keyframes cc-draw {
+  to { transform: scaleX(1); }
+}

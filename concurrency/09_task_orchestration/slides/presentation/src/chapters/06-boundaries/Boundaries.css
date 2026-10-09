@@ -1,0 +1,159 @@
+/* ch06 · boundaries — 独立前缀 bd-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.bd-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in ── */
+.bd-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.bd-pop {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+}
+
+/* ── 页头 ── */
+.bd-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.bd-eq-accent { color: var(--accent); }
+
+/* ── step 0 · 超时＝取消 ── */
+.bd-eq-hero {
+  font-family: var(--font-display-cn);
+  font-size: 110px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+.bd-eq-sign { color: var(--text-faint); }
+.bd-eq-proof {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 26px;
+}
+.bd-proof-num { font-size: 50px; color: var(--accent); }
+.bd-eq-proof span:last-child { font-size: 27px; color: var(--text-2); }
+.bd-eq-limit { font-size: 28px; color: var(--text-2); border-top: 1px solid var(--rule); padding-top: 30px; align-self: stretch; text-align: center; }
+.bd-eq-limit b { color: var(--accent); font-weight: 700; }
+
+/* ── step 1 · gather vs TaskGroup（双细线卡） ── */
+.bd-gather-hero {
+  font-family: var(--font-display-cn);
+  font-size: 62px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.bd-gather-hero b { color: var(--text); font-weight: 700; }
+.bd-vs-row { display: flex; flex-direction: row; gap: 48px; flex: 1; align-items: stretch; align-self: stretch; }
+.bd-vs-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 40px 48px;
+}
+.bd-vs-title { font-size: 17px; color: var(--text-faint); letter-spacing: 0.14em; }
+.bd-vs-line { display: flex; flex-direction: row; align-items: baseline; gap: 22px; font-size: 29px; color: var(--text); }
+.bd-vs-line .mono { font-size: 27px; }
+.bd-vs-talk { font-size: 18px; color: var(--text-faint); letter-spacing: 0.05em; }
+.bd-vs-bad .mono { color: var(--accent); font-weight: 600; }
+.bd-vs-dim { color: var(--text-faint); }
+.bd-vs-line b { color: var(--accent); font-weight: 700; }
+.bd-vs-talk-row { font-size: 20px; color: var(--text-mute); }
+
+/* ── step 2 · 数轴断言线 ── */
+.bd-proof-hero {
+  font-family: var(--font-display-cn);
+  font-size: 66px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.bd-proof-hero b { color: var(--accent); font-weight: 700; }
+.bd-assert {
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 30px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 26px 42px;
+}
+.bd-assert-code { font-size: 33px; color: var(--text); }
+.bd-assert-talk { font-size: 20px; color: var(--text-mute); }
+.bd-axis-wrap { padding: 0 40px; align-self: stretch; margin-top: 56px; }
+.bd-axis-bar {
+  position: relative;
+  height: 8px;
+  background: var(--surface-3);
+  border-radius: 4px;
+  margin-top: 44px;
+}
+.bd-axis-mark {
+  position: absolute;
+  top: -14px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.bd-axis-mark b { font-family: var(--font-mono); font-size: 26px; color: var(--text); }
+.bd-axis-mark span { font-size: 17px; color: var(--text-mute); }
+.bd-mark-line { top: -22px; }
+.bd-mark-line b { color: var(--accent); }
+.bd-mark-line::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: 2px;
+  height: 12px;
+  background: var(--accent);
+}
+.bd-proof-note { text-align: center; font-size: 34px; color: var(--text-2); margin-top: 36px; }
+.bd-proof-note b { color: var(--accent); font-weight: 700; }
+
+/* ── step 3 · 双重证明 ── */
+.bd-double-row { display: flex; flex-direction: row; gap: 48px; flex: 1; align-items: stretch; align-self: stretch; }
+.bd-double-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 44px 48px;
+}
+.bd-double-ord { font-size: 17px; color: var(--text-faint); letter-spacing: 0.2em; }
+.bd-double-name { font-size: 50px; font-weight: 700; color: var(--accent); }
+.bd-double-talk { font-size: 21px; color: var(--text-mute); }
+.bd-double-final {
+  font-family: var(--font-display-cn);
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--text);
+}
+.bd-double-final b { color: var(--accent); font-weight: 700; }

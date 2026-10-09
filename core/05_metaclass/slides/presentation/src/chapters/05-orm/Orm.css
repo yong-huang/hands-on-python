@@ -1,0 +1,227 @@
+/* ── ch05 orm · CSS prefix: om- ──────────────────────────────────── */
+
+.om-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared */
+.om-rise {
+  opacity: 0;
+  animation: om-rise 620ms var(--ease-quart) both;
+}
+@keyframes om-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.om-pop {
+  opacity: 0;
+  animation: om-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes om-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.om-fade {
+  opacity: 0;
+  animation: om-fade 420ms var(--ease-soft) both;
+}
+@keyframes om-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.om-line-in {
+  opacity: 0;
+  animation: om-fade 420ms var(--ease-soft) both;
+}
+
+.om-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+
+/* ── step 0 · 需求 ── */
+.om-req-scene { gap: 30px; }
+.om-req-head {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.om-req-head b { color: var(--text); }
+.om-req-body {
+  font-size: 68px;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+}
+.om-req-flow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.om-req-chip {
+  padding: 14px 32px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.om-req-chip-acc {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.om-req-arrow {
+  font-family: var(--font-mono);
+  font-size: 34px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · OrmMeta 代码 ── */
+.om-code-scene { gap: 0; }
+.om-codecard {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.om-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.om-codecard .om-code {
+  padding: 28px 44px;
+  font-size: 25px;
+  line-height: 1.85;
+}
+
+/* ── step 2 · 时机对比 ── */
+.om-timing-scene { gap: 60px; }
+.om-timing-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.om-timing-cols {
+  display: flex;
+  gap: 70px;
+}
+.om-timing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 480px;
+  padding: 38px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.om-timing-card-acc {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.om-timing-tag {
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.om-timing-card-acc .om-timing-tag { color: var(--accent); }
+.om-timing-mono {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--text);
+}
+.om-timing-card-acc .om-timing-mono { color: var(--accent); }
+.om-timing-desc {
+  font-size: 24px;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 真机字段 ── */
+.om-fields-scene { gap: 44px; }
+.om-fields-term {
+  width: 860px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.om-fields-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.om-fields-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px 36px;
+}
+.om-fields-line {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.om-fields-acc { color: var(--accent); }
+.om-fields-note {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.om-fields-note b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · SQL 三连 ── */
+.om-sql-scene { gap: 0; }
+.om-sql-term {
+  width: 1210px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.om-sql-row {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  padding: 16px 30px;
+  border-top: 1px dashed var(--rule);
+}
+.om-sql-tag {
+  width: 110px;
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--accent);
+  opacity: 0;
+  animation: om-fade 420ms var(--ease-soft) both;
+}
+.om-sql-line {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-2);
+  opacity: 0;
+  animation: om-fade 420ms var(--ease-soft) both;
+}
+
+/* ── step 5 · 零样板 ── */
+.om-zero-scene { gap: 34px; }
+.om-zero-big {
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--text-2);
+  text-align: center;
+}
+.om-zero-big b { color: var(--text); }
+.om-zero-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.om-zero-foot b { color: var(--text); font-weight: 700; }
+.om-zero-acc {
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}

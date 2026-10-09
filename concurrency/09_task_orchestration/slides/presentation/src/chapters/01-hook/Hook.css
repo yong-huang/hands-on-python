@@ -1,0 +1,284 @@
+/* ch01 · hook — 独立前缀 ho-。颜色/字体只走 token（monochrome-print，细线语言对齐 thread-lifecycle）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.ho-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语：共享 rise-in / pop-in（对齐系列） ── */
+.ho-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.ho-pop {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+}
+.ho-stamp {
+  opacity: 0;
+  animation: pop-in 460ms var(--ease-expo) forwards;
+  animation-delay: 900ms;
+}
+
+/* ── 页头（label-mono 左 + mono 注右，对齐系列字号） ── */
+.ho-head {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.ho-head-code { font-size: 15px; letter-spacing: 0.12em; color: var(--text-faint); }
+.ho-head-ord { font-size: 15px; letter-spacing: 0.12em; color: var(--text-faint); }
+
+/* ── step 0 · 片头标题页（对齐 thread-lifecycle 标题页规格） ── */
+.ho-title-scene { gap: 0; }
+.ho-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.ho-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.ho-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 132px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.ho-title-accent { color: var(--accent); }
+.ho-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 40px;
+  color: var(--text-mute);
+}
+.ho-title-sub {
+  font-size: 26px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.ho-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 22px;
+  border-left: 1px solid var(--rule);
+}
+.ho-tb-row {
+  display: flex;
+  gap: 18px;
+  font-size: 19px;
+}
+.ho-tb-row span {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.ho-tb-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 事件循环示意（细线 + 白卡） ── */
+.ho-loop-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  flex: 1;
+  justify-content: center;
+}
+.ho-loop-stage { position: relative; width: 780px; height: 380px; }
+.ho-loop-ring { width: 100%; height: 100%; }
+.ho-loop-label {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  fill: var(--text);
+  letter-spacing: 0.12em;
+}
+.ho-loop-sub { font-family: var(--font-body); font-size: 20px; fill: var(--text-faint); letter-spacing: 0.08em; }
+.ho-task-chip {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 14px 26px;
+}
+.ho-task-chip b { font-size: 24px; color: var(--text); font-weight: 600; }
+.ho-task-chip span { font-size: 15px; color: var(--text-faint); letter-spacing: 0.08em; }
+.ho-chip-a { left: -36px; top: 96px; }
+.ho-chip-b { left: 316px; top: -34px; }
+.ho-chip-c { right: -36px; top: 96px; }
+.ho-question {
+  font-size: 56px;
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+.ho-question b { color: var(--accent); font-weight: 700; }
+
+/* ── step 2 · 十个网址（细线小卡） ── */
+.ho-url-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 18px;
+  flex: 1;
+  align-content: center;
+  align-self: stretch;
+}
+.ho-url-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  padding: 30px 0 26px;
+}
+.ho-url-num { font-size: 24px; color: var(--text-2); }
+.ho-url-state { font-size: 14px; color: var(--text-faint); letter-spacing: 0.08em; }
+.ho-url-bad .ho-url-state {
+  color: var(--accent);
+  font-weight: 600;
+  border: 1px solid var(--accent);
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+.ho-waste {
+  text-align: center;
+  font-size: 40px;
+  color: var(--text-2);
+  letter-spacing: 0.03em;
+}
+.ho-waste b { color: var(--accent); font-weight: 700; }
+
+/* ── step 3 · 错误去向（双白卡 + 发丝线） ── */
+.ho-lost-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 56px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+.ho-taskcard, .ho-logcard {
+  width: 460px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card, 4px);
+  overflow: hidden;
+}
+.ho-taskcard-head, .ho-log-head {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 17px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+}
+.ho-taskcard-body {
+  position: relative;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.ho-exc-badge {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 10px 26px;
+  font-size: 26px;
+  border-radius: 3px;
+  transform: rotate(-4deg);
+}
+.ho-taskcard-note { font-size: 19px; color: var(--text-mute); }
+.ho-taskcard-foot, .ho-logcard .ho-taskcard-foot {
+  border-top: 1px solid var(--rule);
+  padding: 12px 24px;
+  font-size: 16px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+.ho-log-body {
+  height: 210px;
+  padding: 20px 24px;
+  font-size: 18px;
+  color: var(--text-2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ho-log-line { border-bottom: 1px dashed var(--rule); height: 12px; }
+.ho-log-empty { color: var(--text-faint); letter-spacing: 0.3em; margin-top: 6px; }
+
+/* ── step 4~6 · 三坑递进列表（行式 + 发丝线，当前项 accent） ── */
+.ho-pit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  flex: 1;
+  justify-content: center;
+  align-self: stretch;
+}
+.ho-pit-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 30px;
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 8px 26px;
+}
+.ho-pit-ord { font-size: 19px; color: var(--text-faint); width: 44px; }
+.ho-pit-name { font-size: 50px; font-weight: 700; color: var(--text); letter-spacing: 0.04em; }
+.ho-pit-talk { font-size: 24px; color: var(--text-mute); }
+.ho-pit-past .ho-pit-name,
+.ho-pit-past .ho-pit-talk { color: var(--text-faint); }
+.ho-pit-past .ho-pit-ord { color: var(--text-faint); }
+.ho-pit-row.is-future { opacity: 0; }
+.ho-pit-row.is-active .ho-pit-ord { color: var(--accent); }
+.ho-pit-row.is-active .ho-pit-name { color: var(--accent); }
+.ho-pit-warn { margin-left: auto; font-size: 15px; }
+
+/* ── step 7 · 收束（大字 + 灰回顾） ── */
+.ho-root-scene { gap: 30px; }
+.ho-root-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.ho-root-hero {
+  font-family: var(--font-display-cn);
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+}
+.ho-root-sub { font-size: 28px; color: var(--text-mute); letter-spacing: 0.04em; }
+.ho-root-pits {
+  display: flex;
+  gap: 44px;
+  margin-top: 26px;
+  font-size: 18px;
+  color: var(--text-faint);
+  letter-spacing: 0.14em;
+}

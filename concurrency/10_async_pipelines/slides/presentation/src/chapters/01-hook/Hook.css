@@ -1,0 +1,431 @@
+/* ch01 · hook — 独立前缀 hk-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.hk-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.hk-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.hk-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+/* ── step 0 · 片头标题页 ── */
+.hk-title-scene {
+  gap: 0;
+}
+.hk-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.hk-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.hk-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 132px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.hk-title-accent {
+  color: var(--accent);
+}
+.hk-title-en {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 38px;
+  color: var(--text-mute);
+}
+.hk-title-sub {
+  font-size: 27px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.hk-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 22px;
+  border-left: 1px solid var(--rule);
+}
+.hk-tb-row {
+  display: flex;
+  gap: 18px;
+  font-size: 19px;
+}
+.hk-tb-row span {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.hk-tb-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── step 1~3 共用 · 章节头 ── */
+.hk-num-head {
+  align-self: stretch;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.hk-num-ord {
+  font-size: 20px;
+  color: var(--accent);
+}
+
+/* ── step 1 · 2.4 毫秒 ── */
+.hk-num-scene {
+  gap: 56px;
+}
+.hk-num-body {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+.hk-num-hero {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.hk-hero-figure {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.hk-hero-value {
+  font-size: 240px;
+  color: var(--accent);
+}
+.hk-hero-unit {
+  font-size: 52px;
+  color: var(--text-mute);
+}
+.hk-hero-caption {
+  font-size: 30px;
+  color: var(--text-2);
+}
+.hk-hero-stamp {
+  align-self: flex-start;
+  padding: 10px 18px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.1em;
+}
+.hk-num-zoom {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  min-width: 0;
+}
+.hk-zoom-term {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 20px 24px;
+  background: var(--surface-3);
+  border-left: 3px solid var(--text-mute);
+  font-size: 30px;
+  color: var(--text-2);
+}
+.hk-term-prompt {
+  color: var(--text-faint);
+}
+.hk-term-mark {
+  margin-left: auto;
+  font-size: 18px;
+  color: var(--text-faint);
+}
+.hk-zoom-track-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hk-zoom-track {
+  height: 26px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+}
+.hk-zoom-sliver {
+  width: 0.24%;
+  height: 100%;
+  background: var(--accent);
+}
+.hk-zoom-grow {
+  transform-origin: left;
+  animation: hk-slit 900ms var(--ease-expo) forwards;
+  transform: scaleX(0);
+}
+@keyframes hk-slit {
+  to { transform: scaleX(1); }
+}
+.hk-zoom-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  color: var(--text-faint);
+}
+.hk-zoom-conv {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 27px;
+  color: var(--text);
+}
+.hk-zoom-conv .label-mono {
+  color: var(--accent);
+}
+
+/* ── step 2 · 闸门与在飞 ── */
+.hk-gate-scene {
+  gap: 48px;
+}
+.hk-gate-body {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 44px;
+}
+.hk-gate-flow {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 56px;
+}
+.hk-gate-col {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  flex: 0 0 auto;
+}
+.hk-gate-col-label {
+  color: var(--text-mute);
+}
+.hk-dotgrid {
+  display: grid;
+  grid-template-columns: repeat(10, 34px);
+  grid-auto-rows: 34px;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+.hk-dotgrid-fly {
+  grid-template-columns: repeat(5, 34px);
+}
+.hk-dot {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--text-mute);
+  opacity: 0.85;
+}
+.hk-dot-acc {
+  background: var(--accent);
+  opacity: 1;
+}
+.hk-dot-enter {
+  opacity: 0;
+  animation: pop-in 300ms var(--ease-expo) forwards;
+}
+.hk-dot-pop {
+  opacity: 0;
+  animation: pop-in 380ms var(--ease-expo) forwards;
+}
+.hk-gate-gate {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+.hk-gate-slot {
+  width: 14px;
+  flex: 1;
+  min-height: 230px;
+  border-left: 5px solid var(--accent);
+  border-right: 5px solid var(--accent);
+}
+.hk-gate-name {
+  font-size: 19px;
+  color: var(--text-2);
+  letter-spacing: 0.06em;
+}
+.hk-gate-readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 30px;
+}
+.hk-gate-num {
+  font-size: 150px;
+  color: var(--accent);
+}
+.hk-gate-note {
+  font-size: 29px;
+  color: var(--text-2);
+}
+
+/* ── step 3 · 4749 vs 64 ── */
+.hk-bar-scene {
+  gap: 44px;
+}
+/* 页眉固定在顶部，与 step1/2 同位（视觉门 G1 修复） */
+.hk-bar-main {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 44px;
+}
+.hk-bar-context {
+  align-self: stretch;
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.hk-bars {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+/* 坑16 口径：定宽标签 + 等长轨道 + 轨道内百分比填充 */
+.hk-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.hk-bar-label {
+  flex: 0 0 220px;
+  font-size: 25px;
+  text-align: right;
+  color: var(--text-2);
+}
+.hk-bar-track {
+  flex: 1;
+  height: 64px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+}
+.hk-bar-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--text-mute);
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: hk-bar 1000ms var(--ease-expo) forwards;
+}
+.hk-bar-fill--acc {
+  width: 1.35%;
+  min-width: 6px;
+  background: var(--accent);
+}
+@keyframes hk-bar {
+  to { transform: scaleX(1); }
+}
+.hk-bar-value {
+  flex: 0 0 300px;
+  font-size: 25px;
+  color: var(--text-2);
+}
+.hk-bar-times {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 28px;
+}
+.hk-bar-x {
+  font-size: 150px;
+  color: var(--accent);
+}
+.hk-bar-x-note {
+  font-size: 30px;
+  color: var(--text-2);
+}
+
+/* ── step 4 · 三零件预告 ── */
+.hk-parts-scene {
+  gap: 64px;
+}
+.hk-parts-kicker {
+  color: var(--text-mute);
+}
+.hk-parts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hk-parts-item {
+  display: flex;
+  align-items: center;
+}
+.hk-parts-arrow {
+  margin: 0 40px;
+  font-size: 44px;
+  color: var(--text-faint);
+}
+.hk-parts-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 380px;
+  padding: 42px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.hk-parts-ord {
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.hk-parts-code {
+  font-size: 26px;
+  color: var(--text-2);
+}
+.hk-parts-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text);
+}
+.hk-parts-talk {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.hk-parts-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 86px;
+  color: var(--text-mute);
+}
+.hk-tag-accent {
+  color: var(--accent);
+}

@@ -1,0 +1,116 @@
+/* ── ch03 add-str · CSS prefix: as- ──────────────────────────────── */
+
+.as-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+}
+
+/* shared */
+.as-rise {
+  opacity: 0;
+  animation: as-rise 620ms var(--ease-quart) both;
+}
+@keyframes as-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.as-pop {
+  opacity: 0;
+  animation: as-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes as-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.as-line-in {
+  opacity: 0;
+  animation: as-fade 420ms var(--ease-soft) both;
+}
+@keyframes as-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.as-req-mono {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+/* ── step 0 · 需求 ── */
+.as-req-scene { gap: 34px; }
+.as-req-head {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.as-req-head b { color: var(--text); }
+.as-req-body {
+  font-size: 42px;
+  color: var(--text);
+}
+.as-req-example {
+  padding: 18px 44px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 32px;
+  color: var(--text-2);
+}
+
+/* ── step 1 / 2 · 真机 ── */
+.as-inject-term,
+.as-skip-term {
+  width: 940px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.as-inject-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.as-inject-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px 36px;
+}
+.as-inject-line {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+}
+.as-inject-line-dim { color: var(--text-mute); }
+.as-inject-stamp {
+  padding: 14px 40px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 33px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ── step 2 · skipped ── */
+.as-skip-scene { gap: 44px; }
+.as-skip-note {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.as-skip-note b { color: var(--text); font-weight: 700; }
+
+/* ── step 3 · 原则 ── */
+.as-rule-scene { gap: 30px; }
+.as-rule-lead {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.as-rule-lead b { color: var(--accent); text-shadow: 0 0 50px var(--accent-glow); }
+.as-rule-sub {
+  font-size: 30px;
+  color: var(--text-mute);
+}

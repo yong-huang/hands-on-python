@@ -1,0 +1,14 @@
+.cl-scene { justify-content: center; align-items: center; }
+.cl-cta { display: flex; flex-direction: column; align-items: center; gap: 48px; }
+.cl-term { width: 1000px; border: 1px solid var(--rule); background: var(--surface-2); }
+.cl-term-bar { padding: 12px 22px; border-bottom: 1px dashed var(--rule); font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-mute); }
+.cl-term-body { padding: 34px 44px; display: flex; flex-direction: column; gap: 20px; font-family: var(--font-mono); font-size: 27px; color: var(--text-2); }
+.cl-prompt { color: var(--accent); margin-right: 16px; }
+.cl-cmd-out { color: var(--text-mute); }
+.cl-cursor { display: inline-block; width: 16px; height: 32px; margin-left: 10px; vertical-align: middle; background: var(--accent); animation: cl-blink 1.1s steps(1) infinite; }
+@keyframes cl-blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0; } }
+.cl-cta-foot { display: flex; gap: 32px; }
+.cl-cta-chip { padding: 18px 40px; border: 1.5px dashed var(--rule); font-size: 27px; color: var(--text-2); }
+.cl-cta-chip-accent { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+.cl-rise { opacity: 0; animation: cl-rise 620ms var(--ease-quart) both; }
+@keyframes cl-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }

@@ -1,0 +1,236 @@
+/* ch07 single-thread — 独立前缀 sg-，颜色字体只走 token */
+
+/* ── 入场原语（章内自含） ── */
+.sg-rise,
+.sg-fade,
+.sg-hero-in,
+.sg-card-in,
+.sg-cell-pop {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.sg-rise { animation-name: sg-rise; animation-duration: 750ms; }
+.sg-fade { animation-name: sg-fade; animation-duration: 650ms; }
+.sg-hero-in { animation-name: sg-hero-in; animation-duration: 850ms; }
+.sg-card-in { animation-name: sg-card-in; animation-duration: 800ms; }
+
+@keyframes sg-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sg-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sg-hero-in {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sg-card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes sg-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · 双泳道交错 ── */
+.sg-ile {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.sg-ile-kicker {
+  font-family: var(--font-body);
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.sg-ile-lanes {
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 30px 64px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.sg-ile-lane {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.sg-ile-lane-name {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-mute);
+  min-width: 110px;
+}
+.sg-ile-cells {
+  display: flex;
+  gap: 12px;
+}
+.sg-ile-cell {
+  width: 76px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 26px;
+}
+.sg-cell-slot {
+  border: 1.5px dashed var(--rule);
+}
+.sg-cell-on {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+  background: var(--accent-soft);
+}
+.sg-cell-pop { animation: sg-pop 480ms ease-out both; }
+.sg-ile-meta {
+  font-family: var(--font-body);
+  font-size: 21px;
+  color: var(--text-faint);
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+}
+.sg-ile-check {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 20px 40px;
+}
+.sg-check-label {
+  font-family: var(--font-body);
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.sg-check-seq {
+  font-family: var(--font-mono);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sg-check-mark {
+  font-family: var(--font-body);
+  font-size: 25px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── step 1 · MainThread ── */
+.sg-mt {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 34px;
+}
+.sg-mt-hero {
+  font-family: var(--font-display-cn);
+  font-size: 76px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+}
+.sg-mt-hero em {
+  font-style: normal;
+  color: var(--accent);
+  border-bottom: 4px solid var(--accent-glow);
+}
+.sg-mt-badge {
+  border: 3px solid var(--accent);
+  background: var(--surface-2);
+  padding: 22px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.sg-mt-badge-name {
+  font-family: var(--font-mono);
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.sg-mt-badge-note {
+  font-family: var(--font-body);
+  font-size: 23px;
+  color: var(--text-mute);
+}
+.sg-mt-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+.sg-mt-line {
+  font-family: var(--font-body);
+  font-size: 31px;
+  color: var(--text-2);
+}
+.sg-mt-line b {
+  font-family: var(--font-display-cn);
+  color: var(--accent);
+}
+
+/* ── step 2 · 设计心得 ── */
+.sg-lesson {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.sg-lesson-title {
+  font-family: var(--font-display-cn);
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.sg-lesson-title span { color: var(--accent); }
+.sg-lesson-grid {
+  display: flex;
+  gap: 40px;
+}
+.sg-lesson-card {
+  width: 560px;
+  border: 1px solid var(--text);
+  background: var(--surface-2);
+  padding: 26px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sg-lesson-name {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sg-lesson-card svg { width: 100%; }
+.sg-tick-pop { opacity: 0; animation: sg-pop 450ms ease-out both; }
+.sg-lesson-verdict {
+  font-family: var(--font-body);
+  font-size: 23px;
+  border-top: 1px solid var(--rule);
+  padding-top: 14px;
+}
+.sg-verdict-ok { color: var(--accent); font-weight: 700; }
+.sg-verdict-bad { color: var(--text-mute); }
+.sg-lesson-note {
+  font-family: var(--font-body);
+  font-size: 27px;
+  color: var(--text-2);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+}

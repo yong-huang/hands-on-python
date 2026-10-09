@@ -1,0 +1,208 @@
+/* ── ch07 stdlib · CSS prefix: sd- ───────────────────────────────── */
+
+.sd-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.sd-rise {
+  opacity: 0;
+  animation: sd-rise 620ms var(--ease-quart) both;
+}
+@keyframes sd-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sd-pop {
+  opacity: 0;
+  animation: sd-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes sd-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.sd-line-in {
+  opacity: 0;
+  animation: sd-fade 420ms var(--ease-soft) both;
+}
+@keyframes sd-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── step 0 · 论断 ── */
+.sd-claim-scene { gap: 46px; }
+.sd-claim-head {
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-claim-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+.sd-claim-verdict {
+  padding: 24px 60px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.sd-claim-note {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.sd-claim-note b { color: var(--text-2); font-weight: 700; }
+
+/* ── step 1 · hasattr ── */
+.sd-proof-scene { gap: 42px; }
+.sd-proof-term {
+  width: 940px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sd-proof-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.sd-proof-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 30px 36px;
+}
+.sd-proof-line {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.sd-proof-prompt {
+  color: var(--accent);
+  margin-right: 14px;
+}
+.sd-proof-true { color: var(--text); font-weight: 600; }
+.sd-proof-foot {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.sd-proof-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · 语法糖 ── */
+.sd-sugar-scene { gap: 0; }
+.sd-sugar-cols {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.sd-sugar-card {
+  margin: 0;
+  padding: 28px 36px;
+  border: 1px solid var(--rule);
+  border-top: 2px dashed var(--accent);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  line-height: 1.85;
+  color: var(--text);
+  white-space: pre;
+}
+.sd-sugar-card-2 {
+  border-top-color: var(--text-faint);
+  color: var(--text-2);
+}
+.sd-sugar-eq {
+  padding: 14px 28px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  transform: rotate(-3deg);
+}
+
+/* ── step 3 · 同族 ── */
+.sd-family-scene { gap: 66px; }
+.sd-family-lead {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-family {
+  display: flex;
+  gap: 34px;
+}
+.sd-family-chip {
+  padding: 22px 44px;
+  border: 1.5px dashed var(--text-faint);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 29px;
+  color: var(--text-2);
+}
+.sd-family-chip-hot {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent-glow);
+}
+.sd-family-foot {
+  font-size: 32px;
+  color: var(--text-2);
+}
+.sd-family-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · 装饰器 vs 描述符 ── */
+.sd-vs-scene { gap: 66px; }
+.sd-vs-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-vs-cols {
+  display: flex;
+  gap: 60px;
+}
+.sd-vs-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 560px;
+  padding: 40px 48px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sd-vs-card-2 {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.sd-vs-tag {
+  font-size: 21px;
+  letter-spacing: 0.14em;
+  color: var(--text-mute);
+}
+.sd-vs-card-2 .sd-vs-tag { color: var(--accent); }
+.sd-vs-layer {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-vs-code {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.sd-vs-foot {
+  font-size: 34px;
+  color: var(--text-2);
+}
+.sd-vs-foot b { color: var(--text); font-weight: 700; }

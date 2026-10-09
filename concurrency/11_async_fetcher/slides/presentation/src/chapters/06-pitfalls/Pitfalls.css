@@ -1,0 +1,102 @@
+/* ch06 · pitfalls — 独立前缀 pt-。颜色/字体只走 token（monochrome-print）。 */
+
+.pt-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.pt-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+
+.pt-accent {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* ── 坑卡骨架 ── */
+.pt-pit-scene {
+  gap: 52px;
+}
+.pt-thesis {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.pt-card {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 1240px;
+  padding: 46px 56px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+  animation: rise-in var(--dur-base) var(--ease-expo) both;
+}
+.pt-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+}
+.pt-card-tag {
+  font-size: 21px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+.pt-card-title {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.pt-card-note {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.pt-card-row {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+.pt-card-label {
+  flex: 0 0 64px;
+  font-size: 19px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.pt-card-text {
+  font-size: 29px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.pt-chip {
+  padding: 2px 12px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  font-size: 25px;
+  color: var(--accent);
+}
+
+/* ── 收束 ── */
+.pt-final-scene {
+  gap: 56px;
+}
+.pt-final-line {
+  font-family: var(--font-display-cn);
+  font-weight: 900;
+  font-size: 64px;
+  color: var(--text);
+}
+.pt-final-cta {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text-2);
+}

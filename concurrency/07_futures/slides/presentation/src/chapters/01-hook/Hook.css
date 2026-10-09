@@ -1,0 +1,619 @@
+/* ch01 · hook — 独立前缀 fk-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1 —— 不碰 position） */
+.fk-scene {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 入场原语 ── */
+.fk-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.fk-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+.fk-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: fk-grow-x 700ms var(--ease-expo) forwards;
+}
+@keyframes fk-grow-x {
+  to { transform: scaleX(1); }
+}
+/* 出现 → 停留 → 凭空消失（第三口气的报错气泡） */
+.fk-vanish {
+  opacity: 0;
+  animation: fk-vanish-out 2600ms var(--ease-quart) forwards;
+}
+@keyframes fk-vanish-out {
+  0%   { opacity: 0; transform: scale(0.6); }
+  25%  { opacity: 1; transform: scale(1); }
+  62%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.9) translateY(-10px); }
+}
+
+.fk-accent {
+  color: var(--accent);
+}
+
+/* ── step 0 · 片头标题页 ── */
+.fk-title-scene {
+  gap: 0;
+}
+.fk-title-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.fk-title-rule {
+  width: 76px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.fk-title-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 118px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.fk-title-sep {
+  color: var(--text-faint);
+}
+.fk-title-accent {
+  color: var(--accent);
+}
+.fk-title-en {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  letter-spacing: 0.04em;
+  color: var(--text-mute);
+}
+.fk-title-sub {
+  font-size: 26px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.fk-titleblock {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 22px;
+  border-left: 1px solid var(--rule);
+}
+.fk-tb-row {
+  display: flex;
+  gap: 18px;
+  font-size: 19px;
+}
+.fk-tb-row span {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+.fk-tb-row b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── 通用造型：工人圆点 / 屋子 ── */
+.fk-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text-2);
+  flex: 0 0 auto;
+}
+.fk-dot--lone {
+  background: var(--accent);
+}
+.fk-crew {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.fk-crew-room {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 34px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.fk-crew-room--sm {
+  padding: 18px 22px;
+  gap: 14px;
+}
+.fk-crew-cap {
+  font-size: 19px;
+  color: var(--text-mute);
+}
+.fk-rooms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.fk-rooms-row {
+  display: flex;
+  gap: 16px;
+}
+.fk-room {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.fk-room--sm {
+  padding: 16px;
+}
+
+/* ── step 1 · 十秒地基 ── */
+.fk-base-scene {
+  gap: 70px;
+}
+.fk-base-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+.fk-base-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--text);
+}
+.fk-base-diagram {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+.fk-tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+.fk-tasks-label {
+  font-size: 19px;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.fk-task-bar {
+  width: 150px;
+  height: 26px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+  flex: 0 0 auto;
+}
+.fk-base-arrow {
+  font-size: 52px;
+  color: var(--text-faint);
+}
+.fk-crew-wrap,
+.fk-rooms-wrap {
+  flex: 0 0 auto;
+}
+
+/* ── step 2 · 「池」 ── */
+.fk-pool-scene {
+  gap: 64px;
+}
+.fk-pool-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.fk-pool-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 30px 54px;
+  border: 2px dashed var(--text-faint);
+}
+.fk-pool-tag {
+  font-size: 19px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+}
+.fk-pool-inner {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.fk-pool-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 112px;
+  color: var(--text);
+}
+.fk-pool-reuse {
+  font-size: 23px;
+  color: var(--text-mute);
+}
+.fk-pool-turn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text-mute);
+}
+
+/* ── step 3~5 · 三口气引用卡 ── */
+.fk-quote-scene {
+  gap: 40px;
+}
+.fk-quote-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  align-self: stretch;
+  color: var(--text-mute);
+}
+.fk-quote-ord {
+  font-size: 20px;
+  color: var(--accent);
+}
+.fk-quote-rule {
+  align-self: stretch;
+  border-top-color: var(--rule);
+}
+.fk-quote {
+  margin: 0;
+  max-width: 1420px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  line-height: 1.42;
+  color: var(--text);
+}
+.fk-quote-foot {
+  display: flex;
+  justify-content: center;
+}
+.fk-quote-note {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 27px;
+  color: var(--text-2);
+}
+.fk-quote-note .label-mono {
+  color: var(--accent);
+}
+
+/* 第一口 · 换池重写链 */
+.fk-rewrite {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.fk-chip {
+  padding: 16px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+}
+.fk-rewrite-mid {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.fk-rewrite-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.fk-rewrite-tag {
+  font-size: 21px;
+  color: var(--text-mute);
+}
+.fk-rewrite-stamp {
+  margin-left: 26px;
+  padding: 14px 26px;
+  border: 3px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 30px;
+  transform: rotate(-4deg);
+}
+
+/* 第二口 · 时间条 */
+.fk-gantt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+}
+.fk-gantt-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+.fk-gantt-fast {
+  width: 34px;
+  height: 30px;
+  background: var(--surface-3);
+  border: 1px solid var(--rule);
+  flex: 0 0 auto;
+}
+.fk-gantt-slow-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-left: 26px;
+  flex: 0 0 auto;
+}
+.fk-gantt-slow {
+  width: 190px;
+  height: 58px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  flex: 0 0 auto;
+}
+.fk-gantt-slow-tag {
+  padding: 4px 12px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 19px;
+}
+.fk-gantt-cap {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 26px;
+  color: var(--text-2);
+}
+
+/* 第三口 · 错误气泡凭空消失 */
+.fk-vanish-row {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+.fk-vanish-worker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 34px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.fk-vanish-tag {
+  font-size: 25px;
+  color: var(--text-2);
+}
+.fk-vanish-bubble {
+  padding: 16px 28px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 28px;
+}
+.fk-vanish-row .fk-quote-note {
+  margin-left: 40px;
+}
+
+/* ── step 6 · 病根：焊死 ── */
+.fk-weld-scene {
+  gap: 56px;
+}
+.fk-weld-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fk-weld-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+  padding: 70px 120px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+.fk-weld-card-label {
+  font-size: 21px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.fk-weld-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 34px 60px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+}
+.fk-weld-block-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text);
+}
+.fk-weld-block-tag {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.fk-weld-seam {
+  width: 420px;
+  height: 7px;
+  background: var(--accent);
+}
+.fk-weld-stamp {
+  padding: 12px 34px;
+  border: 4px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  transform: rotate(-5deg);
+}
+
+/* ── step 7 · 两个角色 ── */
+.fk-roles-scene {
+  gap: 64px;
+}
+.fk-roles-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fk-roles {
+  display: flex;
+  gap: 60px;
+}
+.fk-role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 520px;
+  padding: 60px 40px;
+}
+.fk-role-en {
+  font-size: 40px;
+  letter-spacing: 0.06em;
+  color: var(--text-2);
+}
+.fk-role-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 72px;
+  color: var(--text);
+}
+.fk-role-rule {
+  width: 64px;
+  border-top-width: 3px;
+  border-top-color: var(--accent);
+}
+.fk-role-duty {
+  font-size: 36px;
+  color: var(--text-2);
+}
+
+/* ── step 8 · 两个动词 ── */
+.fk-verbs-scene {
+  gap: 60px;
+}
+.fk-verbs-head {
+  align-self: stretch;
+  text-align: center;
+  color: var(--text-mute);
+}
+.fk-verbs-flow {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.fk-verbs-code {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 46px 56px;
+}
+.fk-verbs-code-label {
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.fk-verb {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+.fk-verb-name {
+  font-size: 46px;
+  font-weight: 600;
+  color: var(--text);
+}
+.fk-verb-talk {
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.fk-verbs-io {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+.fk-verbs-line {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.fk-verbs-arrow {
+  font-size: 46px;
+  color: var(--accent);
+}
+.fk-verbs-cap {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.fk-verbs-future {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 72px;
+}
+.fk-verbs-future-en {
+  font-size: 40px;
+  color: var(--text-2);
+}
+.fk-verbs-future-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 64px;
+  color: var(--accent);
+}
+.fk-verbs-backend {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+
+/* ── step 9 · 预告 ── */
+.fk-next-scene {
+  gap: 54px;
+}
+.fk-next-groans {
+  display: flex;
+  gap: 28px;
+}
+.fk-next-chip {
+  padding: 14px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 25px;
+  color: var(--text-2);
+}
+.fk-next-hero {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 96px;
+  color: var(--text);
+}
+.fk-next-sub {
+  font-size: 30px;
+  color: var(--text-mute);
+}

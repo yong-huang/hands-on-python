@@ -1,0 +1,289 @@
+/* ── ch05 cached · CSS prefix: cp- ───────────────────────────────── */
+
+.cp-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.cp-rise {
+  opacity: 0;
+  animation: cp-rise 620ms var(--ease-quart) both;
+}
+@keyframes cp-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cp-pop {
+  opacity: 0;
+  animation: cp-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes cp-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.cp-fade {
+  opacity: 0;
+  animation: cp-fade 420ms var(--ease-soft) both;
+}
+@keyframes cp-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.cp-stamp-in {
+  animation: cp-stamp 460ms var(--ease-overshoot) both;
+}
+@keyframes cp-stamp {
+  0%   { opacity: 0; transform: rotate(-6deg) scale(1.7); }
+  100% { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+.cp-line-in {
+  opacity: 0;
+  animation: cp-fade 420ms var(--ease-soft) both;
+}
+
+.cp-code {
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre;
+}
+.cp-codecard {
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cp-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.cp-codecard .cp-code {
+  padding: 34px 46px;
+  font-size: 29px;
+  line-height: 2;
+}
+
+/* ── step 0 · 需求 ── */
+.cp-req-scene { gap: 36px; }
+.cp-req-head {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cp-req-head b { color: var(--text); }
+.cp-req-sub {
+  font-size: 30px;
+  color: var(--text-mute);
+}
+.cp-req-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 34px 60px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.cp-req-card code {
+  font-family: var(--font-mono);
+  font-size: 34px;
+  color: var(--text);
+}
+.cp-req-note {
+  font-size: 23px;
+  color: var(--text-2);
+}
+
+/* ── step 1 · 非数据判定 ── */
+.cp-code-scene { gap: 50px; }
+.cp-verdict {
+  padding: 16px 44px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 31px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+/* ── step 2 · factory ── */
+.cp-factory-scene { gap: 46px; }
+.cp-factory-lead {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cp-count {
+  display: flex;
+  align-items: baseline;
+  gap: 26px;
+  padding: 18px 46px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.cp-count-k {
+  font-family: var(--font-mono);
+  font-size: 21px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.cp-count-v {
+  font-family: var(--font-mono);
+  font-size: 46px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── step 3 · 核心一行 ── */
+.cp-core-scene { gap: 54px; }
+.cp-core-kicker {
+  font-size: 28px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+.cp-core-line {
+  padding: 40px 70px;
+  border: 2px solid var(--accent);
+  background: var(--surface-2);
+  box-shadow: 0 0 80px var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 47px;
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+.cp-core-foot {
+  font-size: 38px;
+  color: var(--text-2);
+}
+.cp-core-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 4 · 为什么写回 ── */
+.cp-why-scene { gap: 50px; }
+.cp-why-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cp-why-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.cp-why-step {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 36px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.cp-why-ord {
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.cp-why-step-hit {
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.cp-why-step-dead {
+  opacity: 0.45;
+}
+.cp-why-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.cp-why-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 5 · 铁证 ── */
+.cp-proof-scene { gap: 40px; }
+.cp-proof-term {
+  width: 980px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cp-proof-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+}
+.cp-proof-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 36px;
+}
+.cp-proof-line {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.cp-proof-key { color: var(--accent); }
+.cp-proof-stamp {
+  padding: 14px 40px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+/* ── step 6 · 软肋 ── */
+.cp-soft-scene { gap: 54px; }
+.cp-soft-lead {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cp-soft-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+.cp-soft-act {
+  padding: 22px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cp-soft-mono {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--text);
+}
+.cp-soft-arrow {
+  font-family: var(--font-mono);
+  font-size: 38px;
+  color: var(--accent);
+}
+.cp-soft-result {
+  padding: 20px 44px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.cp-soft-stamp {
+  padding: 14px 38px;
+  border: 2px dashed var(--accent);
+  background: var(--surface);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}

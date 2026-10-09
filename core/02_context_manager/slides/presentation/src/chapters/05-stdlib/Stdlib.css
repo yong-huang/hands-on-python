@@ -1,0 +1,220 @@
+/* ── ch05 stdlib · CSS prefix: sd- ───────────────────────────────── */
+
+.sd-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 52px;
+}
+
+/* shared entrances */
+.sd-rise {
+  opacity: 0;
+  animation: sd-rise 620ms var(--ease-quart) both;
+}
+@keyframes sd-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sd-fade {
+  opacity: 0;
+  animation: sd-fade 420ms var(--ease-soft) both;
+}
+@keyframes sd-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── 货架 ── */
+.sd-shelf-scene { gap: 60px; }
+.sd-shelf-head,
+.sd-shelf,
+.sd-shelf-rule {
+  opacity: 0;
+  animation: sd-rise 620ms var(--ease-quart) both;
+}
+.sd-shelf { animation-delay: 250ms; }
+.sd-shelf-rule { animation-delay: 500ms; }
+.sd-shelf-head {
+  align-self: flex-start;
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+.sd-shelf-tag {
+  padding: 6px 18px;
+  border: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.sd-shelf-title {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-shelf {
+  display: flex;
+  gap: 40px;
+  padding: 60px 70px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  position: relative;
+}
+.sd-shelf-rule {
+  width: 900px;
+  height: 0;
+  border-top: 3px solid var(--rule);
+  margin-top: -26px;
+}
+.sd-box {
+  padding: 22px 40px;
+  border: 1px dashed var(--text-faint);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.sd-box-hot {
+  border: 1.5px dashed var(--accent);
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent-glow);
+}
+
+/* ── 工具页头 ── */
+.sd-tool-head {
+  align-self: flex-start;
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+.sd-tool-name {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-tool-desc {
+  font-size: 27px;
+  color: var(--text-2);
+}
+
+/* ── 代码对比 ── */
+.sd-compare {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.sd-codecard {
+  min-width: 560px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.sd-codecard-dim { opacity: 0.6; }
+.sd-codecard-acc { border-top: 2px dashed var(--accent); }
+.sd-codecard-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.sd-code {
+  margin: 0;
+  padding: 26px 30px;
+  font-family: var(--font-mono);
+  font-size: 23px;
+  line-height: 1.75;
+  color: var(--text-2);
+  white-space: pre;
+}
+.sd-code-acc { color: var(--text); }
+.sd-vs {
+  font-family: var(--font-mono);
+  font-size: 60px;
+  color: var(--accent);
+}
+.sd-suppress-foot {
+  font-size: 36px;
+  color: var(--text-2);
+}
+.sd-suppress-foot b { color: var(--text); font-weight: 700; }
+
+/* ── redirect_stdout ── */
+.sd-redirect-scene { gap: 64px; }
+.sd-redirect-row {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+}
+.sd-redirect-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+.sd-print-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.sd-print-src {
+  padding: 14px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text);
+}
+.sd-print-to {
+  font-size: 20px;
+  color: var(--text-mute);
+}
+.sd-redirect-arrow {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.sd-buf {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 22px 40px;
+  border: 2px dashed var(--accent);
+  background: var(--accent-soft);
+}
+.sd-buf-tag {
+  font-family: var(--font-mono);
+  font-size: 27px;
+  color: var(--accent);
+}
+.sd-buf-val {
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text);
+}
+
+/* ── 地图收尾 ── */
+.sd-map-scene { gap: 64px; }
+.sd-map-line {
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-map-line b {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+  text-shadow: 0 0 50px var(--accent-glow);
+}
+.sd-map-row {
+  display: flex;
+  gap: 32px;
+}
+.sd-map-row .sd-box {
+  font-size: 24px;
+  padding: 18px 30px;
+}

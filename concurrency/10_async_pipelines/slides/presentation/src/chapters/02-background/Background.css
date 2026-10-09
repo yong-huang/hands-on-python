@@ -1,0 +1,436 @@
+/* ch02 · background — 独立前缀 bg-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（不碰 position） */
+.bg-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 52px;
+}
+
+/* ── 入场原语 ── */
+.bg-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.bg-pop {
+  opacity: 0;
+  animation: pop-in 520ms var(--ease-expo) forwards;
+}
+
+.bg-head {
+  align-self: stretch;
+  color: var(--text-mute);
+}
+
+/* ── step 0 / 1 · 线程版流水线 ── */
+.bg-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.bg-pipeline--mute {
+  opacity: 0.85;
+}
+.bg-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.bg-thread {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 26px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.bg-thread-ord {
+  font-size: 17px;
+  color: var(--text-faint);
+}
+.bg-arrow {
+  font-size: 46px;
+  color: var(--text-faint);
+}
+.bg-queue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 34px 44px;
+  border: 2px solid var(--accent);
+  background: var(--surface-2);
+}
+.bg-queue-code {
+  font-size: 30px;
+  color: var(--accent);
+}
+.bg-queue-note {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.bg-foot {
+  font-size: 26px;
+  color: var(--text-mute);
+}
+
+/* ── step 1 · 痛点价签 ── */
+.bg-tags {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.bg-tag {
+  padding: 16px 30px;
+  background: var(--text);
+  color: var(--surface);
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 34px;
+}
+.bg-tag--wide {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 28px;
+  font-weight: 500;
+}
+
+/* ── step 2 · 字典加锁 + 负载线 ── */
+.bg-scene .bg-dict-row {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+.bg-dict {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 34px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-dict-title {
+  font-size: 34px;
+  color: var(--text);
+}
+.bg-dict-note {
+  font-size: 22px;
+  color: var(--text-mute);
+}
+.bg-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.bg-lock-shackle {
+  width: 56px;
+  height: 34px;
+  border: 10px solid var(--accent);
+  border-bottom: 0;
+  border-radius: 28px 28px 0 0;
+}
+.bg-lock-body {
+  width: 84px;
+  height: 62px;
+  background: var(--accent);
+  border-radius: 6px;
+}
+.bg-lock-label {
+  margin-top: 10px;
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.bg-race {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bg-race-term {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 58px;
+  color: var(--text);
+}
+.bg-race-note {
+  font-size: 24px;
+  color: var(--text-mute);
+  max-width: 460px;
+}
+.bg-load {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.bg-load-scale {
+  display: flex;
+  justify-content: space-between;
+}
+.bg-load-mark {
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.bg-load-mark--dead {
+  color: var(--accent);
+  font-weight: 700;
+  font-family: var(--font-display-cn);
+}
+.bg-load-bar-wrap {
+  height: 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+}
+.bg-load-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--text-mute);
+  transform-origin: left;
+  transform: scaleX(0.12);
+  animation: bg-load 1400ms var(--ease-expo) forwards;
+}
+@keyframes bg-load {
+  to { transform: scaleX(1); }
+}
+.bg-load-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  color: var(--text-faint);
+}
+
+/* ── step 3 · 换路宣言 ── */
+.bg-swap-scene {
+  gap: 60px;
+}
+.bg-swap {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 40px;
+}
+.bg-swap-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 46px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-swap-cell--no {
+  opacity: 0.75;
+}
+.bg-swap-cell--yes {
+  border-color: var(--accent);
+}
+.bg-swap-kicker {
+  color: var(--text-faint);
+}
+.bg-swap-cell--yes .bg-swap-kicker {
+  color: var(--accent);
+}
+.bg-swap-word {
+  position: relative;
+  align-self: flex-start;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.bg-swap-word--acc {
+  color: var(--accent);
+  font-size: 46px;
+}
+.bg-swap-strike {
+  position: absolute;
+  left: -3%;
+  top: 50%;
+  width: 106%;
+  height: 5px;
+  background: var(--text-mute);
+  transform: rotate(-4deg);
+}
+.bg-swap-talk {
+  font-size: 24px;
+  color: var(--text-mute);
+}
+.bg-swap-divider {
+  align-self: center;
+  font-size: 54px;
+  color: var(--text-faint);
+}
+.bg-swap-lead {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--text-mute);
+}
+
+/* ── step 4 · 两个新词 ── */
+.bg-defs {
+  display: flex;
+  gap: 44px;
+}
+.bg-def {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 700px;
+  padding: 50px 54px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.bg-def-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.bg-def-name {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 60px;
+  color: var(--text);
+}
+.bg-def-en {
+  font-size: 19px;
+  color: var(--text-faint);
+}
+.bg-def-code {
+  padding: 16px 22px;
+  background: var(--surface-3);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.bg-def-kw {
+  color: var(--accent);
+}
+.bg-def-line {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.bg-def-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 5px solid var(--accent);
+  flex: 0 0 auto;
+}
+.bg-def-talk {
+  font-size: 27px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.bg-def-talk b {
+  color: var(--accent);
+  font-weight: 700;
+}
+.bg-def-talk--center {
+  text-align: center;
+}
+.bg-def-loop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  padding: 18px 0;
+}
+.bg-def-node {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: 38px;
+}
+
+/* ── step 5 · 同构迁移 ── */
+.bg-migrate {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.bg-mig-row {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.bg-mig-tag {
+  flex: 0 0 130px;
+  text-align: right;
+  font-size: 22px;
+  color: var(--text-faint);
+}
+.bg-mig-tag--acc {
+  color: var(--accent);
+  font-weight: 700;
+}
+.bg-mig-flow {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.bg-mig-cell {
+  padding: 20px 30px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  font-size: 27px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.bg-mig-cell--acc {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.bg-mig-cell--code {
+  color: var(--accent);
+}
+.bg-mig-flow--old {
+  opacity: 0.5;
+}
+.bg-mig-arrow {
+  font-size: 32px;
+  color: var(--text-faint);
+}
+.bg-mig-arrow--acc {
+  color: var(--accent);
+}
+.bg-mig-swap {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding-left: 164px;
+}
+.bg-mig-swap-line {
+  flex: 0 0 60px;
+  height: 1px;
+  background: var(--rule);
+}
+.bg-mig-swap-word {
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.bg-mig-cost {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+}
+.bg-mig-cost-arrow {
+  font-size: 40px;
+  color: var(--text-faint);
+}
+.bg-mig-cost-val {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 62px;
+  color: var(--accent);
+}

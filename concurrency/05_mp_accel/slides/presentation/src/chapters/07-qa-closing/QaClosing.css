@@ -1,0 +1,181 @@
+/* ch07 · qa-closing — 独立前缀 qa-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.qa-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 52px;
+}
+
+/* ── 入场原语 ── */
+.qa-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.qa-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.qa-grow {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: qa-grow-x 900ms var(--ease-expo) forwards;
+}
+@keyframes qa-grow-x {
+  to { transform: scaleX(1); }
+}
+.qa-scene em { font-style: normal; color: var(--accent); }
+.qa-kicker { align-self: stretch; color: var(--text-mute); }
+
+/* ── step 0~1 · fork vs spawn ── */
+.qa-duo { display: flex; gap: 40px; }
+.qa-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 560px;
+  padding: 40px 54px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  transition: opacity 400ms var(--ease-quart);
+}
+.qa-card--dim { opacity: 0.55; }
+.qa-card--accent { border-top: 4px solid var(--accent); }
+.qa-pict { display: block; color: var(--accent); max-width: none; }
+.qa-card-name { font-size: 44px; color: var(--accent); }
+.qa-card-line { font-size: 28px; color: var(--text-2); }
+.qa-card-line--big {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text);
+}
+.qa-card-note { font-size: 24px; color: var(--text-mute); }
+
+/* ── step 2 · 三行 + 迷你车道 ── */
+.qa-fam {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+.qa-fam-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 24px 10px;
+  border-top: 1px solid var(--rule);
+}
+.qa-fam-row:last-child { border-bottom: 1px solid var(--rule); }
+.qa-fam-name { flex: 0 0 400px; font-size: 36px; color: var(--text); }
+.qa-fam-row--dim .qa-fam-name { color: var(--text-mute); }
+.qa-fam-row--on .qa-fam-name { color: var(--accent); }
+.qa-mini {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.qa-mini-track {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.qa-mini-wait {
+  flex: 1;
+  height: 12px;
+  background: var(--surface-3);
+}
+.qa-mini-chip {
+  position: relative;
+  padding: 8px 18px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-2);
+}
+.qa-fam-row--on .qa-mini-chip {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--surface);
+}
+.qa-mini-ord {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  font-style: normal;
+  font-size: 13px;
+  color: var(--accent);
+}
+.qa-mini-note { font-size: 22px; color: var(--text-mute); }
+.qa-corner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 27px;
+  color: var(--text-mute);
+}
+.qa-corner .label-mono { color: var(--accent); }
+
+/* ── step 3~4 · 选型 ── */
+.qa-picks {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  align-self: stretch;
+}
+.qa-pick {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  padding: 30px 40px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.qa-pick-q {
+  flex: 0 0 380px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--text);
+}
+.qa-pick-arrow { color: var(--accent); font-size: 36px; }
+.qa-pick-a { font-size: 42px; color: var(--accent); font-weight: 600; }
+.qa-pick-note { font-size: 26px; color: var(--text-mute); }
+
+/* ── step 5 · 收尾 ── */
+.qa-end-scene { gap: 40px; }
+.qa-end-repo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 28px;
+  border-left: 1px solid var(--rule);
+  font-size: 26px;
+  color: var(--text-2);
+}
+.qa-end-main {
+  margin: 0;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 92px;
+  color: var(--text);
+}
+.qa-end-rule {
+  width: 420px;
+  border-top-width: 2px;
+  border-top-color: var(--accent);
+}
+.qa-end-next { font-size: 32px; color: var(--text-mute); }
+.qa-end-bye {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-size: 40px;
+  color: var(--accent);
+}

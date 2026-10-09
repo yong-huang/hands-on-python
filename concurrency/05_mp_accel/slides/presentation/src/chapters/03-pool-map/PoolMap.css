@@ -1,0 +1,334 @@
+/* ch03 · pool-map — 独立前缀 pm-。颜色/字体只走 token（monochrome-print）。 */
+
+/* 场景根：只写布局属性（PLAYBOOK 坑 1） */
+.pm-scene {
+  align-items: center;
+  justify-content: center;
+  gap: 46px;
+}
+
+/* ── 入场原语 ── */
+.pm-rise {
+  opacity: 0;
+  animation: rise-in var(--dur-base) var(--ease-expo) forwards;
+}
+.pm-pop {
+  opacity: 0;
+  animation: pop-in 560ms var(--ease-expo) forwards;
+}
+.pm-em { font-style: normal; color: var(--accent); }
+.pm-stage-ord { color: var(--accent); }
+
+/* ── step 0 · Pool 定义 ── */
+.pm-def-scene { gap: 30px; }
+.pm-def-name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 96px;
+  color: var(--text);
+}
+.pm-def-dot { color: var(--accent); }
+.pm-def-gloss {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text-2);
+}
+.pm-def-worker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 28px;
+  color: var(--text-mute);
+}
+.pm-def-worker .label-mono { color: var(--accent); }
+.pm-def-corner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 28px;
+  border-left: 1px solid var(--rule);
+  font-size: 25px;
+  color: var(--text-mute);
+}
+.pm-def-corner .label-mono { color: var(--accent); }
+
+/* ── step 1 · 三步管线 ── */
+.pm-pipe-scene { gap: 64px; }
+.pm-pipe-head {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+.pm-pipe-fn { font-size: 40px; color: var(--accent); }
+.pm-pipe-claim {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text);
+}
+.pm-pipe { display: flex; align-items: center; justify-content: center; }
+.pm-pipe-item { display: flex; align-items: center; }
+.pm-pipe-arrow { margin: 0 40px; font-size: 44px; color: var(--text-faint); }
+.pm-pipe-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 38px 56px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pm-pipe-ord { font-size: 17px; letter-spacing: 0.14em; color: var(--accent); }
+.pm-pipe-cn {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text);
+}
+
+/* ── 步级舞台标签（01/02/03） ── */
+.pm-stage-label {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--text);
+}
+
+/* ── step 2 · 提交 ── */
+.pm-submit-scene { gap: 50px; }
+.pm-submit {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.pm-submit-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 36px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pm-submit-tasks { display: flex; gap: 12px; }
+.pm-task-chip {
+  padding: 10px 18px;
+  border: 1px solid var(--rule);
+  background: var(--surface-3);
+  font-size: 24px;
+  color: var(--text-2);
+}
+.pm-submit-flows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 230px;
+}
+.pm-flow {
+  display: flex;
+  justify-content: center;
+}
+.pm-flow-run {
+  opacity: 0;
+  animation: pm-flow-x 620ms var(--ease-quart) forwards;
+}
+@keyframes pm-flow-x {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.pm-flow-chip {
+  padding: 6px 16px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 20px;
+  background: var(--surface);
+}
+.pm-submit-workers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.pm-worker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 26px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pm-worker span:first-child { font-size: 26px; color: var(--text-2); }
+.pm-worker-note { font-size: 18px; color: var(--text-faint); }
+.pm-submit-note { font-size: 32px; color: var(--text-mute); }
+
+/* ── step 3 · 并行执行 ── */
+.pm-run-scene { gap: 54px; }
+.pm-run-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  align-self: stretch;
+}
+.pm-run-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 20px;
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.pm-run-name { font-size: 28px; color: var(--text-2); }
+.pm-run-track {
+  width: 100%;
+  height: 22px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+.pm-run-fill {
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.pm-run-fill-go { animation: pm-fill 1400ms var(--ease-quart) forwards; }
+@keyframes pm-fill {
+  to { transform: scaleX(1); }
+}
+.pm-run-note { font-size: 20px; color: var(--text-faint); }
+.pm-run-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 56px;
+  color: var(--text);
+}
+.pm-run-tagline em { font-style: normal; color: var(--accent); }
+
+/* ── step 4 · 汇合 ── */
+.pm-join-scene { gap: 46px; }
+.pm-join {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+.pm-join-workers { display: flex; gap: 22px; }
+.pm-join-worker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 28px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pm-join-worker .mono:first-child { font-size: 26px; color: var(--text-2); }
+.pm-join-t {
+  font-size: 18px;
+  color: var(--text-faint);
+}
+.pm-join-tiny {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  color: var(--text-faint);
+}
+.pm-join-tiny .label-mono { color: var(--text-faint); }
+.pm-join-flow { display: flex; gap: 16px; }
+.pm-flow-back {
+  opacity: 0;
+  padding: 12px 26px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 26px;
+  background: var(--surface);
+  animation: pm-back-in 560ms var(--ease-expo) forwards;
+}
+@keyframes pm-back-in {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pm-join-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 26px 48px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+}
+.pm-join-order { font-size: 40px; color: var(--text); }
+.pm-join-note {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--text-2);
+}
+.pm-join-note em { font-style: normal; color: var(--accent); }
+
+/* ── step 5 · pickle ── */
+.pm-pickle-scene { gap: 44px; }
+.pm-pickle-rule {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 54px;
+  color: var(--text);
+}
+.pm-pickle-rule em { font-style: normal; color: var(--accent); }
+.pm-pickle-lane { display: flex; align-items: center; }
+.pm-pickle-proc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.pm-pickle-proc .mono:first-child { font-size: 26px; color: var(--text-2); }
+.pm-pickle-param { font-size: 22px; color: var(--text-mute); }
+.pm-pickle-bridge {
+  width: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.pm-parcel {
+  padding: 14px 30px;
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+  font-size: 26px;
+  background: var(--accent-soft);
+}
+.pm-parcel-go { animation: pm-parcel-move 1500ms var(--ease-quart) forwards; animation-delay: 800ms; opacity: 0; }
+@keyframes pm-parcel-move {
+  0% { transform: translateX(-90px); opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateX(90px); opacity: 1; }
+}
+.pm-parcel-hint { font-size: 24px; color: var(--text-mute); }
+.pm-pickle-def {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 28px;
+  color: var(--text-2);
+}
+.pm-pickle-def .label-mono { color: var(--accent); }
+.pm-pickle-tagline {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--text);
+}
+.pm-pickle-tagline em { font-style: normal; color: var(--accent); }

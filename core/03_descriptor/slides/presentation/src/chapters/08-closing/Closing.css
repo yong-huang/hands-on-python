@@ -1,0 +1,183 @@
+/* ── ch08 closing · CSS prefix: cl- ──────────────────────────────── */
+
+.cl-scene {
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+
+/* shared entrances */
+.cl-rise {
+  opacity: 0;
+  animation: cl-rise 620ms var(--ease-quart) both;
+}
+@keyframes cl-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cl-pop {
+  opacity: 0;
+  animation: cl-pop 520ms var(--ease-overshoot) both;
+}
+@keyframes cl-pop {
+  0%   { opacity: 0; transform: scale(0.88); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── step 0 · 链条回收 ── */
+.cl-chain-scene { gap: 0; }
+.cl-chain-modes {
+  display: flex;
+  gap: 34px;
+}
+.cl-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 40px;
+  border: 1px dashed var(--rule);
+  background: var(--surface-2);
+}
+.cl-mode-name {
+  font-family: var(--font-mono);
+  font-size: 25px;
+  color: var(--text);
+}
+.cl-mode-tag {
+  padding: 4px 18px;
+  border: 1px dashed var(--accent);
+  font-size: 19px;
+  color: var(--accent);
+}
+.cl-converge {
+  width: 1200px;
+  height: 170px;
+  display: block;
+}
+.cl-converge .cl-draw {
+  stroke: var(--rule);
+  stroke-width: 2;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: cl-draw 620ms var(--ease-soft) both;
+}
+@keyframes cl-draw {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+.cl-chain-bar {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 24px 54px;
+  border: 2px dashed var(--accent);
+  background: var(--surface-2);
+  box-shadow: 0 0 60px var(--accent-soft);
+  font-size: 33px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cl-chain-hot {
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+.cl-chain-gt {
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+.cl-chain-foot {
+  margin-top: 36px;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.cl-chain-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 1 · 金句 ── */
+.cl-quote-scene { gap: 40px; }
+.cl-quote {
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--text-mute);
+}
+.cl-quote-acc {
+  color: var(--text);
+}
+.cl-quote-vs {
+  padding: 6px 26px;
+  border: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 26px;
+  color: var(--text-mute);
+}
+.cl-quote-foot {
+  margin-top: 30px;
+  font-size: 34px;
+  color: var(--text-2);
+}
+.cl-quote-foot b { color: var(--text); font-weight: 700; }
+
+/* ── step 2 · CTA（decorator 同款终端） ── */
+.cl-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.cl-term {
+  width: 1080px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+}
+.cl-term-bar {
+  padding: 12px 22px;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.cl-term-body {
+  padding: 34px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--text-2);
+}
+.cl-prompt {
+  color: var(--accent);
+  margin-right: 16px;
+}
+.cl-cmd-out { color: var(--text-mute); }
+.cl-cursor {
+  display: inline-block;
+  width: 16px;
+  height: 32px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--accent);
+  animation: cl-blink 1.1s steps(1) infinite;
+}
+@keyframes cl-blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0; }
+}
+.cl-cta-foot {
+  display: flex;
+  gap: 32px;
+}
+.cl-cta-chip {
+  padding: 18px 40px;
+  border: 1.5px dashed var(--rule);
+  font-size: 27px;
+  color: var(--text-2);
+}
+.cl-cta-chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 700;
+}
